@@ -40,7 +40,8 @@ export default function RegisterPage() {
             const data = await res.json();
 
             if (!res.ok) {
-                throw new Error(data.message || 'Error al registrarte');
+                const errorMessage = data.details ? `${data.message}: ${data.details}` : (data.message || 'Error al registrarte');
+                throw new Error(errorMessage);
             }
 
             // Auto-login after registration
