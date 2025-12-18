@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+export const dynamic = 'force-dynamic';
 import { prisma } from '@/app/lib/prisma';
 import bcrypt from 'bcryptjs';
 
@@ -50,10 +51,13 @@ export async function POST(req: Request) {
             { status: 201 }
         );
 
-    } catch (error) {
+    } catch (error: any) {
         console.error('Registration Error:', error);
         return NextResponse.json(
-            { message: 'Error interno del servidor al crear usuario' },
+            {
+                message: 'Error interno del servidor al crear usuario',
+                details: error.message
+            },
             { status: 500 }
         );
     }
