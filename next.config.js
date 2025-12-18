@@ -4,7 +4,6 @@ const nextConfig = {
     sassOptions: {
         includePaths: ['./app'],
     },
-
     async headers() {
         return [
             {
@@ -20,7 +19,7 @@ const nextConfig = {
                     },
                     {
                         key: 'X-Frame-Options',
-                        value: 'DENY' // Prevent Clickjacking
+                        value: 'DENY'
                     },
                     {
                         key: 'X-Content-Type-Options',
@@ -37,7 +36,7 @@ const nextConfig = {
                 ]
             }
         ];
-    }
+    },
 };
 
 module.exports = nextConfig;
