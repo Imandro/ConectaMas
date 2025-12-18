@@ -38,7 +38,7 @@ export async function POST(req: Request) {
                 email,
                 passwordHash: hashedPassword,
                 role: 'USER',
-                spiritualLevel: 'EXPLORING',
+                spiritualLevel: 'Explorador',
             },
         });
 
