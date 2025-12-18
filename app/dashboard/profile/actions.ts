@@ -22,3 +22,12 @@ export async function resetAccount() {
 
     revalidatePath("/dashboard");
 }
+
+export async function deleteAccount() {
+    const session = await auth();
+    if (!session?.user?.email) throw new Error("Unauthorized");
+
+    await prisma.user.delete({
+        where: { email: session.user.email }
+    });
+}

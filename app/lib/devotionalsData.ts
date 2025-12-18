@@ -32,7 +32,7 @@ export const devotionalsData: Devotional[] = [
             'Respira profundo 3 veces y di: "Tú tienes cuidado de mí".'
         ],
         prayer: 'Señor, hoy te entrego mi mente acelerada. No puedo con esto, pero Tú sí. Gracias porque no tengo que ser fuerte todo el tiempo. Recibo tu paz ahora. Amén.',
-        author: 'Equipo Conecta+'
+        author: 'Mario Alvarez'
     },
     {
         id: '2',
@@ -53,7 +53,7 @@ export const devotionalsData: Devotional[] = [
             'Memoriza Salmos 119:9 para recordarlo en momentos de tentación.'
         ],
         prayer: 'Jesús, mi carne es débil, pero Tú eres mi fuerza. Limpia mi mente de imágenes que no te agradan. Ayúdame a ver la pureza no como una regla, sino como una forma de amarte más. Amén.',
-        author: 'Pastor Andrés'
+        author: 'Mario Alvarez'
     },
     {
         id: '3',
@@ -74,7 +74,7 @@ export const devotionalsData: Devotional[] = [
             'Recuerda un momento donde sentiste el amor de Dios y escríbelo.'
         ],
         prayer: 'Padre, perdóname por buscar mi valor en cosas vacías. Gracias porque mi identidad está segura en Ti. Soy tuyo, y eso es suficiente. Amén.',
-        author: 'Sara M.'
+        author: 'Mario Alvarez'
     },
     {
         id: '4',
@@ -95,7 +95,7 @@ export const devotionalsData: Devotional[] = [
             'Escucha una canción de adoración que hable de Su presencia.'
         ],
         prayer: 'Dios, a veces me siento invisible. Gracias porque Tú siempre me ves. Llena este vacío con tu presencia real y tangible hoy. No estoy solo. Amén.',
-        author: 'Equipo Conecta+'
+        author: 'Mario Alvarez'
     },
     {
         id: '5',
@@ -116,7 +116,7 @@ export const devotionalsData: Devotional[] = [
             'Haz una cosa pequeña y buena hoy para retomar el rumbo.'
         ],
         prayer: 'Señor, fallé. Me duele haberlo hecho. Pero no voy a permitir que la culpa me aleje de Ti. Me levanto en tu Nombre. Gracias por tu paciencia infinita. Amén.',
-        author: 'Pastor J.'
+        author: 'Mario Alvarez'
     },
     {
         id: '6',
@@ -137,7 +137,7 @@ export const devotionalsData: Devotional[] = [
             'Pide al Espíritu Santo dominio propio antes de responder.'
         ],
         prayer: 'Espíritu Santo, apaga este fuego descontrolado en mí. Dame palabras sabias y no hirientes. Quiero ser manso como Jesús, no explosivo. Amén.',
-        author: 'Miriam G.'
+        author: 'Mario Alvarez'
     },
     {
         id: '7',
@@ -158,7 +158,7 @@ export const devotionalsData: Devotional[] = [
             'Agradece a Dios por el éxito de otros; eso rompe la envidia.'
         ],
         prayer: 'Creador mío, gracias por hacerme como soy. Renuncio a desear la vida de otros. Enséñame a amar mi diseño y mi camino. Soy tu obra maravillosa. Amén.',
-        author: 'Equipo Conecta+'
+        author: 'Mario Alvarez'
     },
     {
         id: '8',
@@ -179,7 +179,7 @@ export const devotionalsData: Devotional[] = [
             'Lee Jeremías 29:11 en voz alta.'
         ],
         prayer: 'Señor del tiempo, mi futuro está en tus manos y es el lugar más seguro. Decido confiar en que tienes cosas buenas preparadas para mí. Descanso en Ti. Amén.',
-        author: 'Pastor Andrés'
+        author: 'Mario Alvarez'
     },
     {
         id: '9',
@@ -200,7 +200,7 @@ export const devotionalsData: Devotional[] = [
             'No termines el día sin decirle "Buenas noches" a tu Padre.'
         ],
         prayer: 'Papá, aquí estoy. Sin palabras bonitas, pero con un corazón que te necesita. Enséñame a charlar contigo como mi mejor amigo. Gracias por escucharme siempre. Amén.',
-        author: 'Sara M.'
+        author: 'Mario Alvarez'
     },
     {
         id: '10',
@@ -221,6 +221,6 @@ export const devotionalsData: Devotional[] = [
             'Sé tú el amigo que levanta a otros; envía un mensaje de ánimo hoy.'
         ],
         prayer: 'Jesús, gracias por mi familia en la fe. Ayúdame a encontrar amigos verdaderos y a ser un buen amigo. Rompe mi aislamiento y conéctame con tu cuerpo. Amén.',
-        author: 'Equipo Conecta+'
+        author: 'Mario Alvarez'
     },
 ];

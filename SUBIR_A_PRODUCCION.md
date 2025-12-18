@@ -20,9 +20,12 @@ Como Vercel no permite usar SQLite (porque borra los archivos cada vez que se ac
 1.  Crea una cuenta en [supabase.com](https://supabase.com).
 2.  Crea un nuevo proyecto llamado "ConectaPlus".
 3.  Ve a **Project Settings** -> **Database**.
-4.  Copia la **Connection String** (en formato URI). Se verá algo como:
-    `postgresql://postgres:[TU_PASSWORD]@[HOST].supabase.co:5432/postgres`
-5.  **IMPORTANTE**: Cambia el archivo `prisma/schema.prisma` en tu código:
+4.  En la sección **Connection String**, busca la pestaña que dice **Connection Pooler**.
+5.  Asegúrate de que el **Mode** esté en `Session` o `Transaction`.
+6.  Copia la URL que usa el puerto **6543** (o el que te indique Supabase para el Pooler). Tendrá un formato como:
+    `postgresql://postgres.[PROYECTO]:[PASSWORD]@aws-0-[REGION].pooler.supabase.com:6543/postgres`
+7.  **IMPORTANTE**: Esta dirección es la que mejor funciona con Vercel porque evita problemas de conexión directa.
+8.  **IMPORTANTE**: Cambia el archivo `prisma/schema.prisma` en tu código:
     ```prisma
     datasource db {
       provider = "postgresql" // Cambia "sqlite" por "postgresql"

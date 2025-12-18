@@ -55,7 +55,7 @@ export default function RegisterPage() {
                 // Fallback if auto-login fails
                 window.location.href = '/auth/login?registered=true';
             } else {
-                window.location.href = '/dashboard';
+                window.location.href = '/onboarding';
             }
 
         } catch (err: any) {

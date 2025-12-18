@@ -126,13 +126,13 @@ export default function OnboardingSteps() {
                     />
                 </div>
 
-                <div className="card bg-secondary border-0 shadow-lg text-white rounded-4">
+                <div className="card bg-primary border-0 shadow-lg text-white rounded-4">
                     <div className="card-body p-4 p-md-5">
 
                         {/* STEP 1: Spiritual Status */}
                         {step === 1 && (
                             <div className="text-center animate-fade-in">
-                                <div className="mx-auto bg-warning bg-opacity-25 rounded-circle d-flex align-items-center justify-content-center mb-4" style={{ width: '64px', height: '64px' }}>
+                                <div className="mx-auto bg-white bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center mb-4" style={{ width: '64px', height: '64px' }}>
                                     <Shield className="text-warning" size={32} />
                                 </div>
                                 <h1 className="fw-bold mb-3 text-white">
@@ -151,19 +151,19 @@ export default function OnboardingSteps() {
                                                 key={option.id}
                                                 onClick={() => setSpiritualStatus(option.id)}
                                                 className={`btn btn-lg text-start d-flex align-items-center gap-3 p-3 transition-all ${isSelected
-                                                        ? `btn-${option.color} text-white shadow-lg`
-                                                        : 'btn-light text-dark'
+                                                    ? `btn-warning text-primary fw-bold shadow-lg`
+                                                    : 'btn-outline-light text-white border-0 bg-white bg-opacity-10'
                                                     }`}
                                             >
-                                                <Icon size={24} />
-                                                <span className="fw-bold">{option.title}</span>
+                                                <Icon size={24} className={isSelected ? "text-primary" : "text-warning"} />
+                                                <span>{option.title}</span>
                                             </button>
                                         );
                                     })}
                                 </div>
 
                                 {selectedOption && selectedOption.prayer && (
-                                    <div className="bg-dark bg-opacity-50 p-4 rounded-3 border border-warning mb-4 text-start animate-fade-in">
+                                    <div className="bg-dark bg-opacity-25 p-4 rounded-3 border border-warning mb-4 text-start animate-fade-in">
                                         <h6 className="fw-bold text-warning mb-2">Oración</h6>
                                         <p className="fst-italic text-light small m-0">
                                             "{selectedOption.prayer}"
@@ -174,7 +174,7 @@ export default function OnboardingSteps() {
                                 <button
                                     onClick={() => setStep(2)}
                                     disabled={!spiritualStatus}
-                                    className="btn btn-warning w-100 fw-bold py-3 rounded-pill d-flex align-items-center justify-content-center gap-2"
+                                    className="btn btn-warning w-100 fw-bold py-3 rounded-pill d-flex align-items-center justify-content-center gap-2 text-primary"
                                     style={{ opacity: !spiritualStatus ? 0.5 : 1 }}
                                 >
                                     Continuar <ArrowRight size={20} />
@@ -194,8 +194,8 @@ export default function OnboardingSteps() {
                                     {SIN_OPTIONS.map((sin) => (
                                         <div className="col-12" key={sin}>
                                             <label className={`d-flex align-items-center gap-3 p-3 rounded-3 border cursor-pointer transition-all ${sinsSelected.includes(sin)
-                                                    ? 'border-warning bg-warning bg-opacity-10 text-warning'
-                                                    : 'border-secondary bg-dark bg-opacity-25 text-white-50'
+                                                ? 'bg-warning text-primary fw-bold border-warning'
+                                                : 'border-secondary bg-dark bg-opacity-25 text-white-50'
                                                 }`}>
                                                 <input
                                                     type="checkbox"
@@ -203,14 +203,14 @@ export default function OnboardingSteps() {
                                                     checked={sinsSelected.includes(sin)}
                                                     onChange={() => handleToggle(sin, sinsSelected, setSinsSelected)}
                                                 />
-                                                <span className="fw-medium">{sin}</span>
+                                                <span>{sin}</span>
                                             </label>
                                         </div>
                                     ))}
                                     <div className="col-12">
                                         <button
                                             onClick={() => setStep(3)}
-                                            className="btn btn-outline-light w-100 rounded-pill fw-bold"
+                                            className="btn btn-link text-white-50 text-decoration-none w-100 rounded-pill fw-bold"
                                         >
                                             Prefiero omitir este paso
                                         </button>
@@ -219,7 +219,7 @@ export default function OnboardingSteps() {
 
                                 <button
                                     onClick={() => setStep(3)}
-                                    className="btn btn-warning w-100 fw-bold py-3 rounded-pill d-flex align-items-center justify-content-center gap-2"
+                                    className="btn btn-warning w-100 fw-bold py-3 rounded-pill d-flex align-items-center justify-content-center gap-2 text-primary"
                                 >
                                     Continuar <ArrowRight size={20} />
                                 </button>
@@ -238,8 +238,8 @@ export default function OnboardingSteps() {
                                     {PROBLEM_OPTIONS.map((problem) => (
                                         <div className="col-12" key={problem}>
                                             <label className={`d-flex align-items-center gap-3 p-3 rounded-3 border cursor-pointer transition-all ${problemsSelected.includes(problem)
-                                                    ? 'border-warning bg-warning bg-opacity-10 text-warning'
-                                                    : 'border-secondary bg-dark bg-opacity-25 text-white-50'
+                                                ? 'bg-warning text-primary fw-bold border-warning'
+                                                : 'border-secondary bg-dark bg-opacity-25 text-white-50'
                                                 }`}>
                                                 <input
                                                     type="checkbox"
@@ -247,14 +247,14 @@ export default function OnboardingSteps() {
                                                     checked={problemsSelected.includes(problem)}
                                                     onChange={() => handleToggle(problem, problemsSelected, setProblemsSelected)}
                                                 />
-                                                <span className="fw-medium">{problem}</span>
+                                                <span>{problem}</span>
                                             </label>
                                         </div>
                                     ))}
                                     <div className="col-12">
                                         <button
                                             onClick={() => setStep(4)}
-                                            className="btn btn-outline-light w-100 rounded-pill fw-bold"
+                                            className="btn btn-link text-white-50 text-decoration-none w-100 rounded-pill fw-bold"
                                         >
                                             Prefiero omitir este paso
                                         </button>
@@ -263,7 +263,7 @@ export default function OnboardingSteps() {
 
                                 <button
                                     onClick={() => setStep(4)}
-                                    className="btn btn-warning w-100 fw-bold py-3 rounded-pill d-flex align-items-center justify-content-center gap-2"
+                                    className="btn btn-warning w-100 fw-bold py-3 rounded-pill d-flex align-items-center justify-content-center gap-2 text-primary"
                                 >
                                     Continuar <ArrowRight size={20} />
                                 </button>
@@ -282,8 +282,8 @@ export default function OnboardingSteps() {
                                     {CONNECTION_OPTIONS.map((method) => (
                                         <div className="col-12" key={method}>
                                             <label className={`d-flex align-items-center gap-3 p-3 rounded-3 border cursor-pointer transition-all ${connectionSelected.includes(method)
-                                                    ? 'border-warning bg-warning bg-opacity-10 text-warning'
-                                                    : 'border-secondary bg-dark bg-opacity-25 text-white-50'
+                                                ? 'bg-warning text-primary fw-bold border-warning'
+                                                : 'border-secondary bg-dark bg-opacity-25 text-white-50'
                                                 }`}>
                                                 <input
                                                     type="checkbox"
@@ -291,14 +291,14 @@ export default function OnboardingSteps() {
                                                     checked={connectionSelected.includes(method)}
                                                     onChange={() => handleToggle(method, connectionSelected, setConnectionSelected)}
                                                 />
-                                                <span className="fw-medium">{method}</span>
+                                                <span>{method}</span>
                                             </label>
                                         </div>
                                     ))}
                                     <div className="col-12">
                                         <button
                                             onClick={() => setStep(5)}
-                                            className="btn btn-outline-light w-100 rounded-pill fw-bold"
+                                            className="btn btn-link text-white-50 text-decoration-none w-100 rounded-pill fw-bold"
                                         >
                                             Prefiero omitir este paso
                                         </button>
@@ -307,7 +307,7 @@ export default function OnboardingSteps() {
 
                                 <button
                                     onClick={() => setStep(5)}
-                                    className="btn btn-warning w-100 fw-bold py-3 rounded-pill d-flex align-items-center justify-content-center gap-2"
+                                    className="btn btn-warning w-100 fw-bold py-3 rounded-pill d-flex align-items-center justify-content-center gap-2 text-primary"
                                 >
                                     Continuar <ArrowRight size={20} />
                                 </button>
@@ -318,7 +318,7 @@ export default function OnboardingSteps() {
                         {step === 5 && (
                             <div className="animate-fade-in">
                                 <div className="text-center mb-4">
-                                    <div className="mx-auto bg-warning bg-opacity-25 rounded-circle d-flex align-items-center justify-content-center mb-4" style={{ width: '64px', height: '64px' }}>
+                                    <div className="mx-auto bg-white bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center mb-4" style={{ width: '64px', height: '64px' }}>
                                         <User size={32} className="text-warning" />
                                     </div>
                                     <h2 className="fw-bold mb-2">Sobre ti</h2>
@@ -332,7 +332,7 @@ export default function OnboardingSteps() {
                                         <button
                                             onClick={() => setGender('MALE')}
                                             className={`w-100 p-4 rounded-4 border transition-all d-flex flex-column align-items-center gap-3
-                                ${gender === 'MALE' ? 'bg-warning bg-opacity-25 border-warning text-warning' : 'bg-dark bg-opacity-50 border-secondary text-white-50'}
+                                ${gender === 'MALE' ? 'bg-warning border-warning text-primary fw-bold' : 'bg-dark bg-opacity-25 border-secondary text-white-50'}
                                 `}
                                         >
                                             <span className="fs-1">👨</span>
@@ -343,7 +343,7 @@ export default function OnboardingSteps() {
                                         <button
                                             onClick={() => setGender('FEMALE')}
                                             className={`w-100 p-4 rounded-4 border transition-all d-flex flex-column align-items-center gap-3
-                                ${gender === 'FEMALE' ? 'bg-warning bg-opacity-25 border-warning text-warning' : 'bg-dark bg-opacity-50 border-secondary text-white-50'}
+                                ${gender === 'FEMALE' ? 'bg-warning border-warning text-primary fw-bold' : 'bg-dark bg-opacity-25 border-secondary text-white-50'}
                                 `}
                                         >
                                             <span className="fs-1">👩</span>
@@ -355,7 +355,7 @@ export default function OnboardingSteps() {
                                 <button
                                     onClick={() => setStep(6)}
                                     disabled={!gender}
-                                    className="btn btn-warning w-100 fw-bold py-3 rounded-pill d-flex align-items-center justify-content-center gap-2 mt-4"
+                                    className="btn btn-warning w-100 fw-bold py-3 rounded-pill d-flex align-items-center justify-content-center gap-2 mt-4 text-primary"
                                     style={{ opacity: !gender ? 0.5 : 1 }}
                                 >
                                     Continuar <ArrowRight size={20} />

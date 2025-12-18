@@ -43,10 +43,33 @@ export default function ClientProfileActions() {
                     await signOut({ redirect: false });
                     window.location.href = "/auth/login";
                 }}
-                className="btn btn-danger text-white fw-bold d-flex align-items-center justify-content-start gap-3 p-3 rounded-3 shadow-sm"
+                className="btn btn-outline-danger fw-bold d-flex align-items-center justify-content-start gap-3 p-3 rounded-3"
             >
                 <LogOut size={20} />
                 <span>Cerrar Sesión</span>
+            </button>
+
+            <button
+                onClick={async () => {
+                    if (confirm("¿ESTÁS SEGURO? Esta acción es irreversible y borrará todos tus datos.")) {
+                        try {
+                            // Dynamic import to avoid earlier compilation issue
+                            const { deleteAccount } = await import("./actions");
+                            await deleteAccount();
+                            await signOut({ redirect: false });
+                            window.location.href = "/";
+                        } catch (e) {
+                            alert("Error al borrar cuenta");
+                        }
+                    }
+                }}
+                className="btn btn-danger text-white fw-bold d-flex align-items-center justify-content-start gap-3 p-3 rounded-3 shadow-sm"
+            >
+                <LogOut size={20} />
+                <div className="text-start">
+                    <span className="d-block">Eliminar Cuenta</span>
+                    <small className="fw-normal text-white-50">Acción irreversible</small>
+                </div>
             </button>
         </div>
     );
