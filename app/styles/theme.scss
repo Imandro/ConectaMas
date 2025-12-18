@@ -1,0 +1,64 @@
+// Apple-like Bootstrap Overrides (Updated with Logo Brand)
+
+// 1. Color System
+// Based on Logo: Dark Navy Blue + Warm Yellow
+$primary: #0B1B32; // Deep Navy Blue (Brand)
+$secondary: #fbbf24; // Warm Yellow gold
+$success: #10b981;
+$info: #3b82f6;
+$warning: $secondary;
+$danger: #ef4444;
+$light: #f3f4f6;
+$dark: #111827;
+
+// Override Bootstrap
+$theme-colors: (
+    "primary": $primary,
+    "secondary": $secondary,
+    "warning": $warning,
+    "dark": $dark,
+    "light": $light,
+    "danger": $danger,
+    "success": $success,
+    "info": $info
+);
+
+// Body & Typography
+$font-family-base: var(--font-fredoka), 'Inter', sans-serif; // Updated Font
+$headings-font-family: var(--font-fredoka), sans-serif;
+
+// Components
+$border-radius: 16px;
+$border-radius-lg: 24px;
+$border-radius-sm: 12px;
+
+// Cards
+$card-border-width: 0;
+$card-border-radius: 20px;
+$card-box-shadow: 0 8px 24px rgba(11, 27, 50, 0.08); // Shadow using navy tint
+
+// Buttons
+$btn-border-radius: 50px;
+$btn-padding-y: 0.8rem;
+$btn-padding-x: 2rem;
+$btn-font-weight: 700;
+$btn-focus-width: 0;
+
+// Inputs
+$input-border-radius: 12px;
+$input-focus-border-color: $secondary; // Focus Gold
+$input-focus-box-shadow: 0 0 0 3px rgba($secondary, 0.25);
+
+// Custom Nav Utilities
+.hover-bg-white-10:hover {
+    background-color: rgba(255, 255, 255, 0.1) !important;
+    color: #fff !important;
+}
+
+.hover-scale {
+    transition: transform 0.2s;
+
+    &:hover {
+        transform: scale(1.02);
+    }
+}

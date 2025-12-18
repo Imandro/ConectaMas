@@ -1,0 +1,46 @@
+// Animations
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translate3d(0, 20px, 0);
+    }
+
+    to {
+        opacity: 1;
+        transform: translate3d(0, 0, 0);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+.animate-fade-in-up {
+    animation: fadeInUp 0.5s ease-out forwards;
+}
+
+.animate-fade-in {
+    animation: fadeIn 0.8s ease-out forwards;
+}
+
+.hover-scale {
+    transition: transform 0.2s ease;
+
+    &:hover {
+        transform: scale(1.02);
+    }
+
+    &:active {
+        transform: scale(0.98);
+    }
+}
+
+.text-balance {
+    text-wrap: balance;
+}

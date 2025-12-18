@@ -1,0 +1,161 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Enums (Commented out for SQLite compatibility, handled as Strings in App)
+// enum UserRole { USER, ADMIN, MODERATOR }
+// enum SpiritualLevel { EXPLORING, NEW_BELIEVER, GROWING, DISCIPLE }
+// enum StruggleType { ... }
+// enum Mood { ... }
+
+// User Model
+model User {
+  id            String    @id @default(cuid())
+  email         String?   @unique
+  passwordHash  String?
+  name          String?
+  image         String?
+  role          String    @default("USER") // Was UserRole
+  
+  isAnonymous   Boolean   @default(false)
+  gender        String?   // MALE, FEMALE
+  spiritualStatus     String?   // "ACCEPT" | "RENEW" | "DEEPEN" | "UNSURE"
+  sinsToOvercome      String?   // JSON array stored as string
+  problemsFaced       String?   // JSON array stored as string
+  connectionMethods   String?   // JSON array stored as string
+  spiritualLevel String   @default("Explorador") // Was SpiritualLevel
+  
+  hasCompletedOnboarding Boolean @default(false)
+
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  // Relations
+  struggles     UserStruggle[]
+  checkins      DailyCheckin[]
+  journalEntries JournalEntry[]
+  streak        Streak?
+  completedDevotionals UserDevotional[]
+  watchedVideos UserVideo[]
+}
+
+model UserDevotional {
+  id           String   @id @default(cuid())
+  userId       String
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  devotionalId String
+  completedAt  DateTime @default(now())
+
+  @@unique([userId, devotionalId])
+}
+
+// Struggle Tracking
+model UserStruggle {
+  id          String       @id @default(cuid())
+  userId      String
+  user        User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title       String       // Was type/customName mixed. Let's use title for flexibility
+  
+  status      String       @default("ACTIVE") // ACTIVE, OVERCOME
+  
+  startDate   DateTime     @default(now())
+  lastRelapse DateTime?
+  
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+
+  @@unique([userId, title])
+}
+
+// Daily Check-in
+model DailyCheckin {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  mood        String   // Was Mood
+  note        String?  // Optional note
+  
+  gratitude   String?
+  prayer      String?
+  
+  createdAt   DateTime @default(now())
+  
+  @@index([userId, createdAt])
+}
+
+// Private Journal
+model JournalEntry {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  title       String?
+  content     String
+  tags        String // SQLite doesn't support String[], using comma separated string or relation. Simplifying to String for demo
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+// Gamification
+model Streak {
+  id          String   @id @default(cuid())
+  userId      String   @unique
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  currentStreak Int    @default(0)
+  longestStreak Int    @default(0)
+  lastActivity  DateTime @default(now())
+}
+
+// Content
+model Devotional {
+  id          String   @id @default(cuid())
+  title       String
+  scripture   String
+  content     String
+  prayer      String
+  application String
+  
+  tags        String // Was String[]
+  publishedAt DateTime @default(now())
+  
+  isPremium   Boolean  @default(false)
+}
+
+// Videos
+model Video {
+  id          String   @id @default(cuid())
+  title       String
+  description String?
+  videoUrl    String   // URL to video file or placeholder
+  thumbnailUrl String?  // Thumbnail image
+  duration    Int?     // Duration in seconds
+  category    String   // Category for filtering
+  tags        String?  // Additional tags
+  publishedAt DateTime @default(now())
+  
+  isPremium   Boolean  @default(false)
+  
+  // Relations
+  userVideos  UserVideo[]
+}
+
+model UserVideo {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  videoId   String
+  video     Video    @relation(fields: [videoId], references: [id], onDelete: Cascade)
+  
+  watchedAt DateTime @default(now())
+  liked     Boolean  @default(false)
+  
+  @@unique([userId, videoId])
+}
