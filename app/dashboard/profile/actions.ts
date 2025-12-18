@@ -1,6 +1,6 @@
 "use server";
 
-import { auth } from "@/app/api/auth/[...nextauth]/route";
+import { auth } from "@/app/lib/auth";
 import { prisma } from "@/app/lib/prisma";
 import { revalidatePath } from "next/cache";
 

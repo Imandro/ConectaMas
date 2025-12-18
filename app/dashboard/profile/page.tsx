@@ -1,4 +1,4 @@
-import { auth } from "@/app/api/auth/[...nextauth]/route";
+import { auth } from "@/app/lib/auth";
 import { prisma } from "@/app/lib/prisma";
 import { redirect } from "next/navigation";
 import { LogOut, RefreshCcw, User } from "lucide-react";

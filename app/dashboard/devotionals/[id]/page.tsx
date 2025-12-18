@@ -3,7 +3,7 @@ import { ArrowLeft, Share2, CheckCircle2 } from 'lucide-react';
 import { devotionalsData } from '@/app/lib/devotionalsData';
 import { notFound } from 'next/navigation';
 import { prisma } from '@/app/lib/prisma';
-import { auth } from '@/app/api/auth/[...nextauth]/route';
+import { auth } from '@/app/lib/auth';
 import DevotionalCompletionButton from '../DevotionalCompletionButton';
 
 export default async function DevotionalDetailPage({ params }: { params: { id: string } }) {
