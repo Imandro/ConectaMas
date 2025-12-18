@@ -1,4 +1,5 @@
 import { auth } from "@/app/lib/auth";
+export const dynamic = "force-dynamic";
 import { redirect } from "next/navigation";
 import OnboardingSteps from "./OnboardingSteps";
 import { prisma } from "@/app/lib/prisma";

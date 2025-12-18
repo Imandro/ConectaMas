@@ -1,4 +1,5 @@
 import { auth } from "@/app/lib/auth";
+export const dynamic = "force-dynamic";
 import { prisma } from "@/app/lib/prisma";
 import { redirect } from "next/navigation";
 import { LogOut, RefreshCcw, User } from "lucide-react";
