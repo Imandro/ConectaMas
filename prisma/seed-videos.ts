@@ -147,11 +147,15 @@ async function seedVideos() {
     console.log(`✅ Seeded ${videos.length} videos`)
 }
 
-seedVideos()
-    .catch((e) => {
-        console.error('Error seeding videos:', e)
-        process.exit(1)
-    })
-    .finally(async () => {
-        await prisma.$disconnect()
-    })
+export { seedVideos }
+
+if (require.main === module) {
+    seedVideos()
+        .catch((e) => {
+            console.error('Error seeding videos:', e)
+            process.exit(1)
+        })
+        .finally(async () => {
+            await prisma.$disconnect()
+        })
+}

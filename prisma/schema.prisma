@@ -159,3 +159,12 @@ model UserVideo {
   
   @@unique([userId, videoId])
 }
+
+model Song {
+  id          String   @id @default(cuid())
+  title       String
+  artist      String
+  url         String
+  category    String?
+  createdAt   DateTime @default(now())
+}

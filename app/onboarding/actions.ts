@@ -41,5 +41,32 @@ export async function submitOnboarding(data: {
         }
     });
 
+    // Create UserStruggle records for tracking
+    const user = await prisma.user.findUnique({ where: { email: session.user.email } });
+    if (user) {
+        const strugglesToCreate = [
+            ...sinsToOvercome.map(s => ({ title: s, type: 'SIN' })),
+            ...problemsFaced.map(p => ({ title: p, type: 'PROBLEM' }))
+        ];
+
+        for (const item of strugglesToCreate) {
+            // Check if already exists to avoid duplicates if re-running
+            const exists = await prisma.userStruggle.findFirst({
+                where: { userId: user.id, title: item.title }
+            });
+
+            if (!exists) {
+                await prisma.userStruggle.create({
+                    data: {
+                        userId: user.id,
+                        title: item.title,
+                        status: 'ACTIVE',
+                        startDate: new Date(),
+                    }
+                });
+            }
+        }
+    }
+
     return { success: true };
 }

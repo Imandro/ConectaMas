@@ -7,6 +7,10 @@ import { useState, useEffect } from 'react';
 export default function EmergencyPage() {
     const [showContent, setShowContent] = useState(false);
     const [showTruths, setShowTruths] = useState(false);
+    const [showMusic, setShowMusic] = useState(false); // Music player state
+    const [songs, setSongs] = useState<any[]>([]);
+    const [currentSong, setCurrentSong] = useState<any>(null);
+    const [audio, setAudio] = useState<HTMLAudioElement | null>(null);
     const [randomTruths, setRandomTruths] = useState<string[]>([]);
 
     const TRUTHS = [
@@ -32,8 +36,38 @@ export default function EmergencyPage() {
     useEffect(() => {
         // Simular efecto de respiración / calma al entrar
         const timer = setTimeout(() => setShowContent(true), 500);
+
+        // Fetch songs
+        fetch('/api/songs')
+            .then(res => res.json())
+            .then(data => setSongs(data))
+            .catch(err => console.error("Error fetching songs:", err));
+
         return () => clearTimeout(timer);
     }, []);
+
+    const playSong = (song: any) => {
+        if (audio) {
+            audio.pause();
+        }
+        const newAudio = new Audio(song.url);
+        newAudio.play();
+        setAudio(newAudio);
+        setCurrentSong(song);
+
+        newAudio.onended = () => {
+            setCurrentSong(null);
+            setAudio(null);
+        };
+    };
+
+    const stopMusic = () => {
+        if (audio) {
+            audio.pause();
+            setAudio(null);
+            setCurrentSong(null);
+        }
+    };
 
     return (
         <div className="min-vh-100 bg-primary text-white d-flex flex-column p-4 position-relative overflow-hidden">
@@ -67,7 +101,10 @@ export default function EmergencyPage() {
                             </div>
                         </button>
 
-                        <button className="btn bg-white btn-lg shadow-sm text-primary d-flex align-items-center justify-content-start gap-3 p-3">
+                        <button
+                            onClick={() => setShowMusic(!showMusic)}
+                            className="btn bg-white btn-lg shadow-sm text-primary d-flex align-items-center justify-content-start gap-3 p-3"
+                        >
                             <Music size={24} className="text-secondary" />
                             <div className="text-start">
                                 <span className="d-block fw-bold">Escuchar música</span>
@@ -101,6 +138,39 @@ export default function EmergencyPage() {
                             >
                                 Volver
                             </button>
+                        </div>
+                    </div>
+                )}
+
+                {/* Music Player Overlay or Section */}
+                {showMusic && (
+                    <div className="animate-in fade-in slide-in-from-bottom-4 mt-3">
+                        <div className="bg-white bg-opacity-10 backdrop-blur-sm rounded-4 p-4 border border-white-50">
+                            <div className="d-flex justify-content-between align-items-center mb-4">
+                                <h3 className="fw-bold m-0 d-flex align-items-center gap-2"><Music size={28} /> Música para el alma</h3>
+                                <button onClick={() => { setShowMusic(false); stopMusic(); }} className="btn btn-sm btn-outline-light rounded-circle"><X size={20} /></button>
+                            </div>
+
+                            {songs.length === 0 ? (
+                                <p>Cargando música...</p>
+                            ) : (
+                                <ul className="list-unstyled p-0 m-0 d-flex flex-column gap-3">
+                                    {songs.map((song) => (
+                                        <li key={song.id} className="d-flex justify-content-between align-items-center bg-white bg-opacity-10 p-3 rounded-3">
+                                            <div>
+                                                <span className="d-block fw-bold fs-5">{song.title}</span>
+                                                <small className="opacity-75">{song.artist}</small>
+                                            </div>
+                                            <button
+                                                onClick={() => currentSong?.id === song.id ? stopMusic() : playSong(song)}
+                                                className={`btn btn-light rounded-circle p-3 ${currentSong?.id === song.id ? 'text-primary' : 'text-secondary'}`}
+                                            >
+                                                {currentSong?.id === song.id ? <div className="spinner-grow spinner-grow-sm" role="status" /> : <Music size={20} />}
+                                            </button>
+                                        </li>
+                                    ))}
+                                </ul>
+                            )}
                         </div>
                     </div>
                 )}
