@@ -4,6 +4,7 @@ import './globals.scss'; // Importamos nuestros estilos globales (Bootstrap modi
 import PWAInstallPrompt from './components/PWAInstallPrompt';
 import NotificationPrompt from './components/NotificationPrompt';
 import { Analytics } from '@vercel/analytics/next';
+import { SpeedInsights } from '@vercel/speed-insights/next';
 
 const fredoka = Fredoka({
     subsets: ['latin'],
@@ -49,6 +50,7 @@ export default function RootLayout({
                     <PWAInstallPrompt />
                     <NotificationPrompt />
                     <Analytics />
+                    <SpeedInsights />
                 </ThemeProvider>
             </body>
         </html>
