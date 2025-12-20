@@ -11,12 +11,23 @@ const categories = ['Para ti', 'Ansiedad', 'Identidad', 'Integridad', 'Fe', 'Rel
 export default function DevotionalsPage() {
     const [selectedCategory, setSelectedCategory] = useState('Para ti');
     const [recommendedDevotionals, setRecommendedDevotionals] = useState<any[]>([]);
-    const { data: session } = useSession();
+
+    // Safe session hook - may be undefined during build
+    let session;
+    try {
+        const sessionData = useSession();
+        session = sessionData?.data;
+    } catch (e) {
+        // Session provider not available during build
+        session = null;
+    }
 
     // Calculate recommended devotionals based on user struggles
     useEffect(() => {
         if (session?.user) {
             const userEmail = (session.user as any).email;
+
+            if (!userEmail) return;
 
             // Fetch user profile to get struggles
             fetch(`/api/user/profile?email=${userEmail}`)

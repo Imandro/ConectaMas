@@ -3,6 +3,9 @@ import { prisma } from '@/app/lib/prisma';
 
 const prismaClient = prisma as any;
 
+// Force dynamic rendering for this route
+export const dynamic = 'force-dynamic';
+
 export async function GET(request: Request) {
     try {
         const { searchParams } = new URL(request.url);
