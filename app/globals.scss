@@ -34,15 +34,15 @@
     --bg-color: #0f172a; // Deep Navy
     --card-bg: #1e293b; // Slate Navy
     --light-bg: #334155; // Darker slate for "light" areas
-    --text-color: #f1f5f9; // Light Slate
-    --text-muted: #94a3b8;
+    --text-color: #ffffff; // Pure White for maximum readability
+    --text-muted: #cbd5e1; // Brighter muted text for dark mode
     --border-color: #334155;
     --nav-bg: #1e293b;
     --accent-color: #fbbf24;
 
     // Bootstrap overrides for dark mode compatibility
     --bs-body-bg: #0f172a;
-    --bs-body-color: #f1f5f9;
+    --bs-body-color: #ffffff;
 }
 
 // Custom Utilities (depend on mixins)
@@ -188,10 +188,16 @@ header h2 {
 }
 
 [data-theme='dark'] .text-primary {
+    color: #ffffff !important; // Main text should stay white
+}
+
+// Special class for highlights that MUST be gold in dark mode
+.text-highlight,
+[data-theme='dark'] h1,
+[data-theme='dark'] h4 {
     color: #fbbf24 !important;
 }
 
-// Ensure icons inside brand cards are not washed out
 .card.bg-primary .text-secondary,
 .card.bg-primary .text-warning {
     color: #fbbf24 !important;

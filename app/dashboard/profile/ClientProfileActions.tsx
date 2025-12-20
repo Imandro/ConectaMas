@@ -1,12 +1,14 @@
 "use client";
 
 import { signOut } from "next-auth/react";
-import { LogOut, RefreshCcw } from "lucide-react";
+import { LogOut, RefreshCcw, Sun, Moon } from "lucide-react";
 import { useState } from "react";
 import { resetAccount } from "./actions";
+import { useTheme } from "@/app/components/ThemeProvider";
 
 export default function ClientProfileActions({ userRole }: { userRole: string }) {
     const [isResetting, setIsResetting] = useState(false);
+    const { theme, toggleTheme } = useTheme();
 
     const handleReset = async () => {
         if (confirm("¿Estás seguro? Esto reiniciará tu progreso de onboarding (pero no borrará tu cuenta).")) {
@@ -26,6 +28,18 @@ export default function ClientProfileActions({ userRole }: { userRole: string })
 
     return (
         <div className="d-grid gap-3">
+            {/* Theme Toggle Button */}
+            <button
+                onClick={toggleTheme}
+                className="btn btn-light fw-bold d-flex align-items-center justify-content-start gap-3 p-3 rounded-3 border"
+            >
+                {theme === 'light' ? <Moon size={20} className="text-primary" /> : <Sun size={20} className="text-warning" />}
+                <div className="text-start">
+                    <span className="d-block">{theme === 'light' ? 'Activar Modo Noche' : 'Activar Modo Claro'}</span>
+                    <small className="text-muted fw-normal">Cambia la apariencia del app.</small>
+                </div>
+            </button>
+
             {/* Only show reset button for ADMIN users */}
             {userRole === 'ADMIN' && (
                 <button

@@ -105,6 +105,7 @@ async function main() {
     console.log('🗣️ Seeding Forum Categories...')
 
     const forumCategories = [
+        { name: 'Sugerencias y Soporte', description: '¡Ayúdanos a mejorar! Deja tus dudas o ideas aquí sobre la aplicación.', icon: '🚀' },
         { name: 'Ansiedad', description: 'Comparte y encuentra apoyo sobre ansiedad y preocupaciones', icon: '😰' },
         { name: 'Depresión', description: 'Un espacio seguro para hablar sobre depresión y tristeza', icon: '😔' },
         { name: 'Adicciones', description: 'Apoyo en la lucha contra adicciones de todo tipo', icon: '🚫' },
