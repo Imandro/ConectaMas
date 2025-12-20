@@ -8,16 +8,31 @@ export async function GET() {
         // Calculate current day of year (1-365)
         const now = new Date();
         const start = new Date(now.getFullYear(), 0, 0);
-        const diff = now.getTime() - start.getTime();
+        const diff = (now.getTime() - start.getTime()) + ((start.getTimezoneOffset() - now.getTimezoneOffset()) * 60 * 1000);
         const oneDay = 1000 * 60 * 60 * 24;
-        const dayOfYear = Math.floor(diff / oneDay);
+        let dayOfYear = Math.floor(diff / oneDay);
 
-        const prayer = await prismaClient.dailyPrayer.findUnique({
+        // Ensure dayOfYear is within 1-365 range
+        if (dayOfYear < 1) dayOfYear = 1;
+        if (dayOfYear > 365) dayOfYear = 365;
+
+        let prayer = await prismaClient.dailyPrayer.findFirst({
             where: { dayOfYear }
         });
 
+        // Fallback: If no prayer for today, get the very first one available
         if (!prayer) {
-            return NextResponse.json({ error: "Prayer not found for today" }, { status: 404 });
+            prayer = await prismaClient.dailyPrayer.findFirst();
+        }
+
+        if (!prayer) {
+            // Ultimate fallback: return a hardcoded default prayer if DB is empty
+            return NextResponse.json({
+                id: "default",
+                title: "Oración de Paz",
+                content: "Señor, en este día busco tu paz y tu guía. Que tu luz ilumine cada paso que doy y que mi corazón descanse en tu amor infinito. Amén.",
+                theme: "Paz"
+            });
         }
 
         return NextResponse.json(prayer);

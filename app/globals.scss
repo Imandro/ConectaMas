@@ -7,7 +7,6 @@
 @import "./styles/theme";
 @import "./styles/animations";
 
-
 // 3. Include remainder of required Bootstrap stylesheets
 @import "../node_modules/bootstrap/scss/variables";
 @import "../node_modules/bootstrap/scss/variables-dark";
@@ -19,6 +18,30 @@
 @import "../node_modules/bootstrap/scss/maps";
 @import "../node_modules/bootstrap/scss/mixins";
 @import "../node_modules/bootstrap/scss/root";
+
+:root {
+    --bg-color: #f8fafc;
+    --card-bg: #ffffff;
+    --text-color: #0B1B32;
+    --text-muted: #64748b;
+    --border-color: #e2e8f0;
+    --nav-bg: #0B1B32;
+    --accent-color: #fbbf24;
+}
+
+[data-theme='dark'] {
+    --bg-color: #0f172a; // Deep Navy
+    --card-bg: #1e293b; // Slate Navy
+    --text-color: #f1f5f9; // Light Slate
+    --text-muted: #94a3b8;
+    --border-color: #334155;
+    --nav-bg: #1e293b;
+    --accent-color: #fbbf24;
+
+    // Bootstrap overrides for dark mode
+    --bs-body-bg: #0f172a;
+    --bs-body-color: #f1f5f9;
+}
 
 // Custom Utilities (depend on mixins)
 @import "./styles/utilities";
@@ -65,6 +88,9 @@ body {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     font-family: var(--font-fredoka), 'Inter', sans-serif !important;
+    background-color: var(--bg-color) !important;
+    color: var(--text-color) !important;
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 // Force font on all elements to be sure
@@ -81,5 +107,60 @@ textarea {
 
 .main-content {
     min-height: 100vh;
-    background-color: $body-bg;
+    background-color: var(--bg-color);
+}
+
+// Global Dark Mode Overrides
+.card {
+    background-color: var(--card-bg) !important;
+    border-color: var(--border-color) !important;
+    color: var(--text-color) !important;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    color: var(--text-color);
+}
+
+.text-muted {
+    color: var(--text-muted) !important;
+}
+
+.table {
+    --bs-table-color: var(--text-color);
+    --bs-table-bg: var(--card-bg);
+    border-color: var(--border-color);
+}
+
+.list-group-item {
+    background-color: var(--card-bg) !important;
+    color: var(--text-color) !important;
+    border-color: var(--border-color) !important;
+}
+
+.form-control,
+.form-select {
+    background-color: var(--card-bg) !important;
+    color: var(--text-color) !important;
+    border-color: var(--border-color) !important;
+
+    &:focus {
+        background-color: var(--card-bg) !important;
+        color: var(--text-color) !important;
+    }
+}
+
+.modal-content {
+    background-color: var(--card-bg) !important;
+    color: var(--text-color) !important;
+}
+
+.offcanvas {
+    background-color: var(--card-bg) !important;
+    color: var(--text-color) !important;
 }

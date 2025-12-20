@@ -47,6 +47,8 @@ model User {
   forumPosts    ForumPost[]
   forumReplies  ForumReply[]
   isCounselor   Boolean   @default(false) // Flag for counselor accounts
+  
+  pushSubscriptions PushSubscription[]
 }
 
 model UserDevotional {
@@ -238,4 +240,18 @@ model ForumReply {
   updatedAt   DateTime   @updatedAt
   
   @@index([postId, createdAt])
+}
+
+model PushSubscription {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  endpoint  String   @unique
+  p256dh    String
+  auth      String
+  
+  createdAt DateTime @default(now())
+  
+  @@index([userId])
 }

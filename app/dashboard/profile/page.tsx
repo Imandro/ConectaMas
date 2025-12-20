@@ -4,6 +4,7 @@ import { prisma } from "@/app/lib/prisma";
 import { redirect } from "next/navigation";
 import { LogOut, RefreshCcw, User } from "lucide-react";
 import ClientProfileActions from "./ClientProfileActions";
+import PushNotificationManager from "@/app/components/PushNotificationManager";
 
 export default async function ProfilePage() {
     const session = await auth();
@@ -85,6 +86,8 @@ export default async function ProfilePage() {
                     </div>
                 </div>
             </div>
+
+            <PushNotificationManager />
 
             <div className="card border-0 shadow-sm bg-white rounded-4 p-4">
                 <h5 className="fw-bold mb-4">Ajustes de Cuenta</h5>

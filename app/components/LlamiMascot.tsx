@@ -1,8 +1,9 @@
 "use client";
 
-import { useState, useEffect } from 'react';
-import { Sparkles } from 'lucide-react';
-import { getLlamiMessage } from '@/app/lib/mascot-messages';
+import React, { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Sparkles } from "lucide-react";
+import { getLlamiMessage } from "@/app/lib/mascot-messages";
 
 interface LlamiMascotProps {
     streak: number;
@@ -10,251 +11,209 @@ interface LlamiMascotProps {
 }
 
 export default function LlamiMascot({ streak, lastMood }: LlamiMascotProps) {
-    const [message, setMessage] = useState<string>('');
+    const [message, setMessage] = useState<string>("");
     const [showMessage, setShowMessage] = useState(false);
-    const [isAnimating, setIsAnimating] = useState(false);
     const [clickCount, setClickCount] = useState(0);
 
-    // Determinar etapa de evolución
+    // Determine evolution stage
     const getStage = () => {
-        if (streak <= 7) return 'spark';
-        if (streak <= 30) return 'flame';
-        if (streak <= 90) return 'torch';
-        if (streak <= 365) return 'sun';
-        return 'star';
+        if (streak <= 7) return "spark";
+        if (streak <= 30) return "flame";
+        if (streak <= 90) return "torch";
+        if (streak <= 365) return "sun";
+        return "star";
     };
 
     const stage = getStage();
 
-    // Mensaje de bienvenida al cargar
     useEffect(() => {
         const welcomeMsg = getLlamiMessage(streak, lastMood, false);
         setMessage(welcomeMsg);
-        setShowMessage(true);
-
-        const timer = setTimeout(() => setShowMessage(false), 4000);
-        return () => clearTimeout(timer);
-    }, []);
+        // Delay initial greeting for better flow
+        const timer = setTimeout(() => setShowMessage(true), 1500);
+        const hideTimer = setTimeout(() => setShowMessage(false), 6500);
+        return () => {
+            clearTimeout(timer);
+            clearTimeout(hideTimer);
+        };
+    }, [streak, lastMood]);
 
     const handleClick = () => {
-        if (isAnimating) return;
-
-        setIsAnimating(true);
-        setClickCount(prev => prev + 1);
-
+        setClickCount((prev) => prev + 1);
         const clickMsg = getLlamiMessage(streak, lastMood, true);
         setMessage(clickMsg);
         setShowMessage(true);
-
-        setTimeout(() => setIsAnimating(false), 600);
-        setTimeout(() => setShowMessage(false), 3000);
+        // Hide message after 4 seconds
+        setTimeout(() => setShowMessage(false), 4000);
     };
 
-    // Colores según etapa
+    // Stage-based colors (Premium Midnight-compatible)
     const getColors = () => {
         switch (stage) {
-            case 'spark': return { primary: '#FFA500', secondary: '#FFD700' }; // Orange
-            case 'flame': return { primary: '#FF6B35', secondary: '#FFB627' }; // Red-Orange
-            case 'torch': return { primary: '#FF4500', secondary: '#FFD700' }; // Bright Orange
-            case 'sun': return { primary: '#FFD700', secondary: '#FFA500' }; // Gold
-            case 'star': return { primary: '#4169E1', secondary: '#87CEEB' }; // Blue
-            default: return { primary: '#FFA500', secondary: '#FFD700' };
+            case "spark": return { p: "#FFAB40", s: "#FFD180" }; // Warm Orange
+            case "flame": return { p: "#FF5252", s: "#FF8A80" }; // Soft Red
+            case "torch": return { p: "#FFD600", s: "#FFFF8D" }; // Bright Yellow
+            case "sun": return { p: "#FF9100", s: "#FFCE80" }; // Golden Sun
+            case "star": return { p: "#448AFF", s: "#82B1FF" }; // Divine Blue
+            default: return { p: "#FFAB40", s: "#FFD180" };
         }
     };
 
-    const colors = getColors();
-
-    // Tamaño según etapa
-    const getSize = () => {
-        switch (stage) {
-            case 'spark': return 60;
-            case 'flame': return 75;
-            case 'torch': return 90;
-            case 'sun': return 105;
-            case 'star': return 120;
-            default: return 60;
-        }
-    };
-
-    const size = getSize();
+    const c = getColors();
 
     return (
-        <div className="position-relative d-inline-block">
-            {/* Mensaje en burbuja */}
-            {showMessage && (
-                <div
-                    className="position-absolute bottom-100 start-50 translate-middle-x mb-2 animate-fade-in"
-                    style={{ width: '200px', zIndex: 10 }}
-                >
-                    <div className="bg-white rounded-3 shadow-lg p-3 position-relative">
-                        <p className="text-dark small mb-0 text-center fw-medium">{message}</p>
-                        {/* Flecha de la burbuja */}
-                        <div
-                            className="position-absolute top-100 start-50 translate-middle-x"
-                            style={{
-                                width: 0,
-                                height: 0,
-                                borderLeft: '8px solid transparent',
-                                borderRight: '8px solid transparent',
-                                borderTop: '8px solid white',
-                                marginTop: '-1px'
-                            }}
-                        />
-                    </div>
-                </div>
-            )}
+        <div className="position-relative d-inline-block text-center" style={{ width: "100px" }}>
+            {/* Premium Speech Bubble */}
+            <AnimatePresence>
+                {showMessage && (
+                    <motion.div
+                        initial={{ opacity: 0, scale: 0.8, y: 10, x: "-50%" }}
+                        animate={{ opacity: 1, scale: 1, y: 0, x: "-50%" }}
+                        exit={{ opacity: 0, scale: 0.8, y: 10, x: "-50%" }}
+                        className="position-absolute bottom-100 start-50 mb-3"
+                        style={{ width: "180px", zIndex: 100 }}
+                    >
+                        <div className="bg-white rounded-4 shadow-lg p-3 border border-light position-relative">
+                            <p className="text-dark small mb-0 fw-bold text-center lh-sm" style={{ fontSize: '0.85rem' }}>
+                                {message}
+                            </p>
+                            {/* Bubble Arrow */}
+                            <div className="position-absolute top-100 start-50 translate-middle-x"
+                                style={{ width: 0, height: 0, borderLeft: '10px solid transparent', borderRight: '10px solid transparent', borderTop: '10px solid #fff', marginTop: '-1px' }}>
+                            </div>
+                        </div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
 
-            {/* Mascota Llami */}
-            <div
+            {/* The Mascot - Llami */}
+            <motion.div
                 onClick={handleClick}
-                className={`position-relative cursor-pointer ${isAnimating ? 'animate-bounce' : 'animate-pulse-slow'}`}
-                style={{
-                    width: `${size}px`,
-                    height: `${size}px`,
-                    cursor: 'pointer',
-                    transition: 'transform 0.3s ease'
+                whileHover={{ scale: 1.1, rotate: 2 }}
+                whileTap={{ scale: 0.9, rotate: -2 }}
+                animate={{
+                    y: [0, -8, 0],
                 }}
+                transition={{
+                    y: {
+                        duration: 3,
+                        repeat: Infinity,
+                        ease: "easeInOut",
+                    },
+                }}
+                className="cursor-pointer mx-auto"
+                style={{ width: "80px", height: "80px", position: "relative" }}
             >
-                {/* SVG de Llami */}
-                <svg
-                    width={size}
-                    height={size}
-                    viewBox="0 0 100 100"
-                    className="drop-shadow-lg"
-                >
-                    {/* Glow effect */}
+                <svg viewBox="0 0 100 100" className="w-100 h-100 drop-shadow-lg">
                     <defs>
-                        <radialGradient id={`glow-${stage}`} cx="50%" cy="50%" r="50%">
-                            <stop offset="0%" stopColor={colors.secondary} stopOpacity="0.8" />
-                            <stop offset="100%" stopColor={colors.primary} stopOpacity="0" />
-                        </radialGradient>
-                        <filter id="glow">
-                            <feGaussianBlur stdDeviation="3" result="coloredBlur" />
-                            <feMerge>
-                                <feMergeNode in="coloredBlur" />
-                                <feMergeNode in="SourceGraphic" />
-                            </feMerge>
+                        <filter id="beauty-glow" x="-20%" y="-20%" width="140%" height="140%">
+                            <feGaussianBlur stdDeviation="3" result="blur" />
+                            <feComposite in="SourceGraphic" in2="blur" operator="over" />
                         </filter>
+                        <radialGradient id={`grad-${stage}`} cx="50%" cy="50%" r="50%">
+                            <stop offset="0%" stopColor={c.s} />
+                            <stop offset="100%" stopColor={c.p} />
+                        </radialGradient>
                     </defs>
 
-                    {/* Glow circle */}
-                    <circle
-                        cx="50"
-                        cy="50"
-                        r="45"
-                        fill={`url(#glow-${stage})`}
-                        className="animate-pulse-slow"
+                    {/* Aura/Glow Circle */}
+                    <motion.circle
+                        cx="50" cy="55" r="40"
+                        fill={`url(#grad-${stage})`}
+                        opacity="0.2"
+                        animate={{ scale: [1, 1.15, 1], opacity: [0.15, 0.3, 0.15] }}
+                        transition={{ duration: 4, repeat: Infinity }}
                     />
 
-                    {/* Cuerpo principal (forma de llama) */}
-                    <path
-                        d="M 50 20 Q 65 35, 60 55 Q 55 70, 50 75 Q 45 70, 40 55 Q 35 35, 50 20 Z"
-                        fill={colors.primary}
-                        filter="url(#glow)"
+                    {/* Body Path (More rounded/cute llama shape) */}
+                    <motion.path
+                        d="M 50 15 Q 70 30, 65 60 Q 60 85, 50 85 Q 40 85, 35 60 Q 30 30, 50 15 Z"
+                        fill={`url(#grad-${stage})`}
+                        filter="url(#beauty-glow)"
                     />
 
-                    {/* Llama interna */}
-                    <path
-                        d="M 50 30 Q 58 40, 55 55 Q 52 65, 50 68 Q 48 65, 45 55 Q 42 40, 50 30 Z"
-                        fill={colors.secondary}
-                        opacity="0.9"
+                    {/* Dynamic Inner Light */}
+                    <motion.path
+                        d="M 50 25 Q 60 40, 55 60 Q 52 75, 50 75 Q 48 75, 45 60 Q 40 40, 50 25 Z"
+                        fill="white"
+                        opacity="0.3"
                     />
 
-                    {/* Ojos */}
-                    <circle cx="43" cy="45" r="3" fill="#2C3E50" />
-                    <circle cx="57" cy="45" r="3" fill="#2C3E50" />
+                    {/* Eyes with Blinking Logic */}
+                    <g>
+                        <motion.circle
+                            cx="42" cy="50" r="3.5"
+                            fill="#2c3e50"
+                            animate={{ scaleY: [1, 1, 0.1, 1, 1] }}
+                            transition={{ duration: 4, repeat: Infinity, times: [0, 0.8, 0.85, 0.9, 1] }}
+                        />
+                        <motion.circle
+                            cx="58" cy="50" r="3.5"
+                            fill="#2c3e50"
+                            animate={{ scaleY: [1, 1, 0.1, 1, 1] }}
+                            transition={{ duration: 4, repeat: Infinity, times: [0, 0.8, 0.85, 0.9, 1] }}
+                        />
+                        {/* Eye Shine */}
+                        <circle cx="43" cy="48.5" r="1.2" fill="white" />
+                        <circle cx="59" cy="48.5" r="1.2" fill="white" />
+                    </g>
 
-                    {/* Brillo en los ojos */}
-                    <circle cx="44" cy="44" r="1" fill="white" />
-                    <circle cx="58" cy="44" r="1" fill="white" />
+                    {/* Cheeks */}
+                    <circle cx="35" cy="58" r="4" fill="#ff80ab" opacity="0.3" />
+                    <circle cx="65" cy="58" r="4" fill="#ff80ab" opacity="0.3" />
 
-                    {/* Sonrisa */}
+                    {/* Smile */}
                     <path
-                        d="M 42 52 Q 50 58, 58 52"
-                        stroke="#2C3E50"
-                        strokeWidth="2"
+                        d="M 44 63 Q 50 68, 56 63"
+                        stroke="#2c3e50"
+                        strokeWidth="3"
                         fill="none"
                         strokeLinecap="round"
                     />
 
-                    {/* Chispas decorativas (más para etapas avanzadas) */}
-                    {stage !== 'spark' && (
-                        <>
-                            <circle cx="30" cy="30" r="2" fill={colors.secondary} opacity="0.7">
-                                <animate attributeName="opacity" values="0.7;0.3;0.7" dur="2s" repeatCount="indefinite" />
-                            </circle>
-                            <circle cx="70" cy="35" r="2" fill={colors.secondary} opacity="0.7">
-                                <animate attributeName="opacity" values="0.3;0.7;0.3" dur="2s" repeatCount="indefinite" />
-                            </circle>
-                        </>
+                    {/* Stage Special Effects */}
+                    {stage === 'star' && (
+                        <motion.path
+                            d="M 50 5 L 53 13 L 61 13 L 55 18 L 57 26 L 50 21 L 43 26 L 45 18 L 39 13 L 47 13 Z"
+                            fill="#FFD700"
+                            animate={{ rotate: 360, scale: [1, 1.2, 1] }}
+                            transition={{ rotate: { duration: 10, repeat: Infinity, ease: "linear" }, scale: { duration: 2, repeat: Infinity } }}
+                            style={{ originX: "50px", originY: "15px" }}
+                        />
                     )}
 
-                    {/* Estrella para etapa máxima */}
-                    {stage === 'star' && (
-                        <path
-                            d="M 50 10 L 52 18 L 60 18 L 54 23 L 56 31 L 50 26 L 44 31 L 46 23 L 40 18 L 48 18 Z"
-                            fill="#FFD700"
-                            opacity="0.8"
-                        >
-                            <animateTransform
-                                attributeName="transform"
-                                type="rotate"
-                                from="0 50 50"
-                                to="360 50 50"
-                                dur="10s"
-                                repeatCount="indefinite"
-                            />
-                        </path>
-                    )}
+                    {/* Floating Sparks */}
+                    <motion.circle
+                        cx="25" cy="40" r="2" fill={c.s}
+                        animate={{ y: [-5, 5, -5], opacity: [0.5, 1, 0.5] }}
+                        transition={{ duration: 2, repeat: Infinity }}
+                    />
+                    <motion.circle
+                        cx="75" cy="45" r="2" fill={c.s}
+                        animate={{ y: [5, -5, 5], opacity: [0.5, 1, 0.5] }}
+                        transition={{ duration: 2.5, repeat: Infinity }}
+                    />
                 </svg>
 
-                {/* Badge de racha */}
-                <div
-                    className="position-absolute bottom-0 end-0 bg-primary text-white rounded-circle d-flex align-items-center justify-content-center fw-bold shadow"
-                    style={{ width: '28px', height: '28px', fontSize: '11px' }}
+                {/* Streak Badge */}
+                <motion.div
+                    className="position-absolute bottom-0 end-0 bg-primary text-white rounded-circle d-flex align-items-center justify-content-center fw-bold shadow-sm"
+                    style={{ width: "26px", height: "26px", fontSize: "10px", border: "2px solid white" }}
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    transition={{ type: "spring", stiffness: 260, damping: 20, delay: 0.5 }}
                 >
                     {streak}
-                </div>
-            </div>
+                </motion.div>
+            </motion.div>
 
-            {/* Nombre */}
-            <div className="text-center mt-2">
-                <small className="fw-bold text-primary d-flex align-items-center justify-content-center gap-1">
-                    <Sparkles size={12} />
+            {/* Mascot Name Overlay */}
+            <div className="mt-2">
+                <span className="badge bg-white shadow-sm rounded-pill text-primary fw-bold d-inline-flex align-items-center gap-1 px-3 py-1" style={{ fontSize: '0.7rem' }}>
+                    <Sparkles size={10} className="text-secondary" />
                     Llami
-                </small>
+                </span>
             </div>
-
-            {/* CSS Animations */}
-            <style jsx>{`
-        @keyframes pulse-slow {
-          0%, 100% { transform: scale(1); }
-          50% { transform: scale(1.05); }
-        }
-        .animate-pulse-slow {
-          animation: pulse-slow 2s ease-in-out infinite;
-        }
-        @keyframes bounce {
-          0%, 100% { transform: translateY(0); }
-          50% { transform: translateY(-10px); }
-        }
-        .animate-bounce {
-          animation: bounce 0.6s ease-in-out;
-        }
-        .animate-fade-in {
-          animation: fadeIn 0.3s ease-in;
-        }
-        @keyframes fadeIn {
-          from { opacity: 0; transform: translateY(10px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-        .cursor-pointer {
-          cursor: pointer;
-        }
-        .drop-shadow-lg {
-          filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1));
-        }
-      `}</style>
         </div>
     );
 }

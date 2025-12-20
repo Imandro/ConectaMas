@@ -22,7 +22,8 @@
         "next-auth": "^5.0.0-beta.4",
         "react": "^18.2.0",
         "react-dom": "^18.2.0",
-        "sass": "^1.69.7"
+        "sass": "^1.69.7",
+        "web-push": "^3.6.7"
     },
     "devDependencies": {
         "@types/bcryptjs": "^2.4.6",

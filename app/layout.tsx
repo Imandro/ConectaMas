@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from 'next';
 import { Fredoka } from 'next/font/google';
 import './globals.scss'; // Importamos nuestros estilos globales (Bootstrap modificado)
 import PWAInstallPrompt from './components/PWAInstallPrompt';
+import NotificationPrompt from './components/NotificationPrompt';
 import { Analytics } from '@vercel/analytics/next';
 
 const fredoka = Fredoka({
@@ -31,6 +32,8 @@ export const viewport: Viewport = {
     themeColor: '#ffffff',
 };
 
+import { ThemeProvider } from './components/ThemeProvider';
+
 export default function RootLayout({
     children,
 }: {
@@ -39,11 +42,14 @@ export default function RootLayout({
     return (
         <html lang="es">
             <body className={`${fredoka.variable} font-fredoka`}>
-                <main className="main-content">
-                    {children}
-                </main>
-                <PWAInstallPrompt />
-                <Analytics />
+                <ThemeProvider>
+                    <main className="main-content">
+                        {children}
+                    </main>
+                    <PWAInstallPrompt />
+                    <NotificationPrompt />
+                    <Analytics />
+                </ThemeProvider>
             </body>
         </html>
     );
