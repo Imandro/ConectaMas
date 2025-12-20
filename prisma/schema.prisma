@@ -42,6 +42,11 @@ model User {
   streak        Streak?
   completedDevotionals UserDevotional[]
   watchedVideos UserVideo[]
+  
+  // Forum relations
+  forumPosts    ForumPost[]
+  forumReplies  ForumReply[]
+  isCounselor   Boolean   @default(false) // Flag for counselor accounts
 }
 
 model UserDevotional {
@@ -187,4 +192,50 @@ model BibleVerse {
   book        String
   chapter     Int
   verseNum    Int
+}
+
+// Community Forums
+model ForumCategory {
+  id          String      @id @default(cuid())
+  name        String      @unique // "Ansiedad", "Lujuria", "Adicciones", etc.
+  description String?
+  icon        String?     // Emoji or icon name
+  createdAt   DateTime    @default(now())
+  
+  posts       ForumPost[]
+}
+
+model ForumPost {
+  id          String        @id @default(cuid())
+  userId      String
+  user        User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  categoryId  String
+  category    ForumCategory @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  
+  title       String
+  content     String        // Post content
+  isAnonymous Boolean       @default(false) // If true, hide user identity
+  
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  
+  replies     ForumReply[]
+  
+  @@index([categoryId, createdAt])
+}
+
+model ForumReply {
+  id          String     @id @default(cuid())
+  postId      String
+  post        ForumPost  @relation(fields: [postId], references: [id], onDelete: Cascade)
+  userId      String
+  user        User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  content     String
+  isAnonymous Boolean    @default(false)
+  
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  
+  @@index([postId, createdAt])
 }

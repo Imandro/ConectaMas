@@ -1,7 +1,7 @@
 "use client";
 
 import Link from 'next/link';
-import { Sun, AlertTriangle, Loader2, Book } from 'lucide-react';
+import { Sun, AlertTriangle, Loader2 } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import StruggleTracker from './components/StruggleTracker';
 import DailyVerse from './components/DailyVerse';
@@ -142,19 +142,6 @@ export default function DashboardHome() {
             {/* Daily Prayer */}
             <section className="mb-4">
                 <DailyPrayerCard />
-            </section>
-
-            {/* Bible Link */}
-            <section className="mb-4">
-                <Link href="/dashboard/bible" className="card border-0 shadow-sm bg-gradient-primary text-white text-decoration-none hover-scale">
-                    <div className="card-body p-4 d-flex align-items-center gap-3">
-                        <Book size={32} />
-                        <div>
-                            <h5 className="fw-bold mb-0">Leer la Biblia</h5>
-                            <small className="opacity-75">Explora la Palabra de Dios</small>
-                        </div>
-                    </div>
-                </Link>
             </section>
 
             {/* Check-in Diario */}

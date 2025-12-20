@@ -23,6 +23,7 @@ export default async function ProfilePage() {
                 gender: true,
                 spiritualLevel: true,
                 hasCompletedOnboarding: true,
+                role: true, // Add role for admin check
             }
         });
     } catch (e) {
@@ -88,7 +89,7 @@ export default async function ProfilePage() {
             <div className="card border-0 shadow-sm bg-white rounded-4 p-4">
                 <h5 className="fw-bold mb-4">Ajustes de Cuenta</h5>
 
-                <ClientProfileActions />
+                <ClientProfileActions userRole={(user as any).role || 'USER'} />
             </div>
         </div>
     );

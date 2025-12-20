@@ -5,7 +5,7 @@ import { LogOut, RefreshCcw } from "lucide-react";
 import { useState } from "react";
 import { resetAccount } from "./actions";
 
-export default function ClientProfileActions() {
+export default function ClientProfileActions({ userRole }: { userRole: string }) {
     const [isResetting, setIsResetting] = useState(false);
 
     const handleReset = async () => {
@@ -26,17 +26,20 @@ export default function ClientProfileActions() {
 
     return (
         <div className="d-grid gap-3">
-            <button
-                onClick={handleReset}
-                disabled={isResetting}
-                className="btn btn-light text-danger fw-bold d-flex align-items-center justify-content-start gap-3 p-3 rounded-3"
-            >
-                <RefreshCcw size={20} />
-                <div className="text-start">
-                    <span className="d-block">Reiniciar Datos de Onboarding</span>
-                    <small className="text-muted fw-normal">Vuelve a empezar el proceso de bienvenida.</small>
-                </div>
-            </button>
+            {/* Only show reset button for ADMIN users */}
+            {userRole === 'ADMIN' && (
+                <button
+                    onClick={handleReset}
+                    disabled={isResetting}
+                    className="btn btn-light text-danger fw-bold d-flex align-items-center justify-content-start gap-3 p-3 rounded-3"
+                >
+                    <RefreshCcw size={20} />
+                    <div className="text-start">
+                        <span className="d-block">Reiniciar Datos de Onboarding</span>
+                        <small className="text-muted fw-normal">Vuelve a empezar el proceso de bienvenida.</small>
+                    </div>
+                </button>
+            )}
 
             <button
                 onClick={async () => {
