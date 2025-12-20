@@ -1,66 +1,109 @@
 import { NextRequest, NextResponse } from 'next/server';
+import fs from 'fs';
+import path from 'path';
 
 // Force dynamic rendering for this route
 export const dynamic = 'force-dynamic';
 
-// Book name mapping from Spanish to ABíbliaDigital abbreviations
-const BOOK_MAPPING: { [key: string]: string } = {
-    "Génesis": "gn", "Éxodo": "ex", "Levítico": "lv", "Números": "nm", "Deuteronomio": "dt",
-    "Josué": "js", "Jueces": "jz", "Rut": "rt", "1 Samuel": "1sm", "2 Samuel": "2sm",
-    "1 Reyes": "1rs", "2 Reyes": "2rs", "1 Crónicas": "1cr", "2 Crónicas": "2cr",
-    "Esdras": "ed", "Nehemías": "ne", "Ester": "et", "Job": "jb", "Salmos": "sl",
-    "Proverbios": "pv", "Eclesiastés": "ec", "Cantares": "ct", "Isaías": "is",
-    "Jeremías": "jr", "Lamentaciones": "lm", "Ezequiel": "ez", "Daniel": "dn",
-    "Oseas": "os", "Joel": "jl", "Amós": "am", "Abdías": "ob", "Jonás": "jn",
-    "Miqueas": "mq", "Nahúm": "na", "Habacuc": "hc", "Sofonías": "sf", "Hageo": "ag",
-    "Zacarías": "zc", "Malaquías": "ml", "Mateo": "mt", "Marcos": "mc", "Lucas": "lc",
-    "Juan": "jo", "Hechos": "at", "Romanos": "rm", "1 Corintios": "1co", "2 Corintios": "2co",
-    "Gálatas": "gl", "Efesios": "ef", "Filipenses": "fl", "Colosenses": "cl",
-    "1 Tesalonicenses": "1ts", "2 Tesalonicenses": "2ts", "1 Timoteo": "1tm",
-    "2 Timoteo": "2tm", "Tito": "tt", "Filemón": "fm", "Hebreos": "hb", "Santiago": "tg",
-    "1 Pedro": "1pe", "2 Pedro": "2pe", "1 Juan": "1jo", "2 Juan": "2jo", "3 Juan": "3jo",
-    "Judas": "jd", "Apocalipsis": "ap"
+// Book name mapping from Spanish to indices in es_rvr.json
+const BOOK_MAPPING: { [key: string]: number } = {
+    "Génesis": 0, "Éxodo": 1, "Levítico": 2, "Números": 3, "Deuteronomio": 4,
+    "Josué": 5, "Jueces": 6, "Rut": 7, "1 Samuel": 8, "2 Samuel": 9,
+    "1 Reyes": 10, "2 Reyes": 11, "1 Crónicas": 12, "2 Crónicas": 13,
+    "Esdras": 14, "Nehemías": 15, "Ester": 16, "Job": 17, "Salmos": 18,
+    "Proverbios": 19, "Eclesiastés": 20, "Cantares": 21, "Isaías": 22,
+    "Jeremías": 23, "Lamentaciones": 24, "Ezequiel": 25, "Daniel": 26,
+    "Oseas": 27, "Joel": 28, "Amós": 29, "Abdías": 30, "Jonás": 31,
+    "Miqueas": 32, "Nahúm": 33, "Habacuc": 34, "Sofonías": 35, "Hageo": 36,
+    "Zacarías": 37, "Malaquías": 38, "Mateo": 39, "Marcos": 40, "Lucas": 41,
+    "Juan": 42, "Hechos": 43, "Romanos": 44, "1 Corintios": 45, "2 Corintios": 46,
+    "Gálatas": 47, "Efesios": 48, "Filipenses": 49, "Colosenses": 50,
+    "1 Tesalonicenses": 51, "2 Tesalonicenses": 52, "1 Timoteo": 53,
+    "2 Timoteo": 54, "Tito": 55, "Filemón": 56, "Hebreos": 57, "Santiago": 58,
+    "1 Pedro": 59, "2 Pedro": 60, "1 Juan": 61, "2 Juan": 62, "3 Juan": 63,
+    "Judas": 64, "Apocalipsis": 65
 };
 
-// Using ABíbliaDigital API which provides reliable Reina Valera text
 export async function GET(request: NextRequest) {
     try {
         const { searchParams } = new URL(request.url);
-        const book = searchParams.get('book'); // e.g., "Juan"
-        const chapter = searchParams.get('chapter'); // e.g., "3"
+        const book = searchParams.get('book');
+        const chapter = searchParams.get('chapter');
 
         if (!book || !chapter) {
             return NextResponse.json({ error: "Missing book or chapter" }, { status: 400 });
         }
 
-        // Get book abbreviation
-        const bookAbbr = BOOK_MAPPING[book];
-        if (!bookAbbr) {
-            return NextResponse.json({ error: "Book not found" }, { status: 404 });
+        const bookIndex = BOOK_MAPPING[book];
+
+        if (bookIndex === undefined) {
+            return NextResponse.json({
+                error: "Book not found",
+                reference: `${book} ${chapter}`,
+                verses: [],
+                text: `El libro "${book}" no está en nuestra base de datos local.`
+            }, { status: 200 });
         }
 
-        // Fetch from ABíbliaDigital API (Reina Valera 1960)
-        const response = await fetch(`https://www.abibliadigital.com.br/api/verses/rvr/${bookAbbr}/${chapter}`);
+        const filePath = path.join(process.cwd(), 'public', 'bible', 'es_rvr.json');
 
-        if (!response.ok) {
-            return NextResponse.json({ error: "Failed to fetch Bible chapter" }, { status: 500 });
+        if (!fs.existsSync(filePath)) {
+            return NextResponse.json({
+                error: "Database missing",
+                reference: `${book} ${chapter}`,
+                verses: [],
+                text: "Lo sentimos, el archivo de la Biblia en español no se encuentra disponible localmente."
+            }, { status: 200 });
         }
 
-        const data = await response.json();
+        let fileContent = fs.readFileSync(filePath, 'utf8');
 
-        // Transform to match expected format
-        const transformed = {
+        // Strip BOM if present
+        if (fileContent.charCodeAt(0) === 0xFEFF) {
+            fileContent = fileContent.slice(1);
+        }
+
+        const bibleData = JSON.parse(fileContent);
+        const bookData = bibleData[bookIndex];
+
+        if (!bookData) {
+            return NextResponse.json({
+                error: "Data missing",
+                reference: `${book} ${chapter}`,
+                verses: [],
+                text: `No se encontró el texto de ${book} en nuestra base de datos.`
+            }, { status: 200 });
+        }
+
+        const chapterIdx = parseInt(chapter) - 1;
+        const chapterData = bookData.chapters[chapterIdx];
+
+        if (!chapterData) {
+            return NextResponse.json({
+                error: "Chapter not found",
+                reference: `${book} ${chapter}`,
+                verses: [],
+                text: `El capítulo ${chapter} de ${book} no está disponible.`
+            }, { status: 200 });
+        }
+
+        const verses = chapterData.map((v: string, index: number) => ({
+            verse: index + 1,
+            text: v
+        }));
+
+        return NextResponse.json({
             reference: `${book} ${chapter}`,
-            verses: data.verses.map((v: any) => ({
-                verse: v.number,
-                text: v.text
-            })),
-            text: data.verses.map((v: any) => `${v.number} ${v.text}`).join(' ')
-        };
-
-        return NextResponse.json(transformed);
-    } catch (error) {
-        console.error("Error fetching Bible:", error);
-        return NextResponse.json({ error: "Error fetching Bible" }, { status: 500 });
+            verses: verses,
+            text: verses.map((v: any) => `${v.verse} ${v.text}`).join(' ')
+        });
+    } catch (error: any) {
+        console.error("[BIBLE] FATAL ERROR:", error.message);
+        return NextResponse.json({
+            error: "Error interno",
+            reference: "",
+            verses: [],
+            text: `Error al procesar la Biblia: ${error.message}`
+        }, { status: 200 });
     }
 }
