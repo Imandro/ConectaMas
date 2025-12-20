@@ -22,6 +22,7 @@
 :root {
     --bg-color: #f8fafc;
     --card-bg: #ffffff;
+    --light-bg: #f1f5f9;
     --text-color: #0B1B32;
     --text-muted: #64748b;
     --border-color: #e2e8f0;
@@ -32,13 +33,14 @@
 [data-theme='dark'] {
     --bg-color: #0f172a; // Deep Navy
     --card-bg: #1e293b; // Slate Navy
+    --light-bg: #334155; // Darker slate for "light" areas
     --text-color: #f1f5f9; // Light Slate
     --text-muted: #94a3b8;
     --border-color: #334155;
     --nav-bg: #1e293b;
     --accent-color: #fbbf24;
 
-    // Bootstrap overrides for dark mode
+    // Bootstrap overrides for dark mode compatibility
     --bs-body-bg: #0f172a;
     --bs-body-color: #f1f5f9;
 }
@@ -88,8 +90,8 @@ body {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     font-family: var(--font-fredoka), 'Inter', sans-serif !important;
-    background-color: var(--bg-color) !important;
-    color: var(--text-color) !important;
+    background-color: var(--bg-color);
+    color: var(--text-color);
     transition: background-color 0.3s ease, color 0.3s ease;
 }
 
@@ -110,14 +112,15 @@ textarea {
     background-color: var(--bg-color);
 }
 
-// Global Dark Mode Overrides
-.card {
-    background-color: var(--card-bg) !important;
-    border-color: var(--border-color) !important;
-    color: var(--text-color) !important;
-    transition: background-color 0.3s ease, border-color 0.3s ease;
+// Theme-aware styles for generic components
+// We use classes that should be transparently themed
+.card:not([class*="bg-"]):not([class*="text-"]) {
+    background-color: var(--card-bg);
+    border-color: var(--border-color);
+    color: var(--text-color);
 }
 
+// Global text accessibility
 h1,
 h2,
 h3,
@@ -127,40 +130,69 @@ h6 {
     color: var(--text-color);
 }
 
+// Specific overrides to fix current broken state
+header h2 {
+    color: var(--text-color);
+}
+
 .text-muted {
     color: var(--text-muted) !important;
 }
 
-.table {
-    --bs-table-color: var(--text-color);
-    --bs-table-bg: var(--card-bg);
-    border-color: var(--border-color);
-}
-
-.list-group-item {
-    background-color: var(--card-bg) !important;
-    color: var(--text-color) !important;
-    border-color: var(--border-color) !important;
-}
-
+// Forms and visibility in dark mode
 .form-control,
 .form-select {
-    background-color: var(--card-bg) !important;
-    color: var(--text-color) !important;
-    border-color: var(--border-color) !important;
+    background-color: var(--card-bg);
+    color: var(--text-color);
+    border-color: var(--border-color);
 
     &:focus {
-        background-color: var(--card-bg) !important;
-        color: var(--text-color) !important;
+        background-color: var(--card-bg);
+        color: var(--text-color);
     }
 }
 
-.modal-content {
-    background-color: var(--card-bg) !important;
-    color: var(--text-color) !important;
+// Keep SOS Red consistently bright
+.bg-danger {
+    background-color: #ef4444 !important;
 }
 
-.offcanvas {
+.btn-danger {
+    background-color: #ef4444 !important;
+    border-color: #ef4444 !important;
+    color: #ffffff !important;
+}
+
+.text-white {
+    color: #ffffff !important;
+}
+
+// Dashboard Specific Adjustments
+.bg-white {
     background-color: var(--card-bg) !important;
-    color: var(--text-color) !important;
+    color: var(--text-color);
+}
+
+.bg-light {
+    background-color: var(--light-bg) !important;
+}
+
+// Specific check to keep brand gold
+.text-warning,
+.text-secondary {
+    color: #fbbf24 !important;
+}
+
+.text-primary {
+    color: #0B1B32 !important;
+}
+
+[data-theme='dark'] .text-primary {
+    color: #fbbf24 !important;
+}
+
+// Ensure icons inside brand cards are not washed out
+.card.bg-primary .text-secondary,
+.card.bg-primary .text-warning {
+    color: #fbbf24 !important;
 }
