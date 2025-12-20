@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from 'next';
 import { Fredoka } from 'next/font/google';
 import './globals.scss'; // Importamos nuestros estilos globales (Bootstrap modificado)
 import PWAInstallPrompt from './components/PWAInstallPrompt';
+import { Analytics } from '@vercel/analytics/next';
 
 const fredoka = Fredoka({
     subsets: ['latin'],
@@ -42,6 +43,7 @@ export default function RootLayout({
                     {children}
                 </main>
                 <PWAInstallPrompt />
+                <Analytics />
             </body>
         </html>
     );
