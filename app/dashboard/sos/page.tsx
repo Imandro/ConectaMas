@@ -47,18 +47,31 @@ export default function EmergencyPage() {
     }, []);
 
     const playSong = (song: any) => {
+        if (!song?.url) return;
+
         if (audio) {
             audio.pause();
         }
+
         const newAudio = new Audio(song.url);
-        newAudio.play();
-        setAudio(newAudio);
-        setCurrentSong(song);
 
         newAudio.onended = () => {
             setCurrentSong(null);
             setAudio(null);
         };
+
+        // Handle playback promise to prevent "client-side exception"
+        const playPromise = newAudio.play();
+        if (playPromise !== undefined) {
+            playPromise.catch(error => {
+                console.error("Audio playback failed:", error);
+                setCurrentSong(null);
+                setAudio(null);
+            });
+        }
+
+        setAudio(newAudio);
+        setCurrentSong(song);
     };
 
     const stopMusic = () => {

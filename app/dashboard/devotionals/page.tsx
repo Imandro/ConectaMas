@@ -1,14 +1,44 @@
 "use client";
 
 import Link from 'next/link';
-import { Clock, BookOpen, Heart } from 'lucide-react';
+import { Clock, BookOpen, Heart, Sparkles } from 'lucide-react';
 import { devotionalsData } from '@/app/lib/devotionalsData';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useSession } from 'next-auth/react';
 
 const categories = ['Para ti', 'Ansiedad', 'Identidad', 'Integridad', 'Fe', 'Relaciones', 'Oración', 'Soledad', 'Culpa', 'Ira', 'Envidia', 'Comunidad'];
 
 export default function DevotionalsPage() {
     const [selectedCategory, setSelectedCategory] = useState('Para ti');
+    const [recommendedDevotionals, setRecommendedDevotionals] = useState<any[]>([]);
+    const { data: session } = useSession();
+
+    // Calculate recommended devotionals based on user struggles
+    useEffect(() => {
+        if (session?.user) {
+            const userEmail = (session.user as any).email;
+
+            // Fetch user profile to get struggles
+            fetch(`/api/user/profile?email=${userEmail}`)
+                .then(res => res.json())
+                .then(userData => {
+                    const sins = userData.sinsToOvercome ? JSON.parse(userData.sinsToOvercome) : [];
+                    const problems = userData.problemsFaced ? JSON.parse(userData.problemsFaced) : [];
+                    const userStruggles = [...sins, ...problems];
+
+                    // Filter devotionals that match user struggles
+                    const recommended = devotionalsData.filter(dev =>
+                        userStruggles.some((struggle: string) =>
+                            dev.category.toLowerCase().includes(struggle.toLowerCase()) ||
+                            dev.title.toLowerCase().includes(struggle.toLowerCase())
+                        )
+                    );
+
+                    setRecommendedDevotionals(recommended.slice(0, 4)); // Limit to 4
+                })
+                .catch(err => console.error("Error fetching user profile:", err));
+        }
+    }, [session]);
 
     const filteredDevotionals = selectedCategory === 'Para ti'
         ? devotionalsData
@@ -17,6 +47,40 @@ export default function DevotionalsPage() {
     return (
         <div className="animate-fade-in">
             <h2 className="fw-bold text-secondary mb-4">Devocionales</h2>
+
+            {/* Recommended Section */}
+            {recommendedDevotionals.length > 0 && (
+                <div className="mb-5">
+                    <h5 className="fw-bold text-primary mb-3 d-flex align-items-center gap-2">
+                        <Sparkles size={20} />
+                        Recomendados para ti
+                    </h5>
+                    <div className="row g-3 mb-4">
+                        {recommendedDevotionals.map((dev) => (
+                            <div key={dev.id} className="col-12 col-md-6">
+                                <Link href={`/dashboard/devotionals/${dev.id}`} className="card border-primary border-2 shadow-sm text-decoration-none hover-scale h-100">
+                                    <div className="d-flex h-100">
+                                        <div className={`rounded-start py-5 px-4 d-flex align-items-center justify-content-center ${dev.image}`} style={{ width: '100px' }}>
+                                            <BookOpen className="text-secondary opacity-50" size={32} />
+                                        </div>
+                                        <div className="card-body py-3">
+                                            <div className="d-flex justify-content-between align-items-start mb-1">
+                                                <span className="badge bg-primary text-white rounded-pill fw-normal">{dev.category}</span>
+                                                <Heart size={16} className="text-danger" />
+                                            </div>
+                                            <h6 className="fw-bold text-dark mb-1 lh-base">{dev.title}</h6>
+                                            <div className="d-flex align-items-center text-muted small mt-auto">
+                                                <Clock size={14} className="me-1" />
+                                                {dev.time} lectura
+                                            </div>
+                                        </div>
+                                    </div>
+                                </Link>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            )}
 
             {/* Categories Filter (Scrollable) */}
             <div className="d-flex gap-2 overflow-auto pb-2 mb-4 no-scrollbar">

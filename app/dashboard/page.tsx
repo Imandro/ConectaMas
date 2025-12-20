@@ -1,10 +1,12 @@
 "use client";
 
 import Link from 'next/link';
-import { Sun, AlertTriangle, Loader2 } from 'lucide-react';
+import { Sun, AlertTriangle, Loader2, Book } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import StruggleTracker from './components/StruggleTracker';
 import DailyVerse from './components/DailyVerse';
+import DailyPrayerCard from '../components/DailyPrayerCard';
+import LlamiMascot from '../components/LlamiMascot';
 
 interface DashboardStats {
     name: string;
@@ -97,17 +99,27 @@ export default function DashboardHome() {
                 <DailyVerse />
             </section>
 
-            {/* Estado y SOS */}
+
+            {/* Estado y SOS con Llami */}
             <section className="row g-3 mb-4">
                 <div className="col-8">
                     <div className="card border-0 shadow-sm h-100 bg-white">
-                        <div className="card-body p-3 d-flex align-items-center gap-3">
-                            <div className="bg-success-subtle text-success p-2 rounded-circle">
-                                <Sun size={24} />
+                        <div className="card-body p-3 d-flex align-items-center justify-content-between">
+                            <div className="d-flex align-items-center gap-3">
+                                <div className="bg-success-subtle text-success p-2 rounded-circle">
+                                    <Sun size={24} />
+                                </div>
+                                <div>
+                                    <small className="text-muted d-block lh-1">Días en victoria</small>
+                                    <span className="fw-bold fs-4">{stats?.streak || 0} Días</span>
+                                </div>
                             </div>
+                            {/* Llami Mascot */}
                             <div>
-                                <small className="text-muted d-block lh-1">Días en victoria</small>
-                                <span className="fw-bold fs-4">{stats?.streak || 0} Días</span>
+                                <LlamiMascot
+                                    streak={stats?.streak || 0}
+                                    lastMood={stats?.lastCheckin?.mood}
+                                />
                             </div>
                         </div>
                     </div>
@@ -125,6 +137,24 @@ export default function DashboardHome() {
             {/* Struggle Tracker (NEW) */}
             <section className="mb-4">
                 <StruggleTracker initialStruggles={stats?.struggles || []} />
+            </section>
+
+            {/* Daily Prayer */}
+            <section className="mb-4">
+                <DailyPrayerCard />
+            </section>
+
+            {/* Bible Link */}
+            <section className="mb-4">
+                <Link href="/dashboard/bible" className="card border-0 shadow-sm bg-gradient-primary text-white text-decoration-none hover-scale">
+                    <div className="card-body p-4 d-flex align-items-center gap-3">
+                        <Book size={32} />
+                        <div>
+                            <h5 className="fw-bold mb-0">Leer la Biblia</h5>
+                            <small className="opacity-75">Explora la Palabra de Dios</small>
+                        </div>
+                    </div>
+                </Link>
             </section>
 
             {/* Check-in Diario */}

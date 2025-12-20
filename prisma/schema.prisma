@@ -168,3 +168,23 @@ model Song {
   category    String?
   createdAt   DateTime @default(now())
 }
+
+// Daily Prayer (365 days)
+model DailyPrayer {
+  id          String   @id @default(cuid())
+  dayOfYear   Int      @unique // 1-366
+  title       String
+  content     String
+  theme       String?
+}
+
+// Curated Bible Verses (e.g., NTV specific for struggles)
+model BibleVerse {
+  id          String   @id @default(cuid())
+  reference   String   // e.g. "Salmos 23:1"
+  text        String   // The actual verse content (NTV)
+  tags        String   // Categories: "Ansiedad", "Lujuria", etc.
+  book        String
+  chapter     Int
+  verseNum    Int
+}
