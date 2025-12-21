@@ -48,23 +48,23 @@ export default function LlamiMascot({ streak, lastMood, level = 1 }: LlamiMascot
         setTimeout(() => setShowMessage(false), 4000);
     };
 
-    // Stage-based colors (Premium Midnight-compatible)
+    // Stage-based colors (Conecta+ Gold/Blue Theme)
     const getColors = () => {
         switch (stage) {
-            case "spark": return { p: "#FFAB40", s: "#FFD180" }; // Warm Orange
-            case "flame": return { p: "#FF5252", s: "#FF8A80" }; // Soft Red
-            case "torch": return { p: "#FFD600", s: "#FFFF8D" }; // Bright Yellow
-            case "sun": return { p: "#FF9100", s: "#FFCE80" }; // Golden Sun
-            case "star": return { p: "#448AFF", s: "#82B1FF" }; // Divine Blue
-            default: return { p: "#FFAB40", s: "#FFD180" };
+            case "spark": return { p: "#EAB308", s: "#FDE047" }; // Gold / Light Yellow
+            case "flame": return { p: "#CA8A04", s: "#FCD34D" }; // Dark Gold / Gold
+            case "torch": return { p: "#F59E0B", s: "#FEF3C7" }; // Amber / Pale Gold
+            case "sun": return { p: "#0F172A", s: "#38BDF8" }; // Dark Blue / Sky Blue (Special)
+            case "star": return { p: "#1E3A8A", s: "#60A5FA" }; // Deep Blue / Blue
+            default: return { p: "#EAB308", s: "#FDE047" };
         }
     };
 
     const c = getColors();
 
     return (
-        <div className="position-relative d-inline-block text-center" style={{ width: "100px" }}>
-            {/* Premium Speech Bubble */}
+        <div className="position-relative d-inline-block text-center" style={{ width: "150px" }}>
+            {/* Premium Speech Bubble - High Contrast */}
             <AnimatePresence>
                 {showMessage && (
                     <motion.div
@@ -72,15 +72,15 @@ export default function LlamiMascot({ streak, lastMood, level = 1 }: LlamiMascot
                         animate={{ opacity: 1, scale: 1, y: 0, x: "-50%" }}
                         exit={{ opacity: 0, scale: 0.8, y: 10, x: "-50%" }}
                         className="position-absolute bottom-100 start-50 mb-3"
-                        style={{ width: "180px", zIndex: 100 }}
+                        style={{ width: "220px", zIndex: 100 }}
                     >
-                        <div className="bg-white rounded-4 shadow-lg p-3 border border-light position-relative">
-                            <p className="text-dark small mb-0 fw-bold text-center lh-sm" style={{ fontSize: '0.85rem' }}>
+                        <div className="bg-white rounded-4 shadow-lg p-3 border border-2 border-warning position-relative">
+                            <p className="text-dark mb-0 fw-bold text-center lh-sm fs-6">
                                 {message}
                             </p>
                             {/* Bubble Arrow */}
                             <div className="position-absolute top-100 start-50 translate-middle-x"
-                                style={{ width: 0, height: 0, borderLeft: '10px solid transparent', borderRight: '10px solid transparent', borderTop: '10px solid #fff', marginTop: '-1px' }}>
+                                style={{ width: 0, height: 0, borderLeft: '10px solid transparent', borderRight: '10px solid transparent', borderTop: '10px solid #fff', marginTop: '-2px' }}>
                             </div>
                         </div>
                     </motion.div>
@@ -103,7 +103,7 @@ export default function LlamiMascot({ streak, lastMood, level = 1 }: LlamiMascot
                     },
                 }}
                 className="cursor-pointer mx-auto"
-                style={{ width: "80px", height: "80px", position: "relative" }}
+                style={{ width: "120px", height: "120px", position: "relative" }}
             >
                 <svg viewBox="0 0 100 100" className="w-100 h-100 drop-shadow-lg">
                     <defs>

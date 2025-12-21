@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { resetAccount, updateLeaderPhone } from "./actions";
 import { useTheme } from "@/app/components/ThemeProvider";
+import { useSession } from "next-auth/react";
 
 export default function ClientProfileActions({
     userRole,
@@ -18,6 +19,7 @@ export default function ClientProfileActions({
     const [leaderPhone, setLeaderPhone] = useState(initialLeaderPhone || "");
     const [isUpdatingPhone, setIsUpdatingPhone] = useState(false);
     const { theme, toggleTheme } = useTheme();
+    const { update } = useSession();
 
     const handleUpdatePhone = async () => {
         setIsUpdatingPhone(true);
@@ -82,7 +84,20 @@ export default function ClientProfileActions({
                     <button
                         className="btn btn-primary fw-bold"
                         type="button"
-                        onClick={handleUpdatePhone}
+                        onClick={async () => {
+                            setIsUpdatingPhone(true);
+                            try {
+                                await updateLeaderPhone(leaderPhone);
+                                // Force session update so SOS page sees it immediately
+                                await update({ leaderPhone });
+                                alert("Número de líder actualizado.");
+                            } catch (error) {
+                                console.error(error);
+                                alert("Error al actualizar el número.");
+                            } finally {
+                                setIsUpdatingPhone(false);
+                            }
+                        }}
                         disabled={isUpdatingPhone}
                     >
                         {isUpdatingPhone ? '...' : 'Guardar'}
