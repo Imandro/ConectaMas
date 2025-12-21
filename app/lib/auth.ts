@@ -27,7 +27,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
                     return null;
                 }
 
-                const email = credentials.email as string;
+                const email = (credentials.email as string).toLowerCase();
                 const password = credentials.password as string;
 
                 const user = await prisma.user.findUnique({
@@ -67,11 +67,15 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
                 try {
                     const user = await (prisma as any).user.findUnique({
                         where: { id: token.sub },
-                        select: { leaderPhone: true }
+                        select: {
+                            leaderPhone: true,
+                            hasSeenTutorialTour: true
+                        }
                     });
 
-                    if (user && (user as any).leaderPhone) {
+                    if (user) {
                         session.user.leaderPhone = (user as any).leaderPhone;
+                        session.user.hasSeenTutorialTour = (user as any).hasSeenTutorialTour;
                     }
                 } catch (error) {
                     console.error("Session callback prisma error:", error);

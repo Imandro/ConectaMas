@@ -5,7 +5,9 @@ import bcrypt from 'bcryptjs';
 
 export async function POST(req: Request) {
     try {
-        const { name, email, password } = await req.json();
+        const body = await req.json();
+        const { name, password } = body;
+        const email = body.email?.toLowerCase();
 
         // Validation
         if (!email || !password || !name) {
