@@ -62,21 +62,25 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     callbacks: {
         async session({ session, token }: { session: any, token: any }) {
             if (token && session.user) {
-                // @ts-ignore
                 session.user.id = token.sub;
 
-                const user = await prisma.user.findUnique({
-                    where: { id: token.sub },
-                    select: { leaderPhone: true } as any
-                }) as any;
+                try {
+                    const user = await (prisma as any).user.findUnique({
+                        where: { id: token.sub },
+                        select: { leaderPhone: true }
+                    });
 
-                if (user) {
-                    session.user.leaderPhone = user.leaderPhone;
+                    if (user && (user as any).leaderPhone) {
+                        session.user.leaderPhone = (user as any).leaderPhone;
+                    }
+                } catch (error) {
+                    console.error("Session callback prisma error:", error);
                 }
             }
             return session;
         },
     },
-    secret: process.env.NEXTAUTH_SECRET || "change_me_in_production",
+    secret: process.env.AUTH_SECRET || process.env.NEXTAUTH_SECRET || "change_me_in_production",
     trustHost: true,
+    debug: process.env.NODE_ENV === "development",
 });
