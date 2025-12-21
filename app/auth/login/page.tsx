@@ -45,7 +45,15 @@ export default function LoginPage() {
             if (res?.error) {
                 setError('Credenciales inválidas');
             } else {
-                window.location.href = '/dashboard';
+                // Fetch session to check onboarding status
+                const sessionRes = await fetch('/api/auth/session');
+                const session = await sessionRes.json();
+
+                if (session?.user && !session.user.hasCompletedOnboarding) {
+                    window.location.href = '/onboarding';
+                } else {
+                    window.location.href = '/dashboard';
+                }
             }
         } catch (err) {
             setError('Ocurrió un error al iniciar sesión');

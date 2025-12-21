@@ -71,13 +71,15 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
                         where: { id: token.sub },
                         select: {
                             leaderPhone: true,
-                            hasSeenTutorialTour: true
+                            hasSeenTutorialTour: true,
+                            hasCompletedOnboarding: true
                         }
                     });
 
                     if (user) {
                         session.user.leaderPhone = (user as any).leaderPhone;
                         session.user.hasSeenTutorialTour = (user as any).hasSeenTutorialTour;
+                        session.user.hasCompletedOnboarding = (user as any).hasCompletedOnboarding;
                     }
                 } catch (error) {
                     console.error("Session callback prisma error:", error);

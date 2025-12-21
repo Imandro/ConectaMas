@@ -56,7 +56,7 @@ export default function LlamiPage() {
     }
 
     return (
-        <div className="container-fluid py-4 min-vh-100 bg-midnight text-white">
+        <div className="container-fluid py-4 min-vh-100 bg-conecta-gradient text-white">
             {/* Header */}
             <div className="d-flex align-items-center gap-3 mb-5">
                 <Link href="/dashboard" className="btn btn-outline-light rounded-circle p-2">
@@ -83,7 +83,7 @@ export default function LlamiPage() {
                             )}
                         </AnimatePresence>
 
-                        <div className="transform-scale-2">
+                        <div className="transform-scale-1">
                             <LlamiMascot streak={1} lastMood={mascot.mood} />
                         </div>
                     </div>
@@ -192,14 +192,16 @@ export default function LlamiPage() {
             </div>
 
             <style jsx>{`
-                .bg-midnight { background: #0a0a0c; }
-                .bg-glass {
-                    background: rgba(255, 255, 255, 0.03);
-                    backdrop-filter: blur(10px);
-                    border: 1px solid rgba(255, 255, 255, 0.05);
+                .bg-conecta-gradient { 
+                    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); 
                 }
-                .transform-scale-2 {
-                    transform: scale(2.5);
+                .bg-glass {
+                    background: rgba(255, 255, 255, 0.05);
+                    backdrop-filter: blur(12px);
+                    border: 1px solid rgba(255, 255, 255, 0.1);
+                }
+                .transform-scale-1 {
+                    transform: scale(1.0);
                 }
                 .h-fit { height: fit-content; }
             `}</style>

@@ -63,7 +63,7 @@ export default function LlamiMascot({ streak, lastMood, level = 1 }: LlamiMascot
     const c = getColors();
 
     return (
-        <div className="position-relative d-inline-block text-center" style={{ width: "100px" }}>
+        <div className="position-relative d-inline-block text-center" style={{ width: "80px" }}>
             {/* Premium Speech Bubble - High Contrast */}
             <AnimatePresence>
                 {showMessage && (
@@ -72,10 +72,10 @@ export default function LlamiMascot({ streak, lastMood, level = 1 }: LlamiMascot
                         animate={{ opacity: 1, scale: 1, y: 0, x: "-50%" }}
                         exit={{ opacity: 0, scale: 0.8, y: 10, x: "-50%" }}
                         className="position-absolute bottom-100 start-50 mb-2"
-                        style={{ width: "180px", zIndex: 100 }}
+                        style={{ width: "140px", zIndex: 100 }}
                     >
-                        <div className="bg-white rounded-4 shadow-lg p-3 border border-2 border-warning position-relative">
-                            <p className="text-dark mb-0 fw-bold text-center lh-sm" style={{ fontSize: '0.8rem' }}>
+                        <div className="bg-white rounded-4 shadow-lg p-2 border border-2 border-warning position-relative">
+                            <p className="text-dark mb-0 fw-bold text-center lh-sm" style={{ fontSize: '0.75rem' }}>
                                 {message}
                             </p>
                             {/* Bubble Arrow */}
@@ -103,7 +103,7 @@ export default function LlamiMascot({ streak, lastMood, level = 1 }: LlamiMascot
                     },
                 }}
                 className="cursor-pointer mx-auto"
-                style={{ width: "80px", height: "80px", position: "relative" }}
+                style={{ width: "65px", height: "65px", position: "relative" }}
             >
                 <svg viewBox="0 0 100 100" className="w-100 h-100 drop-shadow-lg">
                     <defs>

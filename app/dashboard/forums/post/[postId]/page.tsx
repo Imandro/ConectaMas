@@ -205,31 +205,54 @@ export default function PostPage() {
                     <h5 className="fw-bold mb-4">Respuestas ({post.replies.length})</h5>
 
                     {post.replies.map(reply => (
-                        <div key={reply.id} className="border-start border-primary border-3 ps-3 mb-3">
-                            <div className="d-flex align-items-center gap-3 text-muted small mb-2">
-                                <div className="d-flex align-items-center gap-1">
-                                    {reply.isAnonymous ? (
-                                        <>
-                                            <UserIcon size={14} />
-                                            <span>Anónimo</span>
-                                        </>
-                                    ) : (
-                                        <>
-                                            <UserIcon size={14} />
-                                            <span>{reply.user?.name || 'Usuario'}</span>
-                                            {reply.user?.isCounselor && (
-                                                <span className="badge bg-success-subtle text-success ms-1">
-                                                    <Shield size={10} className="me-1" />
-                                                    Consejero
-                                                </span>
-                                            )}
-                                        </>
-                                    )}
+                        <div key={reply.id} className="border-start border-primary border-3 ps-3 mb-4">
+                            <div className="d-flex justify-content-between align-items-start mb-2">
+                                <div className="d-flex align-items-center gap-3 text-muted small">
+                                    <div className="d-flex align-items-center gap-1">
+                                        {reply.isAnonymous ? (
+                                            <>
+                                                <UserIcon size={14} />
+                                                <span>Anónimo</span>
+                                            </>
+                                        ) : (
+                                            <>
+                                                <UserIcon size={14} />
+                                                <span>{reply.user?.name || 'Usuario'}</span>
+                                                {reply.user?.isCounselor && (
+                                                    <span className="badge bg-success-subtle text-success ms-1">
+                                                        <Shield size={10} className="me-1" />
+                                                        Consejero
+                                                    </span>
+                                                )}
+                                            </>
+                                        )}
+                                    </div>
+                                    <div className="d-flex align-items-center gap-1">
+                                        <Clock size={14} />
+                                        <span>{formatDate(reply.createdAt)}</span>
+                                    </div>
                                 </div>
-                                <div className="d-flex align-items-center gap-1">
-                                    <Clock size={14} />
-                                    <span>{formatDate(reply.createdAt)}</span>
-                                </div>
+                                {(reply as any).isOwner && (
+                                    <button
+                                        onClick={async () => {
+                                            if (!confirm("¿Eliminar esta respuesta?")) return;
+                                            try {
+                                                const res = await fetch(`/api/forums/replies/${reply.id}`, { method: 'DELETE' });
+                                                if (res.ok) {
+                                                    fetchPost(); // Refresh
+                                                } else {
+                                                    alert("Error al eliminar");
+                                                }
+                                            } catch (e) {
+                                                alert("Error al eliminar");
+                                            }
+                                        }}
+                                        className="btn btn-link text-danger p-0 border-0"
+                                        title="Eliminar respuesta"
+                                    >
+                                        <Trash2 size={16} />
+                                    </button>
+                                )}
                             </div>
                             <p className="text-dark mb-0" style={{ whiteSpace: 'pre-wrap' }}>
                                 {reply.content}

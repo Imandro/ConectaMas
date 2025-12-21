@@ -8,6 +8,15 @@ export default function NotificationPrompt() {
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
+        // Register Service Worker for Push Notifications
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/sw.js').then((registration) => {
+                console.log('Service Worker registered with scope:', registration.scope);
+            }).catch((error) => {
+                console.error('Service Worker registration failed:', error);
+            });
+        }
+
         // Only show if supported and permission is 'default' (not granted or denied)
         if ('Notification' in window && Notification.permission === 'default') {
             const hasDismissed = localStorage.getItem("notificationPromptDismissed");
@@ -29,26 +38,28 @@ export default function NotificationPrompt() {
         try {
             const permission = await Notification.requestPermission();
             if (permission === 'granted') {
-                // If granted, the PushNotificationManager (if mounted) or our API logic will handle registration.
-                // For now, let's trigger a registration attempt if possible
                 if ('serviceWorker' in navigator) {
                     const registration = await navigator.serviceWorker.ready;
                     const sub = await registration.pushManager.getSubscription();
+
                     if (!sub) {
-                        // We trigger a custom event or let the user click 'Activar' in profile for full setup
-                        // But best is to handle it here if we have VAPID keys
-                        const vapidPublicKey = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY;
-                        if (vapidPublicKey) {
+                        const vapidPublicKey = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY || "BGBZ1Q1LwyPolkAPnshPKwQ6NNijzuu8_lqDziuABVb6z60pX1uwKsw1jgO-rCabt5QIf_90OSNqNRgXKti9zyI";
+
+                        try {
                             const newSub = await registration.pushManager.subscribe({
                                 userVisibleOnly: true,
                                 applicationServerKey: urlBase64ToUint8Array(vapidPublicKey),
                             });
 
-                            await fetch('/api/notifications/subscribe', {
+                            const res = await fetch('/api/notifications/subscribe', {
                                 method: 'POST',
                                 headers: { 'Content-Type': 'application/json' },
                                 body: JSON.stringify(newSub),
                             });
+
+                            if (!res.ok) throw new Error("Failed to save subscription on server");
+                        } catch (subErr) {
+                            console.error("Failed to subscribe to push manager:", subErr);
                         }
                     }
                 }

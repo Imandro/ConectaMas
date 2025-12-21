@@ -5,7 +5,6 @@ import { LogOut, RefreshCcw, Sun, Moon, Phone, HelpCircle, Users } from "lucide-
 import Link from "next/link";
 import { useState } from "react";
 import { resetAccount, updateLeaderPhone } from "./actions";
-import { useTheme } from "@/app/components/ThemeProvider";
 import { useSession } from "next-auth/react";
 
 export default function ClientProfileActions({
@@ -18,28 +17,13 @@ export default function ClientProfileActions({
     const [isResetting, setIsResetting] = useState(false);
     const [leaderPhone, setLeaderPhone] = useState(initialLeaderPhone || "");
     const [isUpdatingPhone, setIsUpdatingPhone] = useState(false);
-    const { theme, toggleTheme } = useTheme();
     const { update } = useSession();
-
-    const handleUpdatePhone = async () => {
-        setIsUpdatingPhone(true);
-        try {
-            await updateLeaderPhone(leaderPhone);
-            alert("Número de líder actualizado.");
-        } catch (error) {
-            console.error(error);
-            alert("Error al actualizar el número.");
-        } finally {
-            setIsUpdatingPhone(false);
-        }
-    };
 
     const handleReset = async () => {
         if (confirm("¿Estás seguro? Esto reiniciará tu progreso de onboarding (pero no borrará tu cuenta).")) {
             setIsResetting(true);
             try {
                 await resetAccount();
-                // Force logout or redirect
                 window.location.href = "/onboarding";
             } catch (error) {
                 console.error(error);
@@ -52,17 +36,6 @@ export default function ClientProfileActions({
 
     return (
         <div className="d-grid gap-3">
-            {/* Theme Toggle Button */}
-            <button
-                onClick={toggleTheme}
-                className="btn btn-light fw-bold d-flex align-items-center justify-content-start gap-3 p-3 rounded-3 border"
-            >
-                {theme === 'light' ? <Moon size={20} className="text-primary" /> : <Sun size={20} className="text-warning" />}
-                <div className="text-start">
-                    <span className="d-block">{theme === 'light' ? 'Activar Modo Noche' : 'Activar Modo Claro'}</span>
-                    <small className="text-muted fw-normal">Cambia la apariencia del app.</small>
-                </div>
-            </button>
 
             {/* Leader Phone Section */}
             <div className="card shadow-none border rounded-3 p-3 bg-light bg-opacity-50">
@@ -77,7 +50,7 @@ export default function ClientProfileActions({
                 {/* Friends Button */}
                 <Link
                     href="/dashboard/friends"
-                    className="btn btn-light fw-bold d-flex align-items-center justify-content-start gap-3 p-3 rounded-3 border"
+                    className="btn btn-light fw-bold d-flex align-items-center justify-content-start gap-3 p-3 rounded-3 border mb-3"
                 >
                     <div className="bg-success bg-opacity-10 p-2 rounded-circle">
                         <Users size={20} className="text-success" />
@@ -103,7 +76,6 @@ export default function ClientProfileActions({
                             setIsUpdatingPhone(true);
                             try {
                                 await updateLeaderPhone(leaderPhone);
-                                // Force session update so SOS page sees it immediately
                                 await update({ leaderPhone });
                                 alert("Número de líder actualizado.");
                             } catch (error) {
@@ -162,7 +134,6 @@ export default function ClientProfileActions({
                 onClick={async () => {
                     if (confirm("¿ESTÁS SEGURO? Esta acción es irreversible y borrará todos tus datos.")) {
                         try {
-                            // Dynamic import to avoid earlier compilation issue
                             const { deleteAccount } = await import("./actions");
                             await deleteAccount();
                             await signOut({ redirect: false });

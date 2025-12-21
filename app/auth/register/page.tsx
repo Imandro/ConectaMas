@@ -47,7 +47,7 @@ export default function RegisterPage() {
 
             // Auto-login after registration
             const loginRes = await signIn('credentials', {
-                email: formData.email,
+                identifier: formData.email,
                 password: formData.password,
                 redirect: false,
             });
@@ -164,6 +164,7 @@ export default function RegisterPage() {
                         onChange={handleChange}
                         required
                     />
+
                     <small className="text-muted" style={{ fontSize: '0.75rem' }}>
                         *Usarás esta respuesta para recuperar tu contraseña si la olvidas.
                     </small>

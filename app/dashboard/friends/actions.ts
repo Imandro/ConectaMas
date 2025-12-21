@@ -43,14 +43,15 @@ export async function addFriend(friendId: string) {
     });
 
     if (!user) throw new Error("User not found");
+    if (user.id === friendId) return { error: "No puedes agregarte a ti mismo" };
 
     // Check if already friends
     const exists = user.friends.some(f => f.id === friendId);
-    if (exists) return { message: "Ya son amigos" };
+    if (exists) return { error: "Ya son amigos" };
 
-    // Update with disconnect/connect for many-to-many
+    // Symmetric friendship: Connect A to B and B to A
     await prisma.user.update({
-        where: { email: session.user.email },
+        where: { id: user.id },
         data: {
             friends: {
                 connect: { id: friendId }
@@ -58,8 +59,6 @@ export async function addFriend(friendId: string) {
         }
     });
 
-    // For symmetric friendship (optional, depending on preference)
-    // If we want B to also have A as friend immediately:
     await prisma.user.update({
         where: { id: friendId },
         data: {
@@ -70,7 +69,25 @@ export async function addFriend(friendId: string) {
     });
 
     revalidatePath("/dashboard/friends");
-    revalidatePath("/dashboard/profile");
+    return { success: true };
+}
+
+export async function addFriendByUsername(username: string) {
+    const session = await auth();
+    if (!session?.user?.email) throw new Error("Unauthorized");
+
+    // Clear whitespace and @
+    const cleanUsername = username.trim().replace("@", "");
+
+    const targetUser = await prisma.user.findUnique({
+        where: { username: cleanUsername }
+    });
+
+    if (!targetUser) {
+        return { error: "Usuario no encontrado" };
+    }
+
+    return addFriend(targetUser.id);
 }
 
 export async function removeFriend(friendId: string) {
@@ -84,7 +101,7 @@ export async function removeFriend(friendId: string) {
 
     // Disconnect both ways
     await prisma.user.update({
-        where: { email: session.user.email },
+        where: { id: user.id },
         data: {
             friends: {
                 disconnect: { id: friendId }
@@ -102,6 +119,7 @@ export async function removeFriend(friendId: string) {
     });
 
     revalidatePath("/dashboard/friends");
+    return { success: true };
 }
 
 export async function getFriends() {

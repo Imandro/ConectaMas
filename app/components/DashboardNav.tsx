@@ -6,9 +6,8 @@ import { usePathname } from 'next/navigation';
 // For now I'm using text/emoji placeholders or basic SVGs if needed to be standalone without running npm install.
 // Assuming lucide-react IS in package.json, we can try to use it, but if it fails to compile without install, we'll fall back.
 // Since user hasn't installed node_modules, imports might partial fail in IDE but let's write code assuming they will install.
-import { Home, BookOpen, HeartPulse, User, Menu, Book, MessageCircle, Sun, Moon } from 'lucide-react';
+import { Home, BookOpen, HeartPulse, User, Menu, Book, MessageCircle } from 'lucide-react';
 import { signOut } from "next-auth/react";
-import { useTheme } from './ThemeProvider';
 
 const navItems = [
     { name: 'Inicio', href: '/dashboard', icon: Home },
@@ -21,13 +20,12 @@ const navItems = [
 
 export default function DashboardNav() {
     const pathname = usePathname();
-    const { theme, toggleTheme } = useTheme();
 
     return (
         <>
             {/* Mobile Bottom Nav */}
             <nav
-                className={`navbar fixed-bottom navbar-light border-top d-md-none safe-area-bottom shadow-lg ${theme === 'dark' ? 'bg-dark' : 'bg-white'}`}
+                className="navbar fixed-bottom navbar-light bg-white border-top d-md-none safe-area-bottom shadow-lg"
                 style={{ borderRadius: '20px 20px 0 0', borderTopColor: 'var(--border-color) !important' }}
             >
                 <div className="container-fluid d-flex justify-content-around">
@@ -73,14 +71,6 @@ export default function DashboardNav() {
                 </nav>
 
                 <div className="mt-auto px-2 d-flex flex-column gap-3">
-                    <button
-                        onClick={toggleTheme}
-                        className="btn btn-outline-light rounded-pill btn-sm d-flex align-items-center justify-content-center gap-2 py-2"
-                        title="Cambiar Tema"
-                    >
-                        {theme === 'light' ? <Moon size={18} /> : <Sun size={18} />}
-                        <span>{theme === 'light' ? 'Modo Oscuro' : 'Modo Claro'}</span>
-                    </button>
                     <button
                         onClick={async () => {
                             await signOut({ redirect: false });
