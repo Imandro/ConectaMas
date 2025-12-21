@@ -1,14 +1,36 @@
 "use client";
 
 import { signOut } from "next-auth/react";
-import { LogOut, RefreshCcw, Sun, Moon } from "lucide-react";
+import { LogOut, RefreshCcw, Sun, Moon, Phone, HelpCircle } from "lucide-react";
+import Link from "next/link";
 import { useState } from "react";
-import { resetAccount } from "./actions";
+import { resetAccount, updateLeaderPhone } from "./actions";
 import { useTheme } from "@/app/components/ThemeProvider";
 
-export default function ClientProfileActions({ userRole }: { userRole: string }) {
+export default function ClientProfileActions({
+    userRole,
+    initialLeaderPhone
+}: {
+    userRole: string,
+    initialLeaderPhone?: string | null
+}) {
     const [isResetting, setIsResetting] = useState(false);
+    const [leaderPhone, setLeaderPhone] = useState(initialLeaderPhone || "");
+    const [isUpdatingPhone, setIsUpdatingPhone] = useState(false);
     const { theme, toggleTheme } = useTheme();
+
+    const handleUpdatePhone = async () => {
+        setIsUpdatingPhone(true);
+        try {
+            await updateLeaderPhone(leaderPhone);
+            alert("Número de líder actualizado.");
+        } catch (error) {
+            console.error(error);
+            alert("Error al actualizar el número.");
+        } finally {
+            setIsUpdatingPhone(false);
+        }
+    };
 
     const handleReset = async () => {
         if (confirm("¿Estás seguro? Esto reiniciará tu progreso de onboarding (pero no borrará tu cuenta).")) {
@@ -40,6 +62,34 @@ export default function ClientProfileActions({ userRole }: { userRole: string })
                 </div>
             </button>
 
+            {/* Leader Phone Section */}
+            <div className="card shadow-none border rounded-3 p-3 bg-light bg-opacity-50">
+                <div className="d-flex align-items-center gap-3 mb-3">
+                    <Phone size={20} className="text-secondary" />
+                    <div>
+                        <span className="d-block fw-bold">Contacto de Liderazgo (SOS)</span>
+                        <small className="text-muted fw-normal">Número telefónico para emergencias.</small>
+                    </div>
+                </div>
+                <div className="input-group">
+                    <input
+                        type="tel"
+                        className="form-control"
+                        placeholder="+1234567890"
+                        value={leaderPhone}
+                        onChange={(e) => setLeaderPhone(e.target.value)}
+                    />
+                    <button
+                        className="btn btn-primary fw-bold"
+                        type="button"
+                        onClick={handleUpdatePhone}
+                        disabled={isUpdatingPhone}
+                    >
+                        {isUpdatingPhone ? '...' : 'Guardar'}
+                    </button>
+                </div>
+            </div>
+
             {/* Only show reset button for ADMIN users */}
             {userRole === 'ADMIN' && (
                 <button
@@ -54,6 +104,18 @@ export default function ClientProfileActions({ userRole }: { userRole: string })
                     </div>
                 </button>
             )}
+
+            {/* Tutorial Hub Button */}
+            <Link
+                href="/dashboard/tutorials"
+                className="btn btn-light fw-bold d-flex align-items-center justify-content-start gap-3 p-3 rounded-3 border"
+            >
+                <HelpCircle size={20} className="text-primary" />
+                <div className="text-start">
+                    <span className="d-block">Centro de Aprendizaje</span>
+                    <small className="text-muted fw-normal">Tutoriales y guías de uso.</small>
+                </div>
+            </Link>
 
             <button
                 onClick={async () => {

@@ -130,12 +130,14 @@ export default function LoginPage() {
 
                 <div className="text-center">
                     <p className="small text-muted mb-3">O continúa con</p>
-                    <div className="d-flex gap-2 justify-content-center mb-4">
-                        <button type="button" className="btn btn-outline-light border text-primary flex-grow-1 d-flex align-items-center justify-content-center gap-2 rounded-3 py-2 hover-bg-light">
-                            <span className="fw-bold">G</span> Google
-                        </button>
-                        <button type="button" className="btn btn-outline-light border text-primary flex-grow-1 d-flex align-items-center justify-content-center gap-2 rounded-3 py-2 hover-bg-light">
-                            <span className="fw-bold"></span> Apple
+                    <div className="d-grid gap-2 mb-4">
+                        <button
+                            type="button"
+                            onClick={() => signIn('google', { callbackUrl: '/dashboard' })}
+                            className="btn btn-outline-light border text-primary w-100 d-flex align-items-center justify-content-center gap-2 rounded-3 py-2 hover-bg-light fw-bold"
+                        >
+                            <img src="https://authjs.dev/img/providers/google.svg" width="20" height="20" alt="Google" />
+                            Continuar con Google
                         </button>
                     </div>
                 </div>

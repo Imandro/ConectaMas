@@ -8,9 +8,10 @@ import { getLlamiMessage } from "@/app/lib/mascot-messages";
 interface LlamiMascotProps {
     streak: number;
     lastMood?: string;
+    level?: number;
 }
 
-export default function LlamiMascot({ streak, lastMood }: LlamiMascotProps) {
+export default function LlamiMascot({ streak, lastMood, level = 1 }: LlamiMascotProps) {
     const [message, setMessage] = useState<string>("");
     const [showMessage, setShowMessage] = useState(false);
     const [clickCount, setClickCount] = useState(0);
@@ -125,73 +126,94 @@ export default function LlamiMascot({ streak, lastMood }: LlamiMascotProps) {
                         transition={{ duration: 4, repeat: Infinity }}
                     />
 
-                    {/* Body Path (More rounded/cute llama shape) */}
+                    {/* Body Path (Wavy Flame Shape) */}
                     <motion.path
-                        d="M 50 15 Q 70 30, 65 60 Q 60 85, 50 85 Q 40 85, 35 60 Q 30 30, 50 15 Z"
+                        d="M 50 10 Q 75 35, 75 65 Q 75 90, 50 90 Q 25 90, 25 65 Q 25 35, 50 10"
                         fill={`url(#grad-${stage})`}
                         filter="url(#beauty-glow)"
+                        animate={{
+                            d: [
+                                "M 50 10 Q 75 35, 75 65 Q 75 90, 50 90 Q 25 90, 25 65 Q 25 35, 50 10",
+                                "M 50 5 Q 85 40, 75 70 Q 65 95, 50 95 Q 35 95, 25 70 Q 15 40, 50 5",
+                                "M 50 10 Q 75 35, 75 65 Q 75 90, 50 90 Q 25 90, 25 65 Q 25 35, 50 10"
+                            ]
+                        }}
+                        transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
                     />
 
-                    {/* Dynamic Inner Light */}
+                    {/* Dynamic Inner Light / Core Flame */}
                     <motion.path
-                        d="M 50 25 Q 60 40, 55 60 Q 52 75, 50 75 Q 48 75, 45 60 Q 40 40, 50 25 Z"
+                        d="M 50 25 Q 65 45, 60 65 Q 55 80, 50 80 Q 45 80, 40 65 Q 35 45, 50 25"
                         fill="white"
-                        opacity="0.3"
+                        opacity={0.4 + (level * 0.05)}
+                        animate={{
+                            scale: [1, 1.1, 1],
+                            y: [0, -5, 0],
+                            opacity: [0.4 + (level * 0.05), 0.7 + (level * 0.05), 0.4 + (level * 0.05)]
+                        }}
+                        transition={{ duration: 1.5, repeat: Infinity }}
+                        style={{ originX: "50px", originY: "70px" }}
                     />
 
                     {/* Eyes with Blinking Logic */}
                     <g>
                         <motion.circle
-                            cx="42" cy="50" r="3.5"
+                            cx="40" cy="62" r="3.5"
                             fill="#2c3e50"
                             animate={{ scaleY: [1, 1, 0.1, 1, 1] }}
                             transition={{ duration: 4, repeat: Infinity, times: [0, 0.8, 0.85, 0.9, 1] }}
                         />
                         <motion.circle
-                            cx="58" cy="50" r="3.5"
+                            cx="60" cy="62" r="3.5"
                             fill="#2c3e50"
                             animate={{ scaleY: [1, 1, 0.1, 1, 1] }}
                             transition={{ duration: 4, repeat: Infinity, times: [0, 0.8, 0.85, 0.9, 1] }}
                         />
-                        {/* Eye Shine */}
-                        <circle cx="43" cy="48.5" r="1.2" fill="white" />
-                        <circle cx="59" cy="48.5" r="1.2" fill="white" />
+                        <circle cx="41" cy="60.5" r="1.2" fill="white" />
+                        <circle cx="61" cy="60.5" r="1.2" fill="white" />
                     </g>
 
                     {/* Cheeks */}
-                    <circle cx="35" cy="58" r="4" fill="#ff80ab" opacity="0.3" />
-                    <circle cx="65" cy="58" r="4" fill="#ff80ab" opacity="0.3" />
+                    <circle cx="33" cy="68" r="4" fill="#ff80ab" opacity="0.3" />
+                    <circle cx="67" cy="68" r="4" fill="#ff80ab" opacity="0.3" />
 
                     {/* Smile */}
                     <path
-                        d="M 44 63 Q 50 68, 56 63"
+                        d="M 44 72 Q 50 76, 56 72"
                         stroke="#2c3e50"
                         strokeWidth="3"
                         fill="none"
                         strokeLinecap="round"
                     />
 
-                    {/* Stage Special Effects */}
-                    {stage === 'star' && (
-                        <motion.path
-                            d="M 50 5 L 53 13 L 61 13 L 55 18 L 57 26 L 50 21 L 43 26 L 45 18 L 39 13 L 47 13 Z"
-                            fill="#FFD700"
-                            animate={{ rotate: 360, scale: [1, 1.2, 1] }}
-                            transition={{ rotate: { duration: 10, repeat: Infinity, ease: "linear" }, scale: { duration: 2, repeat: Infinity } }}
-                            style={{ originX: "50px", originY: "15px" }}
-                        />
-                    )}
-
-                    {/* Floating Sparks */}
+                    {/* Floating Sparks (Evolving) */}
                     <motion.circle
-                        cx="25" cy="40" r="2" fill={c.s}
-                        animate={{ y: [-5, 5, -5], opacity: [0.5, 1, 0.5] }}
-                        transition={{ duration: 2, repeat: Infinity }}
+                        cx="25" cy="40" r={1.5 + (level * 0.2)} fill={c.s}
+                        animate={{
+                            y: [-20, -40],
+                            x: [0, 10, -10],
+                            opacity: [1, 0],
+                            scale: [1, 0.5]
+                        }}
+                        transition={{ duration: 2, repeat: Infinity, delay: 0 }}
                     />
                     <motion.circle
-                        cx="75" cy="45" r="2" fill={c.s}
-                        animate={{ y: [5, -5, 5], opacity: [0.5, 1, 0.5] }}
-                        transition={{ duration: 2.5, repeat: Infinity }}
+                        cx="75" cy="35" r={1.5 + (level * 0.2)} fill={c.s}
+                        animate={{
+                            y: [-20, -45],
+                            x: [0, -10, 10],
+                            opacity: [1, 0],
+                            scale: [1, 0.5]
+                        }}
+                        transition={{ duration: 2.5, repeat: Infinity, delay: 0.5 }}
+                    />
+                    <motion.circle
+                        cx="50" cy="25" r={1 + (level * 0.2)} fill="white"
+                        animate={{
+                            y: [-30, -60],
+                            opacity: [0.8, 0],
+                        }}
+                        transition={{ duration: 1.8, repeat: Infinity, delay: 1 }}
                     />
                 </svg>
 

@@ -89,6 +89,28 @@ export default function BiblePage() {
     const [loading, setLoading] = useState(false);
     const [helpfulVerses, setHelpfulVerses] = useState<BibleVerse[]>([]);
 
+    // Mascot Heartbeat (Bible Reading)
+    useEffect(() => {
+        let timer: NodeJS.Timeout;
+
+        const sendHeartbeat = async () => {
+            try {
+                await fetch('/api/mascot/heartbeat', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ type: "BIBLE_READING" })
+                });
+            } catch (err) {
+                console.error("Heartbeat error:", err);
+            }
+        };
+
+        // Enviar un latido cada minuto de lectura
+        timer = setInterval(sendHeartbeat, 60000);
+
+        return () => clearInterval(timer);
+    }, []);
+
     // Fetch chapter text
     useEffect(() => {
         if (!selectedBook || !selectedChapter) return;

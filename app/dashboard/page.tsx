@@ -1,18 +1,21 @@
 "use client";
 
 import Link from 'next/link';
-import { Sun, AlertTriangle, Loader2 } from 'lucide-react';
+import { Sun, AlertTriangle, Loader2, HelpCircle } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import StruggleTracker from './components/StruggleTracker';
 import DailyVerse from './components/DailyVerse';
 import DailyPrayerCard from '../components/DailyPrayerCard';
 import LlamiMascot from '../components/LlamiMascot';
+import FeatureTour from './components/FeatureTour';
 
 interface DashboardStats {
     name: string;
     streak: number;
     lastCheckin: any;
     struggles: any[];
+    mascot: any;
+    hasSeenTutorialTour: boolean;
 }
 
 export default function DashboardHome() {
@@ -86,6 +89,9 @@ export default function DashboardHome() {
                     <h2 className="fw-bold text-secondary m-0">Hola, {stats?.name || 'Campeón'}</h2>
                 </div>
                 <div className="bg-white rounded-circle shadow-sm p-1">
+                    <Link href="/dashboard/tutorials" className="btn btn-outline-primary rounded-circle p-2 me-2 border-0 shadow-sm" title="Tutoriales">
+                        <HelpCircle size={24} />
+                    </Link>
                     <Link href="/dashboard/profile">
                         <div className="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center fw-bold text-decoration-none" style={{ width: '40px', height: '40px' }}>
                             {stats?.name ? stats.name.charAt(0).toUpperCase() : 'U'}
@@ -95,14 +101,14 @@ export default function DashboardHome() {
             </header>
 
             {/* Versículo del día */}
-            <section className="mb-4">
+            <section className="mb-4" id="tour-verse">
                 <DailyVerse />
             </section>
 
 
             {/* Estado y SOS con Llami */}
             <section className="row g-3 mb-4">
-                <div className="col-8">
+                <div className="col-8" id="tour-streak">
                     <div className="card border-0 shadow-sm h-100 bg-white">
                         <div className="card-body p-3 d-flex align-items-center justify-content-between">
                             <div className="d-flex align-items-center gap-3">
@@ -114,17 +120,25 @@ export default function DashboardHome() {
                                     <span className="fw-bold fs-4">{stats?.streak || 0} Días</span>
                                 </div>
                             </div>
-                            {/* Llami Mascot */}
-                            <div>
-                                <LlamiMascot
-                                    streak={stats?.streak || 0}
-                                    lastMood={stats?.lastCheckin?.mood}
-                                />
-                            </div>
+                            {/* Llami Mascot Link */}
+                            <Link href="/dashboard/llami" className="text-decoration-none group" id="tour-llami">
+                                <div className="text-center">
+                                    <div className="hover-scale transition-all">
+                                        <LlamiMascot
+                                            streak={stats?.streak || 0}
+                                            lastMood={stats?.lastCheckin?.mood}
+                                            level={stats?.mascot?.level || 1}
+                                        />
+                                    </div>
+                                    <div className="badge bg-primary-subtle text-primary rounded-pill mt-1" style={{ fontSize: '0.65rem' }}>
+                                        Nivel {stats?.mascot?.level || 1}
+                                    </div>
+                                </div>
+                            </Link>
                         </div>
                     </div>
                 </div>
-                <div className="col-4">
+                <div className="col-4" id="tour-sos">
                     <Link href="/dashboard/sos" className="card border-0 shadow-sm h-100 bg-danger text-white text-decoration-none hover-scale">
                         <div className="card-body p-2 d-flex flex-column align-items-center justify-content-center text-center">
                             <AlertTriangle size={36} className="mb-1 text-white" />
@@ -135,17 +149,17 @@ export default function DashboardHome() {
             </section>
 
             {/* Struggle Tracker (NEW) */}
-            <section className="mb-4">
+            <section className="mb-4" id="tour-struggles">
                 <StruggleTracker initialStruggles={stats?.struggles || []} />
             </section>
 
             {/* Daily Prayer */}
-            <section className="mb-4">
+            <section className="mb-4" id="tour-prayer">
                 <DailyPrayerCard />
             </section>
 
             {/* Check-in Diario */}
-            <section>
+            <section id="tour-checkin">
                 <div className="d-flex justify-content-between align-items-center mb-2">
                     <h5 className="fw-bold text-secondary mb-0">Tu corazón hoy</h5>
                 </div>
@@ -177,6 +191,11 @@ export default function DashboardHome() {
                     </div>
                 </div>
             </section>
+
+            {/* Feature Tour (Proactive Tutorial) */}
+            {stats && !stats.hasSeenTutorialTour && (
+                <FeatureTour onComplete={() => setStats({ ...stats, hasSeenTutorialTour: true })} />
+            )}
         </div>
     );
 }

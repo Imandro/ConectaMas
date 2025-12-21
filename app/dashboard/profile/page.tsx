@@ -24,8 +24,9 @@ export default async function ProfilePage() {
                 gender: true,
                 spiritualLevel: true,
                 hasCompletedOnboarding: true,
-                role: true, // Add role for admin check
-            }
+                role: true,
+                leaderPhone: true,
+            } as any
         });
     } catch (e) {
         // Fallback: Fetch MINIMAL data if Schema is outdated (avoids crash)
@@ -59,11 +60,11 @@ export default async function ProfilePage() {
             <div className="card border-0 shadow-sm bg-white rounded-4 p-4 mb-4">
                 <div className="d-flex align-items-center gap-4 mb-4">
                     <div className="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center display-4 fw-bold" style={{ width: '80px', height: '80px' }}>
-                        {user.name ? user.name.charAt(0).toUpperCase() : 'U'}
+                        {(user as any).name ? (user as any).name.charAt(0).toUpperCase() : 'U'}
                     </div>
                     <div>
-                        <h4 className="fw-bold mb-1">{user.name || 'Usuario'}</h4>
-                        <p className="text-muted mb-0">{user.email}</p>
+                        <h4 className="fw-bold mb-1">{(user as any).name || 'Usuario'}</h4>
+                        <p className="text-muted mb-0">{(user as any).email}</p>
                         <span className="badge bg-light text-secondary mt-2 rounded-pill border">
                             {(user as any).spiritualLevel ?? "Explorador"}
                         </span>
@@ -92,7 +93,10 @@ export default async function ProfilePage() {
             <div className="card border-0 shadow-sm bg-white rounded-4 p-4">
                 <h5 className="fw-bold mb-4">Ajustes de Cuenta</h5>
 
-                <ClientProfileActions userRole={(user as any).role || 'USER'} />
+                <ClientProfileActions
+                    userRole={(user as any).role || 'USER'}
+                    initialLeaderPhone={(user as any).leaderPhone}
+                />
             </div>
         </div>
     );

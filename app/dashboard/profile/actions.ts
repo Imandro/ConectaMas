@@ -31,3 +31,28 @@ export async function deleteAccount() {
         where: { email: session.user.email }
     });
 }
+
+export async function updateLeaderPhone(phone: string) {
+    const session = await auth();
+    if (!session?.user?.email) throw new Error("Unauthorized");
+
+    await prisma.user.update({
+        where: { email: session.user.email },
+        data: { leaderPhone: phone } as any
+    });
+
+    revalidatePath("/dashboard/profile");
+    revalidatePath("/dashboard/sos");
+}
+
+export async function completeTutorialTour() {
+    const session = await auth();
+    if (!session?.user?.email) return;
+
+    await prisma.user.update({
+        where: { email: session.user.email },
+        data: { hasSeenTutorialTour: true } as any
+    });
+
+    revalidatePath("/dashboard");
+}

@@ -1,10 +1,15 @@
 "use client";
 
+export const dynamic = 'force-dynamic';
+
 import Link from 'next/link';
 import { X, Phone, BookHeart, Music } from 'lucide-react';
 import { useState, useEffect } from 'react';
+import { useSession } from 'next-auth/react';
+import { seedSongsAction } from './seed-action';
 
 export default function EmergencyPage() {
+    const { data: session } = useSession();
     const [showContent, setShowContent] = useState(false);
     const [showTruths, setShowTruths] = useState(false);
     const [showMusic, setShowMusic] = useState(false); // Music player state
@@ -37,11 +42,13 @@ export default function EmergencyPage() {
         // Simular efecto de respiración / calma al entrar
         const timer = setTimeout(() => setShowContent(true), 500);
 
-        // Fetch songs
-        fetch('/api/songs')
-            .then(res => res.json())
-            .then(data => setSongs(data))
-            .catch(err => console.error("Error fetching songs:", err));
+        // Seed songs and fetch
+        seedSongsAction().then(res => {
+            fetch('/api/songs')
+                .then(res => res.json())
+                .then(data => setSongs(data))
+                .catch(err => console.error("Error fetching songs:", err));
+        });
 
         return () => clearTimeout(timer);
     }, []);
@@ -125,7 +132,17 @@ export default function EmergencyPage() {
                             </div>
                         </button>
 
-                        <button className="btn btn-outline-light btn-lg border-2 d-flex align-items-center justify-content-start gap-3 p-3">
+                        <button
+                            onClick={() => {
+                                const phone = (session?.user as any)?.leaderPhone;
+                                if (phone) {
+                                    window.location.href = `tel:${phone}`;
+                                } else {
+                                    alert("No has configurado el número de tu líder en tu perfil.");
+                                }
+                            }}
+                            className="btn btn-outline-light btn-lg border-2 d-flex align-items-center justify-content-start gap-3 p-3 w-100"
+                        >
                             <Phone size={24} />
                             <div className="text-start">
                                 <span className="d-block fw-bold">Llamar a un líder</span>

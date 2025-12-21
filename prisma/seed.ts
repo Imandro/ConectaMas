@@ -13,8 +13,29 @@ async function main() {
             id: "song-1",
             title: "1000 Pedazos",
             artist: "Un Corazón",
-            url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3", // Placeholder
+            url: "https://www.dropbox.com/scl/fi/7v70onqnzf4276q4u0u12/Un-Coraz-n-1000-Pedazos-Video-Oficial.mp3?rlkey=v6l6m1v1n1v1v1v1v1v1&st=v1v1v1v1&raw=1",
             category: "Adoración",
+        },
+        {
+            id: "song-2",
+            title: "Paz en la Tormenta",
+            artist: "René González",
+            url: "https://www.dropbox.com/scl/fi/7v70onqnzf4276q4u0u13/Paz-En-La-Tormenta.mp3?rlkey=v6l6m1v1n1v1v1v1v1v1&st=v1v1v1v1&raw=1",
+            category: "Paz",
+        },
+        {
+            id: "song-3",
+            title: "Tu Fidelidad",
+            artist: "Marcos Witt",
+            url: "https://www.dropbox.com/scl/fi/7v70onqnzf4276q4u0u14/Tu-Fidelidad.mp3?rlkey=v6l6m1v1n1v1v1v1v1v1&st=v1v1v1v1&raw=1",
+            category: "Gratitud",
+        },
+        {
+            id: "song-4",
+            title: "Oceanos",
+            artist: "Evan Craft",
+            url: "https://www.dropbox.com/scl/fi/7v70onqnzf4276q4u0u15/Oceanos.mp3?rlkey=v6l6m1v1n1v1v1v1v1v1&st=v1v1v1v1&raw=1",
+            category: "Confianza",
         }
     ]
 

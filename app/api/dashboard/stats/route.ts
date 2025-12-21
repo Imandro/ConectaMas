@@ -21,7 +21,8 @@ export async function GET() {
                     take: 1
                 },
                 struggles: true,
-            }
+                mascot: true,
+            } as any
         });
 
         if (!user) {
@@ -30,9 +31,11 @@ export async function GET() {
 
         return NextResponse.json({
             name: user.name || 'Campeón',
-            streak: user.streak?.currentStreak || 0,
-            lastCheckin: user.checkins[0] || null,
-            struggles: user.struggles || [],
+            streak: (user as any).streak?.currentStreak || 0,
+            lastCheckin: (user as any).checkins[0] || null,
+            struggles: (user as any).struggles || [],
+            mascot: (user as any).mascot || null,
+            hasSeenTutorialTour: (user as any).hasSeenTutorialTour || false,
         });
 
     } catch (error) {

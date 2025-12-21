@@ -4,6 +4,7 @@ import './globals.scss'; // Importamos nuestros estilos globales (Bootstrap modi
 import PWAInstallPrompt from './components/PWAInstallPrompt';
 import NotificationPrompt from './components/NotificationPrompt';
 import { Analytics } from '@vercel/analytics/next';
+import { Toaster } from 'react-hot-toast';
 
 const fredoka = Fredoka({
     subsets: ['latin'],
@@ -32,7 +33,7 @@ export const viewport: Viewport = {
     themeColor: '#ffffff',
 };
 
-import { ThemeProvider } from './components/ThemeProvider';
+import { Providers } from './components/Providers';
 
 export default function RootLayout({
     children,
@@ -42,14 +43,15 @@ export default function RootLayout({
     return (
         <html lang="es">
             <body className={`${fredoka.variable} font-fredoka`}>
-                <ThemeProvider>
+                <Providers>
                     <main className="main-content">
                         {children}
                     </main>
                     <PWAInstallPrompt />
                     <NotificationPrompt />
                     <Analytics />
-                </ThemeProvider>
+                    <Toaster position="top-center" />
+                </Providers>
             </body>
         </html>
     );

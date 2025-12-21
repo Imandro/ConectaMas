@@ -22,6 +22,7 @@
         "next-auth": "^5.0.0-beta.4",
         "react": "^18.2.0",
         "react-dom": "^18.2.0",
+        "react-hot-toast": "^2.6.0",
         "sass": "^1.69.7",
         "web-push": "^3.6.7"
     },
@@ -30,6 +31,7 @@
         "@types/node": "^20.10.6",
         "@types/react": "^18.2.46",
         "@types/react-dom": "^18.2.18",
+        "@types/web-push": "^3.6.4",
         "eslint": "^8.56.0",
         "eslint-config-next": "14.0.4",
         "prisma": "^5.7.1",

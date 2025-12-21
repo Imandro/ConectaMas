@@ -32,20 +32,53 @@ export async function POST(req: Request) {
             return NextResponse.json({ message: 'System update pending. Restart server.' }, { status: 503 });
         }
 
-        // Create or ignore if exists
-        await delegate.upsert({
+        // Check if already completed to avoid double XP
+        const existingCompletion = await delegate.findUnique({
             where: {
                 userId_devotionalId: {
                     userId: user.id,
                     devotionalId: devotionalId
                 }
-            },
-            update: {}, // No update needed, just ensure it exists
-            create: {
-                userId: user.id,
-                devotionalId: devotionalId
             }
         });
+
+        if (!existingCompletion) {
+            // Mark as completed
+            await delegate.create({
+                data: {
+                    userId: user.id,
+                    devotionalId: devotionalId
+                }
+            });
+
+            // Grant Mascot XP
+            const mascotDelegate = (prisma as any).mascot;
+            if (mascotDelegate) {
+                const mascot = await mascotDelegate.findUnique({ where: { userId: user.id } });
+                if (mascot) {
+                    let newExp = (mascot.experience || 0) + 25;
+                    let newLevel = mascot.level || 1;
+                    if (newExp >= 100) {
+                        newLevel += 1;
+                        newExp -= 100;
+                    }
+                    await mascotDelegate.update({
+                        where: { userId: user.id },
+                        data: { experience: newExp, level: newLevel }
+                    });
+                } else {
+                    // Create mascot if not exists
+                    await mascotDelegate.create({
+                        data: {
+                            userId: user.id,
+                            experience: 25,
+                            level: 1,
+                            flamePoints: 10
+                        }
+                    });
+                }
+            }
+        }
 
         return NextResponse.json({ message: 'Devotional marked as completed' }, { status: 200 });
 
