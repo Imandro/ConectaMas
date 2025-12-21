@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { Search, UserPlus, UserMinus, Users } from "lucide-react";
 import Link from "next/link";
-import { searchUsers, addFriend, removeFriend, getFriends } from "./actions";
+import { searchUsers, addFriend, addFriendByUsername, removeFriend, getFriends } from "./actions";
 
 export default function FriendsPage() {
     const [query, setQuery] = useState("");
