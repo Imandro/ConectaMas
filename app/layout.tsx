@@ -35,15 +35,18 @@ export const viewport: Viewport = {
 
 import { Providers } from './components/Providers';
 
-export default function RootLayout({
+import { auth } from './lib/auth';
+
+export default async function RootLayout({
     children,
 }: {
     children: React.ReactNode;
 }) {
+    const session = await auth();
     return (
         <html lang="es">
             <body className={`${fredoka.variable} font-fredoka`}>
-                <Providers>
+                <Providers session={session}>
                     <main className="main-content">
                         {children}
                     </main>
