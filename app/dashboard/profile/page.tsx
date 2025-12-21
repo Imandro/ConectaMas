@@ -4,6 +4,7 @@ import { prisma } from "@/app/lib/prisma";
 import { redirect } from "next/navigation";
 import { LogOut, RefreshCcw, User } from "lucide-react";
 import ClientProfileActions from "./ClientProfileActions";
+import ProfileHeader from "./ProfileHeader";
 import PushNotificationManager from "@/app/components/PushNotificationManager";
 
 export default async function ProfilePage() {
@@ -57,33 +58,27 @@ export default async function ProfilePage() {
         <div className="container-fluid py-4 animate-fade-in">
             <h1 className="fw-bold text-secondary mb-4">Mi Perfil</h1>
 
-            <div className="card border-0 shadow-sm bg-white rounded-4 p-4 mb-4">
-                <div className="d-flex align-items-center gap-4 mb-4">
-                    <div className="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center display-4 fw-bold" style={{ width: '80px', height: '80px' }}>
-                        {(user as any).name ? (user as any).name.charAt(0).toUpperCase() : 'U'}
-                    </div>
-                    <div>
-                        <h4 className="fw-bold mb-1">{(user as any).name || 'Usuario'}</h4>
-                        <p className="text-muted mb-0">{(user as any).email}</p>
-                        <span className="badge bg-light text-secondary mt-2 rounded-pill border">
-                            {(user as any).spiritualLevel ?? "Explorador"}
-                        </span>
-                    </div>
-                </div>
+            <ProfileHeader
+                user={{
+                    name: (user as any).name,
+                    email: (user as any).email,
+                    image: (user as any).image,
+                    spiritualLevel: (user as any).spiritualLevel
+                }}
+            />
 
-                <div className="border-top pt-4">
-                    <div className="row g-3">
-                        <div className="col-6">
-                            <label className="small text-muted fw-bold">Género</label>
-                            <p className="fw-medium">
-                                {/* @ts-ignore: Gender might be missing in old client gen */}
-                                {user.gender === 'MALE' ? 'Hombre 👨' : user.gender === 'FEMALE' ? 'Mujer 👩' : (
-                                    <span className="text-warning small fst-italic">
-                                        (Reinicia la terminal con 'Ctrl+C' y 'npm run dev' para ver cambios)
-                                    </span>
-                                )}
-                            </p>
-                        </div>
+            <div className="border-top pt-4">
+                <div className="row g-3">
+                    <div className="col-6">
+                        <label className="small text-muted fw-bold">Género</label>
+                        <p className="fw-medium">
+                            {/* @ts-ignore: Gender might be missing in old client gen */}
+                            {user.gender === 'MALE' ? 'Hombre 👨' : user.gender === 'FEMALE' ? 'Mujer 👩' : (
+                                <span className="text-warning small fst-italic">
+                                    (Reinicia la terminal con 'Ctrl+C' y 'npm run dev' para ver cambios)
+                                </span>
+                            )}
+                        </p>
                     </div>
                 </div>
             </div>
@@ -98,6 +93,6 @@ export default async function ProfilePage() {
                     initialLeaderPhone={(user as any).leaderPhone}
                 />
             </div>
-        </div>
+        </div >
     );
 }

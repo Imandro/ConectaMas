@@ -80,6 +80,7 @@ export default function OnboardingSteps() {
     const [problemsSelected, setProblemsSelected] = useState<string[]>([]);
     const [connectionSelected, setConnectionSelected] = useState<string[]>([]);
     const [gender, setGender] = useState<string>('');
+    const [mascotName, setMascotName] = useState<string>('Llami');
     const [isSubmitting, setIsSubmitting] = useState(false);
     const router = useRouter();
 
@@ -102,6 +103,7 @@ export default function OnboardingSteps() {
                 problemsFaced: problemsSelected,
                 connectionMethods: connectionSelected,
                 gender,
+                mascotName,
             });
             router.push('/dashboard');
         } catch (error) {
@@ -138,7 +140,7 @@ export default function OnboardingSteps() {
                                 <h1 className="fw-bold mb-3 text-white">
                                     Bienvenido a Conecta<span className="text-warning">+</span>
                                 </h1>
-                                <p className="text-white-50 lead mb-4">
+                                <p className="text-white lead mb-4">
                                     ¿Dónde estás espiritualmente?
                                 </p>
 
@@ -186,7 +188,7 @@ export default function OnboardingSteps() {
                         {step === 2 && (
                             <div className="animate-fade-in">
                                 <h2 className="fw-bold mb-3 text-center">Pecados que Quiero Dejar</h2>
-                                <p className="text-white-50 text-center mb-4 small">
+                                <p className="text-white text-center mb-4 small">
                                     Selecciona lo que resuene contigo. Esto es privado.
                                 </p>
 
@@ -195,7 +197,7 @@ export default function OnboardingSteps() {
                                         <div className="col-12" key={sin}>
                                             <label className={`d-flex align-items-center gap-3 p-3 rounded-3 border cursor-pointer transition-all ${sinsSelected.includes(sin)
                                                 ? 'bg-warning text-primary fw-bold border-warning'
-                                                : 'border-secondary bg-dark bg-opacity-25 text-white-50'
+                                                : 'border-white border-opacity-25 bg-white bg-opacity-10 text-white'
                                                 }`}>
                                                 <input
                                                     type="checkbox"
@@ -230,7 +232,7 @@ export default function OnboardingSteps() {
                         {step === 3 && (
                             <div className="animate-fade-in">
                                 <h2 className="fw-bold mb-3 text-center">Problemas que Enfrento</h2>
-                                <p className="text-white-50 text-center mb-4 small">
+                                <p className="text-white text-center mb-4 small">
                                     ¿Con qué luchas actualmente?
                                 </p>
 
@@ -239,7 +241,7 @@ export default function OnboardingSteps() {
                                         <div className="col-12" key={problem}>
                                             <label className={`d-flex align-items-center gap-3 p-3 rounded-3 border cursor-pointer transition-all ${problemsSelected.includes(problem)
                                                 ? 'bg-warning text-primary fw-bold border-warning'
-                                                : 'border-secondary bg-dark bg-opacity-25 text-white-50'
+                                                : 'border-white border-opacity-25 bg-white bg-opacity-10 text-white'
                                                 }`}>
                                                 <input
                                                     type="checkbox"
@@ -274,7 +276,7 @@ export default function OnboardingSteps() {
                         {step === 4 && (
                             <div className="animate-fade-in">
                                 <h2 className="fw-bold mb-3 text-center">¿Cómo Quiero Conectar Más?</h2>
-                                <p className="text-white-50 text-center mb-4 small">
+                                <p className="text-white text-center mb-4 small">
                                     ¿De qué formas quieres crecer en tu relación con Dios?
                                 </p>
 
@@ -283,7 +285,7 @@ export default function OnboardingSteps() {
                                         <div className="col-12" key={method}>
                                             <label className={`d-flex align-items-center gap-3 p-3 rounded-3 border cursor-pointer transition-all ${connectionSelected.includes(method)
                                                 ? 'bg-warning text-primary fw-bold border-warning'
-                                                : 'border-secondary bg-dark bg-opacity-25 text-white-50'
+                                                : 'border-white border-opacity-25 bg-white bg-opacity-10 text-white'
                                                 }`}>
                                                 <input
                                                     type="checkbox"
@@ -322,7 +324,7 @@ export default function OnboardingSteps() {
                                         <User size={32} className="text-warning" />
                                     </div>
                                     <h2 className="fw-bold mb-2">Sobre ti</h2>
-                                    <p className="text-white-50">
+                                    <p className="text-white">
                                         Para personalizar tu experiencia, dinos tu género.
                                     </p>
                                 </div>
@@ -332,7 +334,7 @@ export default function OnboardingSteps() {
                                         <button
                                             onClick={() => setGender('MALE')}
                                             className={`w-100 p-4 rounded-4 border transition-all d-flex flex-column align-items-center gap-3
-                                ${gender === 'MALE' ? 'bg-warning border-warning text-primary fw-bold' : 'bg-dark bg-opacity-25 border-secondary text-white-50'}
+                                ${gender === 'MALE' ? 'bg-warning border-warning text-primary fw-bold' : 'bg-white bg-opacity-10 border-white border-opacity-25 text-white'}
                                 `}
                                         >
                                             <span className="fs-1">👨</span>
@@ -343,7 +345,7 @@ export default function OnboardingSteps() {
                                         <button
                                             onClick={() => setGender('FEMALE')}
                                             className={`w-100 p-4 rounded-4 border transition-all d-flex flex-column align-items-center gap-3
-                                ${gender === 'FEMALE' ? 'bg-warning border-warning text-primary fw-bold' : 'bg-dark bg-opacity-25 border-secondary text-white-50'}
+                                ${gender === 'FEMALE' ? 'bg-warning border-warning text-primary fw-bold' : 'bg-white bg-opacity-10 border-white border-opacity-25 text-white'}
                                 `}
                                         >
                                             <span className="fs-1">👩</span>
@@ -363,14 +365,44 @@ export default function OnboardingSteps() {
                             </div>
                         )}
 
-                        {/* STEP 6: Final Confirmation */}
+                        {/* STEP 6: Name Your Mascot */}
                         {step === 6 && (
+                            <div className="animate-fade-in text-center">
+                                <div className="mx-auto bg-white bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center mb-4" style={{ width: '80px', height: '80px' }}>
+                                    <span style={{ fontSize: '40px' }}>🦙</span>
+                                </div>
+                                <h2 className="fw-bold mb-3">Dale nombre a tu compañera</h2>
+                                <p className="text-white mb-4">
+                                    Tu mascota te acompañará en cada paso. ¿Cómo quieres que se llame?
+                                </p>
+
+                                <div className="mb-4">
+                                    <input
+                                        type="text"
+                                        className="form-control form-control-lg text-center fw-bold text-primary"
+                                        placeholder="Ej. Fe, Esperanza, Llami..."
+                                        value={mascotName}
+                                        onChange={(e) => setMascotName(e.target.value)}
+                                    />
+                                </div>
+
+                                <button
+                                    onClick={() => setStep(7)}
+                                    className="btn btn-warning w-100 fw-bold py-3 rounded-pill d-flex align-items-center justify-content-center gap-2 text-primary"
+                                >
+                                    Continuar <ArrowRight size={20} />
+                                </button>
+                            </div>
+                        )}
+
+                        {/* STEP 7: Final Confirmation */}
+                        {step === 7 && (
                             <div className="text-center animate-fade-in">
                                 <div className="mx-auto bg-success bg-opacity-25 rounded-circle d-flex align-items-center justify-content-center mb-4" style={{ width: '64px', height: '64px' }}>
                                     <Check className="text-success" size={32} />
                                 </div>
                                 <h2 className="fw-bold mb-3">¡Todo Listo!</h2>
-                                <p className="text-white-50 mb-4">
+                                <p className="text-white mb-4">
                                     Estamos emocionados de acompañarte en este viaje espiritual. Tu camino con Dios comienza ahora.
                                 </p>
 

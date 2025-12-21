@@ -63,7 +63,7 @@ export default function LlamiMascot({ streak, lastMood, level = 1 }: LlamiMascot
     const c = getColors();
 
     return (
-        <div className="position-relative d-inline-block text-center" style={{ width: "150px" }}>
+        <div className="position-relative d-inline-block text-center" style={{ width: "100px" }}>
             {/* Premium Speech Bubble - High Contrast */}
             <AnimatePresence>
                 {showMessage && (
@@ -71,16 +71,16 @@ export default function LlamiMascot({ streak, lastMood, level = 1 }: LlamiMascot
                         initial={{ opacity: 0, scale: 0.8, y: 10, x: "-50%" }}
                         animate={{ opacity: 1, scale: 1, y: 0, x: "-50%" }}
                         exit={{ opacity: 0, scale: 0.8, y: 10, x: "-50%" }}
-                        className="position-absolute bottom-100 start-50 mb-3"
-                        style={{ width: "220px", zIndex: 100 }}
+                        className="position-absolute bottom-100 start-50 mb-2"
+                        style={{ width: "180px", zIndex: 100 }}
                     >
                         <div className="bg-white rounded-4 shadow-lg p-3 border border-2 border-warning position-relative">
-                            <p className="text-dark mb-0 fw-bold text-center lh-sm fs-6">
+                            <p className="text-dark mb-0 fw-bold text-center lh-sm" style={{ fontSize: '0.8rem' }}>
                                 {message}
                             </p>
                             {/* Bubble Arrow */}
                             <div className="position-absolute top-100 start-50 translate-middle-x"
-                                style={{ width: 0, height: 0, borderLeft: '10px solid transparent', borderRight: '10px solid transparent', borderTop: '10px solid #fff', marginTop: '-2px' }}>
+                                style={{ width: 0, height: 0, borderLeft: '8px solid transparent', borderRight: '8px solid transparent', borderTop: '8px solid #fff', marginTop: '-2px' }}>
                             </div>
                         </div>
                     </motion.div>
@@ -93,7 +93,7 @@ export default function LlamiMascot({ streak, lastMood, level = 1 }: LlamiMascot
                 whileHover={{ scale: 1.1, rotate: 2 }}
                 whileTap={{ scale: 0.9, rotate: -2 }}
                 animate={{
-                    y: [0, -8, 0],
+                    y: [0, -5, 0],
                 }}
                 transition={{
                     y: {
@@ -103,7 +103,7 @@ export default function LlamiMascot({ streak, lastMood, level = 1 }: LlamiMascot
                     },
                 }}
                 className="cursor-pointer mx-auto"
-                style={{ width: "120px", height: "120px", position: "relative" }}
+                style={{ width: "80px", height: "80px", position: "relative" }}
             >
                 <svg viewBox="0 0 100 100" className="w-100 h-100 drop-shadow-lg">
                     <defs>

@@ -101,7 +101,7 @@ export default function EmergencyPage() {
                 </Link>
             </div>
 
-            <div className={`flex-grow-1 d-flex flex-column justify-content-center position-relative z-1 transition-all ${showContent ? 'opacity-100' : 'opacity-0'}`} style={{ transition: 'opacity 1s ease' }}>
+            <div className={`flex-grow-1 d-flex flex-column justify-content-center position-relative z-1`}>
 
                 <h1 className="display-4 fw-bold mb-4">Respira.</h1>
                 <p className="lead mb-5 opacity-75">

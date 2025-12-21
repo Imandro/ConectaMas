@@ -15,6 +15,7 @@ export default function RegisterPage() {
 
     const [formData, setFormData] = useState({
         name: '',
+        username: '',
         email: '',
         password: ''
     });
@@ -89,13 +90,26 @@ export default function RegisterPage() {
 
             <form onSubmit={handleSubmit}>
                 <div className="mb-3">
-                    <label htmlFor="name" className="form-label small fw-bold text-primary ps-2">Nombre o Apodo</label>
+                    <label htmlFor="name" className="form-label small fw-bold text-primary ps-2">Nombre Completo</label>
                     <input
                         type="text"
                         className="form-control form-control-lg bg-light border-0"
                         id="name"
-                        placeholder="Cómo quieres que te llamemos"
+                        placeholder="Tu nombre real"
                         value={formData.name}
+                        onChange={handleChange}
+                        required
+                    />
+                </div>
+
+                <div className="mb-3">
+                    <label htmlFor="username" className="form-label small fw-bold text-primary ps-2">Nombre de Usuario</label>
+                    <input
+                        type="text"
+                        className="form-control form-control-lg bg-light border-0"
+                        id="username"
+                        placeholder="@usuario"
+                        value={formData.username}
                         onChange={handleChange}
                         required
                     />
@@ -136,6 +150,23 @@ export default function RegisterPage() {
                             {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
                         </button>
                     </div>
+                </div>
+
+                <div className="mb-4">
+                    <label htmlFor="securityAnswer" className="form-label small fw-bold text-primary ps-2">Pregunta de Seguridad</label>
+                    <p className="small text-muted mb-1">¿Cómo se llamaba tu primera mascota?</p>
+                    <input
+                        type="text"
+                        className="form-control form-control-lg bg-light border-0"
+                        id="securityAnswer"
+                        placeholder="Escribe la respuesta aquí"
+                        value={(formData as any).securityAnswer || ''}
+                        onChange={handleChange}
+                        required
+                    />
+                    <small className="text-muted" style={{ fontSize: '0.75rem' }}>
+                        *Usarás esta respuesta para recuperar tu contraseña si la olvidas.
+                    </small>
                 </div>
 
                 <div className="d-grid mb-3">

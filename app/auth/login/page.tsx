@@ -16,7 +16,7 @@ export default function LoginPage() {
     const [successMessage, setSuccessMessage] = useState('');
 
     const [formData, setFormData] = useState({
-        email: '',
+        identifier: '',
         password: ''
     });
 
@@ -37,7 +37,7 @@ export default function LoginPage() {
 
         try {
             const res = await signIn('credentials', {
-                email: formData.email,
+                identifier: formData.identifier,
                 password: formData.password,
                 redirect: false,
             });
@@ -85,13 +85,13 @@ export default function LoginPage() {
 
             <form onSubmit={handleSubmit}>
                 <div className="mb-3">
-                    <label htmlFor="email" className="form-label small fw-bold text-primary ps-2">Email</label>
+                    <label htmlFor="identifier" className="form-label small fw-bold text-primary ps-2">Email o Usuario</label>
                     <input
-                        type="email"
+                        type="text"
                         className="form-control form-control-lg bg-light border-0"
-                        id="email"
-                        placeholder="nombre@ejemplo.com"
-                        value={formData.email}
+                        id="identifier"
+                        placeholder="usuario o nombre@ejemplo.com"
+                        value={formData.identifier}
                         onChange={handleChange}
                         required
                     />
@@ -120,6 +120,12 @@ export default function LoginPage() {
                     </div>
                 </div>
 
+                <div className="text-end mb-4">
+                    <Link href="/auth/forgot-password" className="small text-muted text-decoration-none">
+                        ¿Olvidaste tu contraseña?
+                    </Link>
+                </div>
+
                 <button
                     type="submit"
                     className="btn btn-primary btn-lg w-100 text-white shadow-sm mb-3 hover-scale rounded-pill fw-bold"
@@ -127,20 +133,6 @@ export default function LoginPage() {
                 >
                     {loading ? <Loader2 className="animate-spin" /> : 'Iniciar Sesión'}
                 </button>
-
-                <div className="text-center">
-                    <p className="small text-muted mb-3">O continúa con</p>
-                    <div className="d-grid gap-2 mb-4">
-                        <button
-                            type="button"
-                            onClick={() => signIn('google', { callbackUrl: '/dashboard' })}
-                            className="btn btn-outline-light border text-primary w-100 d-flex align-items-center justify-content-center gap-2 rounded-3 py-2 hover-bg-light fw-bold"
-                        >
-                            <img src="https://authjs.dev/img/providers/google.svg" width="20" height="20" alt="Google" />
-                            Continuar con Google
-                        </button>
-                    </div>
-                </div>
 
                 <div className="text-center border-top pt-3">
                     <p className="small text-muted mb-0">

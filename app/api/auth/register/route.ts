@@ -6,40 +6,48 @@ import bcrypt from 'bcryptjs';
 export async function POST(req: Request) {
     try {
         const body = await req.json();
-        const { name, password } = body;
+        const { name, password, username, securityAnswer } = body;
         const email = body.email?.toLowerCase();
 
         // Validation
-        if (!email || !password || !name) {
+        if (!email || !password || !name || !username || !securityAnswer) {
             return NextResponse.json(
-                { message: 'Faltan datos requeridos (nombre, email, password)' },
+                { message: 'Faltan datos requeridos (nombre, usuario, email, password, pregunta de seguridad)' },
                 { status: 400 }
             );
         }
 
-        // Check if user exists
-        const existingUser = await prisma.user.findUnique({
+        // Check if user exists (email or username)
+        const existingUser = await prisma.user.findFirst({
             where: {
-                email: email,
+                OR: [
+                    { email: email },
+                    { username: username }
+                ]
             },
         });
 
         if (existingUser) {
             return NextResponse.json(
-                { message: 'El usuario ya existe con este email' },
+                { message: 'El usuario o email ya existe' },
                 { status: 409 }
             );
         }
 
         // Hash password
         const hashedPassword = await bcrypt.hash(password, 10);
+        // Simple hash/normalize answer (lowercase, trim) for basic security, or store as is if user wants exact match. 
+        // Let's store normalized (lowercase) for UX.
+        const normalizedAnswer = securityAnswer.trim().toLowerCase();
 
         // Create user
         const newUser = await prisma.user.create({
             data: {
                 name,
                 email,
+                username,
                 passwordHash: hashedPassword,
+                securityAnswer: normalizedAnswer,
                 role: 'USER',
                 spiritualLevel: 'Explorador',
             },

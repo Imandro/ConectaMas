@@ -12,27 +12,27 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         maxAge: 30 * 24 * 60 * 60, // 30 days
     },
     providers: [
-        GoogleProvider({
-            clientId: process.env.GOOGLE_CLIENT_ID,
-            clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-        }),
         CredentialsProvider({
             name: "Credentials",
             credentials: {
-                email: { label: "Email", type: "email" },
+                identifier: { label: "Email o Usuario", type: "text" },
                 password: { label: "Password", type: "password" }
             },
             async authorize(credentials) {
-                if (!credentials?.email || !credentials?.password) {
+                if (!credentials?.identifier || !credentials?.password) {
                     return null;
                 }
 
-                const email = (credentials.email as string).toLowerCase();
+                const identifier = credentials.identifier as string;
                 const password = credentials.password as string;
 
-                const user = await prisma.user.findUnique({
+                // Find user by email OR username
+                const user = await prisma.user.findFirst({
                     where: {
-                        email: email,
+                        OR: [
+                            { email: identifier.toLowerCase() },
+                            { username: identifier } // Username comparison (case sensitive or not? usually case insensitive but lets keep simple first)
+                        ]
                     },
                 });
 
@@ -51,6 +51,8 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
                     name: user.name,
                     email: user.email,
                     image: user.image,
+                    // We can't return arbitrary fields here easily without updating types, 
+                    // but we can fetch them in session callback
                 };
             }
         })

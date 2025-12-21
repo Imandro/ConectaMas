@@ -1,7 +1,7 @@
 "use client";
 
 import { signOut } from "next-auth/react";
-import { LogOut, RefreshCcw, Sun, Moon, Phone, HelpCircle } from "lucide-react";
+import { LogOut, RefreshCcw, Sun, Moon, Phone, HelpCircle, Users } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import { resetAccount, updateLeaderPhone } from "./actions";
@@ -73,6 +73,21 @@ export default function ClientProfileActions({
                         <small className="text-muted fw-normal">Número telefónico para emergencias.</small>
                     </div>
                 </div>
+
+                {/* Friends Button */}
+                <Link
+                    href="/dashboard/friends"
+                    className="btn btn-light fw-bold d-flex align-items-center justify-content-start gap-3 p-3 rounded-3 border"
+                >
+                    <div className="bg-success bg-opacity-10 p-2 rounded-circle">
+                        <Users size={20} className="text-success" />
+                    </div>
+                    <div className="text-start">
+                        <span className="d-block">Mis Amigos</span>
+                        <small className="text-muted fw-normal">Gestionar conexiones.</small>
+                    </div>
+                </Link>
+
                 <div className="input-group">
                     <input
                         type="tel"

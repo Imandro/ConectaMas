@@ -3,8 +3,8 @@ import { prisma } from './prisma';
 
 // Configuración de web-push
 // NOTA: Estas llaves deben estar en variables de entorno en producción
-const vapidPublicKey = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY || "";
-const vapidPrivateKey = process.env.VAPID_PRIVATE_KEY || "";
+const vapidPublicKey = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY || "BGBZ1Q1LwyPolkAPnshPKwQ6NNijzuu8_lqDziuABVb6z60pX1uwKsw1jgO-rCabt5QIf_90OSNqNRgXKti9zyI";
+const vapidPrivateKey = process.env.VAPID_PRIVATE_KEY || "6t4keJpbZzCphI_A5O_XVKOv7uWL9CeI2H0xNmE2Hgc";
 const vapidSubject = process.env.VAPID_SUBJECT || "mailto:admin@conectaplus.app";
 
 if (vapidPublicKey && vapidPrivateKey) {

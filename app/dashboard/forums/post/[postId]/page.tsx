@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
-import { ArrowLeft, Clock, Shield, User as UserIcon, Send } from 'lucide-react';
+import { ArrowLeft, Clock, Shield, User as UserIcon, Send, Trash2 } from 'lucide-react';
 
 interface Reply {
     id: string;
@@ -139,7 +139,31 @@ export default function PostPage() {
             {/* Original Post */}
             <div className="card border-0 shadow-sm mb-4">
                 <div className="card-body p-4">
-                    <h2 className="fw-bold text-dark mb-3">{post.title}</h2>
+                    <div className="d-flex justify-content-between align-items-start mb-3">
+                        <h2 className="fw-bold text-dark mb-0">{post.title}</h2>
+                        {(post as any).isOwner && (
+                            <button
+                                onClick={async () => {
+                                    if (!confirm("¿Estás seguro de eliminar esta publicación?")) return;
+                                    try {
+                                        const res = await fetch(`/api/forums/posts/${post.id}`, { method: 'DELETE' });
+                                        if (res.ok) {
+                                            alert("Publicación eliminada");
+                                            window.location.href = '/dashboard/forums';
+                                        } else {
+                                            alert("Error al eliminar");
+                                        }
+                                    } catch (e) {
+                                        alert("Error al eliminar");
+                                    }
+                                }}
+                                className="btn btn-outline-danger btn-sm rounded-pill"
+                            >
+                                <Trash2 size={16} className="me-2" />
+                                Eliminar
+                            </button>
+                        )}
+                    </div>
 
                     <div className="d-flex align-items-center gap-3 text-muted small mb-3">
                         <div className="d-flex align-items-center gap-1">

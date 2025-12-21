@@ -22,6 +22,11 @@ model User {
   image         String?
   role          String    @default("USER") // Was UserRole
   
+  username      String?   @unique
+  securityAnswer String?   // Answer to "What was your first pet's name?" (Hashed recommended, but simple for now)
+  friends       User[]    @relation("UserFriends")
+  symmetricFriends User[] @relation("UserFriends")
+  
   isAnonymous   Boolean   @default(false)
   gender        String?   // MALE, FEMALE
   spiritualStatus     String?   // "ACCEPT" | "RENEW" | "DEEPEN" | "UNSURE"
@@ -310,4 +315,12 @@ model Mascot {
   
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+}
+
+model ResetToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
 }

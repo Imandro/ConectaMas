@@ -35,7 +35,7 @@ export default function PushNotificationManager() {
             const registration = await navigator.serviceWorker.ready;
 
             // Generate VAPID public key
-            const vapidPublicKey = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY;
+            const vapidPublicKey = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY || "BGBZ1Q1LwyPolkAPnshPKwQ6NNijzuu8_lqDziuABVb6z60pX1uwKsw1jgO-rCabt5QIf_90OSNqNRgXKti9zyI";
             if (!vapidPublicKey) {
                 throw new Error('VAPID public key not found');
             }

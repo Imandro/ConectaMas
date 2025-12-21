@@ -32,6 +32,18 @@ export async function deleteAccount() {
     });
 }
 
+export async function updateProfileImage(base64Image: string) {
+    const session = await auth();
+    if (!session?.user?.email) throw new Error("Unauthorized");
+
+    await prisma.user.update({
+        where: { email: session.user.email },
+        data: { image: base64Image }
+    });
+
+    revalidatePath('/dashboard/profile');
+}
+
 export async function updateLeaderPhone(phone: string) {
     const session = await auth();
     if (!session?.user?.email) throw new Error("Unauthorized");

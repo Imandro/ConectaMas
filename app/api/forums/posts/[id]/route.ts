@@ -12,6 +12,18 @@ export async function GET(
     { params }: { params: { id: string } }
 ) {
     try {
+        const session = await auth();
+        const currentUserEmail = session?.user?.email;
+
+        let currentUserId = null;
+        if (currentUserEmail) {
+            const currentUser = await prismaClient.user.findUnique({
+                where: { email: currentUserEmail },
+                select: { id: true }
+            });
+            currentUserId = currentUser?.id;
+        }
+
         const post = await prismaClient.forumPost.findUnique({
             where: { id: params.id },
             include: {
@@ -40,13 +52,15 @@ export async function GET(
             return NextResponse.json({ error: 'Post not found' }, { status: 404 });
         }
 
-        // Sanitize anonymous data
+        // Sanitize anonymous data & Add Ownership
         const sanitizedPost = {
             ...post,
             user: post.isAnonymous ? null : post.user,
+            isOwner: currentUserId && post.userId === currentUserId,
             replies: post.replies.map((reply: any) => ({
                 ...reply,
                 user: reply.isAnonymous ? null : reply.user,
+                isOwner: currentUserId && reply.userId === currentUserId
             }))
         };
 
