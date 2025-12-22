@@ -76,12 +76,14 @@ export async function submitOnboarding(data: {
             });
 
             if (!exists) {
-                await prisma.userStruggle.create({
+                const prismaAny = prisma as any;
+                await prismaAny.userStruggle.create({
                     data: {
                         userId: user.id,
                         title: item.title,
                         status: 'ACTIVE',
-                        startDate: new Date(),
+                        isStarted: false,
+                        // No startDate until user explicitly starts it
                     }
                 });
             }

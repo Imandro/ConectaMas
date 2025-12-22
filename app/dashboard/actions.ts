@@ -4,9 +4,11 @@ import { prisma } from "@/app/lib/prisma";
 import { auth } from "@/app/lib/auth";
 import { revalidatePath } from "next/cache";
 
+const prismaAny = prisma as any;
+
 export async function getStrugglePlan(title: string) {
     try {
-        const plan = await prisma.strugglePlan.findFirst({
+        const plan = await prismaAny.strugglePlan.findFirst({
             where: {
                 title: {
                     contains: title,
@@ -33,7 +35,7 @@ export async function advanceStruggleDay(userStruggleId: string, completedDay: n
         const session = await auth();
         if (!session?.user) throw new Error("Unauthorized");
 
-        const userStruggle = await prisma.userStruggle.findUnique({
+        const userStruggle = await prismaAny.userStruggle.findUnique({
             where: { id: userStruggleId }
         });
 
@@ -48,7 +50,7 @@ export async function advanceStruggleDay(userStruggleId: string, completedDay: n
         // Calculate next currentDay
         const nextDay = Math.min(completedDay + 1, 7);
 
-        const updated = await prisma.userStruggle.update({
+        const updated = await prismaAny.userStruggle.update({
             where: { id: userStruggleId },
             data: {
                 completedDays: completedDaysArray.join(','),
@@ -57,6 +59,7 @@ export async function advanceStruggleDay(userStruggleId: string, completedDay: n
         });
 
         revalidatePath("/dashboard");
+        revalidatePath("/dashboard/luchas");
         return { success: true, struggle: updated };
     } catch (error) {
         console.error("Error advancing struggle day:", error);
@@ -69,7 +72,7 @@ export async function markStruggleAsOvercome(userStruggleId: string) {
         const session = await auth();
         if (!session?.user) throw new Error("Unauthorized");
 
-        const updated = await prisma.userStruggle.update({
+        const updated = await prismaAny.userStruggle.update({
             where: { id: userStruggleId },
             data: {
                 status: "vencido",
@@ -78,6 +81,7 @@ export async function markStruggleAsOvercome(userStruggleId: string) {
         });
 
         revalidatePath("/dashboard");
+        revalidatePath("/dashboard/luchas");
         return { success: true, struggle: updated };
     } catch (error) {
         console.error("Error marking struggle as overcome:", error);
@@ -90,15 +94,38 @@ export async function toggleStruggleStatus(id: string, status: string) {
         const session = await auth();
         if (!session?.user) throw new Error("Unauthorized");
 
-        const updated = await prisma.userStruggle.update({
+        const updated = await prismaAny.userStruggle.update({
             where: { id },
             data: { status }
         });
 
         revalidatePath("/dashboard");
+        revalidatePath("/dashboard/luchas");
         return { success: true, struggle: updated };
     } catch (error) {
         console.error("Error toggling struggle status:", error);
+        return { success: false };
+    }
+}
+
+export async function startStrugglePlan(id: string) {
+    try {
+        const session = await auth();
+        if (!session?.user) throw new Error("Unauthorized");
+
+        const updated = await prismaAny.userStruggle.update({
+            where: { id },
+            data: {
+                isStarted: true,
+                startDate: new Date()
+            }
+        });
+
+        revalidatePath("/dashboard");
+        revalidatePath("/dashboard/luchas");
+        return { success: true, struggle: updated };
+    } catch (error) {
+        console.error("Error starting struggle plan:", error);
         return { success: false };
     }
 }
@@ -110,17 +137,19 @@ export async function createStruggle(title: string) {
 
         const userId = (session.user as any).id;
 
-        const struggle = await prisma.userStruggle.create({
+        const struggle = await prismaAny.userStruggle.create({
             data: {
                 userId,
                 title,
                 status: "ACTIVE",
                 currentDay: 1,
-                completedDays: ""
+                completedDays: "",
+                isStarted: false
             }
         });
 
         revalidatePath("/dashboard");
+        revalidatePath("/dashboard/luchas");
         return { success: true, struggle };
     } catch (error) {
         console.error("Error creating struggle:", error);

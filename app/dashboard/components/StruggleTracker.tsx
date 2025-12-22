@@ -1,3 +1,5 @@
+"use client";
+
 import { useState } from "react";
 import { CheckCircle2, Plus, ShieldAlert, Trophy, X, ChevronRight, Target } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -12,6 +14,7 @@ interface Struggle {
     startDate: Date;
     currentDay: number;
     completedDays: string;
+    isStarted: boolean;
 }
 
 export default function StruggleTracker({
@@ -27,24 +30,16 @@ export default function StruggleTracker({
 
     const router = useRouter();
 
-    const activeStruggles = struggles.filter(s => s.status === "ACTIVE");
+    const availableStruggles = struggles.filter(s => s.status === "ACTIVE" && !s.isStarted);
+    const activeStruggles = struggles.filter(s => s.status === "ACTIVE" && s.isStarted);
     const overcomeStruggles = struggles.filter(s => s.status === "vencido");
-
-    const handleOvercome = async (id: string) => {
-        const res = await toggleStruggleStatus(id, "vencido");
-        if (res.success) {
-            setStruggles(prev => prev.map(s =>
-                s.id === id ? { ...s, status: "vencido" } : s
-            ));
-        }
-    };
 
     const handleAddStruggle = async () => {
         if (!newStruggleTitle.trim()) return;
 
         const res = await createStruggle(newStruggleTitle);
         if (res.success && res.struggle) {
-            setStruggles(prev => [...prev, res.struggle as any]);
+            setStruggles(prev => [res.struggle as any, ...prev]);
             setIsAdding(false);
             setNewStruggleTitle("");
         }
@@ -55,23 +50,64 @@ export default function StruggleTracker({
         setIsModalOpen(true);
     };
 
+    const renderStruggleCard = (struggle: Struggle, isAvailable: boolean = false) => {
+        const progress = (struggle.currentDay / 7) * 100;
+        return (
+            <div
+                key={struggle.id}
+                onClick={() => openStruggle(struggle)}
+                className={`bg-white p-3 rounded-4 border-0 position-relative overflow-hidden cursor-pointer hover-scale transition-all shadow-sm mb-3 ${isAvailable ? 'border-start border-4 border-warning' : 'border-start border-4 border-primary'}`}
+            >
+                <div className="d-flex align-items-center justify-content-between mb-2">
+                    <div>
+                        <span className="fw-bold d-block text-dark fs-5">{struggle.title}</span>
+                        <div className="d-flex align-items-center gap-2">
+                            {isAvailable ? (
+                                <div className="badge bg-warning-subtle text-warning rounded-pill">Plan por iniciar</div>
+                            ) : (
+                                <div className="badge bg-primary rounded-pill">Día {struggle.currentDay} / 7</div>
+                            )}
+                            <span className="text-muted small">Haz clic para ver detalles</span>
+                        </div>
+                    </div>
+                    <div className="text-primary">
+                        <ChevronRight size={24} />
+                    </div>
+                </div>
+
+                {!isAvailable && (
+                    <div className="progress" style={{ height: '6px', backgroundColor: '#e2e8f0' }}>
+                        <div
+                            className="progress-bar bg-primary rounded-pill"
+                            role="progressbar"
+                            style={{ width: `${progress}%` }}
+                            aria-valuenow={progress}
+                            aria-valuemin={0}
+                            aria-valuemax={100}
+                        ></div>
+                    </div>
+                )}
+            </div>
+        );
+    };
+
     return (
-        <div className="card border-0 shadow-sm p-4 bg-white rounded-4 overflow-hidden">
+        <div className="card border-0 shadow-sm p-4 bg-transparent rounded-4 overflow-hidden">
             <div className="d-flex align-items-center justify-content-between mb-4">
-                <h5 className="fw-bold d-flex align-items-center gap-2 m-0 text-dark">
-                    <ShieldAlert className="text-primary" size={20} />
-                    Mi Seguimiento <span className="badge bg-light text-secondary rounded-pill fw-normal">{activeStruggles.length} Activas</span>
+                <h5 className="fw-bold d-flex align-items-center gap-2 m-0 text-secondary">
+                    <ShieldAlert className="text-primary" size={24} />
+                    Resumen de Vida
                 </h5>
                 <button
                     onClick={() => setIsAdding(!isAdding)}
-                    className="btn btn-light rounded-circle p-2 shadow-sm transition-all hover-scale"
+                    className="btn btn-primary rounded-circle p-2 shadow hover-scale transition-all"
                 >
                     {isAdding ? <X size={20} /> : <Plus size={20} />}
                 </button>
             </div>
 
             {isAdding && (
-                <div className="d-flex gap-2 mb-4 animate-fade-in">
+                <div className="d-flex gap-2 mb-4 animate-fade-in p-3 bg-white rounded-4 shadow-sm">
                     <input
                         type="text"
                         value={newStruggleTitle}
@@ -88,68 +124,47 @@ export default function StruggleTracker({
                 </div>
             )}
 
-            <div className="d-flex flex-column gap-3">
-                {activeStruggles.length === 0 && !isAdding && (
-                    <div className="text-center py-4 bg-light rounded-4 border-2 border-dashed">
-                        <Target className="text-muted mb-2" size={32} />
-                        <p className="text-muted small fst-italic mb-0">
-                            No tienes luchas activas en este momento.
-                        </p>
-                    </div>
-                )}
+            <div className="row">
+                {/* Planes Disponibles */}
+                <div className="col-12 col-md-6">
+                    <h6 className="fw-bold text-muted text-uppercase small mb-3">Planes Disponibles ({availableStruggles.length})</h6>
+                    {availableStruggles.length === 0 && (
+                        <p className="text-muted small fst-italic mb-4">Crea o selecciona un plan para empezar tu transformación.</p>
+                    )}
+                    {availableStruggles.map(s => renderStruggleCard(s, true))}
+                </div>
 
-                {activeStruggles.map((struggle) => {
-                    const progress = (struggle.currentDay / 7) * 100;
-                    return (
-                        <div
-                            key={struggle.id}
-                            onClick={() => openStruggle(struggle)}
-                            className="bg-light p-3 rounded-4 border-0 position-relative overflow-hidden cursor-pointer hover-scale transition-all shadow-sm"
-                        >
-                            <div className="d-flex align-items-center justify-content-between mb-2">
-                                <div>
-                                    <span className="fw-bold d-block text-dark fs-5">{struggle.title}</span>
-                                    <div className="d-flex align-items-center gap-2">
-                                        <div className="badge bg-primary rounded-pill">Día {struggle.currentDay} / 7</div>
-                                        <span className="text-muted small">Haz clic para leer el plan</span>
-                                    </div>
-                                </div>
-                                <div className="text-primary">
-                                    <ChevronRight size={24} />
-                                </div>
-                            </div>
-
-                            {/* Simple Progress Bar */}
-                            <div className="progress" style={{ height: '6px', backgroundColor: '#e2e8f0' }}>
-                                <div
-                                    className="progress-bar bg-primary rounded-pill"
-                                    role="progressbar"
-                                    style={{ width: `${progress}%` }}
-                                    aria-valuenow={progress}
-                                    aria-valuemin={0}
-                                    aria-valuemax={100}
-                                ></div>
-                            </div>
-                        </div>
-                    );
-                })}
-
-                {overcomeStruggles.length > 0 && (
-                    <div className="mt-4 pt-3 border-top">
-                        <h6 className="small fw-bold text-muted text-uppercase mb-3 d-flex align-items-center gap-2">
-                            <Trophy size={14} className="text-warning" /> Victorias Recientes
-                        </h6>
-                        <div className="d-flex flex-wrap gap-2">
-                            {overcomeStruggles.map((struggle) => (
-                                <span key={struggle.id} className="badge bg-success-subtle text-success rounded-pill d-flex align-items-center gap-1 p-2 border border-success-subtle">
-                                    <CheckCircle2 size={12} /> {struggle.title}
-                                </span>
-                            ))}
-                        </div>
-                    </div>
-                )}
+                {/* En Progreso */}
+                <div className="col-12 col-md-6">
+                    <h6 className="fw-bold text-muted text-uppercase small mb-3">En Progreso ({activeStruggles.length})</h6>
+                    {activeStruggles.length === 0 && (
+                        <p className="text-muted small fst-italic mb-4">No tienes planes activos. ¡Inicia uno hoy!</p>
+                    )}
+                    {activeStruggles.map(s => renderStruggleCard(s))}
+                </div>
             </div>
 
+            {/* Victorias */}
+            {overcomeStruggles.length > 0 && (
+                <div className="mt-4 pt-4 border-top">
+                    <h6 className="small fw-bold text-muted text-uppercase mb-3 d-flex align-items-center gap-2">
+                        <Trophy size={16} className="text-warning" /> Salón de Victorias
+                    </h6>
+                    <div className="d-flex flex-wrap gap-2">
+                        {overcomeStruggles.map((struggle) => (
+                            <div key={struggle.id} className="p-3 bg-success-subtle border border-success-subtle rounded-4 d-flex align-items-center gap-3">
+                                <div className="bg-success text-white p-2 rounded-circle">
+                                    <Trophy size={16} />
+                                </div>
+                                <div>
+                                    <span className="fw-bold d-block text-success">{struggle.title}</span>
+                                    <small className="text-success-emphasis">Vencido con la gracia de Dios</small>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            )}
             {/* Modal */}
             {selectedStruggle && (
                 <StrugglePlanModal
@@ -162,6 +177,7 @@ export default function StruggleTracker({
                     struggleTitle={selectedStruggle.title}
                     currentDay={selectedStruggle.currentDay}
                     completedDays={selectedStruggle.completedDays}
+                    isStarted={selectedStruggle.isStarted}
                 />
             )}
 

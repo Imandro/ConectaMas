@@ -84,14 +84,14 @@ export default function LlamiTutorial({ onComplete }: LlamiTutorialProps) {
                     <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center">
                         <div className="row g-3 mb-4">
                             <div className="col-6">
-                                <div className="p-3 bg-white bg-opacity-10 rounded-4 border border-white border-opacity-10">
+                                <div className="p-3 rounded-4 border border-white border-opacity-10" style={{ backgroundColor: 'rgba(255, 255, 255, 0.08)' }}>
                                     <Zap className="text-warning mb-2" size={32} />
                                     <h6 className="fw-bold text-white mb-1">Nivel</h6>
                                     <p className="tiny text-white-50 mb-0">Sube de nivel con XP</p>
                                 </div>
                             </div>
                             <div className="col-6">
-                                <div className="p-3 bg-white bg-opacity-10 rounded-4 border border-white border-opacity-10">
+                                <div className="p-3 rounded-4 border border-white border-opacity-10" style={{ backgroundColor: 'rgba(255, 255, 255, 0.08)' }}>
                                     <Trophy className="text-warning mb-2" size={32} />
                                     <h6 className="fw-bold text-white mb-1">XP</h6>
                                     <p className="tiny text-white-50 mb-0">Gana XP en misiones</p>
@@ -140,7 +140,7 @@ export default function LlamiTutorial({ onComplete }: LlamiTutorialProps) {
                         <p className="text-white-50 mb-4">
                             Tu camino espiritual acaba de volverse más brillante. ¡Vamos a crecer juntos!
                         </p>
-                        <div className="p-3 bg-white bg-opacity-5 rounded-4 border border-white border-opacity-10 text-start">
+                        <div className="p-3 rounded-4 border border-white border-opacity-10 text-start" style={{ backgroundColor: 'rgba(255, 255, 255, 0.08)' }}>
                             <p className="small text-white-50 mb-0 italic">
                                 "Tu palabra es una lámpara que guía mis pies y una luz para mi camino."
                                 <br /><span className="text-warning fw-bold">- Salmos 119:105</span>

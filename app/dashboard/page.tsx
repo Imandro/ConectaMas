@@ -1,9 +1,8 @@
 "use client";
 
 import Link from 'next/link';
-import { Sun, AlertTriangle, Loader2, HelpCircle } from 'lucide-react';
+import { Sun, AlertTriangle, Loader2, HelpCircle, ChevronRight, ShieldAlert } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import StruggleTracker from './components/StruggleTracker';
 import DailyVerse from './components/DailyVerse';
 import DailyPrayerCard from '../components/DailyPrayerCard';
 import LlamiMascot from '../components/LlamiMascot';
@@ -81,7 +80,6 @@ export default function DashboardHome() {
 
     return (
         <div className="animate-fade-in">
-
             {/* Header */}
             <header className="d-flex justify-content-between align-items-center mb-4">
                 <div>
@@ -104,7 +102,6 @@ export default function DashboardHome() {
             <section className="mb-4" id="tour-verse">
                 <DailyVerse />
             </section>
-
 
             {/* Estado y SOS con Llami */}
             <section className="row g-3 mb-4">
@@ -148,9 +145,49 @@ export default function DashboardHome() {
                 </div>
             </section>
 
-            {/* Struggle Tracker (NEW) */}
+            {/* Mi Seguimiento - Resumen Premium */}
             <section className="mb-4" id="tour-struggles">
-                <StruggleTracker initialStruggles={stats?.struggles || []} />
+                <Link href="/dashboard/luchas" className="text-decoration-none">
+                    <div className="card border-0 shadow-sm bg-white overflow-hidden hover-scale transition-all" style={{ borderRadius: '24px' }}>
+                        <div className="card-body p-4">
+                            <div className="d-flex align-items-center justify-content-between mb-3">
+                                <div className="d-flex align-items-center gap-3">
+                                    <div className="bg-primary-subtle text-primary p-3 rounded-4">
+                                        <ShieldAlert size={28} />
+                                    </div>
+                                    <div>
+                                        <h5 className="fw-extrabold text-secondary m-0">Mi Seguimiento</h5>
+                                        <p className="text-muted small m-0">Gestiona tus planes de transformación</p>
+                                    </div>
+                                </div>
+                                <div className="text-primary bg-light p-2 rounded-circle">
+                                    <ChevronRight size={24} />
+                                </div>
+                            </div>
+
+                            <div className="row g-3">
+                                <div className="col-6">
+                                    <div className="bg-light p-3 rounded-4 text-center">
+                                        <span className="d-block fw-bold text-primary fs-4">
+                                            {stats?.struggles.filter((s: any) => s.status === "ACTIVE" && s.isStarted).length || 0}
+                                        </span>
+                                        <small className="text-muted fw-bold text-uppercase" style={{ fontSize: '0.65rem' }}>En Progreso</small>
+                                    </div>
+                                </div>
+                                <div className="col-6">
+                                    <div className="bg-light p-3 rounded-4 text-center">
+                                        <span className="d-block fw-bold text-warning fs-4">
+                                            {stats?.struggles.filter((s: any) => s.status === "ACTIVE" && !s.isStarted).length || 0}
+                                        </span>
+                                        <small className="text-muted fw-bold text-uppercase" style={{ fontSize: '0.65rem' }}>Próximos</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {/* Decorative bar */}
+                        <div className="bg-primary" style={{ height: '4px', width: '100%' }}></div>
+                    </div>
+                </Link>
             </section>
 
             {/* Daily Prayer */}

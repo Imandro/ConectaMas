@@ -12,10 +12,11 @@ import {
     ArrowLeft,
     Trophy,
     Flame,
-    Lock
+    Lock,
+    ShieldAlert
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import { getStrugglePlan, advanceStruggleDay, markStruggleAsOvercome } from "../actions";
+import { getStrugglePlan, advanceStruggleDay, markStruggleAsOvercome, startStrugglePlan } from "../actions";
 
 interface StrugglePlanDay {
     dayNumber: number;
@@ -49,13 +50,15 @@ export default function StrugglePlanModal({
     struggleId,
     struggleTitle,
     currentDay,
-    completedDays
-}: StrugglePlanModalProps) {
+    completedDays,
+    isStarted: initialIsStarted
+}: StrugglePlanModalProps & { isStarted: boolean }) {
     const [plan, setPlan] = useState<StrugglePlan | null>(null);
     const [loading, setLoading] = useState(true);
     const [selectedDay, setSelectedDay] = useState(currentDay);
     const [completing, setCompleting] = useState(false);
     const [showVictory, setShowVictory] = useState(false);
+    const [isStarted, setIsStarted] = useState(initialIsStarted);
 
     const completedDaysArray = completedDays ? completedDays.split(',').map(Number) : [];
 
@@ -63,8 +66,9 @@ export default function StrugglePlanModal({
         if (isOpen) {
             fetchPlan();
             setSelectedDay(currentDay);
+            setIsStarted(initialIsStarted);
         }
-    }, [isOpen, struggleTitle, currentDay]);
+    }, [isOpen, struggleTitle, currentDay, initialIsStarted]);
 
     async function fetchPlan() {
         setLoading(true);
@@ -73,6 +77,15 @@ export default function StrugglePlanModal({
             setPlan(data as any);
         }
         setLoading(false);
+    }
+
+    async function handleStartPlan() {
+        setCompleting(true);
+        const res = await startStrugglePlan(struggleId);
+        if (res.success) {
+            setIsStarted(true);
+        }
+        setCompleting(false);
     }
 
     async function handleCompleteDay(dayNum: number) {
@@ -101,7 +114,7 @@ export default function StrugglePlanModal({
 
     const currentPlanDay = plan?.days.find(d => d.dayNumber === selectedDay);
     const isDayCompleted = completedDaysArray.includes(selectedDay);
-    const isDayLocked = selectedDay > currentDay;
+    const isDayLocked = selectedDay > currentDay || !isStarted;
 
     return (
         <AnimatePresence>
@@ -143,8 +156,8 @@ export default function StrugglePlanModal({
                                             }`}
                                         style={{
                                             height: '40px',
-                                            background: completedDaysArray.includes(d) ? '#d4af37' : (d === currentDay ? '#3b82f6' : '#334155'),
-                                            opacity: d > currentDay ? 0.5 : 1
+                                            background: completedDaysArray.includes(d) ? '#d4af37' : (d === currentDay && isStarted ? '#3b82f6' : '#334155'),
+                                            opacity: (d > currentDay || !isStarted) ? 0.5 : 1
                                         }}
                                     >
                                         <div className="d-flex align-items-center justify-content-center h-100">
@@ -154,7 +167,7 @@ export default function StrugglePlanModal({
                                                 <span className="fw-bold text-white small">{d}</span>
                                             )}
                                         </div>
-                                        {d > currentDay && (
+                                        {(d > currentDay || !isStarted) && (
                                             <div className="position-absolute top-50 start-50 translate-middle">
                                                 <Lock size={12} className="text-white-50" />
                                             </div>
@@ -193,6 +206,24 @@ export default function StrugglePlanModal({
                                         {completing ? 'Guardando victoria...' : '¡He vencido esta lucha!'}
                                     </button>
                                 </motion.div>
+                            ) : !isStarted ? (
+                                <div className="text-center py-5">
+                                    <div className="bg-primary-subtle text-primary p-4 rounded-circle d-inline-block mb-4 shadow-sm">
+                                        <ShieldAlert size={64} />
+                                    </div>
+                                    <h3 className="fw-bold text-dark mb-3">¿Listo para comenzar?</h3>
+                                    <p className="text-muted mb-5 px-4">
+                                        Este es un compromiso de 7 días con Dios y contigo mismo.
+                                        Cada día desbloquearás contenido táctico, consejos y misiones prácticas.
+                                    </p>
+                                    <button
+                                        onClick={handleStartPlan}
+                                        disabled={completing}
+                                        className="btn btn-primary btn-lg rounded-pill px-5 fw-extrabold shadow-lg hover-scale pulse-animation"
+                                    >
+                                        {completing ? 'Iniciando...' : '¡INICIAR CAMINO DE TRANSFORMACIÓN! 🚀'}
+                                    </button>
+                                </div>
                             ) : currentPlanDay ? (
                                 <div className="animate-fade-in">
                                     {/* Título del Día */}
