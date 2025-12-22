@@ -7,11 +7,14 @@ import Link from "next/link";
 import LlamiMascot from "@/app/components/LlamiMascot";
 import { getOrCreateMascot, feedMascot } from "./actions";
 import { toast } from "react-hot-toast";
+import TriviaGame from "@/app/components/TriviaGame";
+import { Gamepad2 } from "lucide-react";
 
 export default function LlamiPage() {
     const [mascot, setMascot] = useState<any>(null);
     const [loading, setLoading] = useState(true);
     const [isFeeding, setIsFeeding] = useState(false);
+    const [isPlayingTrivia, setIsPlayingTrivia] = useState(false);
 
     const loadMascot = async () => {
         const data = await getOrCreateMascot();
@@ -56,154 +59,177 @@ export default function LlamiPage() {
     }
 
     return (
-        <div className="container-fluid py-4 min-vh-100 bg-conecta-gradient text-white">
+        <div className="container-fluid py-4 min-vh-100 bg-light text-primary">
             {/* Header */}
             <div className="d-flex align-items-center gap-3 mb-5">
-                <Link href="/dashboard" className="btn btn-outline-light rounded-circle p-2">
-                    <ChevronLeft size={20} />
+                <Link href="/dashboard" className="btn btn-white bg-white text-primary rounded-circle p-2 shadow-sm border-0">
+                    <ChevronLeft size={24} />
                 </Link>
-                <h1 className="h3 mb-0 fw-bold">El Refugio de Llami (Espíritu de Fuego)</h1>
+                <h1 className="h2 mb-0 fw-bold">El Refugio de Llami</h1>
             </div>
 
-            <div className="row justify-content-center">
-                <div className="col-lg-6 text-center">
-                    {/* Mascot Container */}
-                    <div className="position-relative py-5 mb-4">
-                        <AnimatePresence>
-                            {isFeeding && (
-                                <motion.div
-                                    initial={{ opacity: 0, scale: 0.5, y: 0 }}
-                                    animate={{ opacity: 1, scale: 1.2, y: -100 }}
-                                    exit={{ opacity: 0 }}
-                                    className="position-absolute start-50 translate-middle-x"
-                                    style={{ zIndex: 10 }}
-                                >
-                                    <Flame size={40} className="text-warning fill-current" />
-                                </motion.div>
-                            )}
-                        </AnimatePresence>
+            {isPlayingTrivia ? (
+                <div className="max-w-2xl mx-auto py-4">
+                    <TriviaGame onComplete={() => {
+                        setIsPlayingTrivia(false);
+                        loadMascot();
+                    }} />
+                </div>
+            ) : (
+                <div className="row justify-content-center">
+                    <div className="col-lg-5 text-center">
+                        {/* Mascot Container */}
+                        <div className="position-relative py-5 mb-4">
+                            <div className="bg-white rounded-circle mx-auto d-flex align-items-center justify-content-center shadow-sm" style={{ width: '250px', height: '250px', border: '4px solid #fff' }}>
+                                <AnimatePresence>
+                                    {isFeeding && (
+                                        <motion.div
+                                            initial={{ opacity: 0, scale: 0.5, y: 0 }}
+                                            animate={{ opacity: 1, scale: 1.5, y: -120 }}
+                                            exit={{ opacity: 0 }}
+                                            className="position-absolute start-50 translate-middle-x"
+                                            style={{ zIndex: 10 }}
+                                        >
+                                            <Flame size={60} className="text-warning fill-current" />
+                                        </motion.div>
+                                    )}
+                                </AnimatePresence>
 
-                        <div className="transform-scale-1">
-                            <LlamiMascot streak={1} lastMood={mascot.mood} />
-                        </div>
-                    </div>
-
-                    {/* Status Card */}
-                    <div className="card bg-glass border-0 shadow-lg rounded-5 p-4 mb-4">
-                        <div className="row g-3">
-                            {/* Level Block */}
-                            <div className="col-6">
-                                <div className="bg-white bg-opacity-10 rounded-4 p-3 h-100">
-                                    <div className="d-flex align-items-center justify-content-center gap-2 mb-2">
-                                        <Zap size={18} className="text-warning" />
-                                        <span className="small fw-bold opacity-75 uppercase">Nivel</span>
-                                    </div>
-                                    <div className="h2 mb-0 fw-bold">{mascot.level}</div>
-                                </div>
-                            </div>
-
-                            {/* Flame Points Block */}
-                            <div className="col-6">
-                                <div className="bg-white bg-opacity-10 rounded-4 p-3 h-100">
-                                    <div className="d-flex align-items-center justify-content-center gap-2 mb-2">
-                                        <Flame size={18} className="text-primary" />
-                                        <span className="small fw-bold opacity-75 uppercase">Fuego</span>
-                                    </div>
-                                    <div className="h2 mb-0 fw-bold text-primary">{mascot.flamePoints}</div>
+                                <div className="transform-scale-15">
+                                    <LlamiMascot streak={1} lastMood={mascot.mood} />
                                 </div>
                             </div>
                         </div>
 
-                        {/* XP Progress Bar */}
-                        <div className="mt-4 text-start">
-                            <div className="d-flex justify-content-between mb-2">
-                                <span className="small fw-bold opacity-75">Experiencia para Nivel {mascot.level + 1}</span>
-                                <span className="small fw-bold text-primary">{mascot.experience}/100</span>
+                        {/* Status Card */}
+                        <div className="card bg-white border-0 shadow-sm rounded-5 p-4 mb-4">
+                            <div className="row g-3">
+                                <div className="col-6">
+                                    <div className="p-3">
+                                        <div className="d-flex align-items-center justify-content-center gap-2 mb-1">
+                                            <Zap size={18} className="text-warning" />
+                                            <span className="small fw-bold text-muted">NIVEL</span>
+                                        </div>
+                                        <div className="h1 mb-0 fw-bold">{mascot.level}</div>
+                                    </div>
+                                </div>
+
+                                <div className="col-6">
+                                    <div className="p-3">
+                                        <div className="d-flex align-items-center justify-content-center gap-2 mb-1">
+                                            <Flame size={18} className="text-warning" />
+                                            <span className="small fw-bold text-muted">FUEGO</span>
+                                        </div>
+                                        <div className="h1 mb-0 fw-bold text-warning">{mascot.flamePoints}</div>
+                                    </div>
+                                </div>
                             </div>
-                            <div className="progress bg-white bg-opacity-10 rounded-pill" style={{ height: '12px' }}>
-                                <motion.div
-                                    className="progress-bar bg-primary rounded-pill"
-                                    initial={{ width: 0 }}
-                                    animate={{ width: `${mascot.experience}%` }}
-                                    transition={{ duration: 1 }}
-                                />
+
+                            {/* XP Progress Bar */}
+                            <div className="mt-4 text-start px-2">
+                                <div className="d-flex justify-content-between mb-3">
+                                    <span className="small fw-bold text-muted">Progreso para Nivel {mascot.level + 1}</span>
+                                    <span className="small fw-bold text-warning">{mascot.experience}/100 XP</span>
+                                </div>
+                                <div className="progress bg-light rounded-pill" style={{ height: '10px' }}>
+                                    <motion.div
+                                        className="progress-bar bg-warning rounded-pill"
+                                        initial={{ width: 0 }}
+                                        animate={{ width: `${mascot.experience}%` }}
+                                        transition={{ duration: 1 }}
+                                    />
+                                </div>
                             </div>
+                        </div>
+
+                        {/* Actions */}
+                        <div className="d-grid gap-3">
+                            <button
+                                onClick={handleFeed}
+                                disabled={mascot.flamePoints < 5 || isFeeding}
+                                className="btn btn-warning btn-lg rounded-pill py-3 fw-bold d-flex align-items-center justify-content-center gap-2 shadow-sm border-0"
+                                style={{
+                                    backgroundColor: '#f3b33e',
+                                    opacity: mascot.flamePoints < 5 ? 0.5 : 1,
+                                    color: '#0B1B32'
+                                }}
+                            >
+                                <Flame size={24} />
+                                Avivar el Fuego (-5 puntos)
+                            </button>
+
+                            <div className="small text-muted mb-4">
+                                Gana más puntos leyendo la Biblia o completando devocionales.
+                            </div>
+
+                            <button
+                                onClick={() => setIsPlayingTrivia(true)}
+                                className="btn btn-outline-primary btn-lg rounded-pill py-3 fw-bold d-flex align-items-center justify-content-center gap-2 border-2"
+                            >
+                                <Gamepad2 size={24} />
+                                Desafío Trivia Diario
+                            </button>
                         </div>
                     </div>
 
-                    {/* Actions */}
-                    <div className="d-grid gap-3">
-                        <button
-                            onClick={handleFeed}
-                            disabled={mascot.flamePoints < 5 || isFeeding}
-                            className={`btn btn-primary btn-lg rounded-pill py-3 fw-bold d-flex align-items-center justify-content-center gap-2 shadow-lg ${mascot.flamePoints < 5 ? 'opacity-50' : ''}`}
-                        >
-                            <Flame size={24} />
-                            Avivar el Fuego (-5 puntos)
-                        </button>
+                    {/* Info Sidebar */}
+                    <div className="col-lg-4 mt-5 mt-lg-0">
+                        <div className="card bg-white border-0 shadow-sm rounded-5 p-4 h-100">
+                            <h4 className="fw-bold mb-4 d-flex align-items-center gap-2 text-warning">
+                                <Sparkles size={24} />
+                                Guía del Cuidador
+                            </h4>
 
-                        <div className="small opacity-50 fst-italic">
-                            Gana más puntos leyendo la Biblia o completando devocionales.
+                            <div className="d-flex flex-column gap-4 text-start">
+                                <div className="d-flex gap-3 align-items-start">
+                                    <div className="bg-light p-3 rounded-4">
+                                        <Book className="text-warning" size={24} />
+                                    </div>
+                                    <div className="pt-1">
+                                        <h6 className="fw-bold mb-1">Lectura de la Biblia</h6>
+                                        <p className="small mb-0 text-muted">Gana 1 punto de fuego por cada minuto de lectura activa.</p>
+                                    </div>
+                                </div>
+
+                                <div className="d-flex gap-3 align-items-start">
+                                    <div className="bg-light p-3 rounded-4">
+                                        <Sparkles className="text-warning" size={24} />
+                                    </div>
+                                    <div className="pt-1">
+                                        <h6 className="fw-bold mb-1">Devocionales</h6>
+                                        <p className="small mb-0 text-muted">Cada devocional completo otorga 25 XP directos.</p>
+                                    </div>
+                                </div>
+
+                                <div className="d-flex gap-3 align-items-start">
+                                    <div className="bg-light p-3 rounded-4">
+                                        <Flame className="text-warning" size={24} />
+                                    </div>
+                                    <div className="pt-1">
+                                        <h6 className="fw-bold mb-1">Evolución</h6>
+                                        <p className="small mb-0 text-muted">Al subir de nivel, el espíritu de Llami brilla con más fuerza.</p>
+                                    </div>
+                                </div>
+
+                                <div className="d-flex gap-3 align-items-start">
+                                    <div className="bg-light p-3 rounded-4">
+                                        <Gamepad2 className="text-warning" size={24} />
+                                    </div>
+                                    <div className="pt-1">
+                                        <h6 className="fw-bold mb-1">Trivia Diaria</h6>
+                                        <p className="small mb-0 text-muted">5 preguntas rápidas. Repite las que fallaste ayer para ganar XP.</p>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-
-                {/* Info Sidebar */}
-                <div className="col-lg-4 mt-4 mt-lg-0">
-                    <div className="card bg-glass border-0 shadow-lg rounded-5 p-4 h-100">
-                        <h4 className="fw-bold mb-4 d-flex align-items-center gap-2">
-                            <Sparkles className="text-warning" />
-                            Guía del Cuidador
-                        </h4>
-
-                        <div className="d-flex flex-column gap-4">
-                            <div className="d-flex gap-3">
-                                <div className="bg-primary bg-opacity-20 p-2 rounded-3 h-fit">
-                                    <Book className="text-primary" size={20} />
-                                </div>
-                                <div>
-                                    <h6 className="fw-bold mb-1">Lectura de la Biblia</h6>
-                                    <p className="small mb-0 opacity-75">Gana 1 punto de fuego por cada minuto de lectura activa.</p>
-                                </div>
-                            </div>
-
-                            <div className="d-flex gap-3">
-                                <div className="bg-success bg-opacity-20 p-2 rounded-3 h-fit">
-                                    <Sparkles className="text-success" size={20} />
-                                </div>
-                                <div>
-                                    <h6 className="fw-bold mb-1">Devocionales</h6>
-                                    <p className="small mb-0 opacity-75">Cada devocional completo otorga 25 XP directos.</p>
-                                </div>
-                            </div>
-
-                            <div className="d-flex gap-3">
-                                <div className="bg-warning bg-opacity-20 p-2 rounded-3 h-fit">
-                                    <Flame className="text-warning" size={20} />
-                                </div>
-                                <div>
-                                    <h6 className="fw-bold mb-1">Evolución</h6>
-                                    <p className="small mb-0 opacity-75">Al subir de nivel, el espíritu de Llami brilla con más fuerza.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            )}
 
             <style jsx>{`
-                .bg-conecta-gradient { 
-                    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); 
+                .transform-scale-15 {
+                    transform: scale(2.0);
                 }
-                .bg-glass {
-                    background: rgba(255, 255, 255, 0.05);
-                    backdrop-filter: blur(12px);
-                    border: 1px solid rgba(255, 255, 255, 0.1);
-                }
-                .transform-scale-1 {
-                    transform: scale(1.0);
-                }
-                .h-fit { height: fit-content; }
             `}</style>
         </div>
     );

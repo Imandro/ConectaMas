@@ -147,6 +147,196 @@ async function main() {
 
     console.log('✅ 8 Forum Categories seeded')
 
+    // --- TRIVIA QUESTIONS ---
+    console.log('🎮 Seeding Trivia Questions...')
+    const triviaQuestions = [
+        {
+            question: "¿Quién construyó el arca para salvarse del diluvio?",
+            options: JSON.stringify(["Moisés", "Abraham", "Noé", "David"]),
+            correctIndex: 2,
+            explanation: "Noé construyó el arca por mandato de Dios para salvar a su familia y a los animales.",
+            reference: "Génesis 6:14",
+            difficulty: "EASY"
+        },
+        {
+            question: "¿Cuántos mandamientos entregó Dios a Moisés en el monte Sinaí?",
+            options: JSON.stringify(["5", "10", "12", "7"]),
+            correctIndex: 1,
+            explanation: "Dios entregó los 10 Mandamientos a Moisés grabados en tablas de piedra.",
+            reference: "Éxodo 20",
+            difficulty: "EASY"
+        },
+        {
+            question: "¿Quién fue el hombre más fuerte mencionado en la Biblia?",
+            options: JSON.stringify(["Sansón", "Goliat", "Salomón", "Pedro"]),
+            correctIndex: 0,
+            explanation: "Sansón fue un juez de Israel dotado de una fuerza sobrehumana por el Espíritu de Dios.",
+            reference: "Jueces 13-16",
+            difficulty: "EASY"
+        },
+        {
+            question: "¿Qué mar dividió Moisés para que el pueblo de Israel cruzara?",
+            options: JSON.stringify(["Mar Mediterráneo", "Mar Muerto", "Mar Rojo", "Mar de Galilea"]),
+            correctIndex: 2,
+            explanation: "Bajo el poder de Dios, Moisés extendió su vara y el Mar Rojo se dividió.",
+            reference: "Éxodo 14:21",
+            difficulty: "EASY"
+        },
+        {
+            question: "¿Quién fue vendido por sus hermanos como esclavo en Egipto?",
+            options: JSON.stringify(["Benjamín", "José", "Isaac", "Jacob"]),
+            correctIndex: 1,
+            explanation: "Los hermanos de José, celosos, lo vendieron a una caravana de ismaelitas.",
+            reference: "Génesis 37",
+            difficulty: "NORMAL"
+        },
+        {
+            question: "¿Cuál es el libro más corto del Antiguo Testamento?",
+            options: JSON.stringify(["Abdías", "Joel", "Amós", "Jonás"]),
+            correctIndex: 0,
+            explanation: "Abdías contiene solo un capítulo de 21 versículos.",
+            reference: "Abdías 1",
+            difficulty: "HARD"
+        },
+        {
+            question: "¿Cómo se llamaba el gigante que David derrotó?",
+            options: JSON.stringify(["Anac", "Og", "Goliat", "Nimrod"]),
+            correctIndex: 2,
+            explanation: "David, siendo un joven pastor, derrotó al gigante filisteo Goliat con una honda y una piedra.",
+            reference: "1 Samuel 17",
+            difficulty: "EASY"
+        },
+        {
+            question: "¿Cuál fue el primer milagro público de Jesús?",
+            options: JSON.stringify(["Caminar sobre el agua", "Multiplicar los panes", "Convertir el agua en vino", "Sanar a un ciego"]),
+            correctIndex: 2,
+            explanation: "Jesús convirtió el agua en vino durante una boda en Caná de Galilea.",
+            reference: "Juan 2:1-11",
+            difficulty: "NORMAL"
+        },
+        {
+            question: "¿Quién negó a Jesús tres veces antes de que el gallo cantara?",
+            options: JSON.stringify(["Juan", "Pedro", "Judas", "Andrés"]),
+            correctIndex: 1,
+            explanation: "Tal como Jesús lo predijo, Pedro lo negó tres veces por temor.",
+            reference: "Mateo 26:69-75",
+            difficulty: "EASY"
+        },
+        {
+            question: "¿Cuál es el fruto del Espíritu según Gálatas 5:22-23?",
+            options: JSON.stringify(["Dinero y poder", "Amor, gozo, paz...", "Salud y bienestar", "Fama y honor"]),
+            correctIndex: 1,
+            explanation: "El fruto del Espíritu es amor, gozo, paz, paciencia, benignidad, bondad, fe, mansedumbre, templanza.",
+            reference: "Gálatas 5:22-23",
+            difficulty: "NORMAL"
+        },
+        {
+            question: "¿Quién escribió la mayoría de las epístolas en el Nuevo Testamento?",
+            options: JSON.stringify(["Pedro", "Juan", "Pablo", "Lucas"]),
+            correctIndex: 2,
+            explanation: "El apóstol Pablo escribió 13 o 14 libros del Nuevo Testamento.",
+            reference: "Nuevo Testamento",
+            difficulty: "NORMAL"
+        },
+        {
+            question: "¿En qué ciudad nació Jesús?",
+            options: JSON.stringify(["Nazaret", "Jerusalén", "Belén", "Egipto"]),
+            correctIndex: 2,
+            explanation: "Jesús nació en Belén de Judea, cumpliendo la profecía de Miqueas.",
+            reference: "Mateo 2:1",
+            difficulty: "EASY"
+        },
+        {
+            question: "¿Qué profeta fue tragado por un gran pez?",
+            options: JSON.stringify(["Isaías", "Jeremías", "Jonás", "Ezequiel"]),
+            correctIndex: 2,
+            explanation: "Jonás intentó huir de Dios y fue tragado por un gran pez donde pasó tres días.",
+            reference: "Jonás 1:17",
+            difficulty: "EASY"
+        },
+        {
+            question: "¿Quién fue la madre de Jesús?",
+            options: JSON.stringify(["Marta", "María", "Magdalena", "Isabel"]),
+            correctIndex: 1,
+            explanation: "María fue la virgen escogida por Dios para dar a luz al Salvador.",
+            reference: "Lucas 1:30-31",
+            difficulty: "EASY"
+        },
+        {
+            question: "¿Cuál fue el nombre del primer hombre creado por Dios?",
+            options: JSON.stringify(["Abel", "Set", "Adán", "Enós"]),
+            correctIndex: 2,
+            explanation: "Dios formó a Adán del polvo de la tierra y sopló en él aliento de vida.",
+            reference: "Génesis 2:7",
+            difficulty: "EASY"
+        },
+        {
+            question: "¿Qué apóstol caminó sobre el agua hacia Jesús?",
+            options: JSON.stringify(["Juan", "Jacobo", "Pedro", "Felipe"]),
+            correctIndex: 2,
+            explanation: "Pedro caminó sobre el agua por un momento hasta que tuvo duda.",
+            reference: "Mateo 14:29",
+            difficulty: "NORMAL"
+        },
+        {
+            question: "¿A quién resucitó Jesús en Betania tras cuatro días de muerto?",
+            options: JSON.stringify(["Lázaro", "Jairo", "Bartimeo", "El hijo de la viuda"]),
+            correctIndex: 0,
+            explanation: "Jesús gritó '¡Lázaro, sal fuera!' y el que había muerto salió.",
+            reference: "Juan 11",
+            difficulty: "NORMAL"
+        },
+        {
+            question: "¿Qué animal habló a Balaam por su desobediencia?",
+            options: JSON.stringify(["Un camello", "Una oveja", "Una burra", "Un león"]),
+            correctIndex: 2,
+            explanation: "El Señor abrió la boca de la burra para reprender al profeta Balaam.",
+            reference: "Números 22:28",
+            difficulty: "NORMAL"
+        },
+        {
+            question: "¿Quién pidió la cabeza de Juan el Bautista en una bandeja?",
+            options: JSON.stringify(["Herodías", "Salomé", "Jezabel", "Dalila"]),
+            correctIndex: 1,
+            explanation: "Salomé, influenciada por su madre Herodías, pidió la cabeza de Juan.",
+            reference: "Mateo 14:8",
+            difficulty: "NORMAL"
+        },
+        {
+            question: "¿Cuál es el último libro de la Biblia?",
+            options: JSON.stringify(["Judas", "Hebreos", "Apocalipsis", "Malaquías"]),
+            correctIndex: 2,
+            explanation: "El Apocalipsis es el libro de la revelación de Jesucristo.",
+            reference: "Apocalipsis 22",
+            difficulty: "EASY"
+        }
+    ];
+
+    for (const q of triviaQuestions) {
+        await prismaAny.triviaQuestion.upsert({
+            where: { id: `trivia-${triviaQuestions.indexOf(q)}` }, // deterministic ID for seeding
+            update: {
+                question: q.question,
+                options: q.options,
+                correctIndex: q.correctIndex,
+                explanation: q.explanation,
+                reference: q.reference,
+                difficulty: q.difficulty
+            },
+            create: {
+                id: `trivia-${triviaQuestions.indexOf(q)}`,
+                question: q.question,
+                options: q.options,
+                correctIndex: q.correctIndex,
+                explanation: q.explanation,
+                reference: q.reference,
+                difficulty: q.difficulty
+            }
+        });
+    }
+
+    console.log('✅ 20 Trivia Questions seeded')
+
     console.log('🌳 Database seed completed')
 }
 

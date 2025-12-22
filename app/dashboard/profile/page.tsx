@@ -31,7 +31,6 @@ export default async function ProfilePage() {
         });
     } catch (e) {
         // Fallback: Fetch MINIMAL data if Schema is outdated (avoids crash)
-        console.warn("Prisma Client outdated. Fetching basic fields only.");
         user = await prisma.user.findUnique({
             where: { email: session.user.email },
             select: {
@@ -73,11 +72,7 @@ export default async function ProfilePage() {
                         <label className="small text-muted fw-bold">Género</label>
                         <p className="fw-medium">
                             {/* @ts-ignore: Gender might be missing in old client gen */}
-                            {user.gender === 'MALE' ? 'Hombre 👨' : user.gender === 'FEMALE' ? 'Mujer 👩' : (
-                                <span className="text-warning small fst-italic">
-                                    (Reinicia la terminal con 'Ctrl+C' y 'npm run dev' para ver cambios)
-                                </span>
-                            )}
+                            {user.gender === 'MALE' ? 'Hombre 👨' : user.gender === 'FEMALE' ? 'Mujer 👩' : 'No especificado'}
                         </p>
                     </div>
                 </div>

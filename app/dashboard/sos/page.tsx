@@ -3,10 +3,12 @@
 export const dynamic = 'force-dynamic';
 
 import Link from 'next/link';
-import { X, Phone, BookHeart, Music } from 'lucide-react';
+import { X, Phone, BookHeart, Music, Plus, Loader2 } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
 import { seedSongsAction } from './seed-action';
+import EnhancedMusicPlayer from '@/app/components/EnhancedMusicPlayer';
+import MusicUploadModal from '@/app/components/MusicUploadModal';
 
 export default function EmergencyPage() {
     const { data: session } = useSession();
@@ -17,6 +19,7 @@ export default function EmergencyPage() {
     const [currentSong, setCurrentSong] = useState<any>(null);
     const [audio, setAudio] = useState<HTMLAudioElement | null>(null);
     const [randomTruths, setRandomTruths] = useState<string[]>([]);
+    const [showUploadModal, setShowUploadModal] = useState(false);
 
     const TRUTHS = [
         "Dios no está enojado contigo, Él está peliando por ti.",
@@ -38,16 +41,20 @@ export default function EmergencyPage() {
         setShowTruths(true);
     };
 
+    const fetchSongs = () => {
+        fetch('/api/songs')
+            .then(res => res.json())
+            .then(data => setSongs(data))
+            .catch(err => console.error("Error fetching songs:", err));
+    };
+
     useEffect(() => {
         // Simular efecto de respiración / calma al entrar
         const timer = setTimeout(() => setShowContent(true), 500);
 
         // Seed songs and fetch
         seedSongsAction().then(res => {
-            fetch('/api/songs')
-                .then(res => res.json())
-                .then(data => setSongs(data))
-                .catch(err => console.error("Error fetching songs:", err));
+            fetchSongs();
         });
 
         return () => clearTimeout(timer);
@@ -178,32 +185,35 @@ export default function EmergencyPage() {
                         <div className="bg-white bg-opacity-10 backdrop-blur-sm rounded-4 p-4 border border-white-50">
                             <div className="d-flex justify-content-between align-items-center mb-4">
                                 <h3 className="fw-bold m-0 d-flex align-items-center gap-2"><Music size={28} /> Música para el alma</h3>
-                                <button onClick={() => { setShowMusic(false); stopMusic(); }} className="btn btn-sm btn-outline-light rounded-circle"><X size={20} /></button>
+                                <div className="d-flex gap-2">
+                                    <button
+                                        onClick={() => setShowUploadModal(true)}
+                                        className="btn btn-sm btn-warning rounded-pill px-3 fw-bold d-flex align-items-center gap-1 shadow-sm"
+                                        style={{ backgroundColor: '#f3b33e', color: '#0B1B32', border: 'none' }}
+                                    >
+                                        <Plus size={18} /> Subir
+                                    </button>
+                                    <button onClick={() => { setShowMusic(false); stopMusic(); }} className="btn btn-sm btn-outline-light rounded-circle"><X size={20} /></button>
+                                </div>
                             </div>
 
                             {songs.length === 0 ? (
-                                <p>Cargando música...</p>
+                                <div className="text-center py-5">
+                                    <Loader2 className="animate-spin mb-3 mx-auto" size={40} />
+                                    <p className="opacity-75">Cargando música...</p>
+                                </div>
                             ) : (
-                                <ul className="list-unstyled p-0 m-0 d-flex flex-column gap-3">
-                                    {songs.map((song) => (
-                                        <li key={song.id} className="d-flex justify-content-between align-items-center bg-white bg-opacity-10 p-3 rounded-3">
-                                            <div>
-                                                <span className="d-block fw-bold fs-5">{song.title}</span>
-                                                <small className="opacity-75">{song.artist}</small>
-                                            </div>
-                                            <button
-                                                onClick={() => currentSong?.id === song.id ? stopMusic() : playSong(song)}
-                                                className={`btn btn-light rounded-circle p-3 ${currentSong?.id === song.id ? 'text-primary' : 'text-secondary'}`}
-                                            >
-                                                {currentSong?.id === song.id ? <div className="spinner-grow spinner-grow-sm" role="status" /> : <Music size={20} />}
-                                            </button>
-                                        </li>
-                                    ))}
-                                </ul>
+                                <EnhancedMusicPlayer songs={songs} />
                             )}
                         </div>
                     </div>
                 )}
+
+                <MusicUploadModal
+                    isOpen={showUploadModal}
+                    onClose={() => setShowUploadModal(false)}
+                    onSuccess={fetchSongs}
+                />
 
             </div>
 

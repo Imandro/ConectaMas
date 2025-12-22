@@ -4,7 +4,7 @@ import { prisma } from "@/app/lib/prisma";
 import { revalidatePath } from "next/cache";
 
 export async function seedSongsAction() {
-    console.log('🎵 Seeding songs from Server Action...');
+    // Seed logging removed
     const prismaAny = prisma as any;
 
     const songs = [
@@ -49,7 +49,7 @@ export async function seedSongsAction() {
                 create: song,
             });
         }
-        console.log('✅ Songs seeded successfully');
+        // Success logging removed
         revalidatePath('/dashboard/sos');
         return { success: true };
     } catch (error) {

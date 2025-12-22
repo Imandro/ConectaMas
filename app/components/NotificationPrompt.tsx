@@ -11,7 +11,7 @@ export default function NotificationPrompt() {
         // Register Service Worker for Push Notifications
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.register('/sw.js').then((registration) => {
-                console.log('Service Worker registered with scope:', registration.scope);
+                // SW registration log removed
             }).catch((error) => {
                 console.error('Service Worker registration failed:', error);
             });
@@ -54,7 +54,7 @@ export default function NotificationPrompt() {
                             const res = await fetch('/api/notifications/subscribe', {
                                 method: 'POST',
                                 headers: { 'Content-Type': 'application/json' },
-                                body: JSON.stringify(newSub),
+                                body: JSON.stringify(newSub.toJSON()),
                             });
 
                             if (!res.ok) throw new Error("Failed to save subscription on server");

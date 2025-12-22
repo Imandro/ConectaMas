@@ -49,7 +49,7 @@ export default function PushNotificationManager() {
             const res = await fetch('/api/notifications/subscribe', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(sub),
+                body: JSON.stringify(sub.toJSON()),
             });
 
             if (res.ok) {

@@ -10,6 +10,7 @@ export async function submitOnboarding(data: {
     connectionMethods: string[];
     gender: string;
     mascotName?: string;
+    leaderPhone?: string;
 }) {
     const session = await auth();
 
@@ -23,7 +24,8 @@ export async function submitOnboarding(data: {
         problemsFaced,
         connectionMethods,
         gender,
-        mascotName
+        mascotName,
+        leaderPhone
     } = data;
 
     // Validate required fields
@@ -39,6 +41,7 @@ export async function submitOnboarding(data: {
             problemsFaced: JSON.stringify(problemsFaced),
             connectionMethods: JSON.stringify(connectionMethods),
             gender,
+            leaderPhone,
             hasCompletedOnboarding: true,
             // Create or update Mascot
             mascot: {

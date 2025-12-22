@@ -59,6 +59,7 @@ model User {
   accounts          Account[]
   sessions          Session[]
   mascot            Mascot?
+  triviaAttempts    UserTriviaAttempt[]
 }
 
 model UserDevotional {
@@ -315,6 +316,31 @@ model Mascot {
   
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+}
+
+model TriviaQuestion {
+  id            String   @id @default(cuid())
+  question      String
+  options       String   // JSON string of options ["A", "B", "C", "D"]
+  correctIndex  Int      // 0-indexed
+  explanation   String?
+  reference     String?
+  difficulty    String   @default("NORMAL") // EASY, NORMAL, HARD
+  
+  attempts      UserTriviaAttempt[]
+}
+
+model UserTriviaAttempt {
+  id            String   @id @default(cuid())
+  userId        String
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  questionId    String
+  question      TriviaQuestion @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  
+  isCorrect     Boolean
+  attemptDate   DateTime @default(now())
+
+  @@unique([userId, questionId])
 }
 
 model ResetToken {

@@ -11,6 +11,10 @@ export async function POST(req: NextRequest) {
 
         const subscription = await req.json();
 
+        if (!subscription.endpoint || !subscription.keys?.p256dh || !subscription.keys?.auth) {
+            return NextResponse.json({ error: "Invalid subscription data" }, { status: 400 });
+        }
+
         // Save the subscription to the database
         await prisma.pushSubscription.upsert({
             where: {

@@ -86,7 +86,7 @@ export async function sendStoredNotifications() {
         }));
 
         sentCount = results.filter(r => r.status === 'fulfilled').length;
-        console.log(`Successfully sent ${sentCount} notifications.`);
+        // Success logging removed
 
         // Limpiar suscripciones inválidas (410 Gone / 404 Not Found)
         const expiredSubs = results
@@ -98,7 +98,7 @@ export async function sendStoredNotifications() {
             await prisma.pushSubscription.deleteMany({
                 where: { endpoint: { in: expiredSubs } }
             });
-            console.log(`Deleted ${expiredSubs.length} expired subscriptions.`);
+            // Cleanup logging removed
         }
 
         return { success: true, sent: sentCount };
