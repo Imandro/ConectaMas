@@ -89,7 +89,7 @@ export default function TriviaGame({ onComplete }: TriviaGameProps) {
 
     if (questions.length === 0) {
         return (
-            <div className="text-center py-5 bg-white bg-opacity-5 rounded-4 border border-white border-opacity-10">
+            <div className="text-center py-5 rounded-4" style={{ backgroundColor: 'rgba(255, 255, 255, 0.05)', border: '1px solid rgba(255, 255, 255, 0.1)' }}>
                 <Info size={48} className="text-warning mb-3 mx-auto" />
                 <h4 className="text-white mb-2">¡Todo al día!</h4>
                 <p className="text-white-50">Has completado todas las preguntas disponibles por ahora.</p>
@@ -103,7 +103,8 @@ export default function TriviaGame({ onComplete }: TriviaGameProps) {
             <motion.div
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
-                className="text-center py-5 bg-white bg-opacity-10 backdrop-blur-md rounded-4 border border-white border-opacity-20 shadow-2xl p-4"
+                className="text-center py-5 rounded-4 shadow-2xl p-4"
+                style={{ backgroundColor: 'rgba(255, 255, 255, 0.1)', border: '1px solid rgba(255, 255, 255, 0.2)', backdropFilter: 'blur(10px)' }}
             >
                 <Trophy size={80} className="text-warning mb-4 mx-auto" />
                 <h2 className="display-5 fw-bold text-white mb-2">¡Desafío Diario Completo!</h2>
@@ -153,11 +154,12 @@ export default function TriviaGame({ onComplete }: TriviaGameProps) {
                     <span>PREGUNTA {currentIndex + 1} DE {questions.length}</span>
                     <span>{Math.round(((currentIndex) / questions.length) * 100)}%</span>
                 </div>
-                <div className="progress rounded-pill bg-white bg-opacity-10" style={{ height: '8px' }}>
+                <div className="progress rounded-pill" style={{ height: '8px', backgroundColor: 'rgba(255, 255, 255, 0.1)' }}>
                     <motion.div
                         className="progress-bar bg-warning rounded-pill"
                         initial={{ width: 0 }}
                         animate={{ width: `${((currentIndex + 1) / questions.length) * 100}%` }}
+                        style={{ backgroundColor: '#f3b33e' }}
                     />
                 </div>
             </div>
@@ -168,7 +170,8 @@ export default function TriviaGame({ onComplete }: TriviaGameProps) {
                     initial={{ opacity: 0, x: 20 }}
                     animate={{ opacity: 1, x: 0 }}
                     exit={{ opacity: 0, x: -20 }}
-                    className="bg-white bg-opacity-10 backdrop-blur-sm rounded-4 p-4 border border-white border-opacity-20 shadow-xl"
+                    className="rounded-4 p-4 shadow-xl"
+                    style={{ backgroundColor: 'rgba(255, 255, 255, 0.1)', border: '1px solid rgba(255, 255, 255, 0.2)', backdropFilter: 'blur(5px)' }}
                 >
                     <h3 className="fw-bold text-white mb-4 lh-base" style={{ fontSize: '1.4rem' }}>
                         {currentQ.question}
@@ -179,13 +182,31 @@ export default function TriviaGame({ onComplete }: TriviaGameProps) {
                             const isSelected = selectedOption === idx;
                             const isCorrectOption = idx === currentQ.correctIndex;
 
-                            let buttonClass = "btn btn-outline-light text-start p-3 rounded-4 border-2 transition-all d-flex justify-content-between align-items-center";
+                            let buttonStyle: React.CSSProperties = {
+                                border: '2px solid',
+                                borderColor: 'rgba(255, 255, 255, 0.2)',
+                                backgroundColor: 'rgba(255, 255, 255, 0.05)',
+                                color: 'white',
+                                transition: 'all 0.2s ease'
+                            };
+
+                            let buttonClass = "btn text-start p-3 rounded-4 d-flex justify-content-between align-items-center";
+
                             if (showFeedback) {
-                                if (isCorrectOption) buttonClass = "btn btn-success text-start p-3 rounded-4 border-0 d-flex justify-content-between align-items-center";
-                                else if (isSelected) buttonClass = "btn btn-danger text-start p-3 rounded-4 border-0 d-flex justify-content-between align-items-center";
-                                else buttonClass = "btn btn-outline-light text-start p-3 rounded-4 border-2 opacity-50 d-flex justify-content-between align-items-center";
+                                if (isCorrectOption) {
+                                    buttonStyle = { ...buttonStyle, backgroundColor: '#198754', border: 'none' };
+                                } else if (isSelected) {
+                                    buttonStyle = { ...buttonStyle, backgroundColor: '#dc3545', border: 'none' };
+                                } else {
+                                    buttonStyle = { ...buttonStyle, opacity: 0.5 };
+                                }
                             } else if (isSelected) {
-                                buttonClass = "btn btn-warning text-start p-3 rounded-4 border-0 text-primary fw-bold d-flex justify-content-between align-items-center";
+                                buttonStyle = {
+                                    ...buttonStyle,
+                                    backgroundColor: 'rgba(243, 179, 62, 0.2)',
+                                    borderColor: '#f3b33e',
+                                    fontWeight: 'bold'
+                                };
                             }
 
                             return (
@@ -194,6 +215,7 @@ export default function TriviaGame({ onComplete }: TriviaGameProps) {
                                     onClick={() => handleOptionSelect(idx)}
                                     disabled={showFeedback || isSubmitting}
                                     className={buttonClass}
+                                    style={buttonStyle}
                                 >
                                     <span className="fs-5">{option}</span>
                                     {showFeedback && isCorrectOption && <CheckCircle2 size={24} />}

@@ -123,11 +123,11 @@ export default function OnboardingSteps() {
         <div className="min-vh-100 bg-primary d-flex align-items-center justify-content-center p-3">
             <div className="w-100" style={{ maxWidth: '600px' }}>
                 {/* Progress Bar */}
-                <div className="mb-4 bg-white bg-opacity-10 rounded-pill p-1 shadow-sm">
+                <div className="mb-4 rounded-pill p-1 shadow-sm" style={{ backgroundColor: 'rgba(255, 255, 255, 0.1)' }}>
                     <div
                         className="progress-bar bg-warning transition-all duration-500 rounded-pill"
                         role="progressbar"
-                        style={{ width: `${(step / totalSteps) * 100}%`, height: '8px' }}
+                        style={{ width: `${(step / totalSteps) * 100}%`, height: '8px', backgroundColor: '#f3b33e' }}
                     />
                 </div>
 
@@ -155,11 +155,12 @@ export default function OnboardingSteps() {
                                             <button
                                                 key={option.id}
                                                 onClick={() => setSpiritualStatus(option.id)}
-                                                className={`btn btn-lg text-start d-flex align-items-center gap-3 p-3 transition-all rounded-4 ${isSelected
-                                                    ? `border-warning bg-white bg-opacity-10 fw-bold shadow-lg`
-                                                    : 'border-white border-opacity-10 bg-white bg-opacity-5'
-                                                    }`}
-                                                style={{ border: '2px solid' }}
+                                                className={`btn btn-lg text-start d-flex align-items-center gap-3 p-3 transition-all rounded-4 ${isSelected ? 'fw-bold shadow-lg' : ''}`}
+                                                style={{
+                                                    border: '2px solid',
+                                                    borderColor: isSelected ? '#f3b33e' : 'rgba(255, 255, 255, 0.1)',
+                                                    backgroundColor: isSelected ? 'rgba(243, 179, 62, 0.15)' : 'rgba(255, 255, 255, 0.05)'
+                                                }}
                                             >
                                                 <div className="d-flex align-items-center justify-content-center" style={{ width: '40px' }}>
                                                     <Icon size={24} className="text-warning" />
@@ -171,7 +172,7 @@ export default function OnboardingSteps() {
                                 </div>
 
                                 {selectedOption && selectedOption.prayer && (
-                                    <div className="bg-white bg-opacity-5 p-4 rounded-4 mb-5 text-start animate-fade-in border border-white border-opacity-10">
+                                    <div className="p-4 rounded-4 mb-5 text-start animate-fade-in" style={{ backgroundColor: 'rgba(255, 255, 255, 0.05)', border: '1px solid rgba(255, 255, 255, 0.1)' }}>
                                         <h6 className="fw-bold text-warning mb-2">Oración</h6>
                                         <p className="fst-italic text-white-50 small m-0">
                                             "{selectedOption.prayer}"
@@ -208,11 +209,13 @@ export default function OnboardingSteps() {
                                         <button
                                             key={sin}
                                             onClick={() => handleToggle(sin, sinsSelected, setSinsSelected)}
-                                            className={`btn btn-lg text-start d-flex align-items-center gap-3 p-3 transition-all rounded-4 ${sinsSelected.includes(sin)
-                                                ? 'border-warning bg-white bg-opacity-10 fw-bold'
-                                                : 'border-white border-opacity-5 bg-white bg-opacity-5'
-                                                }`}
-                                            style={{ border: '2px solid', fontSize: '1rem' }}
+                                            className={`btn btn-lg text-start d-flex align-items-center gap-3 p-3 transition-all rounded-4 ${sinsSelected.includes(sin) ? 'fw-bold' : ''}`}
+                                            style={{
+                                                border: '2px solid',
+                                                fontSize: '1rem',
+                                                borderColor: sinsSelected.includes(sin) ? '#f3b33e' : 'rgba(255, 255, 255, 0.1)',
+                                                backgroundColor: sinsSelected.includes(sin) ? 'rgba(243, 179, 62, 0.15)' : 'rgba(255, 255, 255, 0.05)'
+                                            }}
                                         >
                                             <div className="d-flex align-items-center justify-content-center" style={{ width: '24px' }}>
                                                 {sinsSelected.includes(sin) ? <Check className="text-warning" size={20} /> : <div style={{ width: '20px', height: '20px', borderRadius: '4px', border: '2px solid rgba(255,255,255,0.2)' }} />}
@@ -257,11 +260,13 @@ export default function OnboardingSteps() {
                                         <button
                                             key={problem}
                                             onClick={() => handleToggle(problem, problemsSelected, setProblemsSelected)}
-                                            className={`btn btn-lg text-start d-flex align-items-center gap-3 p-3 transition-all rounded-4 ${problemsSelected.includes(problem)
-                                                ? 'border-warning bg-white bg-opacity-10 fw-bold'
-                                                : 'border-white border-opacity-5 bg-white bg-opacity-5'
-                                                }`}
-                                            style={{ border: '2px solid', fontSize: '1rem' }}
+                                            className={`btn btn-lg text-start d-flex align-items-center gap-3 p-3 transition-all rounded-4 ${problemsSelected.includes(problem) ? 'fw-bold' : ''}`}
+                                            style={{
+                                                border: '2px solid',
+                                                fontSize: '1rem',
+                                                borderColor: problemsSelected.includes(problem) ? '#f3b33e' : 'rgba(255, 255, 255, 0.1)',
+                                                backgroundColor: problemsSelected.includes(problem) ? 'rgba(243, 179, 62, 0.15)' : 'rgba(255, 255, 255, 0.05)'
+                                            }}
                                         >
                                             <div className="d-flex align-items-center justify-content-center" style={{ width: '24px' }}>
                                                 {problemsSelected.includes(problem) ? <Check className="text-warning" size={20} /> : <div style={{ width: '20px', height: '20px', borderRadius: '4px', border: '2px solid rgba(255,255,255,0.2)' }} />}
@@ -306,11 +311,13 @@ export default function OnboardingSteps() {
                                         <button
                                             key={method}
                                             onClick={() => handleToggle(method, connectionSelected, setConnectionSelected)}
-                                            className={`btn btn-lg text-start d-flex align-items-center gap-3 p-3 transition-all rounded-4 ${connectionSelected.includes(method)
-                                                ? 'border-warning bg-white bg-opacity-10 fw-bold'
-                                                : 'border-white border-opacity-5 bg-white bg-opacity-5'
-                                                }`}
-                                            style={{ border: '2px solid', fontSize: '1rem' }}
+                                            className={`btn btn-lg text-start d-flex align-items-center gap-3 p-3 transition-all rounded-4 ${connectionSelected.includes(method) ? 'fw-bold' : ''}`}
+                                            style={{
+                                                border: '2px solid',
+                                                fontSize: '1rem',
+                                                borderColor: connectionSelected.includes(method) ? '#f3b33e' : 'rgba(255, 255, 255, 0.1)',
+                                                backgroundColor: connectionSelected.includes(method) ? 'rgba(243, 179, 62, 0.15)' : 'rgba(255, 255, 255, 0.05)'
+                                            }}
                                         >
                                             <div className="d-flex align-items-center justify-content-center" style={{ width: '24px' }}>
                                                 {connectionSelected.includes(method) ? <Check className="text-warning" size={20} /> : <div style={{ width: '20px', height: '20px', borderRadius: '4px', border: '2px solid rgba(255,255,255,0.2)' }} />}
@@ -359,10 +366,12 @@ export default function OnboardingSteps() {
                                     <div className="col-6">
                                         <button
                                             onClick={() => setGender('MALE')}
-                                            className={`w-100 p-4 rounded-4 border transition-all d-flex flex-column align-items-center gap-3
-                                 ${gender === 'MALE' ? 'border-warning bg-white bg-opacity-10 fw-bold' : 'border-white border-opacity-5 bg-white bg-opacity-5'}
-                                 `}
-                                            style={{ border: '2px solid' }}
+                                            className={`w-100 p-4 rounded-4 border transition-all d-flex flex-column align-items-center gap-3 ${gender === 'MALE' ? 'fw-bold' : ''}`}
+                                            style={{
+                                                border: '2px solid',
+                                                borderColor: gender === 'MALE' ? '#f3b33e' : 'rgba(255, 255, 255, 0.1)',
+                                                backgroundColor: gender === 'MALE' ? 'rgba(243, 179, 62, 0.15)' : 'rgba(255, 255, 255, 0.05)'
+                                            }}
                                         >
                                             <span className="fs-1">👨</span>
                                             <span className="text-white">Hombre</span>
@@ -371,10 +380,12 @@ export default function OnboardingSteps() {
                                     <div className="col-6">
                                         <button
                                             onClick={() => setGender('FEMALE')}
-                                            className={`w-100 p-4 rounded-4 border transition-all d-flex flex-column align-items-center gap-3
-                                 ${gender === 'FEMALE' ? 'border-warning bg-white bg-opacity-10 fw-bold' : 'border-white border-opacity-5 bg-white bg-opacity-5'}
-                                 `}
-                                            style={{ border: '2px solid' }}
+                                            className={`w-100 p-4 rounded-4 border transition-all d-flex flex-column align-items-center gap-3 ${gender === 'FEMALE' ? 'fw-bold' : ''}`}
+                                            style={{
+                                                border: '2px solid',
+                                                borderColor: gender === 'FEMALE' ? '#f3b33e' : 'rgba(255, 255, 255, 0.1)',
+                                                backgroundColor: gender === 'FEMALE' ? 'rgba(243, 179, 62, 0.15)' : 'rgba(255, 255, 255, 0.05)'
+                                            }}
                                         >
                                             <span className="fs-1">👩</span>
                                             <span className="text-white">Mujer</span>
@@ -402,7 +413,7 @@ export default function OnboardingSteps() {
                         {step === 6 && (
                             <div className="animate-fade-in text-center">
                                 <div className="mx-auto mb-4 d-flex justify-content-center">
-                                    <div className="bg-white bg-opacity-5 rounded-circle p-4 border border-white border-opacity-10 shadow-lg">
+                                    <div className="rounded-circle p-4 shadow-lg" style={{ backgroundColor: 'rgba(255, 255, 255, 0.05)', border: '1px solid rgba(255, 255, 255, 0.1)' }}>
                                         <LlamiMascot streak={1} level={1} />
                                     </div>
                                 </div>
@@ -415,11 +426,17 @@ export default function OnboardingSteps() {
                                 <div className="mb-4">
                                     <input
                                         type="text"
-                                        className="form-control form-control-lg text-center fw-bold text-white bg-white bg-opacity-5 border-white border-opacity-10 rounded-4 py-3"
+                                        className="form-control form-control-lg text-center fw-bold text-white rounded-4 py-3"
                                         placeholder="Ej. Fe, Esperanza, Llami..."
                                         value={mascotName}
                                         onChange={(e) => setMascotName(e.target.value)}
-                                        style={{ fontSize: '1.2rem', outline: 'none', boxShadow: 'none' }}
+                                        style={{
+                                            fontSize: '1.2rem',
+                                            outline: 'none',
+                                            boxShadow: 'none',
+                                            backgroundColor: 'rgba(255, 255, 255, 0.05)',
+                                            border: '1px solid rgba(255, 255, 255, 0.1)'
+                                        }}
                                     />
                                 </div>
 
@@ -452,11 +469,17 @@ export default function OnboardingSteps() {
                                 <div className="mb-4">
                                     <input
                                         type="tel"
-                                        className="form-control form-control-lg text-center fw-bold text-white bg-white bg-opacity-5 border-white border-opacity-10 rounded-4 py-3"
+                                        className="form-control form-control-lg text-center fw-bold text-white rounded-4 py-3"
                                         placeholder="Ej. +54 9 11 1234 5678"
                                         value={leaderPhone}
                                         onChange={(e) => setLeaderPhone(e.target.value)}
-                                        style={{ fontSize: '1.2rem', outline: 'none', boxShadow: 'none' }}
+                                        style={{
+                                            fontSize: '1.2rem',
+                                            outline: 'none',
+                                            boxShadow: 'none',
+                                            backgroundColor: 'rgba(255, 255, 255, 0.05)',
+                                            border: '1px solid rgba(255, 255, 255, 0.1)'
+                                        }}
                                     />
                                 </div>
 
@@ -497,7 +520,7 @@ export default function OnboardingSteps() {
                                     Has dado el primer paso hacia una vida de mayor conexión con Dios. Estamos emocionados de acompañarte.
                                 </p>
 
-                                <div className="p-4 bg-white bg-opacity-5 border border-white border-opacity-10 rounded-4 mb-4 text-start">
+                                <div className="p-4 rounded-4 mb-4 text-start" style={{ backgroundColor: 'rgba(255, 255, 255, 0.05)', border: '1px solid rgba(255, 255, 255, 0.1)' }}>
                                     <p className="text-white mb-0 italic">
                                         "Mira que te mando que te esfuerces y seas valiente; no temas ni desmayes, porque Jehová tu Dios estará contigo en dondequiera que vayas."
                                         <br /><span className="text-warning small">- Josué 1:9</span>
