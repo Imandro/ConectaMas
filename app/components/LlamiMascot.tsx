@@ -9,19 +9,21 @@ interface LlamiMascotProps {
     streak: number;
     lastMood?: string;
     level?: number;
+    forceStage?: "spark" | "flame" | "torch" | "sun" | "star";
 }
 
-export default function LlamiMascot({ streak, lastMood, level = 1 }: LlamiMascotProps) {
+export default function LlamiMascot({ streak, lastMood, level = 1, forceStage }: LlamiMascotProps) {
     const [message, setMessage] = useState<string>("");
     const [showMessage, setShowMessage] = useState(false);
     const [clickCount, setClickCount] = useState(0);
 
     // Determine evolution stage
     const getStage = () => {
-        if (streak <= 7) return "spark";
-        if (streak <= 30) return "flame";
-        if (streak <= 90) return "torch";
-        if (streak <= 365) return "sun";
+        if (forceStage) return forceStage;
+        if (streak <= 2) return "spark";
+        if (streak <= 14) return "flame";
+        if (streak <= 60) return "torch";
+        if (streak <= 180) return "sun";
         return "star";
     };
 

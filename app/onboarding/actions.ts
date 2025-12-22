@@ -63,7 +63,10 @@ export async function submitOnboarding(data: {
     if (user) {
         const strugglesToCreate = [
             ...sinsToOvercome.map(s => ({ title: s, type: 'SIN' })),
-            ...problemsFaced.map(p => ({ title: p, type: 'PROBLEM' }))
+            ...problemsFaced.map(p => ({ title: p, type: 'PROBLEM' })),
+            ...(connectionMethods.includes("Leer la Biblia diariamente") || connectionMethods.includes("Estudiar la Palabra más profundo")
+                ? [{ title: "Lectura Bíblica", type: 'CONNECTION' }]
+                : [])
         ];
 
         for (const item of strugglesToCreate) {

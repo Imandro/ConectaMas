@@ -8,17 +8,23 @@ import LlamiMascot from "@/app/components/LlamiMascot";
 import { getOrCreateMascot, feedMascot } from "./actions";
 import { toast } from "react-hot-toast";
 import TriviaGame from "@/app/components/TriviaGame";
-import { Gamepad2 } from "lucide-react";
+import { Gamepad2, HelpCircle } from "lucide-react";
+import LlamiTutorial from "@/app/components/LlamiTutorial";
+import { completeLlamiTutorial } from "./actions";
 
 export default function LlamiPage() {
     const [mascot, setMascot] = useState<any>(null);
     const [loading, setLoading] = useState(true);
     const [isFeeding, setIsFeeding] = useState(false);
     const [isPlayingTrivia, setIsPlayingTrivia] = useState(false);
+    const [showTutorial, setShowTutorial] = useState(false);
 
     const loadMascot = async () => {
         const data = await getOrCreateMascot();
         setMascot(data);
+        if (data && !data.user?.hasSeenLlamiTutorial) {
+            setShowTutorial(true);
+        }
         setLoading(false);
     };
 
@@ -45,6 +51,12 @@ export default function LlamiPage() {
         setTimeout(() => setIsFeeding(false), 2000);
     };
 
+    const handleTutorialComplete = async () => {
+        setShowTutorial(false);
+        await completeLlamiTutorial();
+        await loadMascot();
+    };
+
     if (loading) {
         return (
             <div className="min-vh-100 d-flex align-items-center justify-content-center bg-midnight text-white">
@@ -61,12 +73,27 @@ export default function LlamiPage() {
     return (
         <div className="container-fluid py-4 min-vh-100 bg-light text-primary">
             {/* Header */}
-            <div className="d-flex align-items-center gap-3 mb-5">
-                <Link href="/dashboard" className="btn btn-white bg-white text-primary rounded-circle p-2 shadow-sm border-0">
-                    <ChevronLeft size={24} />
-                </Link>
-                <h1 className="h2 mb-0 fw-bold">El Refugio de Llami</h1>
+            <div className="d-flex align-items-center justify-content-between mb-5">
+                <div className="d-flex align-items-center gap-3">
+                    <Link href="/dashboard" className="btn btn-white bg-white text-primary rounded-circle p-2 shadow-sm border-0">
+                        <ChevronLeft size={24} />
+                    </Link>
+                    <h1 className="h2 mb-0 fw-bold">El Refugio de Llami</h1>
+                </div>
+                <button
+                    onClick={() => setShowTutorial(true)}
+                    className="btn btn-white bg-white text-warning rounded-pill px-3 py-2 shadow-sm border-0 d-flex align-items-center gap-2 fw-bold"
+                >
+                    <HelpCircle size={20} />
+                    <span className="d-none d-md-inline">Ayuda</span>
+                </button>
             </div>
+
+            <AnimatePresence>
+                {showTutorial && (
+                    <LlamiTutorial onComplete={handleTutorialComplete} />
+                )}
+            </AnimatePresence>
 
             {isPlayingTrivia ? (
                 <div className="max-w-2xl mx-auto py-4">

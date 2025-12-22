@@ -14,7 +14,14 @@ export async function getOrCreateMascot() {
     const userId = (session.user as any).id;
 
     let mascot = await (prisma as any).mascot.findUnique({
-        where: { userId }
+        where: { userId },
+        include: {
+            user: {
+                select: {
+                    hasSeenLlamiTutorial: true
+                }
+            }
+        }
     });
 
     if (!mascot) {
@@ -24,12 +31,37 @@ export async function getOrCreateMascot() {
                 name: "Llami",
                 level: 1,
                 experience: 0,
-                flamePoints: 10, // Puntos iniciales de cortesía
+                flamePoints: 10,
+            },
+            include: {
+                user: {
+                    select: {
+                        hasSeenLlamiTutorial: true
+                    }
+                }
             }
         });
     }
 
     return mascot;
+}
+
+/**
+ * Marca el tutorial de Llami como completado para el usuario
+ */
+export async function completeLlamiTutorial() {
+    const session = await auth();
+    if (!session?.user?.id) return { success: false };
+
+    const userId = (session.user as any).id;
+
+    await prisma.user.update({
+        where: { id: userId },
+        data: { hasSeenLlamiTutorial: true }
+    });
+
+    revalidatePath("/dashboard/llami");
+    return { success: true };
 }
 
 /**

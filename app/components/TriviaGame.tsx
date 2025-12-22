@@ -103,8 +103,8 @@ export default function TriviaGame({ onComplete }: TriviaGameProps) {
             <motion.div
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
-                className="text-center py-5 rounded-4 shadow-2xl p-4"
-                style={{ backgroundColor: 'rgba(255, 255, 255, 0.1)', border: '1px solid rgba(255, 255, 255, 0.2)', backdropFilter: 'blur(10px)' }}
+                className="text-center py-5 rounded-4 shadow-lg p-4"
+                style={{ backgroundColor: '#0B1B32', border: '1px solid rgba(243, 179, 62, 0.3)' }}
             >
                 <Trophy size={80} className="text-warning mb-4 mx-auto" />
                 <h2 className="display-5 fw-bold text-white mb-2">¡Desafío Diario Completo!</h2>
@@ -150,11 +150,11 @@ export default function TriviaGame({ onComplete }: TriviaGameProps) {
         <div className="trivia-container">
             {/* Progress bar */}
             <div className="mb-4">
-                <div className="d-flex justify-content-between text-white-50 small mb-2 fw-bold">
+                <div className="d-flex justify-content-between text-muted small mb-2 fw-bold">
                     <span>PREGUNTA {currentIndex + 1} DE {questions.length}</span>
                     <span>{Math.round(((currentIndex) / questions.length) * 100)}%</span>
                 </div>
-                <div className="progress rounded-pill" style={{ height: '8px', backgroundColor: 'rgba(255, 255, 255, 0.1)' }}>
+                <div className="progress rounded-pill shadow-sm" style={{ height: '8px', backgroundColor: 'rgba(11, 27, 50, 0.1)' }}>
                     <motion.div
                         className="progress-bar bg-warning rounded-pill"
                         initial={{ width: 0 }}
@@ -170,10 +170,10 @@ export default function TriviaGame({ onComplete }: TriviaGameProps) {
                     initial={{ opacity: 0, x: 20 }}
                     animate={{ opacity: 1, x: 0 }}
                     exit={{ opacity: 0, x: -20 }}
-                    className="rounded-4 p-4 shadow-xl"
-                    style={{ backgroundColor: 'rgba(255, 255, 255, 0.1)', border: '1px solid rgba(255, 255, 255, 0.2)', backdropFilter: 'blur(5px)' }}
+                    className="rounded-4 p-4 shadow-sm"
+                    style={{ backgroundColor: '#fff', border: '1px solid #e2e8f0' }}
                 >
-                    <h3 className="fw-bold text-white mb-4 lh-base" style={{ fontSize: '1.4rem' }}>
+                    <h3 className="fw-bold text-dark mb-4 lh-base" style={{ fontSize: '1.4rem' }}>
                         {currentQ.question}
                     </h3>
 
@@ -184,27 +184,29 @@ export default function TriviaGame({ onComplete }: TriviaGameProps) {
 
                             let buttonStyle: React.CSSProperties = {
                                 border: '2px solid',
-                                borderColor: 'rgba(255, 255, 255, 0.2)',
-                                backgroundColor: 'rgba(255, 255, 255, 0.05)',
-                                color: 'white',
-                                transition: 'all 0.2s ease'
+                                borderColor: '#e2e8f0',
+                                backgroundColor: '#f8fafc',
+                                color: '#1e293b',
+                                transition: 'all 0.2s ease',
+                                fontWeight: '500'
                             };
 
-                            let buttonClass = "btn text-start p-3 rounded-4 d-flex justify-content-between align-items-center";
+                            let buttonClass = "btn text-start p-3 rounded-4 d-flex justify-content-between align-items-center mb-1";
 
                             if (showFeedback) {
                                 if (isCorrectOption) {
-                                    buttonStyle = { ...buttonStyle, backgroundColor: '#198754', border: 'none' };
+                                    buttonStyle = { ...buttonStyle, backgroundColor: '#10b981', color: 'white', borderColor: '#10b981' };
                                 } else if (isSelected) {
-                                    buttonStyle = { ...buttonStyle, backgroundColor: '#dc3545', border: 'none' };
+                                    buttonStyle = { ...buttonStyle, backgroundColor: '#ef4444', color: 'white', borderColor: '#ef4444' };
                                 } else {
-                                    buttonStyle = { ...buttonStyle, opacity: 0.5 };
+                                    buttonStyle = { ...buttonStyle, opacity: 0.3 };
                                 }
                             } else if (isSelected) {
                                 buttonStyle = {
                                     ...buttonStyle,
-                                    backgroundColor: 'rgba(243, 179, 62, 0.2)',
+                                    backgroundColor: 'rgba(243, 179, 62, 0.1)',
                                     borderColor: '#f3b33e',
+                                    color: '#b45309',
                                     fontWeight: 'bold'
                                 };
                             }
@@ -233,13 +235,13 @@ export default function TriviaGame({ onComplete }: TriviaGameProps) {
                                 className={`p-4 rounded-4 ${isCorrect ? 'bg-success bg-opacity-10 border border-success' : 'bg-danger bg-opacity-10 border border-danger'} mb-4`}
                             >
                                 <div className="d-flex align-items-start gap-3">
-                                    <div className={`p-2 rounded-circle ${isCorrect ? 'bg-success' : 'bg-danger'} text-white`}>
+                                    <div className={`p-2 rounded-circle ${isCorrect ? 'bg-success' : 'bg-danger'} text-white shadow-sm`}>
                                         {isCorrect ? <Zap size={20} /> : <Info size={20} />}
                                     </div>
                                     <div>
-                                        <h5 className="fw-bold text-white mb-1">{isCorrect ? "¡Correcto!" : "No exactamente"}</h5>
-                                        <p className="text-white-50 small mb-2">{currentQ.explanation}</p>
-                                        <div className="badge bg-white text-primary rounded-pill px-3 py-2">{currentQ.reference}</div>
+                                        <h5 className={`fw-bold mb-1 ${isCorrect ? 'text-success' : 'text-danger'}`}>{isCorrect ? "¡Correcto!" : "No exactamente"}</h5>
+                                        <p className="text-dark opacity-75 small mb-2">{currentQ.explanation}</p>
+                                        <div className="badge bg-primary bg-opacity-10 text-primary border border-primary border-opacity-20 rounded-pill px-3 py-2">{currentQ.reference}</div>
                                     </div>
                                 </div>
                             </motion.div>

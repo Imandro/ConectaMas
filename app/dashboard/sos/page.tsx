@@ -16,8 +16,6 @@ export default function EmergencyPage() {
     const [showTruths, setShowTruths] = useState(false);
     const [showMusic, setShowMusic] = useState(false); // Music player state
     const [songs, setSongs] = useState<any[]>([]);
-    const [currentSong, setCurrentSong] = useState<any>(null);
-    const [audio, setAudio] = useState<HTMLAudioElement | null>(null);
     const [randomTruths, setRandomTruths] = useState<string[]>([]);
     const [showUploadModal, setShowUploadModal] = useState(false);
 
@@ -60,40 +58,8 @@ export default function EmergencyPage() {
         return () => clearTimeout(timer);
     }, []);
 
-    const playSong = (song: any) => {
-        if (!song?.url) return;
-
-        if (audio) {
-            audio.pause();
-        }
-
-        const newAudio = new Audio(song.url);
-
-        newAudio.onended = () => {
-            setCurrentSong(null);
-            setAudio(null);
-        };
-
-        // Handle playback promise to prevent "client-side exception"
-        const playPromise = newAudio.play();
-        if (playPromise !== undefined) {
-            playPromise.catch(error => {
-                console.error("Audio playback failed:", error);
-                setCurrentSong(null);
-                setAudio(null);
-            });
-        }
-
-        setAudio(newAudio);
-        setCurrentSong(song);
-    };
-
     const stopMusic = () => {
-        if (audio) {
-            audio.pause();
-            setAudio(null);
-            setCurrentSong(null);
-        }
+        setShowMusic(false);
     };
 
     return (
@@ -193,7 +159,7 @@ export default function EmergencyPage() {
                                     >
                                         <Plus size={18} /> Subir
                                     </button>
-                                    <button onClick={() => { setShowMusic(false); stopMusic(); }} className="btn btn-sm btn-outline-light rounded-circle"><X size={20} /></button>
+                                    <button onClick={() => setShowMusic(false)} className="btn btn-sm btn-outline-light rounded-circle"><X size={20} /></button>
                                 </div>
                             </div>
 

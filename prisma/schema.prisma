@@ -37,6 +37,7 @@ model User {
   
   hasCompletedOnboarding Boolean @default(false)
   hasSeenTutorialTour   Boolean @default(false)
+  hasSeenLlamiTutorial  Boolean @default(false)
   leaderPhone            String?   // For SOS leadership contact
 
   createdAt     DateTime  @default(now())
@@ -83,11 +84,42 @@ model UserStruggle {
   
   startDate   DateTime     @default(now())
   lastRelapse DateTime?
+
+  // Plan progress
+  currentDay    Int        @default(1)
+  completedDays String     @default("") // Comma separated "1,2,3"
+  gravity       Int        @default(5)  // 1 to 10 scale
   
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt
 
   @@unique([userId, title])
+}
+
+model StrugglePlan {
+  id          String       @id @default(cuid())
+  title       String       @unique // "Pornografía", "Ansiedad", etc.
+  description String?
+  days        StrugglePlanDay[]
+  createdAt   DateTime     @default(now())
+}
+
+model StrugglePlanDay {
+  id          String        @id @default(cuid())
+  planId      String
+  plan        StrugglePlan  @relation(fields: [planId], references: [id], onDelete: Cascade)
+  dayNumber     Int
+  
+  title       String
+  bibleStudy  String        @db.Text
+  practicalExercise String   @db.Text
+  youthAdvice String        @db.Text
+  reflectionQuestions String @db.Text
+  scripture   String
+  
+  createdAt   DateTime      @default(now())
+
+  @@unique([planId, dayNumber])
 }
 
 // Daily Check-in

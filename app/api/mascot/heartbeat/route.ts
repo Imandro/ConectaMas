@@ -25,6 +25,10 @@ export async function POST(req: NextRequest) {
                 }
             });
 
+            // Actualizar el "seguimiento" de lectura bíblica
+            const { updateBibleReadingProgress } = await import("@/app/dashboard/bible/actions");
+            await updateBibleReadingProgress();
+
             return NextResponse.json({ success: true, pointsEarned: 1 });
         }
 
