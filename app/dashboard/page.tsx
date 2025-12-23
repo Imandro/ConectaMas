@@ -11,6 +11,7 @@ import AgePrompt from './components/AgePrompt';
 
 import SupportFundingAd from './components/SupportFundingAd';
 import SupportAdModal from './components/SupportAdModal';
+import GrowthMilestoneModal from './components/GrowthMilestoneModal';
 
 interface DashboardStats {
     name: string;
@@ -152,9 +153,6 @@ export default function DashboardHome() {
                 </div>
             </section>
 
-            {/* Support Ad */}
-            <SupportFundingAd />
-
             {/* Mi Seguimiento - Resumen Premium */}
             <section className="mb-4" id="tour-struggles">
                 <Link href="/dashboard/luchas" className="text-decoration-none">
@@ -243,6 +241,13 @@ export default function DashboardHome() {
             {stats && !stats.hasSeenTutorialTour && (
                 <FeatureTour onComplete={() => setStats({ ...stats, hasSeenTutorialTour: true })} />
             )}
+
+            {/* Support Ad - Moved to bottom */}
+            <section className="mb-5 pb-5">
+                <SupportFundingAd />
+            </section>
+
+            <GrowthMilestoneModal />
 
             {stats && (
                 <AgePrompt missingAge={!stats.age} />

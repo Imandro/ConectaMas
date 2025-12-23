@@ -76,7 +76,7 @@ export default function EmergencyPage() {
 
             <div className={`flex-grow-1 d-flex flex-column justify-content-start pt-5 position-relative z-1`}>
 
-                <h1 className="display-4 fw-bold mb-4 animate-fade-in-up">Respira.</h1>
+                <h1 className="display-4 fw-bold mb-4 text-white">Respira.</h1>
                 <p className="lead mb-5 opacity-75 animate-fade-in-up delay-100">
                     No has fallado todavía. Y aunque lo hicieras, Él te sigue amando. Pero hagamos una pausa de 1 minuto juntos.
                 </p>
