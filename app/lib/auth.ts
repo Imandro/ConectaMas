@@ -1,4 +1,5 @@
 import NextAuth from "next-auth";
+import { authConfig } from "./auth.config";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
 import { PrismaAdapter } from "@auth/prisma-adapter";
@@ -6,6 +7,7 @@ import { prisma } from "@/app/lib/prisma";
 import bcrypt from "bcryptjs";
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
+    ...authConfig,
     adapter: PrismaAdapter(prisma),
     session: {
         strategy: "jwt",
@@ -114,7 +116,4 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
             return session;
         },
     },
-    secret: process.env.AUTH_SECRET || process.env.NEXTAUTH_SECRET || "change_me_in_production",
-    trustHost: true,
-    debug: process.env.NODE_ENV === "development",
 });
