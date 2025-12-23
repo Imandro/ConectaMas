@@ -98,7 +98,7 @@ export default function GrowthMilestoneModal() {
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
-                        className="position-absolute top-0 start-0 w-100 h-100 bg-black bg-opacity-60 backdrop-blur-sm"
+                        className="position-absolute top-0 start-0 w-100 h-100 bg-black bg-opacity-40 backdrop-blur-sm"
                         onClick={handleClose}
                     />
 

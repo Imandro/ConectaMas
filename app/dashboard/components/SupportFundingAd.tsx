@@ -39,12 +39,12 @@ export default function SupportFundingAd() {
                         Mi sueño es llevar <strong>Conecta+ a la Google Play Store</strong> para alcanzar a miles de jóvenes más.
                     </p>
 
-                    <div className="bg-white bg-opacity-10 p-3 rounded-3 border border-white-10 mb-3">
+                    <div className="bg-white bg-opacity-10 p-2 rounded-3 border border-white-10 mb-3">
                         <div className="d-flex justify-content-between align-items-center mb-1">
                             <span className="small fw-bold text-warning">Meta: Licencia Google Play</span>
-                            <span className="fw-bold">$25 USD</span>
+                            <span className="fw-bold text-dark">$25 USD</span>
                         </div>
-                        <p className="extra-small text-white-50 m-0">
+                        <p className="extra-small text-dark m-0">
                             Solo soy yo trabajando en esto, y tu granito de arena hace una diferencia enorme.
                         </p>
                     </div>
