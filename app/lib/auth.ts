@@ -62,28 +62,54 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         newUser: '/auth/register',
     },
     callbacks: {
-        async session({ session, token }: { session: any, token: any }) {
-            if (token && session.user) {
-                session.user.id = token.sub;
+        async jwt({ token, user, trigger, session }: { token: any, user: any, trigger?: string, session?: any }) {
+            // On sign in, populate token with user data
+            if (user) {
+                token.id = user.id;
+                token.name = user.name;
+                token.email = user.email;
+                token.picture = user.image;
+            }
 
+            // On session update, refresh user data from database
+            if (trigger === "update" && token.sub) {
                 try {
-                    const user = await (prisma as any).user.findUnique({
+                    const dbUser = await (prisma as any).user.findUnique({
                         where: { id: token.sub },
                         select: {
+                            name: true,
+                            email: true,
+                            image: true,
                             leaderPhone: true,
                             hasSeenTutorialTour: true,
                             hasCompletedOnboarding: true
                         }
                     });
 
-                    if (user) {
-                        session.user.leaderPhone = (user as any).leaderPhone;
-                        session.user.hasSeenTutorialTour = (user as any).hasSeenTutorialTour;
-                        session.user.hasCompletedOnboarding = (user as any).hasCompletedOnboarding;
+                    if (dbUser) {
+                        token.name = dbUser.name;
+                        token.email = dbUser.email;
+                        token.picture = dbUser.image;
+                        token.leaderPhone = dbUser.leaderPhone;
+                        token.hasSeenTutorialTour = dbUser.hasSeenTutorialTour;
+                        token.hasCompletedOnboarding = dbUser.hasCompletedOnboarding;
                     }
                 } catch (error) {
-                    console.error("Session callback prisma error:", error);
+                    console.error("JWT callback error:", error);
                 }
+            }
+
+            return token;
+        },
+        async session({ session, token }: { session: any, token: any }) {
+            if (token && session.user) {
+                session.user.id = token.sub || token.id;
+                session.user.name = token.name;
+                session.user.email = token.email;
+                session.user.image = token.picture;
+                session.user.leaderPhone = token.leaderPhone;
+                session.user.hasSeenTutorialTour = token.hasSeenTutorialTour;
+                session.user.hasCompletedOnboarding = token.hasCompletedOnboarding;
             }
             return session;
         },
