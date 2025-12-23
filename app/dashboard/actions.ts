@@ -169,6 +169,15 @@ export async function updateAge(age: number) {
         data: { age }
     });
 
-    revalidatePath("/dashboard");
     revalidatePath("/dashboard/profile");
+}
+
+export async function getUserCount() {
+    try {
+        const count = await prismaAny.user.count();
+        return count;
+    } catch (error) {
+        console.error("Error fetching user count:", error);
+        return 0;
+    }
 }

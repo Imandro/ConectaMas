@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { MessageCircle, Users, Plus } from 'lucide-react';
 import LlamiCommunityTutorial from './components/LlamiCommunityTutorial';
+import NotificationDropdown from './components/NotificationDropdown';
 import { getCommunityTutorialStatus, markCommunityTutorialSeen } from './actions';
 
 interface ForumCategory {
@@ -70,10 +71,13 @@ export default function ForumsPage() {
                     <h1 className="fw-bold text-secondary mb-2">Comunidad</h1>
                     <p className="text-muted mb-0">Comparte, aprende y crece junto a otros en la fe</p>
                 </div>
-                <Link href="/dashboard/forums/new" className="btn btn-primary rounded-pill px-4">
-                    <Plus size={20} className="me-2" />
-                    Nueva Publicación
-                </Link>
+                <div className="d-flex gap-2 align-items-center">
+                    <NotificationDropdown />
+                    <Link href="/dashboard/forums/new" className="btn btn-primary rounded-pill px-4">
+                        <Plus size={20} className="me-2" />
+                        Nueva Publicación
+                    </Link>
+                </div>
             </div>
 
             <div className="row g-4">

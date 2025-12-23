@@ -59,6 +59,24 @@ export async function POST(
             }
         });
 
+        // Create notification for post author if they're not the one replying
+        if (post.userId !== user.id) {
+            try {
+                await prismaClient.forumNotification.create({
+                    data: {
+                        userId: post.userId,
+                        type: 'NEW_REPLY',
+                        postId: params.id,
+                        replyId: reply.id,
+                        isRead: false
+                    }
+                });
+            } catch (notifError) {
+                console.error('Error creating notification:', notifError);
+                // Don't fail the reply creation if notification fails
+            }
+        }
+
         return NextResponse.json(reply, { status: 201 });
     } catch (error) {
         console.error('Error creating reply:', error);

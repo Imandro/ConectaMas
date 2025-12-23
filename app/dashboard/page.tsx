@@ -243,11 +243,13 @@ export default function DashboardHome() {
             )}
 
             {/* Support Ad - Moved to bottom */}
-            <section className="mb-5 pb-5">
+            <section className="mb-5 pb-5 mt-5">
                 <SupportFundingAd />
             </section>
 
             <GrowthMilestoneModal />
+
+            <div className="pb-5"></div>
 
             {stats && (
                 <AgePrompt missingAge={!stats.age} />

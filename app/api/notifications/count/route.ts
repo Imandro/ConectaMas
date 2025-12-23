@@ -17,14 +17,11 @@ export async function GET() {
             select: { lastForumCheck: true }
         });
 
-        const lastCheck = user?.lastForumCheck || new Date(0); // Default to epoch if null
-
-        // Count posts created AFTER lastCheck
-        const count = await prisma.forumPost.count({
+        // Count unread forum notifications
+        const count = await (prisma as any).forumNotification.count({
             where: {
-                createdAt: {
-                    gt: lastCheck
-                }
+                userId: userId,
+                isRead: false
             }
         });
 

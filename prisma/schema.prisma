@@ -65,6 +65,7 @@ model User {
   sessions          Session[]
   mascot            Mascot?
   triviaAttempts    UserTriviaAttempt[]
+  forumNotifications ForumNotification[]
 }
 
 model UserDevotional {
@@ -270,6 +271,7 @@ model ForumPost {
   updatedAt   DateTime      @updatedAt
   
   replies     ForumReply[]
+  notifications ForumNotification[]
   
   @@index([categoryId, createdAt])
 }
@@ -378,6 +380,22 @@ model UserTriviaAttempt {
   attemptDate   DateTime @default(now())
 
   @@unique([userId, questionId])
+}
+
+model ForumNotification {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  type        String   // "NEW_REPLY" | "NEW_POST_IN_CATEGORY"
+  postId      String
+  post        ForumPost @relation(fields: [postId], references: [id], onDelete: Cascade)
+  replyId     String?
+  
+  isRead      Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  
+  @@index([userId, isRead])
 }
 
 model ResetToken {
