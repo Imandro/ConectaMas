@@ -18,6 +18,16 @@ export default function EmergencyPage() {
     const [songs, setSongs] = useState<any[]>([]);
     const [randomTruths, setRandomTruths] = useState<string[]>([]);
     const [showUploadModal, setShowUploadModal] = useState(false);
+    const [showPrayer, setShowPrayer] = useState(false);
+    const [currentPrayer, setCurrentPrayer] = useState('');
+
+    const EMERGENCY_PRAYERS = [
+        "Padre Celestial, en este momento de angustia te necesito más que nunca. Siento que las fuerzas me abandonan, pero sé que Tú nunca me abandonas. Llena mi corazón de Tu paz que sobrepasa todo entendimiento. Ayúdame a recordar que nunca estoy solo, que Tú siempre estás conmigo, caminando a mi lado incluso en el valle más oscuro. Dame la fortaleza para dar un paso más, para resistir un minuto más. Confío en que Tú me sostienes. Amén.",
+        "Señor Jesús, siento que no puedo más con esta carga. Mi mente está agitada, mis emociones están desbordadas, y necesito Tu intervención divina ahora mismo. Toma control de esta situación que me sobrepasa. Dame la serenidad que solo Tú puedes dar, esa paz que el mundo no puede ofrecer. Ayúdame a entregarTe cada pensamiento, cada emoción, cada temor. Recuérdame que Tú venciste al mundo, y que en Ti tengo la victoria. Confío plenamente en Ti. Amén.",
+        "Dios de amor infinito, en este momento tan difícil clamo a Ti con todo mi corazón. Calma la tormenta que hay en mi mente, fortalece mi espíritu que se siente débil. Recuérdame Tu promesa de nunca dejarme ni abandonarme, de estar conmigo hasta el fin del mundo. Ayúdame a sentir Tu presencia ahora mismo, a saber que me escuchas, que me ves, que te importo. Dame esperanza cuando todo parece oscuro, y fe cuando no puedo ver el camino. Amén.",
+        "Espíritu Santo, ven como consolador a mi corazón quebrantado. Necesito Tu guía divina en este momento de confusión. Dame sabiduría para tomar las decisiones correctas, discernimiento para ver la verdad en medio de las mentiras, y valor para enfrentar este momento sin huir. Gracias por Tu presencia constante, por ser mi ayudador, mi consejero, mi amigo fiel. Llena cada espacio vacío de mi ser con Tu amor y Tu poder. Amén.",
+        "Padre Eterno, reconozco humildemente que sin Ti no puedo hacer absolutamente nada. Esta batalla es demasiado grande para mí, pero no para Ti. Ayúdame a resistir esta tentación que me acecha, a superar este momento de debilidad. Llena este vacío que siento con Tu amor infinito e incondicional. Recuérdame quién soy en Ti: amado, perdonado, libre. Dame fuerzas para decir no a lo que me destruye y sí a lo que me edifica. Confío en Tu poder transformador. Amén."
+    ];
 
     const TRUTHS = [
         "Dios no está enojado contigo, Él está peliando por ti.",
@@ -37,6 +47,12 @@ export default function EmergencyPage() {
         const shuffled = TRUTHS.sort(() => 0.5 - Math.random());
         setRandomTruths(shuffled.slice(0, 5));
         setShowTruths(true);
+    };
+
+    const handleShowPrayer = () => {
+        const randomIndex = Math.floor(Math.random() * EMERGENCY_PRAYERS.length);
+        setCurrentPrayer(EMERGENCY_PRAYERS[randomIndex]);
+        setShowPrayer(true);
     };
 
     const fetchSongs = () => {
@@ -171,6 +187,26 @@ export default function EmergencyPage() {
                             ) : (
                                 <EnhancedMusicPlayer songs={songs} />
                             )}
+                        </div>
+                    </div>
+                )}
+
+                {/* Prayer Display */}
+                {showPrayer && (
+                    <div className="animate-in fade-in slide-in-from-bottom-4 mt-3">
+                        <div className="bg-white bg-opacity-10 backdrop-blur-sm rounded-5 p-4 border border-white-50">
+                            <h3 className="fw-bold mb-4 d-flex align-items-center gap-2 text-white"><BookHeart size={28} /> Oración de Emergencia</h3>
+                            <div className="bg-white bg-opacity-10 p-4 rounded-4 border border-white-25 mb-4">
+                                <p className="lh-lg fw-medium fs-5 text-white m-0 text-center" style={{ fontStyle: 'italic' }}>
+                                    "{currentPrayer}"
+                                </p>
+                            </div>
+                            <button
+                                onClick={() => setShowPrayer(false)}
+                                className="btn btn-light w-100 fw-bold py-3 rounded-pill text-primary hover-scale shadow-sm"
+                            >
+                                Volver
+                            </button>
                         </div>
                     </div>
                 )}
