@@ -3,6 +3,8 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { MessageCircle, Users, Plus } from 'lucide-react';
+import LlamiCommunityTutorial from './components/LlamiCommunityTutorial';
+import { getCommunityTutorialStatus, markCommunityTutorialSeen } from './actions';
 
 interface ForumCategory {
     id: string;
@@ -17,8 +19,19 @@ interface ForumCategory {
 export default function ForumsPage() {
     const [categories, setCategories] = useState<ForumCategory[]>([]);
     const [loading, setLoading] = useState(true);
+    const [showTutorial, setShowTutorial] = useState(false);
 
     useEffect(() => {
+        // Mark as read
+        fetch('/api/forums/mark-read', { method: 'POST' });
+
+        // Check tutorial status
+        getCommunityTutorialStatus().then(hasSeen => {
+            if (!hasSeen) {
+                setShowTutorial(true);
+            }
+        });
+
         fetch('/api/forums/categories')
             .then(res => res.json())
             .then(data => {
@@ -30,6 +43,11 @@ export default function ForumsPage() {
                 setLoading(false);
             });
     }, []);
+
+    const handleTutorialComplete = async () => {
+        await markCommunityTutorialSeen();
+        setShowTutorial(false);
+    };
 
     if (loading) {
         return (
@@ -45,6 +63,8 @@ export default function ForumsPage() {
 
     return (
         <div className="container-fluid py-4 animate-fade-in">
+            {showTutorial && <LlamiCommunityTutorial onComplete={handleTutorialComplete} />}
+
             <div className="d-flex justify-content-between align-items-center mb-4">
                 <div>
                     <h1 className="fw-bold text-secondary mb-2">Comunidad</h1>

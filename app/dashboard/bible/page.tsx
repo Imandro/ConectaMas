@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { Book, ChevronLeft, ChevronRight, Heart } from 'lucide-react';
 import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
 
 interface BibleVerse {
     id: string;
@@ -83,8 +84,15 @@ const BIBLE_BOOKS = [
 ];
 
 export default function BiblePage() {
-    const [selectedBook, setSelectedBook] = useState(BIBLE_BOOKS[0]);
-    const [selectedChapter, setSelectedChapter] = useState(1);
+    const searchParams = useSearchParams();
+    const initialBookName = searchParams.get('book');
+    const initialChapter = searchParams.get('chapter');
+
+    const initialBook = BIBLE_BOOKS.find(b => b.name === initialBookName) || BIBLE_BOOKS[0];
+    const initialChapterNum = initialChapter ? parseInt(initialChapter) : 1;
+
+    const [selectedBook, setSelectedBook] = useState(initialBook);
+    const [selectedChapter, setSelectedChapter] = useState(initialChapterNum);
     const [chapterText, setChapterText] = useState<any>(null);
     const [loading, setLoading] = useState(false);
     const [helpfulVerses, setHelpfulVerses] = useState<BibleVerse[]>([]);

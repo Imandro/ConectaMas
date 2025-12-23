@@ -68,3 +68,55 @@ export async function completeTutorialTour() {
 
     revalidatePath("/dashboard");
 }
+
+
+export async function updateUsername(newUsername: string) {
+    const session = await auth();
+    if (!session?.user?.id) return { success: false, error: "No autorizado" };
+
+    if (!newUsername || newUsername.trim().length < 3 || newUsername.trim().length > 20) {
+        return { success: false, error: "El nombre de usuario debe tener entre 3 y 20 caracteres." };
+    }
+
+    // Simple format check (alphanumeric)
+    if (!/^[a-zA-Z0-9_]+$/.test(newUsername)) {
+        return { success: false, error: "Solo letras, números y guiones bajos." };
+    }
+
+    const userId = (session.user as any).id;
+    const user = await (prisma as any).user.findUnique({
+        where: { id: userId },
+        select: { lastUsernameChange: true }
+    });
+
+    // Check 3-day cooldown
+    if (user?.lastUsernameChange) {
+        const lastChange = new Date(user.lastUsernameChange);
+        const threeDaysAgo = new Date();
+        threeDaysAgo.setDate(threeDaysAgo.getDate() - 3);
+
+        if (lastChange > threeDaysAgo) {
+            const daysLeft = 3 - Math.floor((new Date().getTime() - lastChange.getTime()) / (1000 * 60 * 60 * 24));
+            return { success: false, error: `Debes esperar ${daysLeft} días más para cambiar tu nombre de usuario.` };
+        }
+    }
+
+    // Check uniqueness
+    const existing = await prisma.user.findUnique({
+        where: { username: newUsername }
+    });
+    if (existing && existing.id !== userId) {
+        return { success: false, error: "Este nombre de usuario ya está en uso." };
+    }
+
+    await (prisma as any).user.update({
+        where: { id: userId },
+        data: {
+            username: newUsername,
+            lastUsernameChange: new Date()
+        }
+    });
+
+    revalidatePath("/dashboard/profile");
+    return { success: true };
+}

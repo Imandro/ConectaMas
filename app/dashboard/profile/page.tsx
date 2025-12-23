@@ -27,6 +27,9 @@ export default async function ProfilePage() {
                 hasCompletedOnboarding: true,
                 role: true,
                 leaderPhone: true,
+                username: true,
+                lastUsernameChange: true,
+                age: true,
             } as any
         });
     } catch (e) {
@@ -62,7 +65,10 @@ export default async function ProfilePage() {
                     name: (user as any).name,
                     email: (user as any).email,
                     image: (user as any).image,
-                    spiritualLevel: (user as any).spiritualLevel
+                    spiritualLevel: (user as any).spiritualLevel,
+                    username: (user as any).username,
+                    lastUsernameChange: (user as any).lastUsernameChange,
+                    age: (user as any).age
                 }}
             />
 
@@ -87,6 +93,14 @@ export default async function ProfilePage() {
                     userRole={(user as any).role || 'USER'}
                     initialLeaderPhone={(user as any).leaderPhone}
                 />
+
+                <div className="mt-4 pt-3 border-top">
+                    <h6 className="fw-bold mb-3 small text-muted text-uppercase">Legal</h6>
+                    <a href="/terms" target="_blank" className="text-decoration-none text-muted small d-flex align-items-center gap-2">
+                        <span className="bg-light p-1 rounded-circle"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg></span>
+                        Términos y Condiciones
+                    </a>
+                </div>
             </div>
         </div >
     );

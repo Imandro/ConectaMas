@@ -7,6 +7,10 @@ import DailyVerse from './components/DailyVerse';
 import DailyPrayerCard from '../components/DailyPrayerCard';
 import LlamiMascot from '../components/LlamiMascot';
 import FeatureTour from './components/FeatureTour';
+import AgePrompt from './components/AgePrompt';
+
+import SupportFundingAd from './components/SupportFundingAd';
+import SupportAdModal from './components/SupportAdModal';
 
 interface DashboardStats {
     name: string;
@@ -14,7 +18,9 @@ interface DashboardStats {
     lastCheckin: any;
     struggles: any[];
     mascot: any;
+
     hasSeenTutorialTour: boolean;
+    age?: number;
 }
 
 export default function DashboardHome() {
@@ -86,12 +92,12 @@ export default function DashboardHome() {
                     <small className="text-muted fw-bold text-capitalize">{currentDate}</small>
                     <h2 className="fw-bold text-secondary m-0">Hola, {stats?.name || 'Campeón'}</h2>
                 </div>
-                <div className="bg-white rounded-circle shadow-sm p-1">
-                    <Link href="/dashboard/tutorials" className="btn btn-outline-primary rounded-circle p-2 me-2 border-0 shadow-sm" title="Tutoriales">
+                <div className="bg-white rounded-pill shadow-sm p-1 d-flex align-items-center gap-1 border">
+                    <Link href="/dashboard/tutorials" className="btn btn-light bg-transparent border-0 rounded-circle p-2 text-primary hover-scale" title="Tutoriales">
                         <HelpCircle size={24} />
                     </Link>
                     <Link href="/dashboard/profile">
-                        <div className="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center fw-bold text-decoration-none" style={{ width: '40px', height: '40px' }}>
+                        <div className="bg-secondary text-white rounded-circle d-flex align-items-center justify-content-center fw-bold text-decoration-none shadow-sm" style={{ width: '40px', height: '40px' }}>
                             {stats?.name ? stats.name.charAt(0).toUpperCase() : 'U'}
                         </div>
                     </Link>
@@ -125,6 +131,7 @@ export default function DashboardHome() {
                                             streak={stats?.streak || 0}
                                             lastMood={stats?.lastCheckin?.mood}
                                             level={stats?.mascot?.level || 1}
+                                            name={stats?.mascot?.name}
                                         />
                                     </div>
                                     <div className="badge bg-primary-subtle text-primary rounded-pill mt-1" style={{ fontSize: '0.65rem' }}>
@@ -144,6 +151,9 @@ export default function DashboardHome() {
                     </Link>
                 </div>
             </section>
+
+            {/* Support Ad */}
+            <SupportFundingAd />
 
             {/* Mi Seguimiento - Resumen Premium */}
             <section className="mb-4" id="tour-struggles">
@@ -232,6 +242,10 @@ export default function DashboardHome() {
             {/* Feature Tour (Proactive Tutorial) */}
             {stats && !stats.hasSeenTutorialTour && (
                 <FeatureTour onComplete={() => setStats({ ...stats, hasSeenTutorialTour: true })} />
+            )}
+
+            {stats && (
+                <AgePrompt missingAge={!stats.age} />
             )}
         </div>
     );

@@ -43,9 +43,7 @@ export default function Home() {
                         Ya tengo cuenta
                     </Link>
 
-                    <Link href="/dashboard" className="btn btn-link text-muted text-decoration-none mt-2 fs-6 opacity-75 hover-opacity-100">
-                        Continuar anónimo
-                    </Link>
+
                 </div>
             </div>
         </div>

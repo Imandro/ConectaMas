@@ -81,12 +81,13 @@ export default function OnboardingSteps() {
     const [problemsSelected, setProblemsSelected] = useState<string[]>([]);
     const [connectionSelected, setConnectionSelected] = useState<string[]>([]);
     const [gender, setGender] = useState<string>('');
+    const [age, setAge] = useState<number | "">("");
     const [mascotName, setMascotName] = useState<string>('Llami');
     const [leaderPhone, setLeaderPhone] = useState("");
     const [isSubmitting, setIsSubmitting] = useState(false);
     const router = useRouter();
 
-    const totalSteps = 8;
+    const totalSteps = 10;
 
     const handleToggle = (item: string, list: string[], setter: (val: string[]) => void) => {
         if (list.includes(item)) {
@@ -105,6 +106,7 @@ export default function OnboardingSteps() {
                 problemsFaced: problemsSelected,
                 connectionMethods: connectionSelected,
                 gender,
+                age: Number(age),
                 mascotName,
                 leaderPhone: leaderPhone || undefined,
             });
@@ -409,8 +411,55 @@ export default function OnboardingSteps() {
                             </div>
                         )}
 
-                        {/* STEP 6: Name Your Mascot */}
+                        {/* STEP 6: Age */}
                         {step === 6 && (
+                            <div className="animate-fade-in text-center">
+                                <div className="mx-auto rounded-circle d-flex align-items-center justify-content-center mb-4" style={{ width: '64px', height: '64px', backgroundColor: 'rgba(255, 255, 255, 0.05)' }}>
+                                    <User size={32} className="text-warning" />
+                                </div>
+                                <h2 className="fw-bold mb-2 text-white" style={{ fontSize: '1.8rem' }}>Tu Edad</h2>
+                                <p className="text-white-50 mb-4">
+                                    Ayúdanos a personalizar tu experiencia.
+                                </p>
+
+                                <div className="mb-4 d-flex justify-content-center">
+                                    <input
+                                        type="number"
+                                        min="10"
+                                        max="99"
+                                        className="form-control form-control-lg text-center fw-bold text-white rounded-4 py-3"
+                                        placeholder="Ej. 18"
+                                        value={age}
+                                        onChange={(e) => setAge(parseInt(e.target.value) || "")}
+                                        style={{
+                                            fontSize: '1.5rem',
+                                            width: '120px',
+                                            outline: 'none',
+                                            boxShadow: 'none',
+                                            backgroundColor: 'rgba(255, 255, 255, 0.05)',
+                                            border: '1px solid rgba(255, 255, 255, 0.1)'
+                                        }}
+                                    />
+                                </div>
+
+                                <button
+                                    onClick={() => setStep(7)}
+                                    disabled={!age || Number(age) < 10 || Number(age) > 100}
+                                    className="btn btn-warning w-100 fw-bold py-3 rounded-pill d-flex align-items-center justify-content-center gap-2 mt-4 text-primary"
+                                    style={{
+                                        opacity: (!age || Number(age) < 10) ? 0.5 : 1,
+                                        backgroundColor: '#f3b33e',
+                                        border: 'none',
+                                        fontSize: '1.1rem'
+                                    }}
+                                >
+                                    Continuar <ArrowRight size={20} />
+                                </button>
+                            </div>
+                        )}
+
+                        {/* STEP 7: Name Your Mascot */}
+                        {step === 7 && (
                             <div className="animate-fade-in text-center">
                                 <div className="mx-auto mb-4 d-flex justify-content-center">
                                     <div className="rounded-circle p-4 shadow-lg" style={{ backgroundColor: 'rgba(255, 255, 255, 0.05)', border: '1px solid rgba(255, 255, 255, 0.1)' }}>
@@ -441,7 +490,7 @@ export default function OnboardingSteps() {
                                 </div>
 
                                 <button
-                                    onClick={() => setStep(7)}
+                                    onClick={() => setStep(8)}
                                     className="btn btn-warning w-100 fw-bold py-3 rounded-pill d-flex align-items-center justify-content-center gap-2 text-primary shadow-lg"
                                     style={{
                                         backgroundColor: '#f3b33e',
@@ -454,8 +503,8 @@ export default function OnboardingSteps() {
                             </div>
                         )}
 
-                        {/* STEP 7: Leader Phone */}
-                        {step === 7 && (
+                        {/* STEP 8: Leader Phone */}
+                        {step === 8 && (
                             <div className="animate-fade-in text-center">
                                 <div className="mx-auto rounded-circle d-flex align-items-center justify-content-center mb-4" style={{ width: '80px', height: '80px', backgroundColor: 'rgba(255, 255, 255, 0.05)' }}>
                                     <Shield size={40} className="text-warning" />
@@ -485,7 +534,7 @@ export default function OnboardingSteps() {
 
                                 <div className="d-grid gap-3">
                                     <button
-                                        onClick={() => setStep(8)}
+                                        onClick={() => setStep(9)}
                                         className="btn btn-warning w-100 fw-bold py-3 rounded-pill d-flex align-items-center justify-content-center gap-2 text-primary shadow-lg"
                                         style={{
                                             backgroundColor: '#f3b33e',
@@ -499,7 +548,7 @@ export default function OnboardingSteps() {
                                     <button
                                         onClick={() => {
                                             setLeaderPhone("");
-                                            setStep(8);
+                                            setStep(9);
                                         }}
                                         className="btn btn-link text-white-50 text-decoration-none"
                                     >
@@ -509,8 +558,53 @@ export default function OnboardingSteps() {
                             </div>
                         )}
 
-                        {/* STEP 8: Final Confirmation */}
-                        {step === 8 && (
+
+                        {/* STEP 9: Support Ad (Fundraising) */}
+                        {step === 9 && (
+                            <div className="animate-fade-in text-center">
+                                <div className="mx-auto rounded-circle d-flex align-items-center justify-content-center mb-4" style={{ width: '80px', height: '80px', backgroundColor: 'rgba(255, 255, 255, 0.05)' }}>
+                                    <Heart size={40} className="text-warning" />
+                                </div>
+                                <h2 className="fw-bold mb-3 text-white">¡Ayúdanos a Crecer!</h2>
+                                <p className="text-white-50 mb-4">
+                                    Conecta+ es un proyecto gratuito hecho con amor. Queremos llegar a más jóvenes publicando la app en Google Play Store.
+                                </p>
+
+                                <div className="card bg-white text-dark rounded-4 p-4 shadow-lg mb-4 text-start">
+                                    <h5 className="fw-bold text-primary mb-2">Meta: Licencia Play Store ($25 USD)</h5>
+                                    <div className="progress bg-secondary bg-opacity-10 rounded-pill mb-3" style={{ height: '12px' }}>
+                                        <div
+                                            className="progress-bar bg-warning rounded-pill"
+                                            role="progressbar"
+                                            style={{ width: '48%' }}
+                                        ></div>
+                                    </div>
+                                    <p className="small text-muted mb-0">
+                                        Cada aporte nos acerca a la meta. Si este proyecto bendice tu vida, considera sembrar una semilla hoy.
+                                    </p>
+                                </div>
+
+                                <a
+                                    href="https://www.paypal.me/Imandrox"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="btn btn-warning w-100 fw-bold py-3 rounded-pill d-flex align-items-center justify-content-center gap-2 text-primary shadow-lg mb-3"
+                                    style={{ backgroundColor: '#f3b33e', border: 'none' }}
+                                >
+                                    <Heart size={20} fill="currentColor" /> Quiero Apoyar
+                                </a>
+
+                                <button
+                                    onClick={() => setStep(10)}
+                                    className="btn btn-link text-white-50 text-decoration-none w-100"
+                                >
+                                    Continuar sin apoyar por ahora
+                                </button>
+                            </div>
+                        )}
+
+                        {/* STEP 10: Final Confirmation */}
+                        {step === 10 && (
                             <div className="animate-fade-in text-center">
                                 <div className="mx-auto rounded-circle d-flex align-items-center justify-content-center mb-4" style={{ width: '80px', height: '80px', backgroundColor: 'rgba(255, 255, 255, 0.05)' }}>
                                     <Sparkles size={40} className="text-warning" />
@@ -548,6 +642,7 @@ export default function OnboardingSteps() {
                     </div>
                 </div>
             </div>
+
         </div>
     );
 }

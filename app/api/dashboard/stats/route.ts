@@ -36,6 +36,7 @@ export async function GET() {
             struggles: (user as any).struggles || [],
             mascot: (user as any).mascot || null,
             hasSeenTutorialTour: (user as any).hasSeenTutorialTour || false,
+            age: (user as any).age || null,
         });
 
     } catch (error) {

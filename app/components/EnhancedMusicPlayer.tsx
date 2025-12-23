@@ -98,43 +98,73 @@ export default function EnhancedMusicPlayer({ songs }: EnhancedMusicPlayerProps)
                 onCanPlay={() => setIsLoading(false)}
             />
 
+            {/* Album Art Placeholder - CENTERED & LARGE */}
+            <div className="d-flex justify-content-center mb-4 mt-2">
+                <motion.div
+                    initial={{ scale: 0.9, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    className="position-relative shadow-lg"
+                    style={{
+                        width: '240px',
+                        height: '240px',
+                        borderRadius: '24px',
+                        background: 'linear-gradient(135deg, #f3b33e 0%, #ff8f00 100%)',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        overflow: 'hidden'
+                    }}
+                >
+                    <div className="position-absolute w-100 h-100 opacity-20"
+                        style={{
+                            backgroundImage: 'radial-gradient(circle at 30% 30%, white 0%, transparent 20%)',
+                            filter: 'blur(20px)'
+                        }}></div>
+                    <Music size={80} className="text-white opacity-50" />
+                </motion.div>
+            </div>
+
             {/* Header: Title & Info */}
             <div className="text-center mb-4 pt-2">
                 <AnimatePresence mode="wait">
                     <motion.div
                         key={currentSong.id}
-                        initial={{ opacity: 0, scale: 0.95 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        exit={{ opacity: 0 }}
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -10 }}
                         transition={{ duration: 0.3 }}
                     >
-                        <h2 className="fw-bold text-white mb-1" style={{ fontSize: '1.4rem', letterSpacing: '-0.5px' }}>{currentSong.title}</h2>
-                        <p className="text-warning fw-medium mb-0 opacity-75 small">{currentSong.artist}</p>
+                        <h2 className="fw-bold text-white mb-2 text-shadow-sm" style={{ fontSize: '1.75rem', letterSpacing: '-0.5px' }}>{currentSong.title}</h2>
+                        <p className="text-warning fw-bold mb-0 text-uppercase small letter-spacing-2">{currentSong.artist}</p>
                     </motion.div>
                 </AnimatePresence>
             </div>
 
-            {/* Layout: Progress Bar - TOP */}
-            <div className="mb-4 px-1">
-                <div className="position-relative" style={{ height: '12px' }}>
+            {/* Layout: Progress Bar */}
+            <div className="mb-4 px-3">
+                <div className="position-relative" style={{ height: '6px', background: 'rgba(255,255,255,0.1)', borderRadius: '10px' }}>
+                    <div
+                        className="position-absolute top-0 start-0 h-100 bg-warning rounded-pill"
+                        style={{ width: `${progress}%` }}
+                    ></div>
                     <input
                         type="range"
                         min="0"
                         max="100"
                         value={progress || 0}
                         onChange={handleSeek}
-                        className="custom-range-input accent-warning"
+                        className="custom-range-input position-absolute top-0 start-0 w-100 h-100 opacity-0 cursor-pointer"
                     />
                 </div>
-                <div className="d-flex justify-content-between mt-1 px-1">
-                    <span className="tiny-text text-white opacity-40 fw-bold">{formatTime(audioRef.current?.currentTime || 0)}</span>
-                    <span className="tiny-text text-white opacity-40 fw-bold">{formatTime(duration)}</span>
+                <div className="d-flex justify-content-between mt-2 px-1">
+                    <span className="tiny-text text-white opacity-60 fw-bold font-monospace">{formatTime(audioRef.current?.currentTime || 0)}</span>
+                    <span className="tiny-text text-white opacity-60 fw-bold font-monospace">{formatTime(duration)}</span>
                 </div>
             </div>
 
             {/* Layout: Controls - MIDDLE */}
-            <div className="d-flex align-items-center justify-content-between px-3 mb-4">
-                <button className="btn btn-link text-white opacity-30 p-0 transform-hover">
+            <div className="d-flex align-items-center justify-content-between px-4 mb-5">
+                <button className="btn btn-link text-white opacity-50 p-0 transform-hover hover-opacity-100 transition-all">
                     <motion.div whileHover={{ scale: 1.2, rotate: 10 }}><svg width="20" height="20" fill="currentColor" viewBox="0 0 16 16"><path fillRule="evenodd" d="M0 3.5A.5.5 0 0 1 .5 3H1c2.202 0 3.827 1.24 4.874 2.418.49.552.865 1.102 1.126 1.532.26-.43.636-.98 1.126-1.532C9.173 4.24 10.798 3 13 3v1c-1.798 0-3.173 1.01-4.126 2.082A9.624 9.624 0 0 0 7.556 8a9.624 9.624 0 0 0 1.317 1.918C9.828 10.99 11.204 12 13 12v1c-2.202 0-3.827-1.24-4.874-2.418A10.595 10.595 0 0 1 7 9.05c-.26.43-.636.98-1.126 1.532C4.827 11.76 3.202 13 1 13H.5a.5.5 0 0 1 0-1H1c1.798 0 3.173-1.01 4.126-2.082A9.624 9.624 0 0 0 6.444 8a9.624 9.624 0 0 0-1.317-1.918C4.172 5.01 2.796 4 1 4H.5a.5.5 0 0 1-.5-.5z" /><path d="M13 5.466V1.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384l-2.36 1.966a.25.25 0 0 1-.41-.192zm0 9a.25.25 0 0 1-.41-.192V10.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384l-2.36 1.966a.25.25 0 0 1-.41-.192z" /></svg></motion.div>
                 </button>
 

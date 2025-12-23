@@ -1,5 +1,7 @@
 "use client";
 
+import { useEffect, useState } from "react";
+
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 // Note: In a real app we'd use icons from lucide-react. 
@@ -20,6 +22,26 @@ const navItems = [
 
 export default function DashboardNav() {
     const pathname = usePathname();
+    const [notificationCount, setNotificationCount] = useState(0);
+
+    useEffect(() => {
+        // Fetch notification count
+        const fetchCount = async () => {
+            try {
+                const res = await fetch("/api/notifications/count");
+                if (res.ok) {
+                    const data = await res.json();
+                    setNotificationCount(data.count);
+                }
+            } catch (e) {
+                console.error(e);
+            }
+        };
+
+        fetchCount();
+        const interval = setInterval(fetchCount, 60000); // Check every minute
+        return () => clearInterval(interval);
+    }, []);
 
     return (
         <>
@@ -38,7 +60,14 @@ export default function DashboardNav() {
                                 href={item.href}
                                 className={`nav-link d-flex flex-column align-items-center small ${isActive ? 'text-primary' : 'text-muted'}`}
                             >
-                                <Icon size={24} strokeWidth={isActive ? 2.5 : 2} />
+                                <div className="position-relative">
+                                    <Icon size={24} strokeWidth={isActive ? 2.5 : 2} />
+                                    {item.name === 'Comunidad' && notificationCount > 0 && (
+                                        <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style={{ fontSize: '0.6rem', padding: '0.25em 0.4em' }}>
+                                            {notificationCount > 9 ? '9+' : notificationCount}
+                                        </span>
+                                    )}
+                                </div>
                                 <span style={{ fontSize: '10px', marginTop: '4px', fontWeight: isActive ? 600 : 400 }}>{item.name}</span>
                             </Link>
                         );
@@ -63,7 +92,14 @@ export default function DashboardNav() {
                                 href={item.href}
                                 className={`nav-link d-flex align-items-center gap-3 rounded-pill px-3 py-2 transition-all ${isActive ? 'bg-secondary text-primary shadow-sm fw-bold' : 'text-white-50 hover-text-white hover-bg-white-10'}`}
                             >
-                                <Icon size={20} />
+                                <div className="position-relative d-flex align-items-center">
+                                    <Icon size={20} />
+                                    {item.name === 'Comunidad' && notificationCount > 0 && (
+                                        <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style={{ fontSize: '0.55rem', marginLeft: '-5px' }}>
+                                            {notificationCount > 9 ? '9+' : notificationCount}
+                                        </span>
+                                    )}
+                                </div>
                                 <span className="fw-medium">{item.name}</span>
                             </Link>
                         );

@@ -65,6 +65,31 @@ export async function completeLlamiTutorial() {
 }
 
 /**
+ * Actualiza el nombre de la mascota
+ */
+export async function updateMascotName(newName: string) {
+    const session = await auth();
+    if (!session?.user?.id) return { success: false, error: "No autorizado" };
+
+    if (!newName || newName.trim().length < 2 || newName.trim().length > 15) {
+        return { success: false, error: "El nombre debe tener entre 2 y 15 caracteres." };
+    }
+
+    const userId = (session.user as any).id;
+
+    await (prisma as any).mascot.update({
+        where: { userId },
+        data: {
+            name: newName.trim()
+        }
+    });
+
+    revalidatePath("/dashboard/llami");
+    revalidatePath("/dashboard"); // Update dashboard widget too
+    return { success: true };
+}
+
+/**
  * Alimenta a Llami usando puntos de llama
  */
 export async function feedMascot() {

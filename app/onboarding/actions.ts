@@ -10,7 +10,9 @@ export async function submitOnboarding(data: {
     connectionMethods: string[];
     gender: string;
     mascotName?: string;
+
     leaderPhone?: string;
+    age: number;
 }) {
     const session = await auth();
 
@@ -29,11 +31,11 @@ export async function submitOnboarding(data: {
     } = data;
 
     // Validate required fields
-    if (!spiritualStatus || !gender) {
-        throw new Error('Spiritual status and gender are required');
+    if (!spiritualStatus || !gender || !data.age) {
+        throw new Error('Spiritual status, gender and age are required');
     }
 
-    await prisma.user.update({
+    await (prisma as any).user.update({
         where: { email: session.user.email },
         data: {
             spiritualStatus,
@@ -41,6 +43,7 @@ export async function submitOnboarding(data: {
             problemsFaced: JSON.stringify(problemsFaced),
             connectionMethods: JSON.stringify(connectionMethods),
             gender,
+            age: data.age,
             leaderPhone,
             hasCompletedOnboarding: true,
             // Create or update Mascot

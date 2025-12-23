@@ -2,10 +2,10 @@
 
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Flame, Sparkles, Heart, Zap, ChevronLeft } from "lucide-react";
+import { Flame, Sparkles, Heart, Zap, ChevronLeft, Edit2, Check, X } from "lucide-react";
 import Link from "next/link";
 import LlamiMascot from "@/app/components/LlamiMascot";
-import { getOrCreateMascot, feedMascot } from "./actions";
+import { getOrCreateMascot, feedMascot, updateMascotName } from "./actions";
 import { toast } from "react-hot-toast";
 import TriviaGame from "@/app/components/TriviaGame";
 import { Gamepad2, HelpCircle } from "lucide-react";
@@ -18,6 +18,8 @@ export default function LlamiPage() {
     const [isFeeding, setIsFeeding] = useState(false);
     const [isPlayingTrivia, setIsPlayingTrivia] = useState(false);
     const [showTutorial, setShowTutorial] = useState(false);
+    const [isEditingName, setIsEditingName] = useState(false);
+    const [newName, setNewName] = useState("");
 
     const loadMascot = async () => {
         const data = await getOrCreateMascot();
@@ -55,6 +57,18 @@ export default function LlamiPage() {
         setShowTutorial(false);
         await completeLlamiTutorial();
         await loadMascot();
+    };
+
+    const handleUpdateName = async () => {
+        if (!newName.trim()) return;
+        const result = await updateMascotName(newName);
+        if (result.success) {
+            toast.success("¡Nombre actualizado!");
+            setIsEditingName(false);
+            loadMascot();
+        } else {
+            toast.error(result.error || "Error al actualizar");
+        }
     };
 
     if (loading) {
@@ -123,8 +137,42 @@ export default function LlamiPage() {
                                 </AnimatePresence>
 
                                 <div className="transform-scale-15">
-                                    <LlamiMascot streak={1} lastMood={mascot.mood} />
+                                    <LlamiMascot streak={1} lastMood={mascot.mood} name={mascot.name} />
                                 </div>
+                            </div>
+
+                            {/* Rename Interaction */}
+                            <div className="d-flex justify-content-center align-items-center gap-2 mt-3">
+                                {isEditingName ? (
+                                    <div className="d-flex gap-2 bg-white p-2 rounded-pill shadow-sm animate-fade-in border">
+                                        <input
+                                            autoFocus
+                                            type="text"
+                                            value={newName}
+                                            onChange={(e) => setNewName(e.target.value)}
+                                            className="form-control form-control-sm border-0 bg-transparent text-primary fw-bold text-center"
+                                            style={{ width: '120px', boxShadow: 'none' }}
+                                            placeholder="Nombre..."
+                                        />
+                                        <button onClick={handleUpdateName} className="btn btn-sm btn-success rounded-circle d-flex align-items-center justify-content-center p-0" style={{ width: 30, height: 30 }}>
+                                            <Check size={16} />
+                                        </button>
+                                        <button onClick={() => setIsEditingName(false)} className="btn btn-sm btn-light rounded-circle d-flex align-items-center justify-content-center p-0" style={{ width: 30, height: 30 }}>
+                                            <X size={16} />
+                                        </button>
+                                    </div>
+                                ) : (
+                                    <button
+                                        onClick={() => {
+                                            setNewName(mascot.name);
+                                            setIsEditingName(true);
+                                        }}
+                                        className="btn btn-link text-muted text-decoration-none d-flex align-items-center gap-2 small opacity-75 hover-opacity-100"
+                                    >
+                                        <span className="small">Cambiar nombre</span>
+                                        <Edit2 size={14} />
+                                    </button>
+                                )}
                             </div>
                         </div>
 

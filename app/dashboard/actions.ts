@@ -153,6 +153,22 @@ export async function createStruggle(title: string) {
         return { success: true, struggle };
     } catch (error) {
         console.error("Error creating struggle:", error);
+
         return { success: false };
     }
+}
+
+export async function updateAge(age: number) {
+    const session = await auth();
+    if (!session?.user?.id) throw new Error("Unauthorized");
+
+    const userId = (session.user as any).id;
+
+    await prismaAny.user.update({
+        where: { id: userId },
+        data: { age }
+    });
+
+    revalidatePath("/dashboard");
+    revalidatePath("/dashboard/profile");
 }

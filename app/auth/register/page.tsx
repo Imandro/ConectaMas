@@ -17,11 +17,13 @@ export default function RegisterPage() {
         name: '',
         username: '',
         email: '',
-        password: ''
+        password: '',
+        termsAccepted: false
     });
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setFormData({ ...formData, [e.target.id]: e.target.value });
+        const value = e.target.type === 'checkbox' ? e.target.checked : e.target.value;
+        setFormData({ ...formData, [e.target.id]: value });
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -170,6 +172,36 @@ export default function RegisterPage() {
                     </small>
                 </div>
 
+                <div className="mb-4 form-check">
+                    <input
+                        type="checkbox"
+                        className="form-check-input"
+                        id="termsAccepted"
+                        checked={(formData as any).termsAccepted}
+                        onChange={handleChange}
+                        required
+                    />
+                    <label className="form-check-label small text-muted" htmlFor="termsAccepted">
+                        He leído y acepto los <Link href="/terms" target="_blank" className="text-primary fw-bold text-decoration-none">Términos y Condiciones</Link> y la Política de Privacidad.
+                    </label>
+                </div>
+
+
+
+                <div className="mb-4 form-check">
+                    <input
+                        type="checkbox"
+                        className="form-check-input"
+                        id="termsAccepted"
+                        checked={(formData as any).termsAccepted}
+                        onChange={handleChange}
+                        required
+                    />
+                    <label className="form-check-label small text-muted" htmlFor="termsAccepted">
+                        He leído y acepto los <Link href="/terms" target="_blank" className="text-primary fw-bold text-decoration-none">Términos y Condiciones</Link> y la Política de Privacidad.
+                    </label>
+                </div>
+
                 <div className="d-grid mb-3">
                     <button
                         type="submit"
@@ -194,7 +226,7 @@ export default function RegisterPage() {
                         ¿Ya tienes cuenta? <Link href="/auth/login" className="text-primary fw-bold text-decoration-none">Inicia sesión</Link>
                     </p>
                 </div>
-            </form>
-        </div>
+            </form >
+        </div >
     );
 }

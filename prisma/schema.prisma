@@ -38,7 +38,11 @@ model User {
   hasCompletedOnboarding Boolean @default(false)
   hasSeenTutorialTour   Boolean @default(false)
   hasSeenLlamiTutorial  Boolean @default(false)
+  hasSeenCommunityTutorial Boolean @default(false)
   leaderPhone            String?   // For SOS leadership contact
+  age                    Int?
+  lastUsernameChange     DateTime?
+  lastForumCheck         DateTime?  @default(now())
 
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt

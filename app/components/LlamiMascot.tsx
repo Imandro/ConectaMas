@@ -10,9 +10,10 @@ interface LlamiMascotProps {
     lastMood?: string;
     level?: number;
     forceStage?: "spark" | "flame" | "torch" | "sun" | "star";
+    name?: string;
 }
 
-export default function LlamiMascot({ streak, lastMood, level = 1, forceStage }: LlamiMascotProps) {
+export default function LlamiMascot({ streak, lastMood, level = 1, forceStage, name }: LlamiMascotProps) {
     const [message, setMessage] = useState<string>("");
     const [showMessage, setShowMessage] = useState(false);
     const [clickCount, setClickCount] = useState(0);
@@ -235,7 +236,7 @@ export default function LlamiMascot({ streak, lastMood, level = 1, forceStage }:
             <div className="mt-2">
                 <span className="badge bg-white shadow-sm rounded-pill text-primary fw-bold d-inline-flex align-items-center gap-1 px-3 py-1" style={{ fontSize: '0.7rem' }}>
                     <Sparkles size={10} className="text-secondary" />
-                    Llami
+                    {name || "Llami"}
                 </span>
             </div>
         </div>

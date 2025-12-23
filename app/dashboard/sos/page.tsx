@@ -74,18 +74,18 @@ export default function EmergencyPage() {
                 </Link>
             </div>
 
-            <div className={`flex-grow-1 d-flex flex-column justify-content-center position-relative z-1`}>
+            <div className={`flex-grow-1 d-flex flex-column justify-content-start pt-5 position-relative z-1`}>
 
-                <h1 className="display-4 fw-bold mb-4">Respira.</h1>
-                <p className="lead mb-5 opacity-75">
+                <h1 className="display-4 fw-bold mb-4 animate-fade-in-up">Respira.</h1>
+                <p className="lead mb-5 opacity-75 animate-fade-in-up delay-100">
                     No has fallado todavía. Y aunque lo hicieras, Él te sigue amando. Pero hagamos una pausa de 1 minuto juntos.
                 </p>
 
                 {!showTruths ? (
-                    <div className="d-grid gap-3">
+                    <div className="d-grid gap-3 animate-fade-in-up delay-200">
                         <button
                             onClick={handleShowTruths}
-                            className="btn bg-white btn-lg shadow-sm text-primary d-flex align-items-center justify-content-start gap-3 p-3"
+                            className="btn bg-white btn-lg shadow-sm text-primary d-flex align-items-center justify-content-start gap-3 p-3 hover-scale transition-all"
                         >
                             <BookHeart size={24} className="text-secondary" />
                             <div className="text-start">
@@ -96,7 +96,7 @@ export default function EmergencyPage() {
 
                         <button
                             onClick={() => setShowMusic(!showMusic)}
-                            className="btn bg-white btn-lg shadow-sm text-primary d-flex align-items-center justify-content-start gap-3 p-3"
+                            className="btn bg-white btn-lg shadow-sm text-primary d-flex align-items-center justify-content-start gap-3 p-3 hover-scale transition-all"
                         >
                             <Music size={24} className="text-secondary" />
                             <div className="text-start">
@@ -114,7 +114,7 @@ export default function EmergencyPage() {
                                     alert("No has configurado el número de tu líder en tu perfil.");
                                 }
                             }}
-                            className="btn btn-outline-light btn-lg border-2 d-flex align-items-center justify-content-start gap-3 p-3 w-100"
+                            className="btn btn-outline-light btn-lg border-2 d-flex align-items-center justify-content-start gap-3 p-3 w-100 hover-scale transition-all"
                         >
                             <Phone size={24} />
                             <div className="text-start">
@@ -125,19 +125,19 @@ export default function EmergencyPage() {
                     </div>
                 ) : (
                     <div className="animate-in fade-in slide-in-from-bottom-4">
-                        <div className="bg-white bg-opacity-10 backdrop-blur-sm rounded-4 p-4 border border-white-50">
-                            <h3 className="fw-bold mb-4 d-flex align-items-center gap-2"><BookHeart size={28} /> 5 Verdades para ti hoy:</h3>
+                        <div className="bg-white bg-opacity-10 backdrop-blur-sm rounded-5 p-4 border border-white-50">
+                            <h3 className="fw-bold mb-4 d-flex align-items-center gap-2 text-white"><BookHeart size={28} /> 5 Verdades para ti hoy:</h3>
                             <ul className="list-unstyled p-0 m-0 d-flex flex-column gap-3">
                                 {randomTruths.map((truth, idx) => (
-                                    <li key={idx} className="d-flex gap-3 align-items-start bg-white bg-opacity-10 p-3 rounded-3">
+                                    <li key={idx} className="d-flex gap-3 align-items-start bg-white bg-opacity-10 p-3 rounded-4 border border-white-25">
                                         <span className="fw-bold text-warning user-select-none fs-5">{idx + 1}.</span>
-                                        <span className="lh-base fw-medium fs-5">{truth}</span>
+                                        <span className="lh-base fw-medium fs-5 text-white">{truth}</span>
                                     </li>
                                 ))}
                             </ul>
                             <button
                                 onClick={() => setShowTruths(false)}
-                                className="btn btn-light w-100 fw-bold py-3 mt-4 rounded-pill text-primary"
+                                className="btn btn-light w-100 fw-bold py-3 mt-4 rounded-pill text-primary hover-scale shadow-sm"
                             >
                                 Volver
                             </button>
