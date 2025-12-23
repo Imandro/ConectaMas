@@ -6,6 +6,8 @@ import { PrismaAdapter } from "@auth/prisma-adapter";
 import { prisma } from "@/app/lib/prisma";
 import bcrypt from "bcryptjs";
 
+console.log("NextAuth initialized with AUTH_SECRET status:", !!(process.env.AUTH_SECRET || process.env.NEXTAUTH_SECRET));
+
 export const { handlers, auth, signIn, signOut } = NextAuth({
     ...authConfig,
     adapter: PrismaAdapter(prisma),
@@ -28,6 +30,8 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
                 const identifier = credentials.identifier as string;
                 const password = credentials.password as string;
 
+                console.log("[Auth] Attempting authorize for:", identifier);
+
                 // Find user by email OR username
                 const user = await prisma.user.findFirst({
                     where: {
@@ -45,8 +49,11 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
                 const isValid = await bcrypt.compare(password, user.passwordHash);
 
                 if (!isValid) {
+                    console.log("[Auth] Invalid password for:", identifier);
                     return null;
                 }
+
+                console.log("[Auth] Successful authorize for:", identifier);
 
                 return {
                     id: user.id,
@@ -67,6 +74,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         async jwt({ token, user, trigger, session }: { token: any, user: any, trigger?: string, session?: any }) {
             // On sign in, populate token with user data
             if (user) {
+                console.log("[Auth] JWT Callback: Initializing token for user:", user.email);
                 token.id = user.id;
                 token.name = user.name;
                 token.email = user.email;
