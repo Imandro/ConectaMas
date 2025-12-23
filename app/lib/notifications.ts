@@ -8,7 +8,11 @@ const vapidPrivateKey = process.env.VAPID_PRIVATE_KEY || "6t4keJpbZzCphI_A5O_XVK
 const vapidSubject = process.env.VAPID_SUBJECT || "mailto:admin@conectaplus.app";
 
 if (vapidPublicKey && vapidPrivateKey) {
-    webpush.setVapidDetails(vapidSubject, vapidPublicKey, vapidPrivateKey);
+    try {
+        webpush.setVapidDetails(vapidSubject, vapidPublicKey, vapidPrivateKey);
+    } catch (error: any) {
+        console.error("VAPID Configuration Error:", error.message);
+    }
 }
 
 export const NOTIFICATION_CATEGORIES = {
