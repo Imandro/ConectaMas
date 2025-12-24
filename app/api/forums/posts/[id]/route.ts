@@ -26,17 +26,35 @@ export async function GET(
 
         const post = await prismaClient.forumPost.findUnique({
             where: { id: params.id },
-            include: {
+            select: {
+                id: true,
+                title: true,
+                content: true,
+                createdAt: true,
+                isAnonymous: true,
+                userId: true,
+                categoryId: true,
                 user: {
                     select: {
                         name: true,
                         isCounselor: true,
                     }
                 },
-                category: true,
+                category: {
+                    select: {
+                        name: true,
+                        icon: true,
+                    }
+                },
                 replies: {
                     orderBy: { createdAt: 'asc' },
-                    include: {
+                    take: 50, // Limitar a 50 respuestas para ahorrar recursos
+                    select: {
+                        id: true,
+                        content: true,
+                        createdAt: true,
+                        isAnonymous: true,
+                        userId: true,
                         user: {
                             select: {
                                 name: true,

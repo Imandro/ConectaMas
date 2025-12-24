@@ -22,11 +22,26 @@ export async function GET(request: Request) {
                             contains: tag.trim()
                         }
                     }))
-                }
+                },
+                select: {
+                    id: true,
+                    reference: true,
+                    text: true,
+                    tags: true
+                },
+                take: 20
             });
         } else {
             // Return all verses if no tags specified
-            verses = await prismaClient.bibleVerse.findMany();
+            verses = await prismaClient.bibleVerse.findMany({
+                select: {
+                    id: true,
+                    reference: true,
+                    text: true,
+                    tags: true
+                },
+                take: 20
+            });
         }
 
         return NextResponse.json(verses);

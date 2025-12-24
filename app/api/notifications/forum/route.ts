@@ -18,9 +18,16 @@ export async function GET() {
             where: {
                 userId: userId
             },
-            include: {
+            select: {
+                id: true,
+                type: true,
+                createdAt: true,
+                isRead: true,
+                postId: true,
                 post: {
-                    include: {
+                    select: {
+                        title: true,
+                        categoryId: true,
                         category: {
                             select: {
                                 name: true,

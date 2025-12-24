@@ -10,7 +10,11 @@ export async function GET() {
     try {
         const categories = await prismaClient.forumCategory.findMany({
             orderBy: { name: 'asc' },
-            include: {
+            select: {
+                id: true,
+                name: true,
+                description: true,
+                icon: true,
                 _count: {
                     select: { posts: true }
                 }

@@ -7,7 +7,14 @@ const prismaClient = prisma as any;
 export async function GET() {
     try {
         const songs = await prismaClient.song.findMany({
-            orderBy: { createdAt: 'desc' }
+            orderBy: { createdAt: 'desc' },
+            select: {
+                id: true,
+                title: true,
+                artist: true,
+                url: true
+            },
+            take: 15
         });
         return NextResponse.json(songs);
     } catch (error) {
