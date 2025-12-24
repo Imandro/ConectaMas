@@ -8,13 +8,14 @@ import { usePathname } from 'next/navigation';
 // For now I'm using text/emoji placeholders or basic SVGs if needed to be standalone without running npm install.
 // Assuming lucide-react IS in package.json, we can try to use it, but if it fails to compile without install, we'll fall back.
 // Since user hasn't installed node_modules, imports might partial fail in IDE but let's write code assuming they will install.
-import { Home, BookOpen, HeartPulse, User, Menu, Book, MessageCircle } from 'lucide-react';
+import { Home, BookOpen, HeartPulse, User, Menu, Book, MessageCircle, Zap } from 'lucide-react';
 import { signOut } from "next-auth/react";
 
 const navItems = [
     { name: 'Inicio', href: '/dashboard', icon: Home },
     { name: 'Devocionales', href: '/dashboard/devotionals', icon: BookOpen },
     { name: 'Biblia', href: '/dashboard/bible', icon: Book },
+    { name: 'Trivia', href: '/dashboard/trivia', icon: Zap },
     { name: 'Comunidad', href: '/dashboard/forums', icon: MessageCircle },
     { name: 'Salud Espiritual', href: '/dashboard/checkin', icon: HeartPulse },
     { name: 'Perfil', href: '/dashboard/profile', icon: User },

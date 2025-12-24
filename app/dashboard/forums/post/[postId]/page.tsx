@@ -131,7 +131,7 @@ export default function PostPage() {
 
     return (
         <div className="container-fluid py-4 animate-fade-in">
-            <Link href={`/dashboard/forums/${post.category.name}`} className="btn btn-light mb-4">
+            <Link href={`/dashboard/forums/${(post as any).categoryId}`} className="btn btn-light mb-4">
                 <ArrowLeft size={20} className="me-2" />
                 Volver a {post.category.icon} {post.category.name}
             </Link>

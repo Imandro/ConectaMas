@@ -38,13 +38,13 @@ export async function GET() {
 
             const remainingNeeded = 5 - selectedQuestions.length;
 
-            // Fetch new questions
-            const newQuestions = await prismaAny.triviaQuestion.findMany({
-                where: {
-                    id: { notIn: excludedIds }
-                },
-                take: remainingNeeded
-            });
+            // Fetch new questions - RANDOMIZED
+            // Prisma doesn't have a direct 'random' order for large sets without raw SQL easily,
+            // but for small sets or using skip/take with count is better.
+            // For now, let's just fetch more and shuffle in JS or use raw SQL if possible.
+            const newQuestions = await prismaAny.$queryRawUnsafe(
+                `SELECT * FROM "TriviaQuestion" WHERE id NOT IN (${excludedIds.length ? excludedIds.map(id => `'${id}'`).join(',') : "''"}) ORDER BY RANDOM() LIMIT ${remainingNeeded}`
+            );
 
             selectedQuestions.push(...newQuestions);
         }

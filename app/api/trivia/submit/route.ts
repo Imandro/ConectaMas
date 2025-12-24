@@ -23,6 +23,17 @@ export async function POST(req: Request) {
 
         const isCorrect = question.correctIndex === selectedIndex;
 
+        // --- OPTIMIZACIÓN RECURSOS & ANTI-CHEAT ---
+        // Verificar si ya respondió bien antes para no dar XP doble
+        const previousAttempt = await prismaAny.userTriviaAttempt.findUnique({
+            where: {
+                userId_questionId: { userId, questionId }
+            }
+        });
+
+        const alreadyCorrect = previousAttempt?.isCorrect === true;
+        // ------------------------------------------
+
         // 1. Record the attempt (Upsert: update if exists, create if not)
         await prismaAny.userTriviaAttempt.upsert({
             where: {
@@ -42,8 +53,8 @@ export async function POST(req: Request) {
             }
         });
 
-        // 2. If correct, reward Llami
-        if (isCorrect) {
+        // 2. If correct AND NOT already correctly answered before, reward Llami
+        if (isCorrect && !alreadyCorrect) {
             const mascot = await prismaAny.mascot.findUnique({
                 where: { userId }
             });

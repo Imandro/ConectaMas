@@ -36,6 +36,13 @@ export async function updateProfileImage(base64Image: string) {
     const session = await auth();
     if (!session?.user?.email) throw new Error("Unauthorized");
 
+    // --- OPTIMIZACIÓN DE RECURSOS (NEON DB PROT) ---
+    // Limitar imagen a ~100KB (base64 length is approx 1.33 * bytes)
+    if (base64Image.length > 150000) {
+        throw new Error("Imagen demasiado pesada. Máximo 100KB aprox.");
+    }
+    // ------------------------------------------------
+
     await prisma.user.update({
         where: { email: session.user.email },
         data: { image: base64Image }

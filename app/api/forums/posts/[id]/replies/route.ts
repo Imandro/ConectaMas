@@ -30,8 +30,27 @@ export async function POST(
         const { content, isAnonymous } = body;
 
         if (!content) {
-            return NextResponse.json({ error: 'Content is required' }, { status: 400 });
+            return NextResponse.json({ error: 'Contenido requerido' }, { status: 400 });
         }
+
+        // --- LIMITES DE RECURSOS (FREE TIER OPTIMIZATION) ---
+        if (content.length > 1500) return NextResponse.json({ error: 'Contenido demasiado largo (máx 1500)' }, { status: 400 });
+
+        // Cuota diaria (máx 10 replies)
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+
+        const repliesToday = await prismaClient.forumReply.count({
+            where: {
+                userId: user.id,
+                createdAt: { gte: today }
+            }
+        });
+
+        if (repliesToday >= 10) {
+            return NextResponse.json({ error: 'Límite de 10 respuestas diarias alcanzado' }, { status: 429 });
+        }
+        // ---------------------------------------------------
 
         // Verify post exists
         const post = await prismaClient.forumPost.findUnique({
@@ -62,6 +81,23 @@ export async function POST(
         // Create notification for post author if they're not the one replying
         if (post.userId !== user.id) {
             try {
+                // Auto-cleanup: Borrar notificaciones viejas para el autor (más de 30)
+                const notifCount = await prismaClient.forumNotification.count({
+                    where: { userId: post.userId }
+                });
+
+                if (notifCount >= 30) {
+                    const oldest = await prismaClient.forumNotification.findMany({
+                        where: { userId: post.userId },
+                        orderBy: { createdAt: 'asc' },
+                        take: 10,
+                        select: { id: true }
+                    });
+                    await prismaClient.forumNotification.deleteMany({
+                        where: { id: { in: oldest.map((n: any) => n.id) } }
+                    });
+                }
+
                 await prismaClient.forumNotification.create({
                     data: {
                         userId: post.userId,
@@ -73,7 +109,6 @@ export async function POST(
                 });
             } catch (notifError) {
                 console.error('Error creating notification:', notifError);
-                // Don't fail the reply creation if notification fails
             }
         }
 

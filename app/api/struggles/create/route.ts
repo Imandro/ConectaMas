@@ -17,13 +17,26 @@ export async function POST(req: Request) {
             return NextResponse.json({ message: 'Title is required' }, { status: 400 });
         }
 
+        // --- LIMITES DE RECURSOS (FREE TIER OPTIMIZATION) ---
+        if (title.length > 50) return NextResponse.json({ message: 'Título demasiado largo (máx 50)' }, { status: 400 });
+
         const user = await prisma.user.findUnique({
             where: { email: session.user.email },
+            select: { id: true }
         });
 
         if (!user) {
             return NextResponse.json({ message: 'User not found' }, { status: 404 });
         }
+
+        const count = await prisma.userStruggle.count({
+            where: { userId: user.id, status: 'ACTIVE' }
+        });
+
+        if (count >= 10) {
+            return NextResponse.json({ message: 'Has alcanzado el límite de 10 luchas activas' }, { status: 429 });
+        }
+        // ---------------------------------------------------
 
         const struggle = await prisma.userStruggle.create({
             data: {

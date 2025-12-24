@@ -126,15 +126,19 @@ async function main() {
     console.log('🗣️ Seeding Forum Categories...')
 
     const forumCategories = [
-        { name: 'Sugerencias y Soporte', description: '¡Ayúdanos a mejorar! Deja tus dudas o ideas aquí sobre la aplicación.', icon: '🚀' },
-        { name: 'Ansiedad', description: 'Comparte y encuentra apoyo sobre ansiedad y preocupaciones', icon: '😰' },
-        { name: 'Depresión', description: 'Un espacio seguro para hablar sobre depresión y tristeza', icon: '😔' },
-        { name: 'Adicciones', description: 'Apoyo en la lucha contra adicciones de todo tipo', icon: '🚫' },
-        { name: 'Lujuria', description: 'Venciendo la tentación sexual juntos en Cristo', icon: '💪' },
-        { name: 'Relaciones', description: 'Consejos sobre relaciones, familia y amistades', icon: '❤️' },
-        { name: 'Fe y Dudas', description: 'Preguntas sobre la fe cristiana y la Biblia', icon: '🙏' },
-        { name: 'Testimonios', description: 'Comparte tu historia de transformación y victoria', icon: '✨' },
-        { name: 'Oración', description: 'Peticiones de oración y apoyo espiritual', icon: '🕊️' },
+        { name: 'Conecta+', description: '¡Danos tu opinión! Valoraciones, preguntas y sugerencias sobre la app.', icon: '📱' },
+        { name: 'Testimonios', description: 'Comparte lo que Dios ha hecho en tu vida. ¡Tu historia inspira!', icon: '✨' },
+        { name: 'Ansiedad y Estrés', description: 'Encuentra paz y apoyo en momentos de ansiedad.', icon: '😰' },
+        { name: 'Depresión y Tristeza', description: 'Un lugar seguro para caminar juntos en la oscuridad.', icon: '😔' },
+        { name: 'Lujuria y Tentación', description: 'Venciendo la tentación y recuperando la pureza en Cristo.', icon: '💪' },
+        { name: 'Adicciones', description: 'Libertad y apoyo para romper cadenas de adicción.', icon: '🚫' },
+        { name: 'Relaciones y Familia', description: 'Consejos y apoyo para sanar vínculos y amistades.', icon: '❤️' },
+        { name: 'Mentira y Honestidad', description: 'Caminando en la verdad y la integridad diaria.', icon: '🤐' },
+        { name: 'Orgullo y Humildad', description: 'Buscando un corazón humilde como el de Jesús.', icon: '🙏' },
+        { name: 'Enojo e Ira', description: 'Dominio propio y sanidad para el corazón herido.', icon: '💢' },
+        { name: 'Soledad y Propósito', description: 'Descubriendo quién eres en Dios cuando te sientes solo.', icon: '🧭' },
+        { name: 'Dudas de Fe', description: 'Preguntas honestas sobre la Biblia y el caminar cristiano.', icon: '❓' },
+        { name: 'Oración', description: 'Deja tus peticiones y oremos unos por otros.', icon: '🕊️' },
     ];
 
     for (const category of forumCategories) {
@@ -145,10 +149,11 @@ async function main() {
         });
     }
 
-    console.log('✅ 8 Forum Categories seeded')
+    console.log(`✅ ${forumCategories.length} Forum Categories seeded`)
 
     // --- TRIVIA QUESTIONS ---
     console.log('🎮 Seeding Trivia Questions...')
+    await prismaAny.triviaQuestion.deleteMany({});
     const triviaQuestions = [
         {
             question: "¿Quién construyó el arca para salvarse del diluvio?",
@@ -1392,8 +1397,17 @@ async function main() {
 
     console.log(`✅ ${strugglePlans.length} Struggle Plans seeded`)
 
+    // --- TRIVIA QUESTIONS ---
+    console.log('🎮 Seeding Trivia Questions...')
+    for (const question of triviaQuestions) {
+        await prismaAny.triviaQuestion.create({
+            data: question
+        })
+    }
+    console.log(`✅ ${triviaQuestions.length} Trivia Questions seeded`)
+
     // --- SONGS ---
-    console.log('🎵 Seeding Songs...')
+    console.log('🎵 Seeding songs...')
     const songsList = [
         {
             id: "local-song-1",

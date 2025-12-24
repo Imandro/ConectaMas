@@ -33,6 +33,12 @@ export async function GET() {
                     lte: endOfMonth
                 }
             },
+            select: {
+                id: true,
+                mood: true,
+                note: true,
+                createdAt: true
+            },
             orderBy: {
                 createdAt: 'desc'
             }

@@ -396,6 +396,7 @@ model ForumNotification {
   createdAt   DateTime @default(now())
   
   @@index([userId, isRead])
+  @@index([createdAt])
 }
 
 model ResetToken {

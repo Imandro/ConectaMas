@@ -99,7 +99,19 @@ export async function feedMascot() {
     const userId = (session.user as any).id;
     const mascot = await (prisma as any).mascot.findUnique({ where: { userId } });
 
-    if (!mascot || mascot.flamePoints < 5) {
+    if (!mascot) return { success: false, error: "No se encontró a Llami" };
+
+    // --- COOLDOWN (OPTIMIZACIÓN) ---
+    const lastFed = new Date(mascot.lastFed);
+    const now = new Date();
+    const hoursSinceLastFed = (now.getTime() - lastFed.getTime()) / (1000 * 60 * 60);
+
+    if (hoursSinceLastFed < 4) {
+        const remainingHours = Math.ceil(4 - hoursSinceLastFed);
+        return { success: false, error: `Llami está lleno. Intenta alimentarlo en ${remainingHours} ${remainingHours === 1 ? 'hora' : 'horas'}.` };
+    }
+
+    if (mascot.flamePoints < 5) {
         return { success: false, error: "No tienes suficientes Puntos de Llama. ¡Lee la Biblia para ganar más!" };
     }
 

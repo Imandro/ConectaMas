@@ -17,8 +17,13 @@ export async function GET(request: NextRequest) {
         const posts = await prismaClient.forumPost.findMany({
             where,
             orderBy: { createdAt: 'desc' },
-            take: 50, // Limit to 50 posts
-            include: {
+            take: 20, // Reducido de 50 para ahorrar recursos
+            select: {
+                id: true,
+                title: true,
+                content: true, // Lo necesitamos para el preview, pero limitaremos el 'take'
+                createdAt: true,
+                isAnonymous: true,
                 user: {
                     select: {
                         name: true,
@@ -71,8 +76,28 @@ export async function POST(request: NextRequest) {
         const { title, content, categoryId, isAnonymous } = body;
 
         if (!title || !content || !categoryId) {
-            return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
+            return NextResponse.json({ error: 'Datos incompletos' }, { status: 400 });
         }
+
+        // --- LIMITES DE RECURSOS (FREE TIER OPTIMIZATION) ---
+        if (title.length > 100) return NextResponse.json({ error: 'Título demasiado largo (máx 100)' }, { status: 400 });
+        if (content.length > 3000) return NextResponse.json({ error: 'Contenido demasiado largo (máx 3000)' }, { status: 400 });
+
+        // Cuota diaria (máx 3 posts)
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+
+        const postsToday = await prismaClient.forumPost.count({
+            where: {
+                userId: user.id,
+                createdAt: { gte: today }
+            }
+        });
+
+        if (postsToday >= 3) {
+            return NextResponse.json({ error: 'Has alcanzado el límite de 3 publicaciones por día' }, { status: 429 });
+        }
+        // ---------------------------------------------------
 
         const post = await prismaClient.forumPost.create({
             data: {

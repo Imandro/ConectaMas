@@ -17,13 +17,32 @@ export async function POST(req: Request) {
             return NextResponse.json({ message: 'Mood is required' }, { status: 400 });
         }
 
+        // --- LIMITES DE RECURSOS (FREE TIER OPTIMIZATION) ---
+        if (note && note.length > 1000) return NextResponse.json({ message: 'Nota demasiado larga (máx 1000)' }, { status: 400 });
+
         const user = await prisma.user.findUnique({
             where: { email: session.user.email },
+            select: { id: true }
         });
 
         if (!user) {
             return NextResponse.json({ message: 'User not found' }, { status: 404 });
         }
+
+        // Bloquear si ya hubo check-in hoy
+        const todayStart = new Date();
+        todayStart.setHours(0, 0, 0, 0);
+        const existingCheckin = await prisma.dailyCheckin.findFirst({
+            where: {
+                userId: user.id,
+                createdAt: { gte: todayStart }
+            }
+        });
+
+        if (existingCheckin) {
+            return NextResponse.json({ message: 'Ya has realizado tu check-in de hoy' }, { status: 429 });
+        }
+        // ---------------------------------------------------
 
         // 1. Create Check-in
         const checkin = await prisma.dailyCheckin.create({
