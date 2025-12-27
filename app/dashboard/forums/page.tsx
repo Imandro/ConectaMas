@@ -27,11 +27,17 @@ export default function ForumsPage() {
         fetch('/api/forums/mark-read', { method: 'POST' });
 
         // Check tutorial status
-        getCommunityTutorialStatus().then(hasSeen => {
-            if (!hasSeen) {
-                setShowTutorial(true);
-            }
-        });
+        // Check tutorial status
+        const localSeen = localStorage.getItem('conecta_hasSeenCommunityTutorial');
+        if (localSeen) {
+            setShowTutorial(false);
+        } else {
+            getCommunityTutorialStatus().then(hasSeen => {
+                if (!hasSeen) {
+                    setShowTutorial(true);
+                }
+            });
+        }
 
         fetch('/api/forums/categories')
             .then(res => res.json())
@@ -46,8 +52,9 @@ export default function ForumsPage() {
     }, []);
 
     const handleTutorialComplete = async () => {
-        await markCommunityTutorialSeen();
+        localStorage.setItem('conecta_hasSeenCommunityTutorial', 'true'); // Immediate client-side persistence
         setShowTutorial(false);
+        await markCommunityTutorialSeen();
     };
 
     if (loading) {
