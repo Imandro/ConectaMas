@@ -35,8 +35,17 @@ export default function TriviaGame({ onComplete }: TriviaGameProps) {
 
     useEffect(() => {
         fetch("/api/trivia/daily")
-            .then((res) => res.json())
+            .then((res) => {
+                if (res.status === 401) {
+                    // Session not ready or invalid. 
+                    // We can either redirect or just stop loading.
+                    // For now, let's stop loading to prevent empty state crash if we had one.
+                    throw new Error("Unauthorized");
+                }
+                return res.json();
+            })
             .then((data) => {
+                if (data.error) throw new Error(data.error);
                 setQuestions(data);
                 setIsLoading(false);
             })
