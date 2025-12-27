@@ -13,7 +13,8 @@ interface AdUnitProps {
 
 export default function AdUnit({ slot, format = "auto", responsive = "true", className = "" }: AdUnitProps) {
     const pathname = usePathname();
-    const { data: session } = useSession();
+    const sessionContext = useSession();
+    const session = sessionContext?.data;
 
     const sensitiveRoutes = [
         "/dashboard/sos",

@@ -10,7 +10,8 @@ interface GoogleAdSenseProps {
 
 export default function GoogleAdSense({ pId }: GoogleAdSenseProps) {
     const pathname = usePathname();
-    const { data: session } = useSession();
+    const sessionContext = useSession();
+    const session = sessionContext?.data;
 
     // Zonas sensibles donde NO queremos que se cargue ni un solo script de anuncios
     const sensitiveRoutes = [

@@ -5,7 +5,8 @@ import Image from "next/image";
 import { useSession } from "next-auth/react";
 
 export default function SupportFundingAd() {
-    const { data: session } = useSession();
+    const sessionContext = useSession();
+    const session = sessionContext?.data;
     const isPremium = (session?.user as any)?.isPremium;
 
     if (isPremium) return null;

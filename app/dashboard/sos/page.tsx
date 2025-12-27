@@ -11,7 +11,8 @@ import EnhancedMusicPlayer from '@/app/components/EnhancedMusicPlayer';
 import MusicUploadModal from '@/app/components/MusicUploadModal';
 
 export default function EmergencyPage() {
-    const { data: session } = useSession();
+    const sessionContext = useSession();
+    const session = sessionContext?.data;
     const [showContent, setShowContent] = useState(false);
     const [showTruths, setShowTruths] = useState(false);
     const [showMusic, setShowMusic] = useState(false); // Music player state
