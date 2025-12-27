@@ -45,11 +45,15 @@ export default async function StrugglePlanPage({
         }
     });
 
+    // Serialize to clean JSON to avoid Date object prop errors in Client Components
+    const serializableUserStruggle = JSON.parse(JSON.stringify(userStruggle));
+    const serializablePlan = plan ? JSON.parse(JSON.stringify(plan)) : null;
+
     return (
         <div className="container py-0 py-md-4 min-vh-100 animate-fade-in shadow-none border-0">
             <StrugglePlanContent
-                userStruggle={userStruggle as any}
-                plan={plan as any}
+                userStruggle={serializableUserStruggle}
+                plan={serializablePlan}
             />
         </div>
     );

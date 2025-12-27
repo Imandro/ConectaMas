@@ -18,6 +18,9 @@ export default async function LuchasPage() {
         orderBy: { updatedAt: 'desc' }
     });
 
+    // Serialize Dates to strings for Client Component compatibility
+    const serializableStruggles = JSON.parse(JSON.stringify(struggles));
+
     return (
         <div className="container py-4 min-vh-100 animate-fade-in">
             {/* Header */}
@@ -33,7 +36,7 @@ export default async function LuchasPage() {
 
             <div className="row justify-content-center">
                 <div className="col-12 col-lg-10">
-                    <StruggleTracker initialStruggles={struggles as any} />
+                    <StruggleTracker initialStruggles={serializableStruggles} />
                 </div>
             </div>
 

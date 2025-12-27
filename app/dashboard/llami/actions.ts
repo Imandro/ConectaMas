@@ -43,7 +43,19 @@ export async function getOrCreateMascot() {
         });
     }
 
-    return mascot;
+    // Clean the mascot object to ensure it is purely serializable
+    return {
+        id: mascot.id,
+        name: mascot.name,
+        level: mascot.level,
+        experience: mascot.experience,
+        flamePoints: mascot.flamePoints,
+        mood: mascot.mood,
+        lastFed: mascot.lastFed ? (mascot.lastFed as Date).toISOString() : null,
+        user: {
+            hasSeenLlamiTutorial: mascot.user?.hasSeenLlamiTutorial || false
+        }
+    };
 }
 
 /**

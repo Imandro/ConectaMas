@@ -30,7 +30,7 @@ export async function searchUsers(query: string) {
         take: 5
     });
 
-    return users;
+    return JSON.parse(JSON.stringify(users));
 }
 
 export async function addFriend(friendId: string) {
@@ -131,5 +131,5 @@ export async function getFriends() {
         include: { friends: true }
     });
 
-    return user?.friends || [];
+    return JSON.parse(JSON.stringify(user?.friends || []));
 }

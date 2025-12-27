@@ -31,7 +31,7 @@ export async function getBibleReadingStruggle() {
         });
     }
 
-    return struggle;
+    return JSON.parse(JSON.stringify(struggle));
 }
 
 /**

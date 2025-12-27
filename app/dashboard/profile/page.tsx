@@ -67,7 +67,7 @@ export default async function ProfilePage() {
                     image: (user as any).image,
                     spiritualLevel: (user as any).spiritualLevel,
                     username: (user as any).username,
-                    lastUsernameChange: (user as any).lastUsernameChange,
+                    lastUsernameChange: (user as any).lastUsernameChange ? (user as any).lastUsernameChange.toISOString() : null,
                     age: (user as any).age
                 }}
             />

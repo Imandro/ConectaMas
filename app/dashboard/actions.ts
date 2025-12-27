@@ -23,7 +23,7 @@ export async function getStrugglePlan(title: string) {
                 }
             }
         });
-        return plan;
+        return JSON.parse(JSON.stringify(plan));
     } catch (error) {
         console.error("Error fetching struggle plan:", error);
         return null;
@@ -60,7 +60,7 @@ export async function advanceStruggleDay(userStruggleId: string, completedDay: n
 
         revalidatePath("/dashboard");
         revalidatePath("/dashboard/luchas");
-        return { success: true, struggle: updated };
+        return { success: true, struggle: JSON.parse(JSON.stringify(updated)) };
     } catch (error) {
         console.error("Error advancing struggle day:", error);
         return { success: false, error: "Failed to update progress" };
@@ -82,7 +82,7 @@ export async function markStruggleAsOvercome(userStruggleId: string) {
 
         revalidatePath("/dashboard");
         revalidatePath("/dashboard/luchas");
-        return { success: true, struggle: updated };
+        return { success: true, struggle: JSON.parse(JSON.stringify(updated)) };
     } catch (error) {
         console.error("Error marking struggle as overcome:", error);
         return { success: false, error: "Failed to update status" };
@@ -101,7 +101,7 @@ export async function toggleStruggleStatus(id: string, status: string) {
 
         revalidatePath("/dashboard");
         revalidatePath("/dashboard/luchas");
-        return { success: true, struggle: updated };
+        return { success: true, struggle: JSON.parse(JSON.stringify(updated)) };
     } catch (error) {
         console.error("Error toggling struggle status:", error);
         return { success: false };
@@ -123,7 +123,7 @@ export async function startStrugglePlan(id: string) {
 
         revalidatePath("/dashboard");
         revalidatePath("/dashboard/luchas");
-        return { success: true, struggle: updated };
+        return { success: true, struggle: JSON.parse(JSON.stringify(updated)) };
     } catch (error) {
         console.error("Error starting struggle plan:", error);
         return { success: false };
@@ -150,7 +150,7 @@ export async function createStruggle(title: string) {
 
         revalidatePath("/dashboard");
         revalidatePath("/dashboard/luchas");
-        return { success: true, struggle };
+        return { success: true, struggle: JSON.parse(JSON.stringify(struggle)) };
     } catch (error) {
         console.error("Error creating struggle:", error);
 
