@@ -160,19 +160,33 @@ export default function TriviaGame({ onComplete }: TriviaGameProps) {
 
     const currentQ = questions[currentIndex];
 
+    // Bulletproof check for currentQ
+    if (!currentQ || !currentQ.options) {
+        // If we are in "PLAYING" state but currentQ is missing, it likely means questions array was empty or failed.
+        // We should show error or loading instead of crashing.
+        return (
+            <div className="text-center py-5">
+                <Info size={48} className="text-warning mb-3 mx-auto opacity-50" />
+                <h4 className="text-muted mb-2">Momento de descanso</h4>
+                <p className="text-muted small">No hay preguntas disponibles en este momento.</p>
+                <button onClick={onComplete} className="btn btn-outline-secondary rounded-pill px-4 mt-3">Volver</button>
+            </div>
+        );
+    }
+
     return (
         <div className="trivia-container">
             {/* Progress bar */}
             <div className="mb-4">
                 <div className="d-flex justify-content-between text-muted small mb-2 fw-bold">
                     <span>PREGUNTA {currentIndex + 1} DE {questions.length}</span>
-                    <span>{Math.round(((currentIndex) / questions.length) * 100)}%</span>
+                    <span>{questions.length > 0 ? Math.round(((currentIndex) / questions.length) * 100) : 0}%</span>
                 </div>
                 <div className="progress rounded-pill shadow-sm" style={{ height: '8px', backgroundColor: 'rgba(11, 27, 50, 0.1)' }}>
                     <motion.div
                         className="progress-bar bg-warning rounded-pill"
                         initial={{ width: 0 }}
-                        animate={{ width: `${((currentIndex + 1) / questions.length) * 100}%` }}
+                        animate={{ width: `${questions.length > 0 ? ((currentIndex + 1) / questions.length) * 100 : 0}%` }}
                         style={{ backgroundColor: '#f3b33e' }}
                     />
                 </div>
@@ -188,11 +202,11 @@ export default function TriviaGame({ onComplete }: TriviaGameProps) {
                     style={{ backgroundColor: '#fff', border: '1px solid #e2e8f0' }}
                 >
                     <h3 className="fw-bold text-dark mb-4 lh-base" style={{ fontSize: '1.4rem' }}>
-                        {currentQ.question}
+                        {currentQ.question || "Pregunta no disponible"}
                     </h3>
 
                     <div className="d-grid gap-3 mb-4">
-                        {currentQ.options.map((option, idx) => {
+                        {(currentQ.options || []).map((option, idx) => {
                             const isSelected = selectedOption === idx;
                             const isCorrectOption = idx === currentQ.correctIndex;
 
