@@ -51,8 +51,8 @@ export default async function RootLayout({
     return (
         <html lang="es">
             <body className={`${fredoka.variable} font-fredoka`}>
-                <GoogleAdSense pId="ca-pub-9787254836039496" />
                 <Providers session={session}>
+                    <GoogleAdSense pId="ca-pub-9787254836039496" />
                     <main className="main-content">
                         {children}
                     </main>
