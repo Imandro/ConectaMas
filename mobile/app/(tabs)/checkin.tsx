@@ -1,62 +1,125 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, ScrollView, TextInput } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity, ScrollView, TextInput, Platform, ActivityIndicator } from 'react-native';
 import { CustomButton } from '@/components/common/CustomButton';
-import { Star, Smile, Meh, Frown, Heart } from 'lucide-react-native';
+import { Smile, Meh, Frown, Heart, Calendar } from 'lucide-react-native';
+import { router } from 'expo-router';
+import client from '@/api/client';
 
 const MOODS = [
-    { id: '1', icon: <Frown />, label: 'Mal' },
-    { id: '2', icon: <Meh />, label: 'Regular' },
-    { id: '3', icon: <Smile />, label: 'Bien' },
-    { id: '4', icon: <Heart />, label: 'Excelente' },
+    { id: '1', icon: <Frown />, label: 'Mal', color: '#E74C1C' },
+    { id: '2', icon: <Meh />, label: 'Regular', color: '#F39C12' },
+    { id: '3', icon: <Smile />, label: 'Bien', color: '#2ECC71' },
+    { id: '4', icon: <Heart />, label: 'Excelente', color: '#E91E63' },
 ];
 
 export default function CheckinScreen() {
     const [selectedMood, setSelectedMood] = useState('');
+    const [anxietyLevel, setAnxietyLevel] = useState(0);
     const [note, setNote] = useState('');
+    const [loading, setLoading] = useState(false);
+
+    const handleSubmit = async () => {
+        if (!selectedMood) {
+            alert('Por favor selecciona cómo te sientes');
+            return;
+        }
+
+        setLoading(true);
+        try {
+            const mood = MOODS.find(m => m.id === selectedMood)?.label || 'Bien';
+            const response = await client.post('/checkin', {
+                mood,
+                note: note.trim()
+            });
+
+            if (response.status === 201) {
+                alert('¡Check-in guardado exitosamente!');
+                router.replace('/(tabs)');
+            }
+        } catch (error: any) {
+            console.error('Checkin submit error:', error);
+            if (error.response?.status === 429) {
+                alert('Ya has realizado tu check-in de hoy. ¡Vuelve mañana!');
+                router.replace('/(tabs)');
+            } else {
+                alert('No se pudo guardar el check-in. Intenta de nuevo.');
+            }
+        } finally {
+            setLoading(false);
+        }
+    };
 
     return (
         <ScrollView style={styles.container} contentContainerStyle={styles.content}>
-            <Text style={styles.question}>¿Cómo te sientes espiritualmente hoy?</Text>
-
-            <View style={styles.moodGrid}>
-                {MOODS.map(mood => (
-                    <TouchableOpacity
-                        key={mood.id}
-                        onPress={() => setSelectedMood(mood.id)}
-                        style={[styles.moodCard, selectedMood === mood.id && styles.moodCardSelected]}
-                    >
-                        {React.cloneElement(mood.icon as any, {
-                            color: selectedMood === mood.id ? '#f3b33e' : '#9BA1A6',
-                            size: 32
-                        })}
-                        <Text style={[styles.moodLabel, selectedMood === mood.id && styles.moodLabelSelected]}>
-                            {mood.label}
-                        </Text>
-                    </TouchableOpacity>
-                ))}
+            <View style={styles.header}>
+                <View>
+                    <Text style={styles.title}>Salud Espiritual</Text>
+                    <Text style={styles.subtitle}>¿Cómo te sientes hoy?</Text>
+                </View>
+                <TouchableOpacity
+                    style={styles.historyBtn}
+                    onPress={() => router.push('/checkin/history')}
+                >
+                    <Calendar size={20} color="#0B1B32" />
+                    <Text style={styles.historyBtnText}>Historial</Text>
+                </TouchableOpacity>
             </View>
 
-            <View style={styles.form}>
-                <Text style={styles.label}>Nivel de Ansiedad (1-10)</Text>
-                <View style={styles.ratingBar}>
-                    {[1, 2, 3, 4, 5].map(i => (
-                        <TouchableOpacity key={i} style={styles.ratingCircle}>
-                            <Text style={{ color: '#9BA1A6' }}>{i}</Text>
+            <View style={styles.card}>
+                <Text style={styles.question}>Estado de ánimo</Text>
+                <View style={styles.moodGrid}>
+                    {MOODS.map(mood => (
+                        <TouchableOpacity
+                            key={mood.id}
+                            onPress={() => setSelectedMood(mood.id)}
+                            style={[
+                                styles.moodCard,
+                                selectedMood === mood.id && { borderColor: mood.color, backgroundColor: mood.color + '10' }
+                            ]}
+                        >
+                            {React.cloneElement(mood.icon as any, {
+                                color: selectedMood === mood.id ? mood.color : '#9BA1A6',
+                                size: 32
+                            })}
+                            <Text style={[
+                                styles.moodLabel,
+                                selectedMood === mood.id && { color: mood.color }
+                            ]}>
+                                {mood.label}
+                            </Text>
                         </TouchableOpacity>
                     ))}
                 </View>
 
-                <Text style={styles.label}>Motivo de Gratitud</Text>
+                <Text style={styles.question}>Nivel de Ansiedad (1-5)</Text>
+                <View style={styles.ratingBar}>
+                    {[1, 2, 3, 4, 5].map(i => (
+                        <TouchableOpacity
+                            key={i}
+                            onPress={() => setAnxietyLevel(i)}
+                            style={[styles.ratingCircle, anxietyLevel === i && styles.ratingCircleActive]}
+                        >
+                            <Text style={[styles.ratingText, anxietyLevel === i && styles.ratingTextActive]}>{i}</Text>
+                        </TouchableOpacity>
+                    ))}
+                </View>
+
+                <Text style={styles.question}>Motivo de Gratitud</Text>
                 <TextInput
                     style={styles.textArea}
                     multiline
                     placeholder="Hoy agradezco por..."
-                    placeholderTextColor="#687076"
+                    placeholderTextColor="#9BA1A6"
                     value={note}
                     onChangeText={setNote}
                 />
 
-                <CustomButton title="Guardar Check-in" onPress={() => alert('¡Guardado!')} />
+                <CustomButton
+                    title={loading ? "Guardando..." : "Guardar Check-in"}
+                    onPress={handleSubmit}
+                    disabled={loading}
+                    style={styles.button}
+                />
             </View>
         </ScrollView>
     );
@@ -65,36 +128,79 @@ export default function CheckinScreen() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#0B1B32',
+        backgroundColor: '#F8F9FA',
     },
     content: {
         padding: 24,
-        paddingTop: 30,
+        paddingTop: 60,
+    },
+    header: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        marginBottom: 24,
+    },
+    historyBtn: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 8,
+        backgroundColor: 'white',
+        paddingHorizontal: 12,
+        paddingVertical: 8,
+        borderRadius: 12,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.05,
+        shadowRadius: 5,
+        elevation: 2,
+    },
+    historyBtnText: {
+        fontSize: 12,
+        fontWeight: 'bold',
+        color: '#0B1B32',
+    },
+    title: {
+        fontSize: 28,
+        fontWeight: 'bold',
+        color: '#0B1B32',
+    },
+    subtitle: {
+        fontSize: 16,
+        color: '#687076',
+        marginTop: 4,
+    },
+    card: {
+        backgroundColor: 'white',
+        borderRadius: 24,
+        padding: 24,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.05,
+        shadowRadius: 15,
+        elevation: 5,
     },
     question: {
-        fontSize: 24,
+        fontSize: 14,
         fontWeight: 'bold',
-        color: '#FFFFFF',
-        marginBottom: 30,
-        textAlign: 'center',
+        color: '#0B1B32',
+        marginBottom: 16,
+        marginTop: 8,
+        textTransform: 'uppercase',
+        letterSpacing: 1,
     },
     moodGrid: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        marginBottom: 40,
+        marginBottom: 32,
     },
     moodCard: {
-        backgroundColor: '#1E293B',
-        padding: 16,
+        backgroundColor: '#F8F9FA',
+        paddingVertical: 16,
         borderRadius: 16,
         alignItems: 'center',
         width: '22%',
-        borderWidth: 1,
-        borderColor: '#334155',
-    },
-    moodCardSelected: {
-        borderColor: '#f3b33e',
-        backgroundColor: '#162338',
+        borderWidth: 2,
+        borderColor: 'transparent',
     },
     moodLabel: {
         fontSize: 10,
@@ -102,41 +208,46 @@ const styles = StyleSheet.create({
         marginTop: 8,
         fontWeight: 'bold',
     },
-    moodLabelSelected: {
-        color: '#f3b33e',
-    },
-    form: {
-        gap: 20,
-    },
-    label: {
-        fontSize: 16,
-        fontWeight: '600',
-        color: '#FFFFFF',
-        marginBottom: 10,
-    },
     ratingBar: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        marginBottom: 20,
+        marginBottom: 32,
     },
     ratingCircle: {
-        width: 44,
-        height: 44,
-        borderRadius: 22,
-        backgroundColor: '#1E293B',
+        width: 48,
+        height: 48,
+        borderRadius: 24,
+        backgroundColor: '#F8F9FA',
         justifyContent: 'center',
         alignItems: 'center',
         borderWidth: 1,
-        borderColor: '#334155',
+        borderColor: '#F1F3F5',
+    },
+    ratingCircleActive: {
+        backgroundColor: '#0B1B32',
+        borderColor: '#0B1B32',
+    },
+    ratingText: {
+        color: '#687076',
+        fontWeight: 'bold',
+        fontSize: 16,
+    },
+    ratingTextActive: {
+        color: 'white',
     },
     textArea: {
-        backgroundColor: '#1E293B',
+        backgroundColor: '#F8F9FA',
         borderRadius: 16,
         padding: 16,
-        color: '#FFFFFF',
+        color: '#0B1B32',
         height: 120,
         textAlignVertical: 'top',
         borderWidth: 1,
-        borderColor: '#334155',
+        borderColor: '#F1F3F5',
+        marginBottom: 24,
+    },
+    button: {
+        marginTop: 8,
     }
 });
+

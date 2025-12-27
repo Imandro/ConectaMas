@@ -1,19 +1,19 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/app/lib/prisma';
-import { auth } from '@/app/lib/auth';
+import { getApiUser } from '@/app/lib/api-auth';
 
 export const dynamic = 'force-dynamic';
 
-export async function GET() {
+export async function GET(req: Request) {
     try {
-        const session = await auth();
+        const userFromAuth = await getApiUser(req);
 
-        if (!session?.user?.email) {
+        if (!userFromAuth) {
             return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
         }
 
         const user = await prisma.user.findUnique({
-            where: { email: session.user.email },
+            where: { id: userFromAuth.id },
             select: {
                 name: true,
                 hasSeenTutorialTour: true,

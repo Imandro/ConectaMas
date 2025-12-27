@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/app/lib/prisma';
-import { auth } from '@/app/lib/auth';
+import { getApiUser } from '@/app/lib/api-auth';
 
 export const dynamic = 'force-dynamic';
 
@@ -12,17 +12,8 @@ export async function GET(
     { params }: { params: { id: string } }
 ) {
     try {
-        const session = await auth();
-        const currentUserEmail = session?.user?.email;
-
-        let currentUserId = null;
-        if (currentUserEmail) {
-            const currentUser = await prismaClient.user.findUnique({
-                where: { email: currentUserEmail },
-                select: { id: true }
-            });
-            currentUserId = currentUser?.id;
-        }
+        const currentUser = await getApiUser(request);
+        const currentUserId = currentUser?.id;
 
         const post = await prismaClient.forumPost.findUnique({
             where: { id: params.id },
@@ -95,18 +86,10 @@ export async function DELETE(
     { params }: { params: { id: string } }
 ) {
     try {
-        const session = await auth();
-
-        if (!session?.user?.email) {
-            return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-        }
-
-        const user = await prismaClient.user.findUnique({
-            where: { email: session.user.email }
-        });
+        const user = await getApiUser(request);
 
         if (!user) {
-            return NextResponse.json({ error: 'User not found' }, { status: 404 });
+            return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
         }
 
         const post = await prismaClient.forumPost.findUnique({

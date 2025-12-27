@@ -1,13 +1,13 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/app/lib/prisma';
-import { auth } from '@/app/lib/auth';
+import { getApiUser } from '@/app/lib/api-auth';
 export const dynamic = 'force-dynamic';
 
 export async function POST(req: Request) {
     try {
-        const session = await auth();
+        const userFromAuth = await getApiUser(req);
 
-        if (!session?.user?.email) {
+        if (!userFromAuth) {
             return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
         }
 
@@ -20,10 +20,7 @@ export async function POST(req: Request) {
         // --- LIMITES DE RECURSOS (FREE TIER OPTIMIZATION) ---
         if (note && note.length > 1000) return NextResponse.json({ message: 'Nota demasiado larga (máx 1000)' }, { status: 400 });
 
-        const user = await prisma.user.findUnique({
-            where: { email: session.user.email },
-            select: { id: true }
-        });
+        const user = userFromAuth;
 
         if (!user) {
             return NextResponse.json({ message: 'User not found' }, { status: 404 });

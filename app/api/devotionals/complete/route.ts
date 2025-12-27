@@ -1,13 +1,13 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/app/lib/prisma';
-import { auth } from '@/app/lib/auth';
+import { getApiUser } from '@/app/lib/api-auth';
 export const dynamic = 'force-dynamic';
 
 export async function POST(req: Request) {
     try {
-        const session = await auth();
+        const user = await getApiUser(req);
 
-        if (!session?.user?.email) {
+        if (!user) {
             return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
         }
 
@@ -15,14 +15,6 @@ export async function POST(req: Request) {
 
         if (!devotionalId) {
             return NextResponse.json({ message: 'Devotional ID is required' }, { status: 400 });
-        }
-
-        const user = await prisma.user.findUnique({
-            where: { email: session.user.email },
-        });
-
-        if (!user) {
-            return NextResponse.json({ message: 'User not found' }, { status: 404 });
         }
 
         // Safety check for stale Prisma Client

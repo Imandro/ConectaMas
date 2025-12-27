@@ -11,6 +11,7 @@ interface AuthContextType {
     login: (identifier: string, password: string) => Promise<void>;
     register: (data: any) => Promise<void>;
     logout: () => Promise<void>;
+    refreshUser: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -43,50 +44,36 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
     const login = async (identifier: string, password: string) => {
         try {
-            // NOTE: In a real scenario, you'd call /api/auth/mobile/login
-            // For now, we simulate success if identifier is provided
-            // const response = await client.post('/auth/login', { identifier, password });
-            // const { user, token } = response.data;
+            const response = await client.post('/auth/mobile/login', { identifier, password });
+            const { user, token } = response.data;
 
-            // Simulation for now
-            const mockUser: User = {
-                id: '1',
-                name: 'Usuario Conecta',
-                username: 'usuario',
-                role: 'USER',
-                spiritualLevel: 'Explorador',
-                hasCompletedOnboarding: false,
-                hasSeenLlamiTutorial: false,
-                isPremium: false,
-                isCounselor: false,
-                createdAt: new Date().toISOString(),
-                updatedAt: new Date().toISOString(),
-            };
-            const mockToken = 'mock-jwt-token';
+            setUser(user);
+            setToken(token);
 
-            setUser(mockUser);
-            setToken(mockToken);
+            await SecureStore.setItemAsync('userToken', token);
+            await SecureStore.setItemAsync('userData', JSON.stringify(user));
 
-            await SecureStore.setItemAsync('userToken', mockToken);
-            await SecureStore.setItemAsync('userData', JSON.stringify(mockUser));
+            client.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 
-            client.defaults.headers.common['Authorization'] = `Bearer ${mockToken}`;
-
-            if (mockUser.hasCompletedOnboarding) {
+            if (user.hasCompletedOnboarding) {
                 router.replace('/(tabs)');
             } else {
                 router.replace('/onboarding');
             }
         } catch (error) {
+            console.error('Login error:', error);
             throw error;
         }
     };
 
     const register = async (data: any) => {
         try {
-            // const response = await client.post('/auth/register', data);
-            // login(data.email || data.username, data.password);
+            const response = await client.post('/auth/register', data);
+            if (response.status === 201) {
+                await login(data.email || data.username, data.password);
+            }
         } catch (error) {
+            console.error('Registration error:', error);
             throw error;
         }
     };
@@ -100,8 +87,19 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         router.replace('/auth/login');
     };
 
+    const refreshUser = async () => {
+        try {
+            const response = await client.get('/auth/me');
+            const updatedUser = response.data;
+            setUser(updatedUser);
+            await SecureStore.setItemAsync('userData', JSON.stringify(updatedUser));
+        } catch (error) {
+            console.error('Refresh user error:', error);
+        }
+    };
+
     return (
-        <AuthContext.Provider value={{ user, token, isLoading, login, register, logout }}>
+        <AuthContext.Provider value={{ user, token, isLoading, login, register, logout, refreshUser }}>
             {children}
         </AuthContext.Provider>
     );

@@ -1,29 +1,48 @@
 import React, { useState } from 'react';
-import { StyleSheet, ScrollView, View, Text, TouchableOpacity, FlatList } from 'react-native';
-import { ThemedText } from '@/components/themed-text';
-import { BookOpen, ChevronRight, Filter } from 'lucide-react-native';
+import { StyleSheet, ScrollView, View, Text, TouchableOpacity, FlatList, Platform, ActivityIndicator, RefreshControl } from 'react-native';
+import { BookOpen, ChevronRight, Filter, Sparkles } from 'lucide-react-native';
+import client from '@/api/client';
+import { router, useFocusEffect } from 'expo-router';
 
 const CATEGORIES = [
-    'Todos', 'Identidad', 'Propósito', 'Relaciones', 'Pureza', 'Ansiedad', 'Adicciones'
-];
-
-const MOCK_DEVOTIONALS = [
-    { id: '1', title: 'Identidad en Cristo', category: 'Identidad', completed: true },
-    { id: '2', title: 'Venciendo la Ansiedad', category: 'Ansiedad', completed: false },
-    { id: '3', title: 'Paz en la Tormenta', category: 'Ansiedad', completed: false },
-    { id: '4', title: 'Tu Propósito Real', category: 'Propósito', completed: false },
+    'Para ti', 'Identidad', 'Propósito', 'Relaciones', 'Pureza', 'Ansiedad', 'Adicciones', 'Oración', 'Integridad', 'Soledad', 'Culpa', 'Ira', 'Envidia', 'Comunidad'
 ];
 
 export default function DevotionalsScreen() {
-    const [selectedCategory, setSelectedCategory] = useState('Todos');
+    const [selectedCategory, setSelectedCategory] = useState('Para ti');
+    const [devotionals, setDevotionals] = useState<any[]>([]);
+    const [loading, setLoading] = useState(true);
+    const [refreshing, setRefreshing] = useState(false);
 
-    const filtered = selectedCategory === 'Todos'
-        ? MOCK_DEVOTIONALS
-        : MOCK_DEVOTIONALS.filter(d => d.category === selectedCategory);
+    const fetchDevotionals = async () => {
+        try {
+            const isRecommended = selectedCategory === 'Para ti';
+            const url = `/devotionals?${isRecommended ? 'recommended=true' : `categoryId=${selectedCategory}`}`;
+            const response = await client.get(url);
+            setDevotionals(response.data);
+        } catch (error) {
+            console.error('Error fetching devotionals:', error);
+        } finally {
+            setLoading(false);
+            setRefreshing(false);
+        }
+    };
+
+    useFocusEffect(
+        React.useCallback(() => {
+            fetchDevotionals();
+        }, [selectedCategory])
+    );
+
+    const onRefresh = () => {
+        setRefreshing(true);
+        fetchDevotionals();
+    };
 
     return (
         <View style={styles.container}>
-            <View style={styles.categoriesContainer}>
+            <View style={styles.header}>
+                <Text style={styles.title}>Devocionales</Text>
                 <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.categoriesScroll}>
                     {CATEGORIES.map(cat => (
                         <TouchableOpacity
@@ -37,30 +56,54 @@ export default function DevotionalsScreen() {
                 </ScrollView>
             </View>
 
-            <FlatList
-                data={filtered}
-                keyExtractor={item => item.id}
-                contentContainerStyle={styles.listContent}
-                renderItem={({ item }) => (
-                    <TouchableOpacity style={styles.devotionalCard}>
-                        <View style={styles.cardHeader}>
-                            <View style={styles.iconContainer}>
-                                <BookOpen size={20} color={item.completed ? '#2ECC71' : '#f3b33e'} />
-                            </View>
-                            <View style={styles.cardInfo}>
-                                <Text style={styles.cardCategory}>{item.category}</Text>
-                                <Text style={styles.cardTitle}>{item.title}</Text>
-                            </View>
-                            <ChevronRight size={20} color="#9BA1A6" />
+            {loading && !refreshing ? (
+                <View style={styles.center}>
+                    <ActivityIndicator size="large" color="#f3b33e" />
+                    <Text style={styles.loadingText}>Buscando inspiración...</Text>
+                </View>
+            ) : (
+                <FlatList
+                    data={devotionals}
+                    keyExtractor={item => item.id}
+                    contentContainerStyle={styles.listContent}
+                    refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
+                    ListEmptyComponent={
+                        <View style={styles.center}>
+                            <Text style={styles.emptyText}>No se encontraron devocionales en esta categoría.</Text>
                         </View>
-                        {item.completed && (
-                            <View style={styles.completedBadge}>
-                                <Text style={styles.completedText}>Completado</Text>
+                    }
+                    renderItem={({ item }) => (
+                        <TouchableOpacity
+                            style={styles.devotionalCard}
+                            onPress={() => router.push({
+                                pathname: '/devotional/[id]',
+                                params: { id: item.id }
+                            })}
+                        >
+                            <View style={styles.cardHeader}>
+                                <View style={[styles.iconContainer, item.completed && styles.iconContainerCompleted]}>
+                                    {selectedCategory === 'Para ti' ? (
+                                        <Sparkles size={20} color={item.completed ? '#2ECC71' : '#f3b33e'} />
+                                    ) : (
+                                        <BookOpen size={20} color={item.completed ? '#2ECC71' : '#0B1B32'} />
+                                    )}
+                                </View>
+                                <View style={styles.cardInfo}>
+                                    <Text style={styles.cardCategory}>{item.category}</Text>
+                                    <Text style={styles.cardTitle}>{item.title}</Text>
+                                    <Text style={styles.cardMeta}>{item.time} de lectura</Text>
+                                </View>
+                                <ChevronRight size={18} color="#9BA1A6" />
                             </View>
-                        )}
-                    </TouchableOpacity>
-                )}
-            />
+                            {item.completed && (
+                                <View style={styles.completedBadge}>
+                                    <Text style={styles.completedText}>Completado</Text>
+                                </View>
+                            )}
+                        </TouchableOpacity>
+                    )}
+                />
+            )}
         </View>
     );
 }
@@ -68,47 +111,56 @@ export default function DevotionalsScreen() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#0B1B32',
+        backgroundColor: '#F8F9FA',
     },
-    categoriesContainer: {
-        paddingVertical: 16,
+    header: {
+        paddingTop: 60,
+        backgroundColor: 'white',
         borderBottomWidth: 1,
-        borderBottomColor: '#1E293B',
+        borderBottomColor: '#F1F3F5',
+    },
+    title: {
+        fontSize: 28,
+        fontWeight: 'bold',
+        color: '#0B1B32',
+        marginLeft: 24,
+        marginBottom: 16,
     },
     categoriesScroll: {
-        paddingHorizontal: 20,
+        paddingHorizontal: 24,
+        paddingBottom: 16,
         gap: 10,
     },
     categoryBadge: {
         paddingHorizontal: 16,
         paddingVertical: 8,
         borderRadius: 20,
-        backgroundColor: '#1E293B',
-        borderWidth: 1,
-        borderColor: '#334155',
+        backgroundColor: '#F1F3F5',
     },
     categoryBadgeActive: {
-        backgroundColor: '#f3b33e',
-        borderColor: '#f3b33e',
+        backgroundColor: '#0B1B32',
     },
     categoryText: {
-        color: '#ECEDEE',
-        fontWeight: '500',
+        color: '#687076',
+        fontWeight: '600',
+        fontSize: 13,
     },
     categoryTextActive: {
-        color: '#0B1B32',
-        fontWeight: 'bold',
+        color: 'white',
     },
     listContent: {
-        padding: 20,
+        padding: 24,
         gap: 16,
     },
     devotionalCard: {
-        backgroundColor: '#1E293B',
-        borderRadius: 16,
+        backgroundColor: 'white',
+        borderRadius: 20,
         padding: 16,
-        borderWidth: 1,
-        borderColor: '#334155',
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.05,
+        shadowRadius: 10,
+        elevation: 2,
     },
     cardHeader: {
         flexDirection: 'row',
@@ -118,37 +170,62 @@ const styles = StyleSheet.create({
         width: 44,
         height: 44,
         borderRadius: 12,
-        backgroundColor: '#0B1B32',
+        backgroundColor: '#F1F3F5',
         justifyContent: 'center',
         alignItems: 'center',
         marginRight: 16,
+    },
+    iconContainerCompleted: {
+        backgroundColor: '#E8F5E9',
     },
     cardInfo: {
         flex: 1,
     },
     cardCategory: {
-        fontSize: 12,
-        color: '#f3b33e',
+        fontSize: 11,
+        color: '#9BA1A6',
         textTransform: 'uppercase',
         fontWeight: 'bold',
         marginBottom: 4,
     },
     cardTitle: {
         fontSize: 16,
-        color: '#FFFFFF',
-        fontWeight: '600',
+        color: '#0B1B32',
+        fontWeight: 'bold',
     },
     completedBadge: {
         marginTop: 12,
         alignSelf: 'flex-start',
-        backgroundColor: 'rgba(46, 204, 113, 0.1)',
+        backgroundColor: '#E8F5E9',
         paddingHorizontal: 8,
         paddingVertical: 4,
         borderRadius: 6,
     },
     completedText: {
         color: '#2ECC71',
+        fontSize: 11,
+        fontWeight: 'bold',
+    },
+    center: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: 40,
+    },
+    loadingText: {
+        marginTop: 12,
+        color: '#9BA1A6',
+        fontSize: 14,
+    },
+    emptyText: {
+        color: '#9BA1A6',
+        fontSize: 14,
+        textAlign: 'center',
+    },
+    cardMeta: {
         fontSize: 12,
-        fontWeight: '600',
-    }
+        color: '#9BA1A6',
+        marginTop: 4,
+    },
 });
+

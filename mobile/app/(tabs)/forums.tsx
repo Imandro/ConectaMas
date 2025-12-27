@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, ScrollView, RefreshControl } from 'react-native';
 import { Users, Plus, MessageCircle, ChevronRight } from 'lucide-react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { router } from 'expo-router';
 import client from '@/api/client';
 
 interface ForumCategory {
@@ -14,6 +16,7 @@ interface ForumCategory {
 }
 
 export default function ForumsScreen() {
+    const insets = useSafeAreaInsets();
     const [categories, setCategories] = useState<ForumCategory[]>([]);
     const [loading, setLoading] = useState(true);
     const [refreshing, setRefreshing] = useState(false);
@@ -42,7 +45,10 @@ export default function ForumsScreen() {
     return (
         <View style={styles.container}>
             <ScrollView
-                contentContainerStyle={styles.content}
+                contentContainerStyle={[
+                    styles.content,
+                    { paddingTop: Math.max(insets.top, 24) + 10 }
+                ]}
                 refreshControl={
                     <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
                 }
@@ -59,7 +65,14 @@ export default function ForumsScreen() {
                 ) : (
                     <View style={styles.grid}>
                         {categories.map(category => (
-                            <TouchableOpacity key={category.id} style={styles.categoryCard}>
+                            <TouchableOpacity
+                                key={category.id}
+                                style={styles.categoryCard}
+                                onPress={() => router.push({
+                                    pathname: '/forum/[id]',
+                                    params: { id: category.id, name: category.name }
+                                })}
+                            >
                                 <View style={styles.cardHeader}>
                                     <Text style={styles.categoryIcon}>{category.icon}</Text>
                                     <View style={styles.categoryInfo}>
@@ -89,7 +102,10 @@ export default function ForumsScreen() {
                 <View style={styles.footerSpace} />
             </ScrollView>
 
-            <TouchableOpacity style={styles.fab}>
+            <TouchableOpacity
+                style={styles.fab}
+                onPress={() => router.push('/forum/create')}
+            >
                 <Plus size={30} color="white" />
             </TouchableOpacity>
         </View>

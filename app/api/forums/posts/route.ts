@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/app/lib/prisma';
-import { auth } from '@/app/lib/auth';
+import { getApiUser } from '@/app/lib/api-auth';
 
 export const dynamic = 'force-dynamic';
 
@@ -58,19 +58,12 @@ export async function GET(request: NextRequest) {
 // POST /api/forums/posts - Create new post
 export async function POST(request: NextRequest) {
     try {
-        const session = await auth();
-
-        if (!session?.user?.email) {
+        const user = await getApiUser(request);
+        if (!user) {
             return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
         }
 
-        const user = await prismaClient.user.findUnique({
-            where: { email: session.user.email }
-        });
-
-        if (!user) {
-            return NextResponse.json({ error: 'User not found' }, { status: 404 });
-        }
+        // User is already fetched by getApiUser
 
         const body = await request.json();
         const { title, content, categoryId, isAnonymous } = body;

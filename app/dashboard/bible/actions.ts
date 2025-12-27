@@ -38,11 +38,14 @@ export async function getBibleReadingStruggle() {
  * Actualiza el progreso de lectura bíblica
  * Se basa en "Flame Points" o "Latidos" para avanzar días si se lee lo suficiente
  */
-export async function updateBibleReadingProgress() {
-    const session = await auth();
-    if (!session?.user?.id) return;
+export async function updateBibleReadingProgress(providedUserId?: string) {
+    let userId = providedUserId;
 
-    const userId = (session.user as { id: string }).id;
+    if (!userId) {
+        const session = await auth();
+        if (!session?.user?.id) return;
+        userId = (session.user as { id: string }).id;
+    }
     const title = "Lectura Bíblica";
 
     const mascot = await (prisma as any).mascot.findUnique({ where: { userId } });

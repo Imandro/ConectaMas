@@ -3,13 +3,27 @@ import { StyleSheet, View, Text, TouchableOpacity, ScrollView, Image } from 'rea
 import { useAuth } from '@/context/AuthContext';
 import { CustomButton } from '@/components/common/CustomButton';
 import { User as UserIcon, Settings, Phone, Calendar, LogOut, ChevronRight, ShieldCheck, HelpCircle } from 'lucide-react-native';
-import { router } from 'expo-router';
+import { router, useFocusEffect } from 'expo-router';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 export default function ProfileScreen() {
-    const { user, logout } = useAuth();
+    const { user, logout, refreshUser } = useAuth();
+    const insets = useSafeAreaInsets();
+
+    useFocusEffect(
+        React.useCallback(() => {
+            refreshUser();
+        }, [])
+    );
 
     return (
-        <ScrollView style={styles.container} contentContainerStyle={styles.content}>
+        <ScrollView
+            style={styles.container}
+            contentContainerStyle={[
+                styles.content,
+                { paddingTop: Math.max(insets.top, 24) + 10 }
+            ]}
+        >
             <View style={styles.header}>
                 <View style={styles.avatarContainer}>
                     <UserIcon size={50} color="#f3b33e" />

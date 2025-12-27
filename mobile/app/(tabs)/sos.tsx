@@ -1,37 +1,122 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, ScrollView, Linking, Animated, Dimensions } from 'react-native';
-import { X, Phone, BookHeart, Music, AlertCircle, ChevronLeft, Heart } from 'lucide-react-native';
-import { useAuth } from '@/context/AuthContext';
+import { StyleSheet, View, Text, TouchableOpacity, ScrollView, Linking, Animated, Dimensions, ActivityIndicator, Alert } from 'react-native';
+import { X, Phone, BookHeart, Music, Heart, ChevronLeft, Play, Pause, SkipForward, Volume2 } from 'lucide-react-native';
 import { router } from 'expo-router';
+import { Audio } from 'expo-av';
+import client from '@/api/client';
+import { useAuth } from '@/context/AuthContext';
 
 const { width } = Dimensions.get('window');
 
 const TRUTHS = [
-    "Dios no está enojado contigo, Él está peliando por ti.",
-    "Tu identidad no está en tus errores, sino en Cristo.",
-    "Ninguna condenación hay para los que están en Cristo Jesús.",
-    "El amor de Dios es más grande que cualquier pecado.",
-    "Tus sentimientos son reales, pero no siempre son la verdad.",
-    "Eres escogido, perdonado y amado eternamente.",
-    "Esta prueba es temporal, pero Su gracia es eterna.",
-    "Dios perfecciona su poder en tu debilidad.",
-    "No estás solo; el Espíritu Santo te consuela ahora mismo.",
-    "Levántate, resplandece, porque ha venido tu luz.",
+    "Dios no está enojado contigo, Él está de tu lado.",
+    "Tus errores no definen tu futuro, Su gracia sí.",
+    "No tienes que ser perfecto para ser amado.",
+    "Esta tentación es temporal, pero Su amor es eterno.",
+    "Eres un hijo amado, comprado por sangre.",
+    "Él te levanta aunque caigas siete veces.",
+    "Tu valor no depende de tus éxitos o fracasos.",
+    "Él es tu pronto auxilio en las tribulaciones.",
+    "Su poder se perfecciona en tu debilidad.",
+    "Él peleará por ti, tú solo quédate tranquilo."
 ];
 
-const EMERGENCY_PRAYERS = [
-    "Padre Celestial, en este momento de angustia te necesito más que nunca. Siento que las fuerzas me abandonan, pero sé que Tú nunca me abandonas. Llena mi corazón de Tu paz que sobrepasa todo entendimiento. Ayúdame a recordar que nunca estoy solo, que Tú siempre estás conmigo, caminando a mi lado incluso en el valle más oscuro. Dame la fortaleza para dar un paso más, para resistir un minuto más. Confío en que Tú me sostienes. Amén.",
-    "Señor Jesús, siento que no puedo más con esta carga. Mi mente está agitada, mis emociones están desbordadas, y necesito Tu intervención divina ahora mismo. Toma control de esta situación que me sobrepasa. Dame la serenidad que solo Tú puedes dar, esa paz que el mundo no puede ofrecer. Ayúdame a entregarTe cada pensamiento, cada emoción, cada temor. Recuérdame que Tú venciste al mundo, y que en Ti tengo la victoria. Confío plenamente en Ti. Amén.",
-    "Dios de amor infinito, en este momento tan difícil clamo a Ti con todo mi corazón. Calma la tormenta que hay en mi mente, fortalece mi espíritu que se siente débil. Recuérdame Tu promesa de nunca dejarme ni abandonarme, de estar conmigo hasta el fin del mundo. Ayúdame a sentir Tu presencia ahora mismo, a saber que me escuchas, que me ves, que te importo. Dame esperanza cuando todo parece oscuro, y fe cuando no puedo ver el camino. Amén.",
-    "Espíritu Santo, ven como consolador a mi corazón quebrantado. Necesito Tu guía divina en este momento de confusión. Dame sabiduría para tomar las decisiones correctas, discernimiento para ver la verdad en medio de las mentiras, y valor para enfrentar este momento sin huir. Gracias por Tu presencia constante, por ser mi ayudador, mi consejero, mi amigo fiel. Llena cada espacio vacío de mi ser con Tu amor y Tu poder. Amén.",
-    "Padre Eterno, reconozco humildemente que sin Ti no puedo hacer absolutamente nada. Esta batalla es demasiado grande para mí, pero no para Ti. Ayúdame a resistir esta tentación que me acecha, a superar este momento de debilidad. Llena este vacío que siento con Tu amor infinito e incondicional. Recuérdame quién soy en Ti: amado, perdonado, libre. Dame fuerzas para decir no a lo que me destruye y sí a lo que me edifica. Confío en Tu poder transformador. Amén."
+const PRAYERS = [
+    "Padre, mi mente grita y mi carne es débil, pero Tú eres mi roca. Ven y aquieta esta tormenta ahora mismo. Te necesito intensamente.",
+    "Jesús, rindo mi voluntad a Ti. No puedo con esto solo, pero sé que Tú ya venciste. Dame la fuerza para este minuto.",
+    "Espíritu Santo, lléname ahora. Expulsa todo pensamiento que no sea Tuyo. Trae Tu paz que sobrepasa todo entendimiento.",
+    "Señor, aunque ande en valle de sombra, no temeré. Tú estás conmigo. Líbrame del lazo del cazador.",
+    "Dios mío, renuevo mis fuerzas en Ti. Dame la salida que prometiste en Tu Palabra. No me dejes caer, sostenme fuerte."
 ];
+
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 export default function SOSScreen() {
+    const insets = useSafeAreaInsets();
+    const [sound, setSound] = useState<Audio.Sound | null>(null);
+    const [isPlaying, setIsPlaying] = useState(false);
+    const [songs, setSongs] = useState<any[]>([]);
+    const [currentSongIndex, setCurrentSongIndex] = useState(0);
+
     const { user } = useAuth();
     const [view, setView] = useState<'main' | 'truths' | 'prayer' | 'music'>('main');
     const [randomTruths, setRandomTruths] = useState<string[]>([]);
     const [currentPrayer, setCurrentPrayer] = useState('');
+
+    useEffect(() => {
+        return sound
+            ? () => {
+                sound.unloadAsync();
+            }
+            : undefined;
+    }, [sound]);
+
+    useEffect(() => {
+        if (view === 'music' && songs.length === 0) {
+            fetchSongs();
+        }
+    }, [view]);
+
+    const fetchSongs = async () => {
+        try {
+            const response = await client.get('/songs');
+            setSongs(response.data);
+        } catch (error) {
+            console.error('Error fetching songs:', error);
+        }
+    };
+
+    const playSound = async (index: number) => {
+        if (!songs[index]) return;
+
+        try {
+            if (sound) {
+                await sound.unloadAsync();
+            }
+
+            const songUrl = songs[index].url.startsWith('http')
+                ? songs[index].url
+                : `${client.defaults.baseURL?.replace('/api', '')}${songs[index].url}`;
+
+            const { sound: newSound } = await Audio.Sound.createAsync(
+                { uri: songUrl },
+                { shouldPlay: true }
+            );
+            setSound(newSound);
+            setIsPlaying(true);
+            setCurrentSongIndex(index);
+
+            newSound.setOnPlaybackStatusUpdate((status) => {
+                if (status.isLoaded && status.didJustFinish) {
+                    handleNext();
+                }
+            });
+        } catch (error) {
+            console.error('Error playing sound:', error);
+            Alert.alert('Error', 'No se pudo reproducir la música.');
+        }
+    };
+
+    const togglePlay = async () => {
+        if (!sound) {
+            if (songs.length > 0) {
+                await playSound(currentSongIndex);
+            }
+            return;
+        }
+
+        if (isPlaying) {
+            await sound.pauseAsync();
+        } else {
+            await sound.playAsync();
+        }
+        setIsPlaying(!isPlaying);
+    };
+
+    const handleNext = async () => {
+        const nextIndex = (currentSongIndex + 1) % songs.length;
+        await playSound(nextIndex);
+    };
 
     const handleShowTruths = () => {
         const shuffled = [...TRUTHS].sort(() => 0.5 - Math.random());
@@ -40,8 +125,8 @@ export default function SOSScreen() {
     };
 
     const handleShowPrayer = () => {
-        const randomIndex = Math.floor(Math.random() * EMERGENCY_PRAYERS.length);
-        setCurrentPrayer(EMERGENCY_PRAYERS[randomIndex]);
+        const randomIndex = Math.floor(Math.random() * PRAYERS.length);
+        setCurrentPrayer(PRAYERS[randomIndex]);
         setView('prayer');
     };
 
@@ -55,10 +140,11 @@ export default function SOSScreen() {
     };
 
     const renderContent = () => {
+        const topPadding = Math.max(insets.top, 24) + 10;
         switch (view) {
             case 'truths':
                 return (
-                    <View style={styles.overlay}>
+                    <View style={[styles.overlay, { paddingTop: topPadding }]}>
                         <Text style={styles.overlayTitle}>5 Verdades para ti hoy:</Text>
                         {randomTruths.map((truth, idx) => (
                             <View key={idx} style={styles.truthCard}>
@@ -73,7 +159,7 @@ export default function SOSScreen() {
                 );
             case 'prayer':
                 return (
-                    <View style={styles.overlay}>
+                    <View style={[styles.overlay, { paddingTop: topPadding }]}>
                         <Text style={styles.overlayTitle}>Oración de Emergencia</Text>
                         <View style={styles.prayerCard}>
                             <Text style={styles.prayerText}>"{currentPrayer}"</Text>
@@ -84,13 +170,44 @@ export default function SOSScreen() {
                     </View>
                 );
             case 'music':
+                const currentSong = songs[currentSongIndex];
                 return (
-                    <View style={styles.overlay}>
+                    <View style={[styles.overlay, { paddingTop: topPadding }]}>
                         <Text style={styles.overlayTitle}>Música para el alma</Text>
-                        <View style={styles.emptyMusic}>
-                            <Music size={48} color="rgba(255,255,255,0.3)" />
-                            <Text style={styles.emptyText}>Reproductor de música próximamente en móvil</Text>
-                        </View>
+
+                        {songs.length > 0 ? (
+                            <View style={styles.playerCard}>
+                                <View style={styles.musicIconCircle}>
+                                    <Music size={48} color="#f3b33e" />
+                                </View>
+                                <Text style={styles.songTitle}>{currentSong?.title || 'Seleccionar canción'}</Text>
+                                <Text style={styles.songArtist}>{currentSong?.artist || 'Conecta+'}</Text>
+
+                                <View style={styles.controls}>
+                                    <TouchableOpacity style={styles.controlBtn} onPress={togglePlay}>
+                                        {isPlaying ? (
+                                            <Pause size={48} color="white" fill="white" />
+                                        ) : (
+                                            <Play size={48} color="white" fill="white" />
+                                        )}
+                                    </TouchableOpacity>
+                                    <TouchableOpacity style={styles.nextBtn} onPress={handleNext}>
+                                        <SkipForward size={32} color="rgba(255,255,255,0.8)" />
+                                    </TouchableOpacity>
+                                </View>
+
+                                <View style={styles.volumeHint}>
+                                    <Volume2 size={16} color="rgba(255,255,255,0.5)" />
+                                    <Text style={styles.volumeText}>Ajusta tu volumen para un ambiente de paz</Text>
+                                </View>
+                            </View>
+                        ) : (
+                            <View style={styles.emptyMusic}>
+                                <ActivityIndicator size="large" color="#f3b33e" />
+                                <Text style={styles.emptyText}>Buscando música de paz...</Text>
+                            </View>
+                        )}
+
                         <TouchableOpacity style={styles.backButton} onPress={() => setView('main')}>
                             <Text style={styles.backButtonText}>Volver</Text>
                         </TouchableOpacity>
@@ -98,7 +215,7 @@ export default function SOSScreen() {
                 );
             default:
                 return (
-                    <View style={styles.mainContent}>
+                    <View style={[styles.mainContent, { paddingTop: topPadding }]}>
                         <Text style={styles.respira}>Respira.</Text>
                         <Text style={styles.intro}>
                             No has fallado todavía. Y aunque lo hicieras, Él te sigue amando. Pero hagamos una pausa de 1 minuto juntos.
@@ -302,13 +419,80 @@ const styles = StyleSheet.create({
         textAlign: 'center',
     },
     emptyMusic: {
-        padding: 40,
+        height: 300,
+        backgroundColor: 'rgba(255,255,255,0.05)',
+        borderRadius: 30,
+        justifyContent: 'center',
         alignItems: 'center',
-        gap: 16,
+        gap: 20,
+        marginBottom: 40,
     },
     emptyText: {
         color: 'rgba(255,255,255,0.5)',
         textAlign: 'center',
+    },
+    playerCard: {
+        height: 400,
+        backgroundColor: 'rgba(255,255,255,0.1)',
+        borderRadius: 40,
+        padding: 30,
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginBottom: 40,
+        borderWidth: 1,
+        borderColor: 'rgba(255,255,255,0.1)',
+    },
+    musicIconCircle: {
+        width: 100,
+        height: 100,
+        borderRadius: 50,
+        backgroundColor: 'rgba(243, 179, 62, 0.1)',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginBottom: 24,
+    },
+    songTitle: {
+        fontSize: 24,
+        fontWeight: 'bold',
+        color: 'white',
+        textAlign: 'center',
+        marginBottom: 8,
+    },
+    songArtist: {
+        fontSize: 16,
+        color: 'rgba(255,255,255,0.6)',
+        textAlign: 'center',
+        marginBottom: 40,
+    },
+    controls: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 40,
+        marginBottom: 40,
+    },
+    controlBtn: {
+        width: 80,
+        height: 80,
+        borderRadius: 40,
+        backgroundColor: '#f3b33e',
+        justifyContent: 'center',
+        alignItems: 'center',
+        shadowColor: '#f3b33e',
+        shadowOffset: { width: 0, height: 10 },
+        shadowOpacity: 0.3,
+        shadowRadius: 20,
+    },
+    nextBtn: {
+        padding: 10,
+    },
+    volumeHint: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 8,
+    },
+    volumeText: {
+        fontSize: 12,
+        color: 'rgba(255,255,255,0.4)',
     },
     footer: {
         marginTop: 40,

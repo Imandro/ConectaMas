@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { auth } from "@/app/lib/auth";
 import { prisma } from "@/app/lib/prisma";
+import { getApiUser } from '@/app/lib/api-auth';
 
 /**
  * Recibe señales de actividad (latidos) para otorgar puntos de llama.
@@ -8,12 +8,12 @@ import { prisma } from "@/app/lib/prisma";
  */
 export async function POST(req: NextRequest) {
     try {
-        const session = await auth();
-        if (!session?.user?.id) {
+        const user = await getApiUser(req);
+        if (!user) {
             return NextResponse.json({ error: "No autorizado" }, { status: 401 });
         }
 
-        const userId = (session.user as any).id;
+        const userId = user.id;
         const { type } = await req.json(); // type: "BIBLE_READING"
 
         if (type === "BIBLE_READING") {
@@ -45,7 +45,7 @@ export async function POST(req: NextRequest) {
 
             // Actualizar el "seguimiento" de lectura bíblica
             const { updateBibleReadingProgress } = await import("@/app/dashboard/bible/actions");
-            await updateBibleReadingProgress();
+            await updateBibleReadingProgress(userId);
 
             return NextResponse.json({ success: true, pointsEarned: 1 });
         }
