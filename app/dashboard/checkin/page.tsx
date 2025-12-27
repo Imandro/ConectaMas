@@ -18,14 +18,15 @@ interface Checkin {
 // Wait, client profile actions is used inside Profile page? No, ProfilePage is server component.
 // Let's check ProfilePage again.
 export default function CheckinPage() {
-    // No specific useSession here to fix, but I will check ClientProfileActions again.
     const [mood, setMood] = useState<string | null>(null);
     const [note, setNote] = useState('');
     const [isSaving, setIsSaving] = useState(false);
     const [checkins, setCheckins] = useState<Checkin[]>([]);
     const [selectedCheckin, setSelectedCheckin] = useState<Checkin | null>(null);
+    const [mounted, setMounted] = useState(false);
 
     useEffect(() => {
+        setMounted(true);
         fetchHistory();
     }, []);
 
@@ -72,6 +73,8 @@ export default function CheckinPage() {
     const month = now.getMonth();
     const daysInMonth = new Date(year, month + 1, 0).getDate();
     const today = now.getDate();
+
+    if (!mounted) return null;
 
     const getCheckinForDay = (day: number) => {
         return checkins.find(c => {

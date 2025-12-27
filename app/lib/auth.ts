@@ -8,10 +8,6 @@ console.log("NextAuth initialized with AUTH_SECRET status:", !!(process.env.AUTH
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
     ...authConfig,
-    session: {
-        strategy: "jwt",
-        maxAge: 30 * 24 * 60 * 60, // 30 days
-    },
     providers: [
         CredentialsProvider({
             name: "Credentials",
@@ -122,34 +118,6 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
                 session.user.isPremium = token.isPremium;
             }
             return session;
-        },
-    },
-    cookies: {
-        sessionToken: {
-            name: `next-auth.session-token`,
-            options: {
-                httpOnly: true,
-                sameSite: 'lax',
-                path: '/',
-                secure: process.env.NODE_ENV === 'production',
-            },
-        },
-        callbackUrl: {
-            name: `next-auth.callback-url`,
-            options: {
-                sameSite: 'lax',
-                path: '/',
-                secure: process.env.NODE_ENV === 'production',
-            },
-        },
-        csrfToken: {
-            name: `next-auth.csrf-token`,
-            options: {
-                httpOnly: true,
-                sameSite: 'lax',
-                path: '/',
-                secure: process.env.NODE_ENV === 'production',
-            },
         },
     },
 });

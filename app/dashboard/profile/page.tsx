@@ -22,6 +22,7 @@ export default async function ProfilePage() {
             select: {
                 name: true,
                 email: true,
+                image: true,
                 gender: true,
                 spiritualLevel: true,
                 hasCompletedOnboarding: true,
@@ -39,6 +40,7 @@ export default async function ProfilePage() {
             select: {
                 name: true,
                 email: true,
+                image: true,
                 // Exclude ALL potentially new fields to prevent crash
             }
         });
@@ -49,6 +51,9 @@ export default async function ProfilePage() {
             u.gender = null;
             u.spiritualLevel = "Explorador"; // Default
             u.hasCompletedOnboarding = true; // Assume true to not block, or false.
+            u.username = null;
+            u.lastUsernameChange = null;
+            u.age = null;
         }
     }
 
