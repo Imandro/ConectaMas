@@ -35,11 +35,28 @@ export default function DashboardHome() {
     }, []);
 
     const fetchStats = async () => {
+        // Cargar desde caché primero para rapidez u offline
+        const cached = localStorage.getItem('dashboard_stats');
+        if (cached) {
+            try {
+                const parsed = JSON.parse(cached);
+                setStats(parsed);
+                if (parsed.lastCheckin) {
+                    const lastDate = new Date(parsed.lastCheckin.createdAt).toDateString();
+                    const today = new Date().toDateString();
+                    if (lastDate === today) setHasCheckedIn(true);
+                }
+            } catch (e) {
+                console.error("Error parsing cached stats", e);
+            }
+        }
+
         try {
             const res = await fetch('/api/dashboard/stats');
             if (res.ok) {
                 const data = await res.json();
                 setStats(data);
+                localStorage.setItem('dashboard_stats', JSON.stringify(data));
                 if (data.lastCheckin) {
                     const lastDate = new Date(data.lastCheckin.createdAt).toDateString();
                     const today = new Date().toDateString();
@@ -48,6 +65,7 @@ export default function DashboardHome() {
             }
         } catch (error) {
             console.error('Error fetching stats:', error);
+            // Si hay error (probablemente offline), mantenemos lo que hay en stats (que vino del caché)
         } finally {
             setLoading(false);
         }

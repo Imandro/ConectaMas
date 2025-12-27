@@ -28,7 +28,7 @@ export async function GET() {
                 },
                 struggles: {
                     where: { status: 'ACTIVE' },
-                    select: { id: true, title: true, currentDay: true }
+                    select: { id: true, title: true, currentDay: true, status: true, isStarted: true }
                 },
                 mascot: {
                     select: { name: true, level: true, experience: true, flamePoints: true, mood: true }

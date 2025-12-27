@@ -16,10 +16,18 @@ export default function DailyPrayerCard() {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
+        // Cargar desde caché primero
+        const cached = localStorage.getItem('daily_prayer');
+        if (cached) {
+            setPrayer(JSON.parse(cached));
+            setLoading(false);
+        }
+
         fetch('/api/daily-prayer')
             .then(res => res.json())
             .then(data => {
                 setPrayer(data);
+                localStorage.setItem('daily_prayer', JSON.stringify(data));
                 setLoading(false);
             })
             .catch(err => {
