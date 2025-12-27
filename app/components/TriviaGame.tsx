@@ -17,6 +17,11 @@ interface TriviaGameProps {
     onComplete: () => void;
 }
 
+// Note: TriviaGame doesn't seem to use useSession directly, but if it relies on a parent that fetches it improperly it could fail.
+// Checking if I need to add useSession or if the error comes from parent.
+// The user said "al entrar en el refugio de llami, a la trivia y otras tenemos este error"
+// LlamiPage uses useSession potentially via other components or hooks.
+// Let's check LlamiPage again.
 export default function TriviaGame({ onComplete }: TriviaGameProps) {
     const [questions, setQuestions] = useState<Question[]>([]);
     const [currentIndex, setCurrentIndex] = useState(0);
