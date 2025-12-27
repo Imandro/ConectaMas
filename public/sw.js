@@ -5,7 +5,6 @@ const ASSETS_TO_CACHE = [
     '/',
     '/manifest.json',
     '/logo.png',
-    '/globals.css',
     '/offline',
 ];
 

@@ -40,7 +40,7 @@ export async function GET() {
             return NextResponse.json({ message: 'User not found' }, { status: 404 });
         }
 
-        return NextResponse.json({
+        const stats = {
             name: user.name || 'Campeón',
             streak: (user as any).streak?.currentStreak || 0,
             lastCheckin: (user as any).checkins[0] || null,
@@ -48,7 +48,9 @@ export async function GET() {
             mascot: (user as any).mascot || null,
             hasSeenTutorialTour: (user as any).hasSeenTutorialTour || false,
             age: (user as any).age || null,
-        });
+        };
+
+        return NextResponse.json(JSON.parse(JSON.stringify(stats)));
 
     } catch (error) {
         console.error('Stats Error:', error);

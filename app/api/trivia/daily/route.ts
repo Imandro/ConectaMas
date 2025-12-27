@@ -39,36 +39,71 @@ export async function GET() {
             const remainingNeeded = 5 - selectedQuestions.length;
 
             // Fetch new questions - RANDOMIZED
-            // Prisma doesn't have a direct 'random' order for large sets without raw SQL easily,
-            // but for small sets or using skip/take with count is better.
-            // For now, let's just fetch more and shuffle in JS or use raw SQL if possible.
-            const newQuestions = await prismaAny.$queryRawUnsafe(
-                `SELECT * FROM "TriviaQuestion" WHERE id NOT IN (${excludedIds.length ? excludedIds.map(id => `'${id}'`).join(',') : "''"}) ORDER BY RANDOM() LIMIT ${remainingNeeded}`
-            );
+            // Use safer query approach for potential DB differences
+            const excludedIdsList = excludedIds.length ? excludedIds : ['NONE'];
+
+            let newQuestions: any[] = [];
+            try {
+                // Try randomized fetch via raw query
+                newQuestions = await prisma.$queryRaw`
+                    SELECT * FROM "TriviaQuestion" 
+                    WHERE "id" NOT IN (${excludedIdsList}) 
+                    ORDER BY RANDOM() 
+                    LIMIT ${remainingNeeded}
+                ` as any[];
+            } catch (rawError) {
+                console.error("Raw query failed, falling back to findMany:", rawError);
+                // Fallback if raw query fails
+                newQuestions = await prisma.triviaQuestion.findMany({
+                    where: { id: { notIn: excludedIds } },
+                    take: remainingNeeded
+                });
+            }
 
             selectedQuestions.push(...newQuestions);
         }
 
-        // 3. Fallback: If still less than 5 (user answered everything correctly), pick random ones
+        // 3. Fallback: If still less than 5, pick random ones
         if (selectedQuestions.length < 5) {
             const excludedIds = selectedQuestions.map(q => q.id);
             const remainingNeeded = 5 - selectedQuestions.length;
 
             const recycledQuestions = await prismaAny.triviaQuestion.findMany({
-                where: {
-                    id: { notIn: excludedIds }
-                },
+                where: { id: { notIn: excludedIds } },
                 take: remainingNeeded
             });
 
             selectedQuestions.push(...recycledQuestions);
         }
 
-        // Final slice just in case
-        const finalQuestions = selectedQuestions.slice(0, 5).map(q => ({
-            ...q,
-            options: JSON.parse(q.options) // Parse JSON string back to array
-        }));
+        // Final slice and safe parsing
+        const finalQuestions = selectedQuestions.slice(0, 5).map(q => {
+            // Raw queries might return lowercase field names in some DB providers
+            const questionData = {
+                id: q.id || q.ID,
+                question: q.question || q.QUESTION,
+                options: q.options || q.OPTIONS,
+                correctIndex: q.correctIndex !== undefined ? q.correctIndex : q.correctindex,
+                explanation: q.explanation || q.EXPLANATION,
+                reference: q.reference || q.REFERENCE,
+                difficulty: q.difficulty || q.DIFFICULTY
+            };
+
+            let parsedOptions = [];
+            try {
+                parsedOptions = typeof questionData.options === 'string'
+                    ? JSON.parse(questionData.options)
+                    : questionData.options;
+            } catch (pError) {
+                console.error("Error parsing options for question:", questionData.id, pError);
+                parsedOptions = ["Opción 1", "Opción 2", "Opción 3", "Opción 4"];
+            }
+
+            return {
+                ...questionData,
+                options: Array.isArray(parsedOptions) ? parsedOptions : ["Error", "Error", "Error", "Error"]
+            };
+        });
 
         return NextResponse.json(finalQuestions);
     } catch (error: any) {

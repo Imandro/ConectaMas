@@ -48,10 +48,12 @@ export default async function RootLayout({
     children: React.ReactNode;
 }) {
     const session = await auth();
+    const serializableSession = session ? JSON.parse(JSON.stringify(session)) : null;
+
     return (
         <html lang="es">
             <body className={`${fredoka.variable} font-fredoka`}>
-                <Providers session={session}>
+                <Providers session={serializableSession}>
                     <GoogleAdSense pId="ca-pub-9787254836039496" />
                     <main className="main-content">
                         {children}

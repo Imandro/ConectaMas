@@ -9,20 +9,21 @@ import { revalidatePath } from "next/cache";
  */
 export async function getOrCreateMascot() {
     const session = await auth();
-    if (!session?.user?.id) return null;
+    if (!session?.user?.email) return null;
 
-    const userId = (session.user as any).id;
+    const email = session.user.email;
 
-    let mascot = await (prisma as any).mascot.findUnique({
-        where: { userId },
+    // Find user first to get ID safely and include mascot
+    const userWithMascot = await prisma.user.findUnique({
+        where: { email },
         include: {
-            user: {
-                select: {
-                    hasSeenLlamiTutorial: true
-                }
-            }
+            mascot: true
         }
     });
+
+    if (!userWithMascot) return null;
+    let mascot = userWithMascot.mascot;
+    const userId = userWithMascot.id;
 
     if (!mascot) {
         mascot = await (prisma as any).mascot.create({
@@ -43,6 +44,8 @@ export async function getOrCreateMascot() {
         });
     }
 
+    if (!mascot) return null;
+
     // Clean the mascot object to ensure it is purely serializable
     return {
         id: mascot.id,
@@ -51,9 +54,9 @@ export async function getOrCreateMascot() {
         experience: mascot.experience,
         flamePoints: mascot.flamePoints,
         mood: mascot.mood,
-        lastFed: mascot.lastFed ? (mascot.lastFed as Date).toISOString() : null,
+        lastFed: mascot.lastFed ? new Date(mascot.lastFed).toISOString() : null,
         user: {
-            hasSeenLlamiTutorial: mascot.user?.hasSeenLlamiTutorial || false
+            hasSeenLlamiTutorial: (userWithMascot as any).hasSeenLlamiTutorial || false
         }
     };
 }
