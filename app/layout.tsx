@@ -24,6 +24,9 @@ export const metadata: Metadata = {
     formatDetection: {
         telephone: false,
     },
+    other: {
+        'google-adsense-account': 'ca-pub-9787254836039496',
+    },
 };
 
 export const viewport: Viewport = {
@@ -47,9 +50,6 @@ export default async function RootLayout({
     const session = await auth();
     return (
         <html lang="es">
-            <head>
-                <meta name="google-adsense-account" content="ca-pub-9787254836039496" />
-            </head>
             <body className={`${fredoka.variable} font-fredoka`}>
                 <GoogleAdSense pId="ca-pub-9787254836039496" />
                 <Providers session={session}>
