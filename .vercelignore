@@ -1,0 +1,10 @@
+mobile/
+android/
+node_modules/
+.next/
+out/
+build_log.txt
+final_build_log.txt
+error.log
+.env
+.env.local
