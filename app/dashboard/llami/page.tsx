@@ -12,6 +12,8 @@ import { Gamepad2, HelpCircle } from "lucide-react";
 import LlamiTutorial from "@/app/components/LlamiTutorial";
 import { completeLlamiTutorial } from "./actions";
 
+export const dynamic = 'force-dynamic';
+
 export default function LlamiPage() {
     const [mascot, setMascot] = useState<any>(null);
     const [loading, setLoading] = useState(true);
@@ -22,12 +24,21 @@ export default function LlamiPage() {
     const [newName, setNewName] = useState("");
 
     const loadMascot = async () => {
-        const data = await getOrCreateMascot();
-        setMascot(data);
-        if (data && !data.user?.hasSeenLlamiTutorial) {
-            setShowTutorial(true);
+        try {
+            const data = await getOrCreateMascot();
+            if (data) {
+                setMascot(data);
+                if (!data.user?.hasSeenLlamiTutorial) {
+                    setShowTutorial(true);
+                }
+            } else {
+                console.error("Failed to load mascot data.");
+            }
+        } catch (error) {
+            console.error("Error loading mascot:", error);
+        } finally {
+            setLoading(false);
         }
-        setLoading(false);
     };
 
     useEffect(() => {
@@ -80,6 +91,18 @@ export default function LlamiPage() {
                 >
                     <Flame size={48} className="text-primary" />
                 </motion.div>
+            </div>
+        );
+    }
+
+    // Safety check if mascot failed to load
+    if (!mascot) {
+        return (
+            <div className="container py-5 text-center">
+                <div className="alert alert-warning">
+                    No se pudo cargar a Llami. Por favor recarga la página.
+                </div>
+                <button className="btn btn-primary" onClick={() => window.location.reload()}>Recargar</button>
             </div>
         );
     }
@@ -137,7 +160,7 @@ export default function LlamiPage() {
                                 </AnimatePresence>
 
                                 <div className="transform-scale-15">
-                                    <LlamiMascot streak={1} lastMood={mascot.mood} name={mascot.name} />
+                                    <LlamiMascot streak={1} lastMood={mascot?.mood || 'FELIZ'} name={mascot?.name || 'Llami'} />
                                 </div>
                             </div>
 
