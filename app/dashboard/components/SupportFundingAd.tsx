@@ -1,14 +1,20 @@
 "use client";
 
-import { Gift, Heart } from "lucide-react";
+import { Gift, Heart, Crown, ShieldCheck } from "lucide-react";
 import Image from "next/image";
+import { useSession } from "next-auth/react";
 
 export default function SupportFundingAd() {
+    const { data: session } = useSession();
+    const isPremium = (session?.user as any)?.isPremium;
+
+    if (isPremium) return null;
+
     return (
-        <div className="card border-0 shadow-sm bg-dark text-white overflow-hidden position-relative animate-fade-in-up">
+        <div className="card border-0 shadow-lg bg-dark text-white overflow-hidden position-relative animate-fade-in-up" style={{ borderRadius: '24px' }}>
             {/* Background elements */}
             <div className="position-absolute top-0 end-0 p-3 opacity-25">
-                <Gift size={120} className="text-secondary" />
+                <Crown size={120} className="text-warning rotate-12" />
             </div>
 
             <div className="card-body p-4 position-relative z-10">
@@ -28,38 +34,40 @@ export default function SupportFundingAd() {
                         </div>
                     </div>
                     <div>
-                        <h5 className="fw-bold m-0 text-white">Hola, soy Mario Alvarez</h5>
-                        <p className="small text-white-50 m-0">Desarrollador de Conecta+</p>
+                        <h5 className="fw-bold m-0 text-white">Sustenta Conecta+ Premium</h5>
+                        <p className="small text-white-50 m-0">Aporta tu granito de arena por solo $1 al mes</p>
                     </div>
                 </div>
 
                 <div className="mb-4">
                     <p className="small text-white-50 lh-base mb-3">
-                        Estoy desarrollando esta app con todo mi corazón para Dios y para esta generación que tanto necesita de Él.
-                        Mi sueño es llevar <strong>Conecta+ a la Google Play Store</strong> para alcanzar a miles de jóvenes más.
+                        Tu apoyo me ayuda a mantener los servidores y llevar la palabra de Dios a más jóvenes.
+                        Al ser <strong>Premium</strong>, tendrás una experiencia 100% libre de anuncios y me ayudarás a alcanzar la meta de la Google Play Store.
                     </p>
 
-                    <div className="bg-white bg-opacity-10 p-2 rounded-3 border border-white-10 mb-3">
-                        <div className="d-flex justify-content-between align-items-center mb-1">
-                            <span className="small fw-bold text-warning">Meta: Licencia Google Play</span>
-                            <span className="fw-bold text-dark">$25 USD</span>
+                    <div className="row g-2 mb-3">
+                        <div className="col-12">
+                            <div className="bg-white bg-opacity-10 p-2 rounded-3 border border-white-10 d-flex align-items-center gap-2">
+                                <ShieldCheck size={18} className="text-warning" />
+                                <span className="small">Sin anuncios de Google en toda la app</span>
+                            </div>
                         </div>
-                        <p className="extra-small text-dark m-0">
-                            Solo soy yo trabajando en esto, y tu granito de arena hace una diferencia enorme.
-                        </p>
                     </div>
                 </div>
 
                 <a
-                    href="https://www.paypal.me/Imandrox"
+                    href="https://www.paypal.me/Imandrox/1"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="btn btn-warning w-100 fw-bold rounded-pill text-dark shadow-sm py-3 hover-scale"
+                    className="btn btn-warning w-100 fw-bold rounded-pill text-dark shadow-sm py-3 hover-scale d-flex align-items-center justify-content-center gap-2"
                     style={{ backgroundColor: '#f3b33e', border: 'none' }}
                 >
-                    <Gift size={18} className="me-2" />
-                    ¡Apoyar con mi granito de arena!
+                    <Crown size={20} />
+                    ¡Ser Premium por $1 USD!
                 </a>
+                <p className="text-center extra-small text-white-50 mt-3 mb-0">
+                    *Al donar, mándame tu email por PayPal para activar tu insignia.
+                </p>
             </div>
         </div>
     );

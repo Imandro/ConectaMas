@@ -182,23 +182,7 @@ export default function RegisterPage() {
                         required
                     />
                     <label className="form-check-label small text-muted" htmlFor="termsAccepted">
-                        He leído y acepto los <Link href="/terms" target="_blank" className="text-primary fw-bold text-decoration-none">Términos y Condiciones</Link> y la Política de Privacidad.
-                    </label>
-                </div>
-
-
-
-                <div className="mb-4 form-check">
-                    <input
-                        type="checkbox"
-                        className="form-check-input"
-                        id="termsAccepted"
-                        checked={(formData as any).termsAccepted}
-                        onChange={handleChange}
-                        required
-                    />
-                    <label className="form-check-label small text-muted" htmlFor="termsAccepted">
-                        He leído y acepto los <Link href="/terms" target="_blank" className="text-primary fw-bold text-decoration-none">Términos y Condiciones</Link> y la Política de Privacidad.
+                        He leído y acepto los <Link href="/legal/terms" target="_blank" className="text-primary fw-bold text-decoration-none">Términos y Condiciones</Link> y la <Link href="/legal/privacy" target="_blank" className="text-primary fw-bold text-decoration-none">Política de Privacidad</Link>.
                     </label>
                 </div>
 

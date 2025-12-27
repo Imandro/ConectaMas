@@ -79,7 +79,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
             }
 
             // On session update, refresh user data from database
-            if (trigger === "update" && token.sub) {
+            if (token.sub) {
                 try {
                     const dbUser = await (prisma as any).user.findUnique({
                         where: { id: token.sub },
@@ -89,7 +89,8 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
                             image: true,
                             leaderPhone: true,
                             hasSeenTutorialTour: true,
-                            hasCompletedOnboarding: true
+                            hasCompletedOnboarding: true,
+                            isPremium: true
                         }
                     });
 
@@ -100,6 +101,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
                         token.leaderPhone = dbUser.leaderPhone;
                         token.hasSeenTutorialTour = dbUser.hasSeenTutorialTour;
                         token.hasCompletedOnboarding = dbUser.hasCompletedOnboarding;
+                        token.isPremium = dbUser.isPremium;
                     }
                 } catch (error) {
                     console.error("JWT callback error:", error);
@@ -117,8 +119,37 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
                 session.user.leaderPhone = token.leaderPhone;
                 session.user.hasSeenTutorialTour = token.hasSeenTutorialTour;
                 session.user.hasCompletedOnboarding = token.hasCompletedOnboarding;
+                session.user.isPremium = token.isPremium;
             }
             return session;
+        },
+    },
+    cookies: {
+        sessionToken: {
+            name: `next-auth.session-token`,
+            options: {
+                httpOnly: true,
+                sameSite: 'lax',
+                path: '/',
+                secure: process.env.NODE_ENV === 'production',
+            },
+        },
+        callbackUrl: {
+            name: `next-auth.callback-url`,
+            options: {
+                sameSite: 'lax',
+                path: '/',
+                secure: process.env.NODE_ENV === 'production',
+            },
+        },
+        csrfToken: {
+            name: `next-auth.csrf-token`,
+            options: {
+                httpOnly: true,
+                sameSite: 'lax',
+                path: '/',
+                secure: process.env.NODE_ENV === 'production',
+            },
         },
     },
 });

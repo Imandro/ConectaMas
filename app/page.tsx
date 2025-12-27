@@ -45,6 +45,17 @@ export default function Home() {
 
 
                 </div>
+
+                <div className="mt-5 pt-3 border-top border-light">
+                    <div className="d-flex justify-content-center gap-3 small text-muted">
+                        <Link href="/legal/privacy" className="text-decoration-none text-muted hover-primary">Privacidad</Link>
+                        <span className="opacity-25">|</span>
+                        <Link href="/legal/terms" className="text-decoration-none text-muted hover-primary">Términos</Link>
+                        <span className="opacity-25">|</span>
+                        <Link href="/legal/cookies" className="text-decoration-none text-muted hover-primary">Cookies</Link>
+                    </div>
+                    <p className="extra-small text-muted mt-2 mb-0">© 2025 Conecta+</p>
+                </div>
             </div>
         </div>
     );

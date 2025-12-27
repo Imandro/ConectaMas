@@ -219,8 +219,15 @@ export default function EmergencyPage() {
 
             </div>
 
-            <div className="mt-auto text-center opacity-50 pb-4">
-                <small>"Fiel es Dios, que no os dejará ser tentados más de lo que podéis resistir..." - 1 Cor 10:13</small>
+            <div className="mt-auto text-center pb-4">
+                <p className="extra-small opacity-50 mb-2">
+                    "Fiel es Dios, que no os dejará ser tentados más de lo que podéis resistir..." - 1 Cor 10:13
+                </p>
+                <div className="bg-white bg-opacity-10 p-2 rounded-3">
+                    <p className="extra-small text-white-50 m-0" style={{ fontSize: '10px' }}>
+                        AVISO: Conecta+ es una herramienta espiritual. En caso de emergencia grave o riesgo para tu vida, llama a las autoridades (911). Este contenido no sustituye ayuda profesional.
+                    </p>
+                </div>
             </div>
         </div>
     );

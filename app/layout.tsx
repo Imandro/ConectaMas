@@ -37,6 +37,7 @@ import { Providers } from './components/Providers';
 import AnnouncementModal from './components/AnnouncementModal';
 
 import { auth } from './lib/auth';
+import GoogleAdSense from './components/monetization/GoogleAdSense';
 
 export default async function RootLayout({
     children,
@@ -47,6 +48,7 @@ export default async function RootLayout({
     return (
         <html lang="es">
             <body className={`${fredoka.variable} font-fredoka`}>
+                <GoogleAdSense pId="ca-pub-9787254836039496" />
                 <Providers session={session}>
                     <main className="main-content">
                         {children}

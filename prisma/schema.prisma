@@ -66,6 +66,7 @@ model User {
   mascot            Mascot?
   triviaAttempts    UserTriviaAttempt[]
   forumNotifications ForumNotification[]
+  isPremium     Boolean   @default(false)
 }
 
 model UserDevotional {
