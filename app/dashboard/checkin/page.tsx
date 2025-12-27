@@ -10,7 +10,15 @@ interface Checkin {
     createdAt: string;
 }
 
+// CheckinPage is client side, so it doesn't use 'auth()' but it relies on API calls that might fail if session is invalid.
+// However, the error report says "no entra al perfil" (server component) and "no aparece el registro de salud" (checkin page).
+// For CheckinPage, let's verify if the API calls are being made correctly.
+// There is no useSession here, but let's check if fetchHistory handles 401s properly or if the page crashes.
+// The user says "exception", so it might be crashing.
+// Wait, client profile actions is used inside Profile page? No, ProfilePage is server component.
+// Let's check ProfilePage again.
 export default function CheckinPage() {
+    // No specific useSession here to fix, but I will check ClientProfileActions again.
     const [mood, setMood] = useState<string | null>(null);
     const [note, setNote] = useState('');
     const [isSaving, setIsSaving] = useState(false);
