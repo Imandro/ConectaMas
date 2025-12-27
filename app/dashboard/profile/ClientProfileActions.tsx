@@ -17,7 +17,8 @@ export default function ClientProfileActions({
     const [isResetting, setIsResetting] = useState(false);
     const [leaderPhone, setLeaderPhone] = useState(initialLeaderPhone || "");
     const [isUpdatingPhone, setIsUpdatingPhone] = useState(false);
-    const { update } = useSession();
+    const sessionContext = useSession();
+    const update = sessionContext?.update;
 
     const handleReset = async () => {
         if (confirm("¿Estás seguro? Esto reiniciará tu progreso de onboarding (pero no borrará tu cuenta).")) {
