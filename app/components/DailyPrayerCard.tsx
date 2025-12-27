@@ -19,8 +19,12 @@ export default function DailyPrayerCard() {
         // Cargar desde caché primero
         const cached = localStorage.getItem('daily_prayer');
         if (cached) {
-            setPrayer(JSON.parse(cached));
-            setLoading(false);
+            try {
+                setPrayer(JSON.parse(cached));
+                setLoading(false);
+            } catch (e) {
+                console.error("Error parsing cached prayer", e);
+            }
         }
 
         fetch('/api/daily-prayer')
@@ -55,7 +59,7 @@ export default function DailyPrayerCard() {
     return (
         <div className="card border-0 shadow-lg rounded-4 p-4 position-relative overflow-hidden mb-4" style={{
             background: 'linear-gradient(135deg, #f0f7ff 0%, #e0efff 100%)',
-            border: '1px solid rgba(0, 123, 255, 0.1) !important'
+            border: '1px solid rgba(0, 123, 255, 0.1)'
         }}>
             {/* Soft Decorative Elements */}
             <div className="position-absolute top-0 end-0 bg-primary opacity-5 rounded-circle"

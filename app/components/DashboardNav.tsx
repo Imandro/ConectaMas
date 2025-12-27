@@ -49,7 +49,7 @@ export default function DashboardNav() {
             {/* Mobile Bottom Nav */}
             <nav
                 className="navbar fixed-bottom navbar-light bg-white border-top d-md-none safe-area-bottom shadow-lg"
-                style={{ borderRadius: '20px 20px 0 0', borderTopColor: 'var(--border-color) !important' }}
+                style={{ borderRadius: '20px 20px 0 0', borderTopColor: 'var(--border-color)' }}
             >
                 <div className="container-fluid d-flex justify-content-around">
                     {navItems.map((item) => {

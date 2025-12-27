@@ -95,7 +95,7 @@ export default function NotificationPrompt() {
                 borderRadius: '24px',
                 backgroundColor: 'var(--card-bg)',
                 backdropFilter: 'blur(10px)',
-                border: '1px solid var(--border-color) !important'
+                border: '1px solid var(--border-color)'
             }}>
                 <div className="card-body p-0">
                     {/* Header with gradient */}
