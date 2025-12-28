@@ -23,7 +23,26 @@ export default auth((req) => {
         }
     }
 
-    return NextResponse.next();
+    const response = NextResponse.next();
+
+    // Cleanup unnecessary cookies after login to prevent "Headers Too Large"
+    if (isLoggedIn) {
+        // Clear callback URL and CSRF token as they are only needed during the auth flow
+        const cookiesToClear = [
+            'next-auth.callback-url',
+            'next-auth.csrf-token',
+            '__Secure-next-auth.callback-url',
+            '__Secure-next-auth.csrf-token'
+        ];
+
+        cookiesToClear.forEach(cookieName => {
+            if (req.cookies.has(cookieName)) {
+                response.cookies.delete(cookieName);
+            }
+        });
+    }
+
+    return response;
 });
 
 export const config = {

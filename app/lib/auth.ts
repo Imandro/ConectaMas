@@ -94,10 +94,10 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
                         token.name = dbUser.name;
                         token.email = dbUser.email;
                         token.picture = dbUser.image;
-                        token.leaderPhone = dbUser.leaderPhone;
-                        token.hasSeenTutorialTour = dbUser.hasSeenTutorialTour;
-                        token.hasCompletedOnboarding = dbUser.hasCompletedOnboarding;
-                        token.isPremium = dbUser.isPremium;
+                        token.lp = dbUser.leaderPhone;
+                        token.st = dbUser.hasSeenTutorialTour;
+                        token.co = dbUser.hasCompletedOnboarding;
+                        token.ip = dbUser.isPremium;
                     }
                 } catch (error) {
                     console.error("JWT callback error:", error);
@@ -112,10 +112,10 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
                 session.user.name = token.name;
                 session.user.email = token.email;
                 session.user.image = token.picture;
-                session.user.leaderPhone = token.leaderPhone;
-                session.user.hasSeenTutorialTour = token.hasSeenTutorialTour;
-                session.user.hasCompletedOnboarding = token.hasCompletedOnboarding;
-                session.user.isPremium = token.isPremium;
+                session.user.leaderPhone = token.lp;
+                session.user.hasSeenTutorialTour = token.st;
+                session.user.hasCompletedOnboarding = token.co;
+                session.user.isPremium = token.ip;
             }
             return session;
         },

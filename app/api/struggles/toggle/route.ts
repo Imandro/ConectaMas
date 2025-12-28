@@ -1,25 +1,17 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/app/lib/prisma';
-import { auth } from '@/app/lib/auth';
+import { getApiUser } from '@/app/lib/api-auth';
 export const dynamic = 'force-dynamic';
 
 export async function POST(req: Request) {
     try {
-        const session = await auth();
+        const { id, status, action, day } = await req.json();
 
-        if (!session?.user?.email) {
-            return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
+        if (!id) {
+            return NextResponse.json({ message: 'ID required' }, { status: 400 });
         }
 
-        const { id, status } = await req.json();
-
-        if (!id || !status) {
-            return NextResponse.json({ message: 'ID and Status required' }, { status: 400 });
-        }
-
-        const user = await prisma.user.findUnique({
-            where: { email: session.user.email },
-        });
+        const user = await getApiUser(req);
 
         if (!user) {
             return NextResponse.json({ message: 'User not found' }, { status: 404 });
@@ -34,9 +26,32 @@ export async function POST(req: Request) {
             return NextResponse.json({ message: 'Struggle not found' }, { status: 404 });
         }
 
+        let updateData: any = {};
+
+        if (action === 'start') {
+            updateData.isStarted = true;
+            updateData.currentDay = 1;
+            updateData.startDate = new Date();
+        } else if (action === 'complete' && day) {
+            const currentCompleted = struggle.completedDays ? struggle.completedDays.split(',') : [];
+            if (!currentCompleted.includes(day.toString())) {
+                currentCompleted.push(day.toString());
+            }
+            updateData.completedDays = currentCompleted.join(',');
+
+            // If it was the current day, increment
+            if (day === struggle.currentDay && day < 7) {
+                updateData.currentDay = struggle.currentDay + 1;
+            } else if (day === 7) {
+                updateData.status = 'vencido';
+            }
+        } else if (status) {
+            updateData.status = status;
+        }
+
         const updated = await prisma.userStruggle.update({
             where: { id },
-            data: { status }
+            data: updateData
         });
 
         return NextResponse.json(updated, { status: 200 });
