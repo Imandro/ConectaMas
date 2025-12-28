@@ -12,9 +12,9 @@ export async function POST(req: NextRequest) {
         }
 
         const formData = await req.formData();
-        const file = formData.get("file") as File;
-        const title = formData.get("title") as string;
-        const artist = formData.get("artist") as string;
+        const file = (formData as any).get("file") as File;
+        const title = (formData as any).get("title") as string;
+        const artist = (formData as any).get("artist") as string;
 
         if (!file || !title || !artist) {
             return NextResponse.json({ error: "Faltan campos obligatorios" }, { status: 400 });

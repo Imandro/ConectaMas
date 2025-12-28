@@ -5,6 +5,7 @@ import PWAInstallPrompt from './components/PWAInstallPrompt';
 import NotificationPrompt from './components/NotificationPrompt';
 import { Analytics } from '@vercel/analytics/next';
 import { Toaster } from 'react-hot-toast';
+import OfflineAlert from '@/components/OfflineAlert';
 
 const fredoka = Fredoka({
     subsets: ['latin'],
@@ -53,6 +54,7 @@ export default async function RootLayout({
     return (
         <html lang="es">
             <body className={`${fredoka.variable} font-fredoka`}>
+                <OfflineAlert />
                 <Providers session={serializableSession}>
                     <GoogleAdSense pId="ca-pub-9787254836039496" />
                     <main className="main-content">
