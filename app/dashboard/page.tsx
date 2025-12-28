@@ -86,7 +86,15 @@ export default function DashboardHome() {
 
             if (res.ok) {
                 setHasCheckedIn(true);
-                fetchStats(); // Refresh streak
+                // Force clear local cache to ensure fresh data on next fetch
+                localStorage.removeItem('dashboard_stats');
+                await fetchStats(); // Refresh streak and everything
+            } else {
+                const errorData = await res.json();
+                if (res.status === 429) {
+                    setHasCheckedIn(true); // Treat as already checked in if server says so
+                }
+                console.error('Checkin rejected:', errorData.message);
             }
         } catch (error) {
             console.error('Checkin failed:', error);

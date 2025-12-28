@@ -8,6 +8,7 @@ export async function POST(req: Request) {
         const userFromAuth = await getApiUser(req);
 
         if (!userFromAuth) {
+            console.log("[Checkin API] Unauthorized access attempt");
             return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
         }
 
@@ -17,88 +18,92 @@ export async function POST(req: Request) {
             return NextResponse.json({ message: 'Mood is required' }, { status: 400 });
         }
 
-        // --- LIMITES DE RECURSOS (FREE TIER OPTIMIZATION) ---
-        if (note && note.length > 1000) return NextResponse.json({ message: 'Nota demasiado larga (máx 1000)' }, { status: 400 });
+        const userId = userFromAuth.id;
+        console.log(`[Checkin API] Processing check-in for user ${userId} with mood ${mood}`);
 
-        const user = userFromAuth;
-
-        if (!user) {
-            return NextResponse.json({ message: 'User not found' }, { status: 404 });
-        }
-
-        // Bloquear si ya hubo check-in hoy
+        // 1. Bloquear si ya hubo check-in hoy (ZONA HORARIA LOCAL DEL SERVIDOR O UTC)
         const todayStart = new Date();
         todayStart.setHours(0, 0, 0, 0);
+
+        const tomorrowStart = new Date(todayStart);
+        tomorrowStart.setDate(tomorrowStart.getDate() + 1);
+
         const existingCheckin = await prisma.dailyCheckin.findFirst({
             where: {
-                userId: user.id,
-                createdAt: { gte: todayStart }
+                userId: userId,
+                createdAt: {
+                    gte: todayStart,
+                    lt: tomorrowStart
+                }
             }
         });
 
         if (existingCheckin) {
+            console.log(`[Checkin API] User ${userId} already checked in today`);
             return NextResponse.json({ message: 'Ya has realizado tu check-in de hoy' }, { status: 429 });
         }
-        // ---------------------------------------------------
 
-        // 1. Create Check-in
-        const checkin = await prisma.dailyCheckin.create({
+        // 2. Create Check-in
+        await prisma.dailyCheckin.create({
             data: {
-                userId: user.id,
+                userId: userId,
                 mood,
                 note: note || null,
             }
         });
 
-        // 2. Update Streak
+        // 3. Update Streak & Mascot Experience
         const today = new Date();
         today.setHours(0, 0, 0, 0);
 
+        const yesterday = new Date(today);
+        yesterday.setDate(yesterday.getDate() - 1);
+
         let streak = await prisma.streak.findUnique({
-            where: { userId: user.id }
+            where: { userId: userId }
         });
 
         if (!streak) {
-            // New Streak
+            console.log(`[Checkin API] Creating first streak for user ${userId}`);
             streak = await prisma.streak.create({
                 data: {
-                    userId: user.id,
+                    userId: userId,
                     currentStreak: 1,
                     longestStreak: 1,
                     lastActivity: new Date(),
                 }
             });
         } else {
-            // Check if last activity was yesterday (continue streak) or older (reset)
             const lastActivity = new Date(streak.lastActivity);
             lastActivity.setHours(0, 0, 0, 0);
 
-            const diffTime = Math.abs(today.getTime() - lastActivity.getTime());
-            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-
-            if (diffDays === 1) {
+            if (lastActivity.getTime() === yesterday.getTime()) {
                 // Consecutive day
+                console.log(`[Checkin API] Incrementing streak for user ${userId}`);
                 streak = await prisma.streak.update({
-                    where: { userId: user.id },
+                    where: { userId: userId },
                     data: {
                         currentStreak: { increment: 1 },
                         lastActivity: new Date(),
                         longestStreak: { set: Math.max(streak.longestStreak, streak.currentStreak + 1) }
                     }
                 });
-            } else if (diffDays > 1) {
+            } else if (lastActivity.getTime() < yesterday.getTime()) {
                 // Streak broken
+                console.log(`[Checkin API] Streak broken for user ${userId}. Resetting to 1.`);
                 streak = await prisma.streak.update({
-                    where: { userId: user.id },
+                    where: { userId: userId },
                     data: {
                         currentStreak: 1,
                         lastActivity: new Date(),
                     }
                 });
             } else {
-                // Same day, update activity time but don't increment streak
+                // Already did an activity today (probably something else that updates streak)
+                // Just update the timestamp to be safe
+                console.log(`[Checkin API] User ${userId} already had activity today. Updating timestamp.`);
                 streak = await prisma.streak.update({
-                    where: { userId: user.id },
+                    where: { userId: userId },
                     data: {
                         lastActivity: new Date(),
                     }
@@ -106,7 +111,22 @@ export async function POST(req: Request) {
             }
         }
 
-        return NextResponse.json({ message: 'Check-in saved', streak: streak.currentStreak }, { status: 201 });
+        // 4. Update Mascot Mood (Optional but good for Llami)
+        try {
+            await prisma.mascot.update({
+                where: { userId: userId },
+                data: {
+                    mood: mood === '😔' ? 'TRISTE' : 'FELIZ',
+                    lastFed: new Date(),
+                    experience: { increment: 5 }
+                }
+            }).catch(() => null); // Ignore if mascot doesn't exist yet
+        } catch (e) { }
+
+        return NextResponse.json({
+            message: 'Check-in saved',
+            streak: streak.currentStreak
+        }, { status: 201 });
 
     } catch (error) {
         console.error('Checkin Error:', error);
