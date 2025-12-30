@@ -17,7 +17,6 @@ const navItems = [
     { name: 'Biblia', href: '/dashboard/bible', icon: Book },
     { name: 'Trivia', href: '/dashboard/trivia', icon: Zap },
     { name: 'Comunidad', href: '/dashboard/forums', icon: MessageCircle },
-    { name: 'Salud Espiritual', href: '/dashboard/checkin', icon: HeartPulse },
     { name: 'Perfil', href: '/dashboard/profile', icon: User },
 ];
 

@@ -4,6 +4,8 @@ import { useState, useEffect } from "react";
 import { MessageCircle, X } from "lucide-react";
 import { confirmWhatsappJoin } from "@/app/dashboard/actions/whatsapp";
 
+const SHOW_INTERVAL_DAYS = 3;
+
 interface WhatsappModalProps {
     hasJoined: boolean;
 }

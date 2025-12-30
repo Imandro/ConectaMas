@@ -18,6 +18,8 @@ export async function GET(req: Request) {
                 name: true,
                 hasSeenTutorialTour: true,
                 hasJoinedWhatsapp: true,
+                hasFollowedInstagram: true,
+                country: true,
                 age: true,
                 streak: {
                     select: { currentStreak: true }
@@ -49,6 +51,8 @@ export async function GET(req: Request) {
             mascot: (user as any).mascot || null,
             hasSeenTutorialTour: (user as any).hasSeenTutorialTour || false,
             hasJoinedWhatsapp: (user as any).hasJoinedWhatsapp || false,
+            hasFollowedInstagram: (user as any).hasFollowedInstagram || false,
+            country: (user as any).country || null,
             age: (user as any).age || null,
         };
 

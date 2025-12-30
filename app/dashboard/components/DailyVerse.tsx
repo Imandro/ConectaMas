@@ -40,6 +40,7 @@ export default function DailyVerse() {
             try {
                 const dataUrl = await toPng(cardRef.current, {
                     cacheBust: true,
+                    useCORS: true,
                     filter: (node) => {
                         return !node.classList?.contains('no-export');
                     }

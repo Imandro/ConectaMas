@@ -14,6 +14,10 @@ import SupportAdModal from './components/SupportAdModal';
 import GrowthMilestoneModal from './components/GrowthMilestoneModal';
 import WhatsappModal from '../components/WhatsappModal';
 import WhatsappCard from '../components/WhatsappCard';
+import InstagramModal from '../components/InstagramModal';
+import InstagramCard from '../components/InstagramCard';
+import CheckinModal from '../components/CheckinModal';
+import CountryModal from '../components/CountryModal';
 
 interface DashboardStats {
     name: string;
@@ -24,6 +28,8 @@ interface DashboardStats {
 
     hasSeenTutorialTour: boolean;
     hasJoinedWhatsapp: boolean;
+    hasFollowedInstagram: boolean;
+    country?: string;
     age?: number;
 }
 
@@ -144,11 +150,6 @@ export default function DashboardHome() {
                 <DailyVerse />
             </section>
 
-            {/* WhatsApp Group Invite Card */}
-            <section className="mb-4 animate-fade-in delay-200">
-                <WhatsappCard />
-            </section>
-
             {/* Estado y SOS con Llami */}
             <section className="row g-3 mb-4">
                 <div className="col-8" id="tour-streak">
@@ -237,43 +238,21 @@ export default function DashboardHome() {
                 </Link>
             </section>
 
+            {/* Social Media Cards */}
+            <section className="mb-4 animate-fade-in delay-200">
+                <div className="row g-3">
+                    <div className="col-12 col-md-6">
+                        <WhatsappCard />
+                    </div>
+                    <div className="col-12 col-md-6">
+                        <InstagramCard />
+                    </div>
+                </div>
+            </section>
+
             {/* Daily Prayer */}
             <section className="mb-4" id="tour-prayer">
                 <DailyPrayerCard />
-            </section>
-
-            {/* Check-in Diario */}
-            <section id="tour-checkin">
-                <div className="d-flex justify-content-between align-items-center mb-2">
-                    <h5 className="fw-bold text-secondary mb-0">Tu corazón hoy</h5>
-                </div>
-                <div className="card border-0 shadow-sm bg-white">
-                    <div className="card-body p-4 text-center">
-                        <p className="text-muted mb-3">
-                            {hasCheckedIn ? '¡Gracias por compartir! Dios está contigo.' : '¿Cómo te sientes en este momento?'}
-                        </p>
-
-                        {!hasCheckedIn ? (
-                            <div className="d-flex justify-content-between px-2">
-                                {['😔', '😐', '🙂', '😄', '🙌'].map((emoji, idx) => (
-                                    <button
-                                        key={idx}
-                                        onClick={() => handleCheckin(emoji)}
-                                        disabled={checkinLoading}
-                                        className="btn btn-light rounded-circle fs-2 p-2 shadow-sm border-0 hover-scale transition-all"
-                                        style={{ width: '50px', height: '50px' }}
-                                    >
-                                        {emoji}
-                                    </button>
-                                ))}
-                            </div>
-                        ) : (
-                            <div className="text-success fw-bold animate-fade-in">
-                                ¡Ánimo! Has dado un paso más.
-                            </div>
-                        )}
-                    </div>
-                </div>
             </section>
 
             {/* Feature Tour (Proactive Tutorial) */}
@@ -294,6 +273,13 @@ export default function DashboardHome() {
                 <>
                     <AgePrompt missingAge={!stats.age} />
                     <WhatsappModal hasJoined={stats.hasJoinedWhatsapp} />
+                    <InstagramModal hasFollowed={stats.hasFollowedInstagram} />
+                    <CheckinModal
+                        hasCheckedIn={hasCheckedIn}
+                        onCheckin={handleCheckin}
+                        isLoading={checkinLoading}
+                    />
+                    <CountryModal hasSelectedCountry={!!stats.country} />
                 </>
             )}
         </div>

@@ -40,6 +40,8 @@ model User {
   hasSeenLlamiTutorial  Boolean @default(false)
   hasSeenCommunityTutorial Boolean @default(false)
   hasJoinedWhatsapp      Boolean @default(false)
+  hasFollowedInstagram   Boolean @default(false)
+  country                String?
   leaderPhone            String?   // For SC kontakt
   age                    Int?
   lastUsernameChange     DateTime?
