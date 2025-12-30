@@ -447,7 +447,7 @@ export default function LlamiPage() {
 
             <style jsx>{`
                 .transform-scale-room {
-                    transform: scale(2.2);
+                    transform: scale(1.8);
                 }
             `}</style>
         </div >
