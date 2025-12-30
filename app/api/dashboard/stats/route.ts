@@ -36,7 +36,7 @@ export async function GET(req: Request) {
                 mascot: {
                     select: { name: true, level: true, experience: true, flamePoints: true, mood: true }
                 }
-            }
+            } as any
         });
 
         if (!user) {

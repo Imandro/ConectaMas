@@ -27,7 +27,7 @@ export default function DailyVerse() {
         const dayOfYear = Math.floor((new Date().getTime() - new Date(new Date().getFullYear(), 0, 0).getTime()) / 1000 / 60 / 60 / 24);
         const verseIndex = dayOfYear % VERSES.length;
         const bgIndex = dayOfYear % BACKGROUND_IMAGES.length;
-        
+
         setVerse(VERSES[verseIndex]);
         setBgImage(BACKGROUND_IMAGES[bgIndex]);
     }, []);
@@ -35,12 +35,11 @@ export default function DailyVerse() {
     const handleDownload = async (e: React.MouseEvent) => {
         e.preventDefault();
         e.stopPropagation();
-        
+
         if (cardRef.current) {
             try {
                 const dataUrl = await toPng(cardRef.current, {
                     cacheBust: true,
-                    useCORS: true,
                     filter: (node) => {
                         return !node.classList?.contains('no-export');
                     }
@@ -74,7 +73,7 @@ export default function DailyVerse() {
 
     return (
         <Link href={getBibleLink()} className="text-decoration-none">
-            <div 
+            <div
                 ref={cardRef}
                 className="card border-0 shadow-lg text-white rounded-4 p-4 position-relative overflow-hidden mb-4 hover-scale transition-all"
                 style={{
@@ -85,7 +84,7 @@ export default function DailyVerse() {
                 }}
             >
                 {/* Download Button */}
-                <button 
+                <button
                     onClick={handleDownload}
                     className="no-export position-absolute top-0 end-0 m-3 btn btn-sm btn-light rounded-circle p-2 shadow-sm z-3 opacity-75 hover-opacity-100"
                     title="Descargar imagen"
@@ -96,7 +95,7 @@ export default function DailyVerse() {
                 {/* Decorative Circles */}
                 <div className="position-absolute top-0 start-0 bg-white opacity-10 rounded-circle"
                     style={{ width: '100px', height: '100px', transform: 'translate(-30%, -30%)' }}></div>
-                
+
                 <div className="position-relative z-1 text-center py-4 d-flex flex-column justify-content-center h-100">
                     <h6 className="text-white-50 fw-bold text-uppercase small mb-3 letter-spacing-2">Versículo del Día</h6>
                     <figure className="text-center mb-0">
@@ -110,7 +109,7 @@ export default function DailyVerse() {
                         </figcaption>
                     </figure>
                 </div>
-                
+
                 <div className="position-absolute bottom-0 end-0 p-3 opacity-50">
                     <span className="small text-white-50">Conecta+</span>
                 </div>
