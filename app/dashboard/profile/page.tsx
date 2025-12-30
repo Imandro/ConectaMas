@@ -97,6 +97,8 @@ export default async function ProfilePage() {
                 <ClientProfileActions
                     userRole={(user as any).role || 'USER'}
                     initialLeaderPhone={(user as any).leaderPhone}
+                    initialName={(user as any).name}
+                    initialUsername={(user as any).username}
                 />
 
                 <div className="mt-4 pt-3 border-top">

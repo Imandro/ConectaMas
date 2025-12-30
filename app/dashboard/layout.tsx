@@ -1,4 +1,5 @@
 import DashboardNav from '@/app/components/DashboardNav';
+import SessionRefresher from '@/app/components/SessionRefresher';
 
 export default function DashboardLayout({
     children,
@@ -7,6 +8,7 @@ export default function DashboardLayout({
 }) {
     return (
         <div className="min-vh-100 bg-light">
+            <SessionRefresher />
             <DashboardNav />
 
             {/* Main Content Area */}

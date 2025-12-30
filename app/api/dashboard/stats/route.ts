@@ -17,6 +17,7 @@ export async function GET(req: Request) {
             select: {
                 name: true,
                 hasSeenTutorialTour: true,
+                hasJoinedWhatsapp: true,
                 age: true,
                 streak: {
                     select: { currentStreak: true }
@@ -47,10 +48,11 @@ export async function GET(req: Request) {
             struggles: (user as any).struggles || [],
             mascot: (user as any).mascot || null,
             hasSeenTutorialTour: (user as any).hasSeenTutorialTour || false,
+            hasJoinedWhatsapp: (user as any).hasJoinedWhatsapp || false,
             age: (user as any).age || null,
         };
 
-        return NextResponse.json(JSON.parse(JSON.stringify(stats)));
+        return NextResponse.json(stats);
 
     } catch (error) {
         console.error('Stats Error:', error);

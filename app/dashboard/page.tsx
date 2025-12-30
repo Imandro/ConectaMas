@@ -1,7 +1,7 @@
 "use client";
 
 import Link from 'next/link';
-import { Sun, AlertTriangle, Loader2, HelpCircle, ChevronRight, ShieldAlert } from 'lucide-react';
+import { Sun, AlertTriangle, Loader2, HelpCircle, ChevronRight, ShieldAlert, Users } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import DailyVerse from './components/DailyVerse';
 import DailyPrayerCard from '../components/DailyPrayerCard';
@@ -12,6 +12,8 @@ import AgePrompt from './components/AgePrompt';
 import SupportFundingAd from './components/SupportFundingAd';
 import SupportAdModal from './components/SupportAdModal';
 import GrowthMilestoneModal from './components/GrowthMilestoneModal';
+import WhatsappModal from '../components/WhatsappModal';
+import WhatsappCard from '../components/WhatsappCard';
 
 interface DashboardStats {
     name: string;
@@ -21,6 +23,7 @@ interface DashboardStats {
     mascot: any;
 
     hasSeenTutorialTour: boolean;
+    hasJoinedWhatsapp: boolean;
     age?: number;
 }
 
@@ -88,6 +91,7 @@ export default function DashboardHome() {
                 setHasCheckedIn(true);
                 // Force clear local cache to ensure fresh data on next fetch
                 localStorage.removeItem('dashboard_stats');
+                localStorage.removeItem('dashboard_stats_time');
                 await fetchStats(); // Refresh streak and everything
             } else {
                 const errorData = await res.json();
@@ -124,6 +128,9 @@ export default function DashboardHome() {
                     <Link href="/dashboard/tutorials" className="btn btn-light bg-transparent border-0 rounded-circle p-2 text-primary hover-scale" title="Tutoriales">
                         <HelpCircle size={24} />
                     </Link>
+                    <Link href="/dashboard/friends" className="btn btn-light bg-transparent border-0 rounded-circle p-2 text-primary hover-scale" title="Amigos">
+                        <Users size={24} />
+                    </Link>
                     <Link href="/dashboard/profile">
                         <div className="bg-secondary text-white rounded-circle d-flex align-items-center justify-content-center fw-bold text-decoration-none shadow-sm" style={{ width: '40px', height: '40px' }}>
                             {stats?.name ? stats.name.charAt(0).toUpperCase() : 'U'}
@@ -135,6 +142,11 @@ export default function DashboardHome() {
             {/* Versículo del día */}
             <section className="mb-4" id="tour-verse">
                 <DailyVerse />
+            </section>
+
+            {/* WhatsApp Group Invite Card */}
+            <section className="mb-4 animate-fade-in delay-200">
+                <WhatsappCard />
             </section>
 
             {/* Estado y SOS con Llami */}
@@ -279,7 +291,10 @@ export default function DashboardHome() {
             <div className="pb-5"></div>
 
             {stats && (
-                <AgePrompt missingAge={!stats.age} />
+                <>
+                    <AgePrompt missingAge={!stats.age} />
+                    <WhatsappModal hasJoined={stats.hasJoinedWhatsapp} />
+                </>
             )}
         </div>
     );

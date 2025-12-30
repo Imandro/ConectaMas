@@ -39,7 +39,8 @@ model User {
   hasSeenTutorialTour   Boolean @default(false)
   hasSeenLlamiTutorial  Boolean @default(false)
   hasSeenCommunityTutorial Boolean @default(false)
-  leaderPhone            String?   // For SOS leadership contact
+  hasJoinedWhatsapp      Boolean @default(false)
+  leaderPhone            String?   // For SC kontakt
   age                    Int?
   lastUsernameChange     DateTime?
   lastForumCheck         DateTime?  @default(now())
@@ -67,7 +68,23 @@ model User {
   triviaAttempts    UserTriviaAttempt[]
   forumNotifications ForumNotification[]
   isPremium     Boolean   @default(false)
+
+  // Support System
+  sentSupport     SupportMessage[] @relation("SentSupport")
+  receivedSupport SupportMessage[] @relation("ReceivedSupport")
 }
+
+model SupportMessage {
+  id        String   @id @default(cuid())
+  senderId  String
+  sender    User     @relation("SentSupport", fields: [senderId], references: [id])
+  receiverId String
+  receiver  User     @relation("ReceivedSupport", fields: [receiverId], references: [id])
+  message   String
+  createdAt DateTime @default(now())
+  read      Boolean  @default(false)
+}
+
 
 model UserDevotional {
   id           String   @id @default(cuid())
@@ -353,6 +370,9 @@ model Mascot {
   
   name        String   @default("Llami")
   mood        String   @default("FELIZ") // FELIZ, HAMBRIENTA, MOTIVADA
+  
+  outfit      String   @default("none") // none, glasses, bow, cap, scarf
+  lastOutfitChange DateTime @default(now())
   
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt

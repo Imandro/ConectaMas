@@ -1,23 +1,48 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Search, UserPlus, UserMinus, Users } from "lucide-react";
+import { Search, UserPlus, UserMinus, Users, Heart, MessageCircle, X, Send } from "lucide-react";
 import Link from "next/link";
-import { searchUsers, addFriend, addFriendByUsername, removeFriend, getFriends } from "./actions";
+import Image from "next/image";
+import { searchUsers, addFriend, addFriendByUsername, removeFriend, getFriends, sendSupportMessage, getSupportMessages, markSupportMessageRead } from "./actions";
 
 export default function FriendsPage() {
     const [query, setQuery] = useState("");
     const [results, setResults] = useState<any[]>([]);
     const [friends, setFriends] = useState<any[]>([]);
+    const [messages, setMessages] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
+    const [showSupportModal, setShowSupportModal] = useState<string | null>(null); // friendId
+    const [supportMessage, setSupportMessage] = useState("");
 
     useEffect(() => {
-        loadFriends();
+        loadData();
     }, []);
 
-    const loadFriends = async () => {
-        const data = await getFriends();
-        setFriends(data);
+    const loadData = async (force = false) => {
+        setLoading(true);
+
+        const cached = sessionStorage.getItem('friends_data');
+        const lastFetch = sessionStorage.getItem('friends_data_time');
+        const now = Date.now();
+
+        if (cached && lastFetch && (now - parseInt(lastFetch) < 2 * 60 * 1000) && !force) {
+             try {
+                const { friends: f, messages: m } = JSON.parse(cached);
+                setFriends(f);
+                setMessages(m);
+                setLoading(false);
+                return;
+             } catch(e) {}
+        }
+
+        const [friendsData, messagesData] = await Promise.all([getFriends(), getSupportMessages()]);
+        setFriends(friendsData);
+        setMessages(messagesData);
+        
+        sessionStorage.setItem('friends_data', JSON.stringify({ friends: friendsData, messages: messagesData }));
+        sessionStorage.setItem('friends_data_time', now.toString());
+        
         setLoading(false);
     };
 
@@ -36,7 +61,7 @@ export default function FriendsPage() {
             alert("¡Amigo añadido!");
             setQuery("");
             setResults([]);
-            loadFriends();
+            loadData();
         }
     };
 
@@ -49,18 +74,82 @@ export default function FriendsPage() {
             alert("¡Amigo añadido!");
             setQuery("");
             setResults([]);
-            loadFriends();
+            loadData();
         }
     };
 
     const handleRemove = async (id: string) => {
         if (!confirm("¿Dejar de ser amigos?")) return;
         await removeFriend(id);
-        loadFriends();
+        loadData(true); // Force refresh
     };
+
+    const handleSendSupport = async () => {
+        if (!showSupportModal || !supportMessage) return;
+        
+        const res = await sendSupportMessage(showSupportModal, supportMessage);
+        if (res?.error) {
+            alert(res.error);
+        } else {
+            alert("¡Mensaje de apoyo enviado!");
+            setShowSupportModal(null);
+            setSupportMessage("");
+        }
+    };
+
+    const handleMarkRead = async (id: string) => {
+        await markSupportMessageRead(id);
+        const updatedMessages = messages.map(m => m.id === id ? { ...m, read: true } : m);
+        setMessages(updatedMessages);
+    };
+
+    const SUPPORT_PRESETS = [
+        "¡Estoy orando por ti! 🙏",
+        "¡Sigue adelante, Dios está contigo! 💪",
+        "Eres valiente y amado. ❤️",
+        "¡No te rindas! 🌟"
+    ];
 
     return (
         <div className="container-fluid py-4 animate-fade-in bg-light min-vh-100">
+            {/* Support Modal */}
+            {showSupportModal && (
+                <div className="position-fixed top-0 start-0 w-100 h-100 bg-dark bg-opacity-50 d-flex align-items-center justify-content-center" style={{ zIndex: 1050 }}>
+                    <div className="bg-white p-4 rounded-4 shadow-lg w-100" style={{ maxWidth: '400px' }}>
+                        <div className="d-flex justify-content-between align-items-center mb-3">
+                            <h5 className="fw-bold mb-0">Enviar Apoyo</h5>
+                            <button onClick={() => setShowSupportModal(null)} className="btn btn-sm btn-light rounded-circle"><X size={20} /></button>
+                        </div>
+                        <p className="text-muted small">Envía un mensaje breve de ánimo. No necesitas saber sus luchas para orar por ellos.</p>
+                        
+                        <div className="d-flex flex-wrap gap-2 mb-3">
+                            {SUPPORT_PRESETS.map(preset => (
+                                <button 
+                                    key={preset} 
+                                    onClick={() => setSupportMessage(preset)}
+                                    className={`btn btn-sm rounded-pill ${supportMessage === preset ? 'btn-primary' : 'btn-outline-primary'}`}
+                                >
+                                    {preset}
+                                </button>
+                            ))}
+                        </div>
+
+                        <textarea 
+                            className="form-control mb-3" 
+                            rows={3} 
+                            placeholder="O escribe algo breve..."
+                            value={supportMessage}
+                            onChange={(e) => setSupportMessage(e.target.value)}
+                            maxLength={100}
+                        ></textarea>
+
+                        <button onClick={handleSendSupport} className="btn btn-primary w-100 rounded-pill" disabled={!supportMessage}>
+                            <Send size={18} className="me-2" /> Enviar Mensaje
+                        </button>
+                    </div>
+                </div>
+            )}
+
             <div className="d-flex justify-content-between align-items-center mb-5">
                 <div>
                     <h1 className="fw-bold text-primary mb-1">Comunidad Conecta+</h1>
@@ -71,7 +160,35 @@ export default function FriendsPage() {
                 </Link>
             </div>
 
+            {/* Received Messages Section */}
+            {messages.length > 0 && (
+                <div className="mb-5">
+                    <h5 className="fw-bold mb-3 d-flex align-items-center gap-2">
+                        <MessageCircle className="text-primary" /> Mensajes de Apoyo Recientes
+                    </h5>
+                    <div className="d-flex gap-3 overflow-auto pb-3">
+                        {messages.map(msg => (
+                            <div key={msg.id} className={`card border-0 shadow-sm p-3 rounded-4 flex-shrink-0 ${msg.read ? 'bg-light opacity-75' : 'bg-white border-primary border-2'}`} style={{ width: '280px' }}>
+                                <div className="d-flex align-items-center gap-2 mb-2">
+                                    <div className="bg-primary bg-opacity-10 rounded-circle p-1 position-relative" style={{ width: '30px', height: '30px' }}>
+                                        {msg.sender.image ? <Image src={msg.sender.image} alt={msg.sender.name || 'User'} fill className="rounded-circle object-fit-cover" /> : <span className="d-flex align-items-center justify-content-center w-100 h-100 small fw-bold text-primary">{msg.sender.name?.[0]}</span>}
+                                    </div>
+                                    <small className="fw-bold">{msg.sender.name}</small>
+                                </div>
+                                <p className="small mb-2 fst-italic">"{msg.message}"</p>
+                                {!msg.read && (
+                                    <button onClick={() => handleMarkRead(msg.id)} className="btn btn-sm btn-light text-primary w-100 rounded-pill py-0" style={{ fontSize: '0.8rem' }}>
+                                        Marcar como leído
+                                    </button>
+                                )}
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            )}
+
             <div className="row g-4">
+
                 {/* Left Column: Search & Discovery */}
                 <div className="col-lg-5">
                     <div className="card border-0 shadow-lg p-4 rounded-5 bg-white h-100">
@@ -169,12 +286,21 @@ export default function FriendsPage() {
                                     <div key={friend.id} className="col-12 col-md-6">
                                         <div className="bg-light p-3 rounded-4 border border-white h-100 d-flex flex-column">
                                             <div className="d-flex justify-content-between align-items-center mb-2">
-                                                <div className="bg-white rounded-circle d-flex align-items-center justify-content-center fw-bold text-primary shadow-sm" style={{ width: '48px', height: '48px' }}>
-                                                    {friend.image ? <img src={friend.image} className="w-100 h-100 rounded-circle object-fit-cover" /> : friend.name?.[0]}
+                                                <div className="bg-white rounded-circle d-flex align-items-center justify-content-center fw-bold text-primary shadow-sm overflow-hidden position-relative" style={{ width: '48px', height: '48px' }}>
+                                                    {friend.image ? <Image src={friend.image} alt={friend.name} fill className="rounded-circle object-fit-cover" /> : friend.name?.[0]}
                                                 </div>
-                                                <button onClick={() => handleRemove(friend.id)} className="btn btn-outline-danger btn-sm rounded-circle p-2 border-0">
-                                                    <UserMinus size={18} />
-                                                </button>
+                                                <div className="d-flex gap-1">
+                                                    <button 
+                                                        onClick={() => setShowSupportModal(friend.id)} 
+                                                        className="btn btn-outline-primary btn-sm rounded-circle p-2 border-0" 
+                                                        title="Enviar Apoyo"
+                                                    >
+                                                        <Heart size={18} />
+                                                    </button>
+                                                    <button onClick={() => handleRemove(friend.id)} className="btn btn-outline-danger btn-sm rounded-circle p-2 border-0" title="Eliminar amigo">
+                                                        <UserMinus size={18} />
+                                                    </button>
+                                                </div>
                                             </div>
                                             <div>
                                                 <h6 className="fw-bold mb-0">{friend.name}</h6>

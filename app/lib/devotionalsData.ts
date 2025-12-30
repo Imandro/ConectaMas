@@ -1,9 +1,11 @@
+import { generatedDevotionals } from './generatedDevotionals';
+
 export interface Devotional {
     id: string;
     title: string;
     category: string;
     time: string;
-    image: string; // CSS class for background
+    image: string; // CSS class for background or URL
     bibleVerse: string;
     bibleReference: string;
     content: string[]; // Array of paragraphs
@@ -18,13 +20,15 @@ export const devotionalsData: Devotional[] = [
         title: 'Cuando la ansiedad ataca',
         category: 'Ansiedad',
         time: '3 min',
-        image: 'bg-primary-subtle',
+        image: 'https://images.unsplash.com/photo-1474418397713-7ede21d49118?auto=format&fit=crop&q=80',
         bibleVerse: 'Echad toda vuestra ansiedad sobre él, porque él tiene cuidado de vosotros.',
         bibleReference: '1 Pedro 5:7',
         content: [
-            'A veces sentimos que la ansiedad es un monstruo gigante que no podemos controlar. Nos despierta en la noche, nos acelera el corazón y nos roba la paz. Pero la ansiedad no es tu identidad.',
-            'Pedro nos dice que "echemos" nuestra ansiedad. La palabra griega implica un lanzamiento fuerte, decidido. No es "dejar caer" pasivamente; es tomar esa carga pesada y arrojarla lejos de nosotros, directamente sobre los hombros fuertes de Jesús.',
-            'Él no se molesta por tus preocupaciones. Al contrario, Él pide que se las des porque Él sí puede manejarlas. Tú no fuiste diseñado para cargar el peso del mundo, pero Él sí.'
+            'A veces sentimos que la ansiedad es un monstruo gigante que no podemos controlar. Nos despierta en la noche, nos acelera el corazón y nos roba la paz, dejándonos exhaustos antes de que el día comience. Es fácil pensar que algo está mal con nosotros, pero la ansiedad no es tu identidad, es solo una batalla que estás enfrentando.',
+            'El apóstol Pedro nos da una instrucción clave: "echad" vuestra ansiedad sobre Él. La palabra griega original implica un lanzamiento fuerte y decidido, como quien arroja un saco pesado lejos de sí. No es simplemente "dejar caer" la carga pasivamente; es un acto intencional de tomar esa preocupación que te asfixia y arrojarla directamente sobre los hombros fuertes y capaces de Jesús.',
+            'Dios no se molesta por tus preocupaciones ni piensa que eres débil por tenerlas. Al contrario, Él pide que se las entregues porque Él sí puede manejarlas. Tú no fuiste diseñado para cargar el peso del mundo sobre tu espalda, pero Él sí. Cuando intentamos llevarlo todo nosotros mismos, nos rompemos. Pero cuando aprendemos a soltar, encontramos la paz que tanto anhelamos.',
+            'Recuerda que entregar la ansiedad es un ejercicio diario, a veces de cada minuto. No se trata de negar la realidad, sino de reconocer que hay Alguien más grande que tus problemas cuidando de ti con un amor perfecto.',
+            'La ansiedad a menudo nos miente sobre el futuro, pintando escenarios catastróficos que rara vez suceden. Pero Dios nos invita a vivir en el presente, confiando en que Su gracia es suficiente para cada día. Al enfocar nuestra mente en Su fidelidad pasada, ganamos fuerza para enfrentar la incertidumbre del mañana.'
         ],
         applicationSteps: [
             'Escribe en una nota del celular qué te preocupa exactamente hoy.',
@@ -39,13 +43,14 @@ export const devotionalsData: Devotional[] = [
         title: 'Pureza en un mundo sucio',
         category: 'Integridad',
         time: '4 min',
-        image: 'bg-danger-subtle',
+        image: 'https://images.unsplash.com/photo-1493612276216-ee3925520721?auto=format&fit=crop&q=80',
         bibleVerse: '¿Con qué limpiará el joven su camino? Con guardar tu palabra.',
         bibleReference: 'Salmos 119:9',
         content: [
-            'Vivimos bombardeados de imágenes. Un clic, un anuncio, una escena inesperada. Y luego viene la culpa: "¿Por qué vi eso? ¿Soy un hipócrita?".',
-            'El salmista no pregunta "¿Cómo será perfecto el joven?", sino "¿Cómo limpiará su camino?". Esto implica que nos vamos a ensuciar los pies al caminar por este mundo. La clave no es la perfección impecable, sino el lavado constante.',
-            'La Palabra de Dios no es un regaño, es agua fresca. Cuando fallas, no huyas DE Dios, corre HACIA Dios. Él es quien te limpia. La pureza no es una racha de días sin caer, es un corazón que ama a Jesús más que al placer momentáneo.'
+            'Vivimos bombardeados de imágenes. Un clic, un anuncio, una escena inesperada. Y luego viene la culpa: "¿Por qué vi eso? ¿Soy un hipócrita?". La cultura actual normaliza lo que Dios llama impuro, haciendo que la santidad parezca algo anticuado o imposible de alcanzar.',
+            'El salmista no pregunta "¿Cómo será perfecto el joven?", sino "¿Cómo limpiará su camino?". Esto implica que nos vamos a ensuciar los pies al caminar por este mundo. La clave no es la perfección impecable, sino el lavado constante. La pureza es un viaje de regreso continuo al corazón de Dios.',
+            'La Palabra de Dios no es un regaño, es agua fresca. Cuando fallas, no huyas DE Dios, corre HACIA Dios. Él es quien te limpia. La pureza no es una racha de días sin caer, es un corazón que ama a Jesús más que al placer momentáneo. Es decidir que Su presencia vale más que cualquier satisfacción temporal.',
+            'Mantener la pureza requiere valentía y estrategia. No se trata solo de fuerza de voluntad, sino de llenar tu mente con la verdad para que no haya espacio para la mentira. Cuando tu deleite está en la ley del Señor, el pecado pierde su atractivo seductor.'
         ],
         applicationSteps: [
             'Instala un bloqueador de anuncios o filtros si es necesario.',
@@ -60,13 +65,14 @@ export const devotionalsData: Devotional[] = [
         title: 'Identidad: ¿Quién dices que soy?',
         category: 'Identidad',
         time: '5 min',
-        image: 'bg-info-subtle',
+        image: 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&q=80',
         bibleVerse: 'Mirad cuál amor nos ha dado el Padre, para que seamos llamados hijos de Dios.',
         bibleReference: '1 Juan 3:1',
         content: [
-            'El mundo te define por tus logros, tus likes, tu apariencia o tus errores pasados. Es fácil sentirse como un "fracaso" o un "impostor".',
-            'Pero Dios te define de una sola manera: HIJO. No eres "el ansioso", "el adicto" o "el problemático". Esas son batallas que peleas, no quien ERES.',
-            'Cuando sabes que eres un Hijo amado, no necesitas mendigar aprobación. Ya tienes la aprobación del Creador del Universo. Tu valor fue pagado en la cruz, y es altísimo.'
+            'El mundo te define por tus logros, tus likes, tu apariencia o tus errores pasados. Es fácil sentirse como un "fracaso" o un "impostor" cuando no cumplimos con las expectativas externas. Pasamos la vida tratando de construir una imagen que agrade a los demás, perdiendo nuestra verdadera esencia en el proceso.',
+            'Pero Dios te define de una sola manera: HIJO. No eres "el ansioso", "el adicto" o "el problemático". Esas son batallas que peleas, no quien ERES. Tu identidad no se basa en lo que haces, sino en a quién perteneces. Eres propiedad adquirida por Dios, real sacerdocio, nación santa.',
+            'Cuando sabes que eres un Hijo amado, no necesitas mendigar aprobación. Ya tienes la aprobación del Creador del Universo. Tu valor fue pagado en la cruz, y es altísimo. Nada de lo que hagas puede hacer que Dios te ame más, y nada de lo que dejes de hacer hará que te ame menos.',
+            'Vivir desde tu identidad correcta cambia todo. Ya no trabajas para obtener amor, sino desde el amor. No luchas por la victoria, sino desde la victoria. Deja que la voz de tu Padre sea la más fuerte en tu vida hoy.'
         ],
         applicationSteps: [
             'Mírate al espejo y di en voz alta: "Soy un hijo amado de Dios".',
@@ -81,13 +87,14 @@ export const devotionalsData: Devotional[] = [
         title: 'Soledad acompañada',
         category: 'Soledad',
         time: '3 min',
-        image: 'bg-secondary-subtle',
+        image: 'https://images.unsplash.com/photo-1518098268026-4e1877433665?auto=format&fit=crop&q=80',
         bibleVerse: 'Aunque ande en valle de sombra de muerte, no temeré mal alguno, porque tú estarás conmigo.',
         bibleReference: 'Salmos 23:4',
         content: [
-            'Puedes estar rodeado de gente y sentirte completamente solo. La soledad es ese eco vacío en el pecho que dice "nadie me entiende".',
-            'David escribió el Salmo 23 en momentos peligrosos y solitarios. Su consuelo no fue que el valle desapareciera, sino que "TÚ estarás conmigo".',
-            'La presencia de Dios convierte la soledad en "solitud" (un tiempo a solas con Él). No estás abandonado. El Espíritu Santo es llamado "El Consolador" y vive dentro de ti.'
+            'Puedes estar en una habitación llena de gente, riendo y conversando, y aun así sentirte completamente solo por dentro. La soledad no es solo la ausencia de personas; es ese eco vacío en el pecho que susurra "nadie me entiende realmente, a nadie le importo de verdad".',
+            'David, el hombre conforme al corazón de Dios, escribió el Salmo 23 en momentos que probablemente fueron muy peligrosos y solitarios. Su mayor consuelo no fue que el valle de sombra de muerte desapareciera mágicamente, sino la certeza de que "TÚ estarás conmigo". La presencia de Dios cambia la naturaleza de nuestra soledad.',
+            'Cuando invitas a Jesús a tu soledad, esta se convierte en "solitud": un tiempo precioso a solas con Él. No estás abandonado ni olvidado. El Espíritu Santo es llamado "El Consolador" y vive literalmente dentro de ti. Nunca hay un momento en el que estés verdaderamente solo.',
+            'Aprende a cultivar esa amistad con Dios en los momentos de silencio. Él es el amigo que nunca falla, el que escucha cada pensamiento y el que permanece fiel cuando todos los demás se han ido.'
         ],
         applicationSteps: [
             'Habla con Dios como si estuviera sentado en la silla a tu lado.',
@@ -97,130 +104,5 @@ export const devotionalsData: Devotional[] = [
         prayer: 'Dios, a veces me siento invisible. Gracias porque Tú siempre me ves. Llena este vacío con tu presencia real y tangible hoy. No estoy solo. Amén.',
         author: 'Mario Alvarez'
     },
-    {
-        id: '5',
-        title: 'Cuando fallas otra vez',
-        category: 'Culpa',
-        time: '4 min',
-        image: 'bg-warning-subtle',
-        bibleVerse: 'Porque siete veces cae el justo, y vuelve a levantarse.',
-        bibleReference: 'Proverbios 24:16',
-        content: [
-            'La diferencia entre un justo y un impío no es que el justo no cae. ¡El versículo dice que cae siete veces! La diferencia es que se levanta.',
-            'El enemigo quiere que te quedes en el suelo, revolcándote en la culpa: "Nunca vas a cambiar", "Dios está harto de ti". ¡Mentira!',
-            'La gracia de Dios es el brazo extendido que te ayuda a ponerte de pie. No abuses de la gracia, pero tampoco la desprecies quedándote tirado. Levántate, sacúdete el polvo y sigue caminando.'
-        ],
-        applicationSteps: [
-            'Confiesa tu falla a Dios inmediatamente, no esperes.',
-            'No te castigues a ti mismo; Jesús ya llevó el castigo.',
-            'Haz una cosa pequeña y buena hoy para retomar el rumbo.'
-        ],
-        prayer: 'Señor, fallé. Me duele haberlo hecho. Pero no voy a permitir que la culpa me aleje de Ti. Me levanto en tu Nombre. Gracias por tu paciencia infinita. Amén.',
-        author: 'Mario Alvarez'
-    },
-    {
-        id: '6',
-        title: 'Enojo: El fuego interno',
-        category: 'Ira',
-        time: '3 min',
-        image: 'bg-danger-subtle',
-        bibleVerse: 'Airaos, pero no pequéis; no se ponga el sol sobre vuestro enojo.',
-        bibleReference: 'Efesios 4:26',
-        content: [
-            'El enojo es una emoción natural. Incluso Jesús se enojó. El problema no es sentir fuego, sino quemar la casa (o a las personas) con él.',
-            'La Biblia nos da un límite de tiempo: "que no se ponga el sol". El enojo guardado se pudre y se convierte en amargura y resentimiento.',
-            'Dios nos invita a llevarle nuestra frustración antes de explotar con otros. Él es el mejor "saco de boxeo" para desahogarte con honestidad; Él no se ofende, Él sana.'
-        ],
-        applicationSteps: [
-            'Si estás muy enojado, aléjate de la situación por 10 minutos.',
-            'Escribe una "carta de enojo" sin enviarla, solo para sacar lo que sientes.',
-            'Pide al Espíritu Santo dominio propio antes de responder.'
-        ],
-        prayer: 'Espíritu Santo, apaga este fuego descontrolado en mí. Dame palabras sabias y no hirientes. Quiero ser manso como Jesús, no explosivo. Amén.',
-        author: 'Mario Alvarez'
-    },
-    {
-        id: '7',
-        title: 'La trampa de la comparación',
-        category: 'Envidia',
-        time: '5 min',
-        image: 'bg-success-subtle',
-        bibleVerse: 'Te alabaré; porque formidables, maravillosas son tus obras.',
-        bibleReference: 'Salmos 139:14',
-        content: [
-            'Scroll en Instagram -> "Mira su cuerpo", "Mira su viaje", "Mira su relación". La comparación es el ladrón de la alegría.',
-            'Cuando te comparas, insultas al Artista que te creó. Es como decirle a Dios: "Te equivocaste conmigo, debiste hacerme como aquella persona".',
-            'Eres una obra maestra única ("formidable"). Dios no hace copias en serie. Él tiene un camino y un propósito diseñado exclusivamente para tu ADN y tu historia.'
-        ],
-        applicationSteps: [
-            'Identifica qué perfil o persona dispara tu envidia y siléncialo por un tiempo.',
-            'Haz una lista de 5 cosas que te gustan de ti mismo (físicas o de carácter).',
-            'Agradece a Dios por el éxito de otros; eso rompe la envidia.'
-        ],
-        prayer: 'Creador mío, gracias por hacerme como soy. Renuncio a desear la vida de otros. Enséñame a amar mi diseño y mi camino. Soy tu obra maravillosa. Amén.',
-        author: 'Mario Alvarez'
-    },
-    {
-        id: '8',
-        title: 'Esperanza para el futuro',
-        category: 'Fe',
-        time: '4 min',
-        image: 'bg-primary-subtle',
-        bibleVerse: 'Porque yo sé los pensamientos que tengo acerca de vosotros, dice Jehová, pensamientos de paz, y no de mal.',
-        bibleReference: 'Jeremías 29:11',
-        content: [
-            'Es fácil ver el futuro con miedo: "¿Qué voy a estudiar?", "¿Me quedaré solo?", "¿El mundo se va a acabar?". La incertidumbre paraliza.',
-            'Dios le dijo esto a su pueblo cuando estaban prisioneros en Babilonia. En su peor momento, Dios les habló de futuro.',
-            'Tu futuro no depende de la economía, ni de la política, ni de tu suerte. Depende de los planes de Dios. Y sus planes son de BIEN. El final de tu historia es bueno porque Dios es el autor.'
-        ],
-        applicationSteps: [
-            'Haz un "tablero de visión" o lista de sueños con Dios.',
-            'Cuando venga un pensamiento de miedo al futuro, di: "Dios ya está allí".',
-            'Lee Jeremías 29:11 en voz alta.'
-        ],
-        prayer: 'Señor del tiempo, mi futuro está en tus manos y es el lugar más seguro. Decido confiar en que tienes cosas buenas preparadas para mí. Descanso en Ti. Amén.',
-        author: 'Mario Alvarez'
-    },
-    {
-        id: '9',
-        title: 'Orar es simplemente hablar',
-        category: 'Oración',
-        time: '3 min',
-        image: 'bg-info-subtle',
-        bibleVerse: 'Clama a mí, y yo te responderé.',
-        bibleReference: 'Jeremías 33:3',
-        content: [
-            'A veces complicamos la oración. Creemos que necesitamos palabras elegantes, voz de locutor o una hora libre. Pero orar es simplemente hablar con tu Papá.',
-            'Un "¡Ayúdame!" es una oración poderosa. Un "No entiendo nada" es una oración válida. Dios prefiere un corazón sincero balbuceando que una mente distraída recitando poemas.',
-            'La invitación es simple: Clama. Haz ruido. Llámalo. Él promete responder, no ignorar. La línea directa al cielo siempre está abierta y sin espera.'
-        ],
-        applicationSteps: [
-            'Habla con Dios mientras te duchas o caminas, sin formalidades.',
-            'Prueba orar solo 2 minutos hoy, pero siendo 100% honesto.',
-            'No termines el día sin decirle "Buenas noches" a tu Padre.'
-        ],
-        prayer: 'Papá, aquí estoy. Sin palabras bonitas, pero con un corazón que te necesita. Enséñame a charlar contigo como mi mejor amigo. Gracias por escucharme siempre. Amén.',
-        author: 'Mario Alvarez'
-    },
-    {
-        id: '10',
-        title: 'No fuiste creado para estar solo',
-        category: 'Comunidad',
-        time: '4 min',
-        image: 'bg-warning-subtle',
-        bibleVerse: 'Mejores son dos que uno... porque si cayeren, el uno levantará a su compañero.',
-        bibleReference: 'Eclesiastés 4:9-10',
-        content: [
-            'El cristianismo no es un deporte individual. "Lobo solitario" es una presa fácil. Necesitamos la manada, la iglesia, la comunidad.',
-            'Tener amigos cristianos no significa que sean perfectos, significa que van en la misma dirección. Cuando tú tropiezas, ellos te ayudan a no quedarte tirado.',
-            'Es riesgoso abrirse a otros, sí. Te pueden herir, sí. Pero el aislamiento es mucho más peligroso. Busca a alguien con quien puedas ser real, orar y reír.'
-        ],
-        applicationSteps: [
-            'Invita a un café a alguien de tu grupo de jóvenes.',
-            'Únete a un grupo pequeño o de conexión en tu iglesia.',
-            'Sé tú el amigo que levanta a otros; envía un mensaje de ánimo hoy.'
-        ],
-        prayer: 'Jesús, gracias por mi familia en la fe. Ayúdame a encontrar amigos verdaderos y a ser un buen amigo. Rompe mi aislamiento y conéctame con tu cuerpo. Amén.',
-        author: 'Mario Alvarez'
-    },
+    ...(generatedDevotionals as unknown as Devotional[])
 ];

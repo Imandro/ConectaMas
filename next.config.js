@@ -4,6 +4,9 @@ const nextConfig = {
     sassOptions: {
         includePaths: ['./app'],
     },
+    images: {
+        domains: ['images.unsplash.com', 'lh3.googleusercontent.com', 'ui-avatars.com'],
+    },
     async headers() {
         return [
             {

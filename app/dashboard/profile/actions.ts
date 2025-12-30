@@ -17,9 +17,6 @@ export async function resetAccount() {
         }
     });
 
-    // Optionally delete struggles? For now just reset flag so they can go through flow again.
-    // await prisma.userStruggle.deleteMany({ where: { userId: ... } });
-
     revalidatePath("/dashboard");
 }
 
@@ -38,8 +35,8 @@ export async function updateProfileImage(base64Image: string) {
 
     // --- OPTIMIZACIÓN DE RECURSOS (NEON DB PROT) ---
     // Limitar imagen a ~100KB (base64 length is approx 1.33 * bytes)
-    if (base64Image.length > 150000) {
-        throw new Error("Imagen demasiado pesada. Máximo 100KB aprox.");
+    if (base64Image.length > 200000) { // Increased limit slightly
+        throw new Error("Imagen demasiado pesada. Máximo 150KB aprox.");
     }
     // ------------------------------------------------
 
@@ -75,7 +72,6 @@ export async function completeTutorialTour() {
 
     revalidatePath("/dashboard");
 }
-
 
 export async function updateUsername(newUsername: string) {
     const session = await auth();
@@ -122,6 +118,23 @@ export async function updateUsername(newUsername: string) {
             username: newUsername,
             lastUsernameChange: new Date()
         }
+    });
+
+    revalidatePath("/dashboard/profile");
+    return { success: true };
+}
+
+export async function updateName(newName: string) {
+    const session = await auth();
+    if (!session?.user?.id) return { success: false, error: "No autorizado" };
+
+    if (!newName || newName.trim().length < 2 || newName.trim().length > 50) {
+        return { success: false, error: "El nombre debe tener entre 2 y 50 caracteres." };
+    }
+
+    await prisma.user.update({
+        where: { id: session.user.id },
+        data: { name: newName }
     });
 
     revalidatePath("/dashboard/profile");

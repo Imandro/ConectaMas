@@ -65,44 +65,34 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     },
     callbacks: {
         async jwt({ token, user, trigger, session }: { token: any, user: any, trigger?: string, session?: any }) {
-            // On sign in, populate token with user data
+            // On sign in, populate token with minimal user data
             if (user) {
                 console.log("[Auth] JWT Callback: Initializing token for user:", user.email);
                 token.id = user.id;
-                token.name = user.name;
+                // Store only first name to save space
+                token.name = user.name ? user.name.split(' ')[0] : 'Usuario';
                 token.email = user.email;
                 token.picture = user.image;
             }
 
-            // On session update, refresh user data from database
-            if (token.sub) {
-                try {
-                    const dbUser = await (prisma as any).user.findUnique({
-                        where: { id: token.sub },
-                        select: {
-                            name: true,
-                            email: true,
-                            image: true,
-                            leaderPhone: true,
-                            hasSeenTutorialTour: true,
-                            hasCompletedOnboarding: true,
-                            isPremium: true
-                        }
-                    });
-
-                    if (dbUser) {
-                        token.name = dbUser.name;
-                        token.email = dbUser.email;
-                        token.picture = dbUser.image;
-                        token.lp = dbUser.leaderPhone;
-                        token.st = dbUser.hasSeenTutorialTour;
-                        token.co = dbUser.hasCompletedOnboarding;
-                        token.ip = dbUser.isPremium;
-                    }
-                } catch (error) {
-                    console.error("JWT callback error:", error);
-                }
+            // On session update, we might want to allow updating the name/image
+            if (trigger === "update" && session?.user) {
+                if (session.user.name) token.name = session.user.name.split(' ')[0];
+                if (session.user.image) token.picture = session.user.image;
             }
+
+            // AGGRESSIVE CLEANUP: Remove old legacy fields to ensure cookie deflates
+            // Short codes used previously: lp, st, co, ip
+            delete token.lp;
+            delete token.st;
+            delete token.co;
+            delete token.ip;
+            // Full names just in case
+            delete token.leaderPhone;
+            delete token.hasSeenTutorialTour;
+            delete token.hasCompletedOnboarding;
+            delete token.isPremium;
+            delete token.role; // Permissions handling moved to DB
 
             return token;
         },
@@ -112,10 +102,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
                 session.user.name = token.name;
                 session.user.email = token.email;
                 session.user.image = token.picture;
-                session.user.leaderPhone = token.lp;
-                session.user.hasSeenTutorialTour = token.st;
-                session.user.hasCompletedOnboarding = token.co;
-                session.user.isPremium = token.ip;
+                // REMOVED: leaderPhone, isPremium, etc.
             }
             return session;
         },

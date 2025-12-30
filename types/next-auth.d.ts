@@ -4,21 +4,18 @@ declare module "next-auth" {
     interface Session {
         user: {
             id: string;
-            leaderPhone?: string | null;
-            hasSeenTutorialTour?: boolean;
+            // Removed extra fields to keep session light
         } & DefaultSession["user"];
     }
 
     interface User {
-        leaderPhone?: string | null;
-        hasSeenTutorialTour?: boolean;
+        // Standard User fields are enough, add specific optional if strictly needed for auth flow
     }
 }
 
 declare module "next-auth/jwt" {
     interface JWT {
         id: string;
-        leaderPhone?: string | null;
-        hasSeenTutorialTour?: boolean;
+        // Removed extra fields
     }
 }

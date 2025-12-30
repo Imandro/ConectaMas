@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { submitOnboarding } from "./actions";
-import { Check, ArrowRight, Shield, Heart, User, Sparkles, RefreshCw, Zap, X } from "lucide-react";
+import { Check, ArrowRight, Shield, Heart, User, Sparkles, RefreshCw, Zap, X, Users } from "lucide-react";
 import { useRouter } from "next/navigation";
 import LlamiMascot from "@/app/components/LlamiMascot";
 
@@ -558,9 +558,48 @@ export default function OnboardingSteps() {
                             </div>
                         )}
 
-
-                        {/* STEP 9: Support Ad (Fundraising) */}
+                        {/* STEP 9: Community & Support Intro */}
                         {step === 9 && (
+                            <div className="animate-fade-in text-center">
+                                <div className="mx-auto rounded-circle d-flex align-items-center justify-content-center mb-4" style={{ width: '80px', height: '80px', backgroundColor: 'rgba(255, 255, 255, 0.05)' }}>
+                                    <Users size={40} className="text-warning" />
+                                </div>
+                                <h2 className="fw-bold mb-3 text-white">Comunidad de Apoyo</h2>
+                                <p className="text-white-50 mb-4">
+                                    En Conecta+ no estás solo. Puedes agregar amigos para orar unos por otros.
+                                </p>
+
+                                <div className="card bg-white bg-opacity-10 border-0 rounded-4 p-4 text-start mb-4">
+                                    <div className="d-flex align-items-start gap-3">
+                                        <div className="bg-warning bg-opacity-25 p-2 rounded-circle">
+                                            <Heart size={20} className="text-warning" />
+                                        </div>
+                                        <div>
+                                            <h6 className="fw-bold text-white mb-1">Apoyo Anónimo y Seguro</h6>
+                                            <p className="text-white-50 small mb-0">
+                                                Tus amigos podrán enviarte pequeños mensajes de ánimo ("¡Estoy orando por ti!") sin necesidad de ver tus luchas o detalles privados.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <button
+                                    onClick={() => setStep(10)}
+                                    className="btn btn-warning w-100 fw-bold py-3 rounded-pill d-flex align-items-center justify-content-center gap-2 text-primary shadow-lg"
+                                    style={{
+                                        backgroundColor: '#f3b33e',
+                                        border: 'none',
+                                        fontSize: '1.1rem'
+                                    }}
+                                >
+                                    ¡Me encanta! Continuar <ArrowRight size={20} />
+                                </button>
+                            </div>
+                        )}
+
+
+                        {/* STEP 10: Support Ad (Fundraising) */}
+                        {step === 10 && (
                             <div className="animate-fade-in text-center">
                                 <div className="mx-auto rounded-circle d-flex align-items-center justify-content-center mb-4" style={{ width: '80px', height: '80px', backgroundColor: 'rgba(255, 255, 255, 0.05)' }}>
                                     <Heart size={40} className="text-warning" />
@@ -595,7 +634,7 @@ export default function OnboardingSteps() {
                                 </a>
 
                                 <button
-                                    onClick={() => setStep(10)}
+                                    onClick={() => setStep(11)}
                                     className="btn btn-link text-white-50 text-decoration-none w-100"
                                 >
                                     Continuar sin apoyar por ahora
@@ -603,8 +642,8 @@ export default function OnboardingSteps() {
                             </div>
                         )}
 
-                        {/* STEP 10: Final Confirmation */}
-                        {step === 10 && (
+                        {/* STEP 11: Final Confirmation */}
+                        {step === 11 && (
                             <div className="animate-fade-in text-center">
                                 <div className="mx-auto rounded-circle d-flex align-items-center justify-content-center mb-4" style={{ width: '80px', height: '80px', backgroundColor: 'rgba(255, 255, 255, 0.05)' }}>
                                     <Sparkles size={40} className="text-warning" />
