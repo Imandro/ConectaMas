@@ -114,10 +114,10 @@ export default function LlamiMascot({ streak, lastMood, level = 1, forceStage, n
                         animate={{ opacity: 1, scale: 1, y: 0, x: "-50%" }}
                         exit={{ opacity: 0, scale: 0.8, y: 10, x: "-50%" }}
                         className="position-absolute bottom-100 start-50 mb-2"
-                        style={{ width: "110px", zIndex: 100 }}
+                        style={{ width: "130px", zIndex: 100 }}
                     >
                         <div className="bg-white rounded-4 shadow-lg p-2 border border-2 border-warning position-relative">
-                            <p className="text-dark mb-0 fw-bold text-center lh-sm" style={{ fontSize: '0.65rem' }}>
+                            <p className="text-dark mb-0 fw-bold text-center lh-sm" style={{ fontSize: '0.7rem' }}>
                                 {message}
                             </p>
                             <div className="position-absolute top-100 start-50 translate-middle-x"

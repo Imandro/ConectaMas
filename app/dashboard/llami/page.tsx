@@ -147,7 +147,7 @@ export default function LlamiPage() {
                         {/* Mascot Container - Optimized Cozy Room Illustration */}
                         <div className="position-relative py-3 mb-4">
                             <motion.div
-                                className="mx-auto position-relative shadow-lg rounded-5 overflow-hidden"
+                                className="mx-auto position-relative shadow-lg rounded-5 overflow-visible"
                                 animate={{
                                     background: isDarkMode ? '#1a1c2c' : '#f5f1ed',
                                     borderColor: isDarkMode ? '#0f172a' : '#fff'
