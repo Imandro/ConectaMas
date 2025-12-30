@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { MessageCircle, X } from "lucide-react";
 import { confirmWhatsappJoin } from "@/app/dashboard/actions/whatsapp";
 
-const SHOW_INTERVAL_DAYS = 3;
+const SHOW_INTERVAL_DAYS = 2;
 
 interface WhatsappModalProps {
     hasJoined: boolean;
@@ -66,13 +66,6 @@ export default function WhatsappModal({ hasJoined }: WhatsappModalProps) {
                         >
                             <MessageCircle size={20} fill="white" />
                             Unirme Ahora
-                        </button>
-
-                        <button
-                            onClick={handleConfirmJoined}
-                            className="btn btn-outline-primary fw-bold rounded-pill border-2 mt-2"
-                        >
-                            Apartir de ahora, no mostar más
                         </button>
 
                         <button

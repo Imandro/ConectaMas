@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Instagram, X } from "lucide-react";
 import { confirmInstagramFollow } from "@/app/dashboard/actions/instagram";
 
-const SHOW_INTERVAL_DAYS = 3; // Show every 3 days
+const SHOW_INTERVAL_DAYS = 2; // Show every 2 days
 
 interface InstagramModalProps {
     hasFollowed: boolean;
@@ -81,13 +81,6 @@ export default function InstagramModal({ hasFollowed }: InstagramModalProps) {
                         >
                             <Instagram size={20} fill="white" />
                             Seguir Ahora
-                        </button>
-
-                        <button
-                            onClick={handleConfirmFollowed}
-                            className="btn btn-outline-primary fw-bold rounded-pill border-2 mt-2"
-                        >
-                            Ya los sigo, no mostrar más
                         </button>
 
                         <button
