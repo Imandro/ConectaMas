@@ -22,6 +22,8 @@ export default function LlamiPage() {
     const [showTutorial, setShowTutorial] = useState(false);
     const [isEditingName, setIsEditingName] = useState(false);
     const [newName, setNewName] = useState("");
+    const [isDarkMode, setIsDarkMode] = useState(false);
+
 
     const loadMascot = async () => {
         try {
@@ -144,46 +146,124 @@ export default function LlamiPage() {
                     <div className="col-lg-7 text-center">
                         {/* Mascot Container - Optimized Cozy Room Illustration */}
                         <div className="position-relative py-3 mb-4">
-                            <div className="mx-auto position-relative shadow-lg rounded-5" style={{ width: '90vw', maxWidth: '450px', height: '400px', background: '#f5f1ed', border: '10px solid #fff' }}>
+                            <motion.div
+                                className="mx-auto position-relative shadow-lg rounded-5 overflow-hidden"
+                                animate={{
+                                    background: isDarkMode ? '#1a1c2c' : '#f5f1ed',
+                                    borderColor: isDarkMode ? '#0f172a' : '#fff'
+                                }}
+                                transition={{ duration: 0.7 }}
+                                style={{
+                                    width: '90vw',
+                                    maxWidth: '450px',
+                                    height: '400px',
+                                    border: '10px solid',
+                                    boxShadow: isDarkMode ? '0 0 40px rgba(255,165,0,0.2)' : '0 10px 25px rgba(0,0,0,0.1)'
+                                }}
+                            >
                                 {/* Wall Decoration */}
-                                <div className="position-absolute top-0 start-0 w-100 rounded-top-5" style={{ height: '70%', background: 'linear-gradient(to bottom, #fdfbf7, #f5f1ed)' }}>
-                                    {/* Small Window/Picture */}
-                                    <div className="position-absolute bg-white p-1 rounded-2 shadow-sm" style={{ width: '70px', height: '50px', border: '2px solid #e2e8f0', right: '40px', top: '50px' }}>
+                                <motion.div
+                                    className="position-absolute top-0 start-0 w-100"
+                                    animate={{
+                                        background: isDarkMode ? 'linear-gradient(to bottom, #1e293b, #1a1c2c)' : 'linear-gradient(to bottom, #fdfbf7, #f5f1ed)'
+                                    }}
+                                    transition={{ duration: 0.7 }}
+                                    style={{ height: '70%' }}
+                                >
+                                    {/* Light Switch (Picture) - Shrink and move right */}
+                                    <motion.button
+                                        whileTap={{ scale: 0.9 }}
+                                        onClick={() => setIsDarkMode(!isDarkMode)}
+                                        className="position-absolute rounded-2 shadow-sm border-0 p-1"
+                                        animate={{
+                                            background: isDarkMode ? '#fde68a' : '#fff'
+                                        }}
+                                        style={{
+                                            width: '50px',
+                                            height: '40px',
+                                            border: '2px solid #e2e8f0',
+                                            right: '25px',
+                                            top: '40px',
+                                            zIndex: 20,
+                                            cursor: 'pointer'
+                                        }}
+                                    >
                                         <div className="w-100 h-100 bg-info opacity-20 rounded-1 d-flex align-items-center justify-content-center">
-                                            <Sparkles size={20} className="text-warning" />
+                                            <Sparkles size={16} className={isDarkMode ? "text-primary" : "text-warning"} />
                                         </div>
-                                    </div>
+                                    </motion.button>
 
                                     {/* Floating Shelf with Bibles */}
-                                    <div className="position-absolute start-0" style={{ top: '140px', left: '40px' }}>
+                                    <motion.div
+                                        className="position-absolute start-0"
+                                        animate={{ opacity: isDarkMode ? 0.3 : 1 }}
+                                        transition={{ duration: 0.5 }}
+                                        style={{ top: '140px', left: '40px' }}
+                                    >
                                         <div className="bg-secondary opacity-20 rounded-pill" style={{ width: '100px', height: '10px' }}></div>
                                         <div className="d-flex gap-2 mt-[-22px] ms-3">
                                             <div className="bg-primary rounded-1 shadow-sm" style={{ width: '12px', height: '25px' }}></div>
                                             <div className="bg-warning rounded-1 shadow-sm" style={{ width: '12px', height: '30px' }}></div>
                                             <div className="bg-danger rounded-1 shadow-sm" style={{ width: '12px', height: '20px' }}></div>
                                         </div>
-                                    </div>
-                                </div>
+                                    </motion.div>
+                                </motion.div>
 
                                 {/* Floor */}
-                                <div className="position-absolute bottom-0 start-0 w-100 rounded-bottom-5" style={{ height: '30%', background: '#e5ddd5', boxShadow: 'inset 0 10px 20px rgba(0,0,0,0.05)' }}>
+                                <motion.div
+                                    className="position-absolute bottom-0 start-0 w-100"
+                                    animate={{
+                                        background: isDarkMode ? '#0f172a' : '#e5ddd5',
+                                        boxShadow: isDarkMode ? 'inset 0 10px 20px rgba(0,0,0,0.4)' : 'inset 0 10px 20px rgba(0,0,0,0.05)'
+                                    }}
+                                    transition={{ duration: 0.7 }}
+                                    style={{ height: '30%' }}
+                                >
                                     {/* Wood Pattern Lines */}
                                     {[...Array(5)].map((_, i) => (
                                         <div key={i} className="w-100 border-bottom border-dark opacity-5" style={{ height: '20%' }}></div>
                                     ))}
-                                </div>
+                                </motion.div>
 
                                 {/* Shadow under mascot */}
-                                <div className="position-absolute start-50 translate-middle-x" style={{ bottom: '25%', width: '120px', height: '25px', background: 'rgba(0,0,0,0.1)', borderRadius: '50%', filter: 'blur(5px)' }}></div>
+                                <motion.div
+                                    className="position-absolute start-50 translate-middle-x"
+                                    animate={{
+                                        background: isDarkMode ? 'rgba(0,0,0,0.4)' : 'rgba(0,0,0,0.1)'
+                                    }}
+                                    style={{ bottom: '25%', width: '120px', height: '25px', borderRadius: '50%', filter: 'blur(5px)' }}
+                                />
 
-                                {/* Simple Sofa/Cushion Element */}
-                                <div className="position-absolute bottom-0 end-0" style={{ right: '10px', bottom: '22%' }}>
-                                    <div className="bg-white rounded-circle shadow-sm" style={{ width: '100px', height: '75px', opacity: 0.9 }}></div>
-                                    <div className="bg-warning opacity-20 rounded-pill position-absolute top-50 start-50 translate-middle" style={{ width: '50px', height: '25px' }}></div>
-                                </div>
-
-                                {/* Mascot - Adjusted scale for better mobile fit */}
+                                {/* Mascot Area */}
                                 <div className="position-absolute top-50 start-50 translate-middle" style={{ zIndex: 5 }}>
+                                    {/* Light effect when dark - Animated glow */}
+                                    <AnimatePresence>
+                                        {isDarkMode && (
+                                            <motion.div
+                                                initial={{ opacity: 0, scale: 0.5 }}
+                                                animate={{
+                                                    opacity: [0.4, 0.7, 0.4],
+                                                    scale: [1, 1.2, 1],
+                                                }}
+                                                exit={{ opacity: 0, scale: 0.5 }}
+                                                transition={{
+                                                    duration: 3,
+                                                    repeat: Infinity,
+                                                    ease: "easeInOut"
+                                                }}
+                                                className="position-absolute start-50 top-50 translate-middle rounded-circle"
+                                                style={{
+                                                    width: '300px',
+                                                    height: '300px',
+                                                    background: 'radial-gradient(circle, rgba(255,215,0,0.3) 0%, rgba(255,165,0,0.1) 50%, transparent 70%)',
+                                                    filter: 'blur(20px)',
+                                                    zIndex: -1,
+                                                    pointerEvents: 'none'
+                                                }}
+                                            />
+                                        )}
+                                    </AnimatePresence>
+
                                     <AnimatePresence>
                                         {isFeeding && (
                                             <motion.div
@@ -202,7 +282,7 @@ export default function LlamiPage() {
                                         <LlamiMascot streak={1} lastMood={mascot?.mood || 'FELIZ'} name={mascot?.name || 'Llami'} />
                                     </div>
                                 </div>
-                            </div>
+                            </motion.div>
 
                             {/* Rename Interaction */}
                             <div className="d-flex justify-content-center align-items-center gap-2 mt-4">
