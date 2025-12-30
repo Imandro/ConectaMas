@@ -265,13 +265,6 @@ export default function LlamiMascot({ streak, lastMood, level = 1, forceStage, n
                 </svg>
             </motion.div>
 
-            <div className="mt-1 position-absolute top-100 start-50 translate-middle-x text-nowrap">
-                <span className="badge bg-white shadow-sm rounded-pill text-primary fw-bold d-inline-flex align-items-center gap-1 px-2 py-0" style={{ fontSize: '0.65rem', border: '1px solid #e2e8f0' }}>
-                    <Sparkles size={8} className="text-warning" />
-                    {name || "Llami"}
-                    <span className="text-muted ms-1 opacity-75">#{streak}</span>
-                </span>
-            </div>
         </div>
     );
 }

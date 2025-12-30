@@ -141,71 +141,72 @@ export default function LlamiPage() {
                 </div>
             ) : (
                 <div className="row justify-content-center">
-                    <div className="col-lg-5 text-center">
-                        {/* Mascot Container - Cozy Room Illustration */}
-                        <div className="position-relative py-5 mb-4 px-2">
-                            <div className="mx-auto position-relative shadow-lg overflow-hidden rounded-5" style={{ width: '100%', maxWidth: '350px', height: '350px', background: '#f5f1ed', border: '8px solid #fff' }}>
+                    <div className="col-lg-7 text-center">
+                        {/* Mascot Container - Enlarged Cozy Room Illustration */}
+                        <div className="position-relative py-4 mb-4">
+                            <div className="mx-auto position-relative shadow-lg rounded-5" style={{ width: '100%', maxWidth: '500px', height: '500px', background: '#f5f1ed', border: '10px solid #fff' }}>
                                 {/* Wall Decoration */}
-                                <div className="position-absolute top-0 start-0 w-100" style={{ height: '70%', background: 'linear-gradient(to bottom, #fdfbf7, #f5f1ed)' }}>
-                                    {/* Small Window/Picture */}
-                                    <div className="position-absolute top-20 end-20 bg-white p-1 rounded-2 shadow-sm" style={{ width: '60px', height: '45px', border: '2px solid #e2e8f0', right: '40px', top: '50px' }}>
+                                <div className="position-absolute top-0 start-0 w-100 rounded-top-5" style={{ height: '70%', background: 'linear-gradient(to bottom, #fdfbf7, #f5f1ed)' }}>
+                                    {/* Small Window/Picture - Adjusted for larger size */}
+                                    <div className="position-absolute bg-white p-1 rounded-2 shadow-sm" style={{ width: '80px', height: '60px', border: '2px solid #e2e8f0', right: '60px', top: '70px' }}>
                                         <div className="w-100 h-100 bg-info opacity-20 rounded-1 d-flex align-items-center justify-content-center">
-                                            <Sparkles size={16} className="text-warning" />
+                                            <Sparkles size={24} className="text-warning" />
                                         </div>
                                     </div>
 
-                                    {/* Floating Shelf with Bibles */}
-                                    <div className="position-absolute start-0" style={{ top: '120px', left: '30px' }}>
-                                        <div className="bg-secondary opacity-20 rounded-pill" style={{ width: '80px', height: '8px' }}></div>
-                                        <div className="d-flex gap-1 mt-[-15px] ms-2">
-                                            <div className="bg-primary rounded-1 shadow-sm" style={{ width: '12px', height: '20px' }}></div>
-                                            <div className="bg-warning rounded-1 shadow-sm" style={{ width: '12px', height: '22px' }}></div>
-                                            <div className="bg-danger rounded-1 shadow-sm" style={{ width: '12px', height: '18px' }}></div>
+                                    {/* Floating Shelf with Bibles - Adjusted for larger size */}
+                                    <div className="position-absolute start-0" style={{ top: '160px', left: '50px' }}>
+                                        <div className="bg-secondary opacity-20 rounded-pill" style={{ width: '120px', height: '12px' }}></div>
+                                        <div className="d-flex gap-2 mt-[-25px] ms-3">
+                                            <div className="bg-primary rounded-1 shadow-sm" style={{ width: '15px', height: '30px' }}></div>
+                                            <div className="bg-warning rounded-1 shadow-sm" style={{ width: '15px', height: '35px' }}></div>
+                                            <div className="bg-danger rounded-1 shadow-sm" style={{ width: '15px', height: '25px' }}></div>
                                         </div>
                                     </div>
                                 </div>
 
-                                {/* Floor */}
-                                <div className="position-absolute bottom-0 start-0 w-100" style={{ height: '30%', background: '#e5ddd5', boxShadow: 'inset 0 10px 20px rgba(0,0,0,0.05)' }}>
+                                {/* Floor - Adjusted for larger size */}
+                                <div className="position-absolute bottom-0 start-0 w-100 rounded-bottom-5" style={{ height: '30%', background: '#e5ddd5', boxShadow: 'inset 0 10px 20px rgba(0,0,0,0.05)' }}>
                                     {/* Wood Pattern Lines */}
-                                    {[...Array(5)].map((_, i) => (
-                                        <div key={i} className="w-100 border-bottom border-dark opacity-5" style={{ height: '20%' }}></div>
+                                    {[...Array(6)].map((_, i) => (
+                                        <div key={i} className="w-100 border-bottom border-dark opacity-5" style={{ height: '16%' }}></div>
                                     ))}
                                 </div>
 
-                                {/* Shadow under mascot */}
-                                <div className="position-absolute start-50 translate-middle-x" style={{ bottom: '25%', width: '100px', height: '20px', background: 'rgba(0,0,0,0.1)', borderRadius: '50%', filter: 'blur(4px)' }}></div>
+                                {/* Shadow under mascot - Larger */}
+                                <div className="position-absolute start-50 translate-middle-x" style={{ bottom: '25%', width: '150px', height: '30px', background: 'rgba(0,0,0,0.1)', borderRadius: '50%', filter: 'blur(6px)' }}></div>
 
-                                {/* Simple Sofa/Cushion Element */}
-                                <div className="position-absolute bottom-0 end-0" style={{ right: '-10px', bottom: '20%' }}>
-                                    <div className="bg-white rounded-circle shadow-sm" style={{ width: '80px', height: '60px', opacity: 0.9 }}></div>
-                                    <div className="bg-warning opacity-20 rounded-pill position-absolute top-50 start-50 translate-middle" style={{ width: '40px', height: '20px' }}></div>
+                                {/* Simple Sofa/Cushion Element - Adjusted for larger size */}
+                                <div className="position-absolute bottom-0 end-0" style={{ right: '10px', bottom: '22%' }}>
+                                    <div className="bg-white rounded-circle shadow-sm" style={{ width: '120px', height: '90px', opacity: 0.9 }}></div>
+                                    <div className="bg-warning opacity-20 rounded-pill position-absolute top-50 start-50 translate-middle" style={{ width: '60px', height: '30px' }}></div>
                                 </div>
 
-                                {/* Mascot */}
+                                {/* Mascot - Centered in larger room with higher scale */}
                                 <div className="position-absolute top-50 start-50 translate-middle" style={{ zIndex: 5 }}>
                                     <AnimatePresence>
                                         {isFeeding && (
                                             <motion.div
                                                 initial={{ opacity: 0, scale: 0.5, y: 0 }}
-                                                animate={{ opacity: 1, scale: 1.5, y: -120 }}
+                                                animate={{ opacity: 1, scale: 2, y: -180 }}
                                                 exit={{ opacity: 0 }}
                                                 className="position-absolute start-50 translate-middle-x"
                                                 style={{ zIndex: 10 }}
                                             >
-                                                <Flame size={60} className="text-warning fill-current" />
+                                                <Flame size={80} className="text-warning fill-current" />
                                             </motion.div>
                                         )}
                                     </AnimatePresence>
 
-                                    <div className="transform-scale-15">
+                                    <div className="transform-scale-room">
                                         <LlamiMascot streak={1} lastMood={mascot?.mood || 'FELIZ'} name={mascot?.name || 'Llami'} />
                                     </div>
                                 </div>
                             </div>
 
-                            {/* Rename Interaction */}
+                            {/* Rename Interaction - Outside the room box as requested */}
                             <div className="d-flex justify-content-center align-items-center gap-2 mt-4">
+                                <span className="h4 fw-bold text-primary mb-0 me-2">{mascot?.name}</span>
                                 {isEditingName ? (
                                     <div className="d-flex gap-2 bg-white p-2 rounded-pill shadow-sm animate-fade-in border">
                                         <input
@@ -365,8 +366,8 @@ export default function LlamiPage() {
             )}
 
             <style jsx>{`
-                .transform-scale-15 {
-                    transform: scale(2.0);
+                .transform-scale-room {
+                    transform: scale(3.5);
                 }
             `}</style>
         </div >
