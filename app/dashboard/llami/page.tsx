@@ -142,58 +142,58 @@ export default function LlamiPage() {
             ) : (
                 <div className="row justify-content-center">
                     <div className="col-lg-7 text-center">
-                        {/* Mascot Container - Enlarged Cozy Room Illustration */}
-                        <div className="position-relative py-4 mb-4">
-                            <div className="mx-auto position-relative shadow-lg rounded-5" style={{ width: '100%', maxWidth: '500px', height: '500px', background: '#f5f1ed', border: '10px solid #fff' }}>
+                        {/* Mascot Container - Optimized Cozy Room Illustration */}
+                        <div className="position-relative py-3 mb-4">
+                            <div className="mx-auto position-relative shadow-lg rounded-5" style={{ width: '90vw', maxWidth: '450px', height: '400px', background: '#f5f1ed', border: '10px solid #fff' }}>
                                 {/* Wall Decoration */}
                                 <div className="position-absolute top-0 start-0 w-100 rounded-top-5" style={{ height: '70%', background: 'linear-gradient(to bottom, #fdfbf7, #f5f1ed)' }}>
-                                    {/* Small Window/Picture - Adjusted for larger size */}
-                                    <div className="position-absolute bg-white p-1 rounded-2 shadow-sm" style={{ width: '80px', height: '60px', border: '2px solid #e2e8f0', right: '60px', top: '70px' }}>
+                                    {/* Small Window/Picture */}
+                                    <div className="position-absolute bg-white p-1 rounded-2 shadow-sm" style={{ width: '70px', height: '50px', border: '2px solid #e2e8f0', right: '40px', top: '50px' }}>
                                         <div className="w-100 h-100 bg-info opacity-20 rounded-1 d-flex align-items-center justify-content-center">
-                                            <Sparkles size={24} className="text-warning" />
+                                            <Sparkles size={20} className="text-warning" />
                                         </div>
                                     </div>
 
-                                    {/* Floating Shelf with Bibles - Adjusted for larger size */}
-                                    <div className="position-absolute start-0" style={{ top: '160px', left: '50px' }}>
-                                        <div className="bg-secondary opacity-20 rounded-pill" style={{ width: '120px', height: '12px' }}></div>
-                                        <div className="d-flex gap-2 mt-[-25px] ms-3">
-                                            <div className="bg-primary rounded-1 shadow-sm" style={{ width: '15px', height: '30px' }}></div>
-                                            <div className="bg-warning rounded-1 shadow-sm" style={{ width: '15px', height: '35px' }}></div>
-                                            <div className="bg-danger rounded-1 shadow-sm" style={{ width: '15px', height: '25px' }}></div>
+                                    {/* Floating Shelf with Bibles */}
+                                    <div className="position-absolute start-0" style={{ top: '140px', left: '40px' }}>
+                                        <div className="bg-secondary opacity-20 rounded-pill" style={{ width: '100px', height: '10px' }}></div>
+                                        <div className="d-flex gap-2 mt-[-22px] ms-3">
+                                            <div className="bg-primary rounded-1 shadow-sm" style={{ width: '12px', height: '25px' }}></div>
+                                            <div className="bg-warning rounded-1 shadow-sm" style={{ width: '12px', height: '30px' }}></div>
+                                            <div className="bg-danger rounded-1 shadow-sm" style={{ width: '12px', height: '20px' }}></div>
                                         </div>
                                     </div>
                                 </div>
 
-                                {/* Floor - Adjusted for larger size */}
+                                {/* Floor */}
                                 <div className="position-absolute bottom-0 start-0 w-100 rounded-bottom-5" style={{ height: '30%', background: '#e5ddd5', boxShadow: 'inset 0 10px 20px rgba(0,0,0,0.05)' }}>
                                     {/* Wood Pattern Lines */}
-                                    {[...Array(6)].map((_, i) => (
-                                        <div key={i} className="w-100 border-bottom border-dark opacity-5" style={{ height: '16%' }}></div>
+                                    {[...Array(5)].map((_, i) => (
+                                        <div key={i} className="w-100 border-bottom border-dark opacity-5" style={{ height: '20%' }}></div>
                                     ))}
                                 </div>
 
-                                {/* Shadow under mascot - Larger */}
-                                <div className="position-absolute start-50 translate-middle-x" style={{ bottom: '25%', width: '150px', height: '30px', background: 'rgba(0,0,0,0.1)', borderRadius: '50%', filter: 'blur(6px)' }}></div>
+                                {/* Shadow under mascot */}
+                                <div className="position-absolute start-50 translate-middle-x" style={{ bottom: '25%', width: '120px', height: '25px', background: 'rgba(0,0,0,0.1)', borderRadius: '50%', filter: 'blur(5px)' }}></div>
 
-                                {/* Simple Sofa/Cushion Element - Adjusted for larger size */}
+                                {/* Simple Sofa/Cushion Element */}
                                 <div className="position-absolute bottom-0 end-0" style={{ right: '10px', bottom: '22%' }}>
-                                    <div className="bg-white rounded-circle shadow-sm" style={{ width: '120px', height: '90px', opacity: 0.9 }}></div>
-                                    <div className="bg-warning opacity-20 rounded-pill position-absolute top-50 start-50 translate-middle" style={{ width: '60px', height: '30px' }}></div>
+                                    <div className="bg-white rounded-circle shadow-sm" style={{ width: '100px', height: '75px', opacity: 0.9 }}></div>
+                                    <div className="bg-warning opacity-20 rounded-pill position-absolute top-50 start-50 translate-middle" style={{ width: '50px', height: '25px' }}></div>
                                 </div>
 
-                                {/* Mascot - Centered in larger room with higher scale */}
+                                {/* Mascot - Adjusted scale for better mobile fit */}
                                 <div className="position-absolute top-50 start-50 translate-middle" style={{ zIndex: 5 }}>
                                     <AnimatePresence>
                                         {isFeeding && (
                                             <motion.div
                                                 initial={{ opacity: 0, scale: 0.5, y: 0 }}
-                                                animate={{ opacity: 1, scale: 2, y: -180 }}
+                                                animate={{ opacity: 1, scale: 1.2, y: -140 }}
                                                 exit={{ opacity: 0 }}
                                                 className="position-absolute start-50 translate-middle-x"
                                                 style={{ zIndex: 10 }}
                                             >
-                                                <Flame size={80} className="text-warning fill-current" />
+                                                <Flame size={60} className="text-warning fill-current" />
                                             </motion.div>
                                         )}
                                     </AnimatePresence>
@@ -204,7 +204,7 @@ export default function LlamiPage() {
                                 </div>
                             </div>
 
-                            {/* Rename Interaction - Outside the room box as requested */}
+                            {/* Rename Interaction */}
                             <div className="d-flex justify-content-center align-items-center gap-2 mt-4">
                                 <span className="h4 fw-bold text-primary mb-0 me-2">{mascot?.name}</span>
                                 {isEditingName ? (
@@ -367,7 +367,7 @@ export default function LlamiPage() {
 
             <style jsx>{`
                 .transform-scale-room {
-                    transform: scale(3.5);
+                    transform: scale(2.2);
                 }
             `}</style>
         </div >
