@@ -159,86 +159,39 @@ export default function LlamiMascot({ streak, lastMood, level = 1, forceStage, n
                         transition={{ duration: 2.5, repeat: Infinity }}
                     />
 
-                    {/* FLAME BODY - Pointed top like fire - ENHANCED TOP FLAME */}
+                    {/* CHUBBY FLAME BODY - No limbs */}
                     <motion.path
                         d="M 50 2 
-                           Q 58 10, 62 25
-                           Q 65 35, 66 45
-                           Q 67 55, 65 65
-                           Q 60 76, 50 80
-                           Q 40 76, 35 65
-                           Q 33 55, 34 45
-                           Q 35 35, 42 25
-                           Q 46 10, 50 2 Z"
+                           Q 65 15, 75 35
+                           Q 82 50, 80 65
+                           Q 75 85, 50 90
+                           Q 25 85, 20 65
+                           Q 18 50, 25 35
+                           Q 35 15, 50 2 Z"
                         fill={`url(#grad-${stage})`}
                         filter="url(#soft-glow)"
                         animate={{
                             d: [
-                                "M 50 2 Q 58 10, 62 25 Q 65 35, 66 45 Q 67 55, 65 65 Q 60 76, 50 80 Q 40 76, 35 65 Q 33 55, 34 45 Q 35 35, 42 25 Q 46 10, 50 2 Z",
-                                "M 50 0 Q 60 8, 65 24 Q 68 34, 69 44 Q 70 54, 68 64 Q 62 78, 50 82 Q 38 78, 32 64 Q 30 54, 31 44 Q 32 34, 35 24 Q 40 8, 50 0 Z",
-                                "M 50 2 Q 58 10, 62 25 Q 65 35, 66 45 Q 67 55, 65 65 Q 60 76, 50 80 Q 40 76, 35 65 Q 33 55, 34 45 Q 35 35, 42 25 Q 46 10, 50 2 Z"
+                                "M 50 2 Q 65 15, 75 35 Q 82 50, 80 65 Q 75 85, 50 90 Q 25 85, 20 65 Q 18 50, 25 35 Q 35 15, 50 2 Z",
+                                "M 50 0 Q 68 12, 78 34 Q 85 48, 83 64 Q 78 88, 50 92 Q 22 88, 17 64 Q 15 48, 22 34 Q 32 12, 50 0 Z",
+                                "M 50 2 Q 65 15, 75 35 Q 82 50, 80 65 Q 75 85, 50 90 Q 25 85, 20 65 Q 18 50, 25 35 Q 35 15, 50 2 Z"
                             ]
                         }}
-                        transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+                        transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
                     />
 
-                    {/* Inner flame glow - Taller */}
+                    {/* Inner flame glow - Chubby version */}
                     <motion.ellipse
-                        cx="50" cy="35" rx="14" ry="24"
+                        cx="50" cy="45" rx="18" ry="22"
                         fill={c.t}
                         opacity={0.4 + (level * 0.02)}
                         animate={{
-                            scale: [1, 1.1, 1],
-                            opacity: [0.4 + (level * 0.02), 0.6 + (level * 0.02), 0.4 + (level * 0.02)]
+                            scale: [1, 1.05, 1],
+                            opacity: [0.4 + (level * 0.02), 0.55 + (level * 0.02), 0.4 + (level * 0.02)]
                         }}
-                        transition={{ duration: 1.4, repeat: Infinity }}
+                        transition={{ duration: 1.8, repeat: Infinity }}
                     />
 
-                    {/* ARMS - Even larger and more defined like gloves */}
-                    <g>
-                        {/* Left arm */}
-                        <motion.g
-                            animate={{ rotate: [-12, 12, -12], x: [-2, 2, -2] }}
-                            transition={{ duration: 2.2, repeat: Infinity }}
-                            style={{ transformOrigin: "30px 48px" }}
-                        >
-                            <ellipse cx="28" cy="50" rx="10" ry="18" fill={c.p} opacity="0.95" stroke={c.s} strokeWidth="1" />
-                            <circle cx="28" cy="64" r="8" fill={c.s} opacity="0.9" />
-                            {/* "Fingers" detail */}
-                            <path d="M 24 68 Q 28 72, 32 68" fill="none" stroke={c.p} strokeWidth="1" opacity="0.5" />
-                        </motion.g>
-
-                        {/* Right arm */}
-                        <motion.g
-                            animate={{ rotate: [12, -12, 12], x: [2, -2, 2] }}
-                            transition={{ duration: 2.2, repeat: Infinity, delay: 1.1 }}
-                            style={{ transformOrigin: "70px 48px" }}
-                        >
-                            <ellipse cx="72" cy="50" rx="10" ry="18" fill={c.p} opacity="0.95" stroke={c.s} strokeWidth="1" />
-                            <circle cx="72" cy="64" r="8" fill={c.s} opacity="0.9" />
-                            {/* "Fingers" detail */}
-                            <path d="M 68 68 Q 72 72, 76 68" fill="none" stroke={c.p} strokeWidth="1" opacity="0.5" />
-                        </motion.g>
-                    </g>
-
-                    {/* FEET - Massive and chunky */}
-                    <g>
-                        <motion.g
-                            animate={{ y: [0, -3, 0], scaleX: [1, 1.05, 1] }}
-                            transition={{ duration: 1.3, repeat: Infinity, delay: 0 }}
-                        >
-                            <ellipse cx="38" cy="85" rx="10" ry="8" fill={c.p} opacity="1" />
-                            <ellipse cx="38" cy="88" rx="7" ry="4" fill={c.s} opacity="0.8" />
-                        </motion.g>
-
-                        <motion.g
-                            animate={{ y: [0, -3, 0], scaleX: [1, 1.05, 1] }}
-                            transition={{ duration: 1.3, repeat: Infinity, delay: 0.65 }}
-                        >
-                            <ellipse cx="62" cy="85" rx="10" ry="8" fill={c.p} opacity="1" />
-                            <ellipse cx="62" cy="88" rx="7" ry="4" fill={c.s} opacity="0.8" />
-                        </motion.g>
-                    </g>
 
                     {/* FACE */}
                     <g>
