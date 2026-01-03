@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import '../../../../config/theme.dart';
 import '../../data/struggle_provider.dart';
 import '../../data/models/struggle_model.dart';
@@ -12,8 +13,12 @@ class StruggleSummary extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final struggleState = ref.watch(struggleProvider);
-    final activeCount = struggleState.struggles.where((s) => s.status == StruggleStatus.active && s.isStarted).length;
-    final availableCount = struggleState.struggles.where((s) => s.status == StruggleStatus.active && !s.isStarted).length;
+    final activeCount = struggleState.struggles
+        .where((s) => s.status == StruggleStatus.active && s.isStarted)
+        .length;
+    final availableCount = struggleState.struggles
+        .where((s) => s.status == StruggleStatus.active && !s.isStarted)
+        .length;
 
     return GestureDetector(
       onTap: () => context.push('/dashboard/luchas'),
@@ -48,8 +53,11 @@ class StruggleSummary extends ConsumerWidget {
                                 color: AppTheme.primary.withValues(alpha: 0.08),
                                 borderRadius: BorderRadius.circular(16),
                               ),
-                              child: const Icon(Icons.shield_outlined, color: AppTheme.primary, size: 28),
-                            ),
+                              child: const Icon(Icons.shield_outlined,
+                                  color: AppTheme.primary, size: 28),
+                            )
+                                .animate(onPlay: (c) => c.repeat(reverse: true))
+                                .moveY(begin: -2, end: 2, duration: 2.seconds),
                             const SizedBox(width: 16),
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -80,8 +88,11 @@ class StruggleSummary extends ConsumerWidget {
                             color: Color(0xFFF1F5F9),
                             shape: BoxShape.circle,
                           ),
-                          child: const Icon(Icons.chevron_right, color: AppTheme.primary, size: 24),
-                        ),
+                          child: const Icon(Icons.chevron_right,
+                              color: AppTheme.primary, size: 24),
+                        )
+                            .animate(onPlay: (c) => c.repeat(reverse: true))
+                            .moveX(begin: -2, end: 2, duration: 1.seconds),
                       ],
                     ),
                     const SizedBox(height: 16),
@@ -93,35 +104,45 @@ class StruggleSummary extends ConsumerWidget {
                             label: 'EN PROGRESO',
                             valueColor: AppTheme.primary,
                             bgColor: const Color(0xFFF1F5F9),
-                          ),
+                          ).animate().fadeIn(delay: 200.ms).slideX(begin: -0.2),
                         ),
                         const SizedBox(width: 16),
                         Expanded(
                           child: _StatBox(
                             value: '$availableCount',
-                            label: 'PRÓXIMOS',
+                            label: 'DISPONIBLES',
                             valueColor: AppTheme.accent,
                             bgColor: const Color(0xFFF1F5F9),
-                          ),
+                          ).animate().fadeIn(delay: 400.ms).slideX(begin: 0.2),
                         ),
                       ],
                     ),
                   ],
                 ),
               ),
+              // Footer
               Container(
-                height: 4,
                 width: double.infinity,
-                color: AppTheme.primary,
+                padding: const EdgeInsets.symmetric(vertical: 12),
+                color: const Color(0xFFF8FAFC),
+                child: Center(
+                  child: Text(
+                    'Ver todos mis planes',
+                    style: GoogleFonts.fredoka(
+                      color: AppTheme.primary,
+                      fontWeight: FontWeight.w700,
+                      fontSize: 14,
+                    ),
+                  ),
+                ),
               ),
             ],
           ),
         ),
       ),
-    );
+    ).animate().fadeIn(duration: 400.ms).slideY(begin: 0.2);
   }
 }
-
 
 class _StatBox extends StatelessWidget {
   final String value;
@@ -130,8 +151,8 @@ class _StatBox extends StatelessWidget {
   final Color bgColor;
 
   const _StatBox({
-    required this.value, 
-    required this.label, 
+    required this.value,
+    required this.label,
     required this.valueColor,
     required this.bgColor,
   });

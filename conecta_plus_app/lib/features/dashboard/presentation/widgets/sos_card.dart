@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import '../../../../config/theme.dart';
 
 class SOSCard extends StatelessWidget {
@@ -26,20 +27,30 @@ class SOSCard extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-              const Icon(Icons.warning_rounded, color: Colors.white, size: 36),
-              const SizedBox(height: 6),
-              Text(
-                'SOS', 
+            const Icon(Icons.warning_rounded, color: Colors.white, size: 36)
+                .animate(onPlay: (c) => c.repeat(reverse: true))
+                .scale(
+                    begin: const Offset(0.9, 0.9),
+                    end: const Offset(1.1, 1.1),
+                    duration: 1.seconds,
+                    curve: Curves.easeInOut),
+            const SizedBox(height: 6),
+            Text('SOS',
                 style: GoogleFonts.fredoka(
-                  color: Colors.white, 
-                  fontWeight: FontWeight.bold, 
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
                   fontSize: 16,
                   height: 1.0,
-                )
-              ),
+                )),
           ],
         ),
-      ),
+      )
+          .animate(onPlay: (c) => c.repeat(reverse: true))
+          .shimmer(
+              duration: 3.seconds, color: Colors.white.withValues(alpha: 0.3))
+          .animate()
+          .fadeIn(duration: 400.ms)
+          .scale(begin: const Offset(0.9, 0.9), curve: Curves.easeOutBack),
     );
   }
 }
