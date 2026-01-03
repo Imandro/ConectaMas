@@ -55,8 +55,8 @@ const generateDevotionals = () => {
                 `Comparte este versículo o una palabra de ánimo con alguien que sepas que lo necesita.`
             ],
             prayer: `Señor, gracias por tu palabra. Ayúdame a vivir con ${topic.focus} hoy. Que ${verse.ref} sea mi guía y fortaleza. En el nombre de Jesús, Amén.`,
-            author: 'Equipo Conecta+'
-        });
+  author: 'Equipo Conecta+ BETA'
+});
     }
     
     const content = `export const generatedDevotionals = ${JSON.stringify(devotionals, null, 4)};`;

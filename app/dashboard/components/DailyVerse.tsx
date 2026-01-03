@@ -111,7 +111,7 @@ export default function DailyVerse() {
                 </div>
 
                 <div className="position-absolute bottom-0 end-0 p-3 opacity-50">
-                    <span className="small text-white-50">Conecta+</span>
+                    <span className="small text-white-50">Conecta+ BETA</span>
                 </div>
             </div>
         </Link>

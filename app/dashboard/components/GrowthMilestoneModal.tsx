@@ -48,8 +48,8 @@ export default function GrowthMilestoneModal() {
 
     const handleShare = async () => {
         const shareData = {
-            title: 'Conecta+ - Tu espacio seguro',
-            text: '¡Únete a Conecta+! Una comunidad de jóvenes creciendo en la fe juntos. 🙏✨',
+            title: 'Conecta+ BETA - Tu espacio seguro',
+            text: '¡Únete a Conecta+ BETA! Una comunidad de jóvenes creciendo en la fe juntos. 🙏✨',
             url: window.location.origin
         };
 

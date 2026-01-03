@@ -18,6 +18,7 @@ export default function CookiePolicy() {
                             <Cookie size={48} className="text-primary" />
                         </div>
                         <h1 className="fw-bold text-secondary">Política de Cookies</h1>
+                        <p className="text-muted">En <strong>Conecta+ BETA</strong> utilizamos cookies para mejorar tu experiencia.</p>
                         <p className="text-muted">Última actualización: 26 de diciembre de 2025</p>
                     </div>
 

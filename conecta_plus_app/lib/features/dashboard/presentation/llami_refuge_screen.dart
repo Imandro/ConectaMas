@@ -234,7 +234,7 @@ class _LlamiRefugeScreenState extends ConsumerState<LlamiRefugeScreen> {
                     )
                         .animate()
                         .fadeIn(delay: 200.ms)
-                        .scale(duration: 500.ms, curve: Curves.backOut),
+                        .scale(duration: 500.ms, curve: Curves.easeOutBack),
 
                     const SizedBox(height: 24),
 

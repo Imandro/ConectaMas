@@ -152,7 +152,7 @@ export default function FriendsPage() {
 
             <div className="d-flex justify-content-between align-items-center mb-5">
                 <div>
-                    <h1 className="fw-bold text-primary mb-1">Comunidad Conecta+</h1>
+                    <h1 className="fw-bold text-primary mb-1">Comunidad Conecta+ BETA</h1>
                     <p className="text-muted small">Conecta con otros y crezcan juntos en la fe.</p>
                 </div>
                 <Link href="/dashboard/profile" className="btn btn-outline-primary rounded-pill px-4">
@@ -175,7 +175,7 @@ export default function FriendsPage() {
                                     </div>
                                     <small className="fw-bold">{msg.sender.name}</small>
                                 </div>
-                                <p className="small mb-2 fst-italic">"{msg.message}"</p>
+                                <p className="small mb-2 fst-italic">&quot;{msg.message}&quot;</p>
                                 {!msg.read && (
                                     <button onClick={() => handleMarkRead(msg.id)} className="btn btn-sm btn-light text-primary w-100 rounded-pill py-0" style={{ fontSize: '0.8rem' }}>
                                         Marcar como leído

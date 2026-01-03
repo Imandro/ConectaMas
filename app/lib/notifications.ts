@@ -23,7 +23,7 @@ export const NOTIFICATION_CATEGORIES = {
     ],
     BIBLE: [
         { title: "La Palabra de Hoy 📖", body: "Tu Biblia tiene un mensaje para ti hoy. Ábrela y escucha Su voz." },
-        { title: "Lámpara a mis pies 🕯️", body: "Ilumina tu camino leyendo un versículo en Conecta+." },
+        { title: "Lámpara a mis pies 🕯️", body: "Ilumina tu camino leyendo un versículo en Conecta+ BETA." },
         { title: "Alimento para el alma 🍞", body: "Tu espíritu necesita el pan de vida hoy. ¡Vamos a la Biblia!" }
     ],
     DEVOTIONAL: [

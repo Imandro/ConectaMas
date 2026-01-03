@@ -14,7 +14,6 @@ class ProfileScreen extends ConsumerStatefulWidget {
 }
 
 class _ProfileScreenState extends ConsumerState<ProfileScreen> {
-  bool _isEditingUsername = false;
   late TextEditingController _usernameController;
 
   @override
@@ -62,73 +61,81 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
         child: SingleChildScrollView(
           physics: const AlwaysScrollableScrollPhysics(),
           padding: const EdgeInsets.all(24),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Profile Header Card (Identical to Web)
-              _buildProfileHeader(user),
+          child:
+              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            // Profile Header Card (Identical to Web)
+            _buildProfileHeader(user),
 
-              const SizedBox(height: 24),
+            const SizedBox(height: 24),
 
-              // Gender & Info Section
-              Container(
-                width: double.infinity,
-                padding: const EdgeInsets.all(24),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(24),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withValues(alpha: 0.05),
-                      blurRadius: 10,
-                    )
-                  ],
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    _buildInfoItem('Género', user.gender != null ? (user.gender == 'MALE' ? 'Hombre 👨' : 'Mujer 👩') : 'No especificado'),
-                    const Divider(height: 32),
-                    _buildInfoItem('Edad', user.age != null ? '${user.age} años' : 'No especificada'),
-                    const Divider(height: 32),
-                    _buildInfoItem('Estado Espiritual', user.spiritualStatus ?? 'No especificado'),
-                    const Divider(height: 32),
-                    _buildInfoItem('Teléfono de Líder', user.leaderPhone ?? 'No asignado'),
-                  ],
-                ),
+            // Gender & Info Section
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.all(24),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(24),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withValues(alpha: 0.05),
+                    blurRadius: 10,
+                  )
+                ],
               ),
-
-              const SizedBox(height: 24),
-
-              // Settings Card
-              Container(
-                padding: const EdgeInsets.all(8),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(24),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withValues(alpha: 0.05),
-                      blurRadius: 10,
-                    )
-                  ],
-                ),
-                child: Column(
-                  children: [
-                    _buildSettingTile(
-                      icon: Icons.logout,
-                      title: 'Cerrar Sesión',
-                      color: Colors.red,
-                      onTap: () async {
-                        await ref.read(authProvider.notifier).logout();
-                        if (mounted) context.go('/login');
-                      },
-                    ),
-                  ],
-                ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _buildInfoItem(
+                      'Género',
+                      user.gender != null
+                          ? (user.gender == 'MALE' ? 'Hombre 👨' : 'Mujer 👩')
+                          : 'No especificado'),
+                  const Divider(height: 32),
+                  _buildInfoItem(
+                      'Edad',
+                      user.age != null
+                          ? '${user.age} años'
+                          : 'No especificada'),
+                  const Divider(height: 32),
+                  _buildInfoItem('Estado Espiritual',
+                      user.spiritualStatus ?? 'No especificado'),
+                  const Divider(height: 32),
+                  _buildInfoItem(
+                      'Teléfono de Líder', user.leaderPhone ?? 'No asignado'),
+                ],
               ),
-            ]
-          ),
+            ),
+
+            const SizedBox(height: 24),
+
+            // Settings Card
+            Container(
+              padding: const EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(24),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withValues(alpha: 0.05),
+                    blurRadius: 10,
+                  )
+                ],
+              ),
+              child: Column(
+                children: [
+                  _buildSettingTile(
+                    icon: Icons.logout,
+                    title: 'Cerrar Sesión',
+                    color: Colors.red,
+                    onTap: () async {
+                      await ref.read(authProvider.notifier).logout();
+                      if (mounted) context.go('/login');
+                    },
+                  ),
+                ],
+              ),
+            ),
+          ]),
         ),
       ),
     );
@@ -174,7 +181,8 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
           CircleAvatar(
             radius: 40,
             backgroundColor: Colors.white24,
-            backgroundImage: user.image != null ? NetworkImage(user.image!) : null,
+            backgroundImage:
+                user.image != null ? NetworkImage(user.image!) : null,
             child: user.image == null
                 ? const Icon(Icons.person, size: 40, color: Colors.white)
                 : null,

@@ -180,7 +180,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
     return Column(
       children: [
-        _buildStepHeader(Icons.shield_outlined, 'Bienvenido a Conecta+',
+        _buildStepHeader(Icons.shield_outlined, 'Bienvenido a Conecta+ BETA',
             '¿Dónde estás espiritualmente?'),
         ...options.map((opt) => Padding(
               padding: const EdgeInsets.only(bottom: 12),
@@ -505,7 +505,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     return Column(
       children: [
         _buildStepHeader(Icons.people_outline, 'Comunidad de Apoyo',
-            'En Conecta+ no estás solo. Puedes agregar amigos para orar.'),
+            'En Conecta+ BETA no estás solo. Puedes agregar amigos para orar.'),
         Container(
           padding: const EdgeInsets.all(24),
           decoration: BoxDecoration(
@@ -545,7 +545,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         _buildStepHeader(
             Icons.volunteer_activism_outlined,
             '¡Ayúdanos a Crecer!',
-            'Conecta+ es un proyecto gratuito hecho con amor.'),
+            'Conecta+ BETA es un proyecto gratuito hecho con amor.'),
         Container(
           padding: const EdgeInsets.all(24),
           decoration: BoxDecoration(
@@ -671,7 +671,7 @@ class _SelectionButton extends StatelessWidget {
             if (isSelected)
               const Icon(Icons.check_circle, color: AppTheme.accent)
                   .animate()
-                  .scale(duration: 200.ms, curve: Curves.backOut),
+                  .scale(duration: 200.ms, curve: Curves.easeOutBack),
           ],
         ),
       ),

@@ -30,9 +30,9 @@ export default function CommunityTutorial() {
                         <div className="bg-info text-white p-4 rounded-circle d-inline-block mb-4 shadow-lg">
                             <Users size={48} />
                         </div>
-                        <h2 className="fw-bold">No estás solo en esto</h2>
-                        <p className="text-muted lead px-md-5">
-                            La comunidad de Conecta+ es un lugar seguro para compartir, pedir oración y encontrar personas que están pasando por lo mismo que tú.
+                        <h2 className="fw-bold">Comunidad Conecta+ BETA</h2>
+                        <p className="text-muted lead">
+                            Un espacio seguro para compartir, sanar y crecer junto a otros jóvenes que entienden tus luchas.
                         </p>
                     </div>
 

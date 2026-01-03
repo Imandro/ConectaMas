@@ -33,7 +33,7 @@ export default function InstallTutorial() {
                         <div className="bg-primary text-white p-4 rounded-circle d-inline-block mb-4 shadow-lg">
                             <Download size={48} />
                         </div>
-                        <h2 className="fw-bold">Conecta+ en tu pantalla</h2>
+                        <h2 className="fw-bold">Conecta+ BETA en tu pantalla</h2>
                         <p className="text-muted lead">
                             Instala la aplicación para disfrutar de una experiencia completa,
                             más rápida y sin distracciones.
@@ -75,20 +75,20 @@ export default function InstallTutorial() {
                                     />
                                     <Step
                                         number={2}
-                                        title="Toca 'Compartir'"
+                                        title="Toca &apos;Compartir&apos;"
                                         text="Busca el icono de compartir en la barra inferior (un cuadrado con una flecha hacia arriba)."
                                         icon={<Share className="text-primary" size={32} />}
                                     />
                                     <Step
                                         number={3}
                                         title="Agregar a Inicio"
-                                        text="Desliza hacia abajo y selecciona la opción 'Agregar a la pantalla de inicio'."
+                                        text="Desliza hacia abajo y selecciona la opción &apos;Agregar a la pantalla de inicio&apos;."
                                         icon={<PlusSquare className="text-primary" size={32} />}
                                     />
                                     <Step
                                         number={4}
                                         title="¡Listo!"
-                                        text="Presiona 'Agregar' en la esquina superior derecha. Conecta+ aparecerá entre tus apps."
+                                        text="Presiona &apos;Agregar&apos; en la esquina superior derecha. Conecta+ BETA aparecerá entre tus apps."
                                         icon={<CheckCircle2 className="text-success" size={32} />}
                                     />
                                 </motion.div>
@@ -109,19 +109,19 @@ export default function InstallTutorial() {
                                     <Step
                                         number={2}
                                         title="Instalar Aplicación"
-                                        text="Busca y selecciona la opción que dice 'Instalar aplicación' o 'Instalar Conecta+'."
+                                        text="Busca y selecciona la option que dice &apos;Instalar aplicación&apos; o &apos;Instalar Conecta+ BETA&apos;."
                                         icon={<Download className="text-primary" size={32} />}
                                     />
                                     <Step
                                         number={3}
                                         title="Confirmar"
-                                        text="Presiona el botón 'Instalar' en la ventana emergente que aparecerá."
+                                        text="Presiona el botón &apos;Instalar&apos; en la ventana emergente que aparecerá."
                                         icon={<CheckCircle2 className="text-success" size={32} />}
                                     />
                                     <Step
                                         number={4}
                                         title="Acceso directo"
-                                        text="Ahora podrás abrir Conecta+ directamente desde tu cajón de aplicaciones."
+                                        text="Ahora podrás abrir Conecta+ BETA directamente desde tu cajón de aplicaciones."
                                         icon={<ArrowRight className="text-primary" size={32} />}
                                     />
                                 </motion.div>

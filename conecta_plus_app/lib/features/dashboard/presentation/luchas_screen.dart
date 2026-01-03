@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import '../../../config/theme.dart';
 import '../data/struggle_provider.dart';
 import '../data/models/struggle_model.dart';
@@ -28,9 +29,15 @@ class _LuchasScreenState extends ConsumerState<LuchasScreen> {
     final struggleState = ref.watch(struggleProvider);
     final notifier = ref.read(struggleProvider.notifier);
 
-    final availableStruggles = struggleState.struggles.where((s) => s.status == StruggleStatus.active && !s.isStarted).toList();
-    final activeStruggles = struggleState.struggles.where((s) => s.status == StruggleStatus.active && s.isStarted).toList();
-    final overcomeStruggles = struggleState.struggles.where((s) => s.status == StruggleStatus.vencido).toList();
+    final availableStruggles = struggleState.struggles
+        .where((s) => s.status == StruggleStatus.active && !s.isStarted)
+        .toList();
+    final activeStruggles = struggleState.struggles
+        .where((s) => s.status == StruggleStatus.active && s.isStarted)
+        .toList();
+    final overcomeStruggles = struggleState.struggles
+        .where((s) => s.status == StruggleStatus.vencido)
+        .toList();
 
     return Scaffold(
       backgroundColor: const Color(0xFFF8FAFC),
@@ -52,7 +59,10 @@ class _LuchasScreenState extends ConsumerState<LuchasScreen> {
           children: [
             Text(
               'Mi Seguimiento 🛡️',
-              style: GoogleFonts.inter(fontWeight: FontWeight.bold, color: AppTheme.primary, fontSize: 18),
+              style: GoogleFonts.inter(
+                  fontWeight: FontWeight.bold,
+                  color: AppTheme.primary,
+                  fontSize: 18),
             ),
             Text(
               'Gestiona tus planes de transformación.',
@@ -87,26 +97,44 @@ class _LuchasScreenState extends ConsumerState<LuchasScreen> {
                         struggleState.error!,
                         style: TextStyle(color: Colors.red.shade700),
                       ),
-                    ),
-                  _buildAddStruggleCard(notifier),
+                    ).animate().shake(),
+                  _buildAddStruggleCard(notifier)
+                      .animate()
+                      .fadeIn(duration: 400.ms)
+                      .slideY(begin: 0.1),
                   const SizedBox(height: 32),
-                  
                   if (activeStruggles.isNotEmpty) ...[
-                    _buildSectionHeader('En Progreso (${activeStruggles.length})'),
-                    ...activeStruggles.map((s) => _buildStruggleCard(context, s)),
+                    _buildSectionHeader(
+                            'En Progreso (${activeStruggles.length})')
+                        .animate()
+                        .fadeIn(delay: 100.ms),
+                    ...activeStruggles.asMap().entries.map((entry) =>
+                        _buildStruggleCard(context, entry.value)
+                            .animate()
+                            .fadeIn(delay: (200 + entry.key * 100).ms)
+                            .slideX(begin: 0.1)),
                     const SizedBox(height: 24),
                   ],
-
-                  _buildSectionHeader('Planes Disponibles (${availableStruggles.length})'),
-                  if (availableStruggles.isEmpty && !struggleState.isLoading)
-                    _buildEmptyState('No hay planes nuevos disponibles.')
-                  else
-                    ...availableStruggles.map((s) => _buildStruggleCard(context, s)),
-
+                  _buildSectionHeader(
+                          'Planes Disponibles (${availableStruggles.length})')
+                      .animate()
+                      .fadeIn(delay: 300.ms),
+                  ...availableStruggles.asMap().entries.map((entry) =>
+                      _buildStruggleCard(context, entry.value)
+                          .animate()
+                          .fadeIn(delay: (400 + entry.key * 100).ms)
+                          .slideX(begin: 0.1)),
                   if (overcomeStruggles.isNotEmpty) ...[
-                    const SizedBox(height: 32),
-                    _buildSectionHeader('Salón de Victorias'),
-                    ...overcomeStruggles.map((s) => _buildVictoryCard(s.title)),
+                    const SizedBox(height: 24),
+                    _buildSectionHeader(
+                            'Vencidos (${overcomeStruggles.length}) 🎉')
+                        .animate()
+                        .fadeIn(delay: 500.ms),
+                    ...overcomeStruggles.asMap().entries.map((entry) =>
+                        _buildStruggleCard(context, entry.value)
+                            .animate()
+                            .fadeIn(delay: (600 + entry.key * 100).ms)
+                            .slideX(begin: 0.1)),
                   ],
                 ],
               ),
@@ -129,23 +157,6 @@ class _LuchasScreenState extends ConsumerState<LuchasScreen> {
     );
   }
 
-  Widget _buildEmptyState(String message) {
-    return Container(
-      padding: const EdgeInsets.all(24),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(24),
-        border: Border.all(color: Colors.grey.withValues(alpha: 0.2), style: BorderStyle.none),
-      ),
-      child: Center(
-        child: Text(
-          message,
-          style: TextStyle(color: AppTheme.textMuted, fontSize: 12, fontStyle: FontStyle.italic),
-        ),
-      ),
-    );
-  }
-
   Widget _buildAddStruggleCard(StruggleNotifier notifier) {
     return Column(
       children: [
@@ -154,7 +165,10 @@ class _LuchasScreenState extends ConsumerState<LuchasScreen> {
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(24),
-            boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.05), blurRadius: 10)],
+            boxShadow: [
+              BoxShadow(
+                  color: Colors.black.withValues(alpha: 0.05), blurRadius: 10)
+            ],
           ),
           child: Row(
             children: [
@@ -162,8 +176,12 @@ class _LuchasScreenState extends ConsumerState<LuchasScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text('¿Nueva batalla?', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-                    Text('Agrega un área para trabajar hoy.', style: TextStyle(color: AppTheme.textMuted, fontSize: 12)),
+                    const Text('¿Nueva batalla?',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 16)),
+                    Text('Agrega un área para trabajar hoy.',
+                        style:
+                            TextStyle(color: AppTheme.textMuted, fontSize: 12)),
                   ],
                 ),
               ),
@@ -171,8 +189,10 @@ class _LuchasScreenState extends ConsumerState<LuchasScreen> {
                 onTap: () => setState(() => _isAdding = !_isAdding),
                 child: Container(
                   padding: const EdgeInsets.all(8),
-                  decoration: BoxDecoration(color: AppTheme.primary, shape: BoxShape.circle),
-                  child: Icon(_isAdding ? Icons.close : Icons.add, color: Colors.white),
+                  decoration: BoxDecoration(
+                      color: AppTheme.primary, shape: BoxShape.circle),
+                  child: Icon(_isAdding ? Icons.close : Icons.add,
+                      color: Colors.white),
                 ),
               ),
             ],
@@ -185,7 +205,8 @@ class _LuchasScreenState extends ConsumerState<LuchasScreen> {
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(24),
-              border: Border.all(color: AppTheme.primary.withValues(alpha: 0.2)),
+              border:
+                  Border.all(color: AppTheme.primary.withValues(alpha: 0.2)),
             ),
             child: Row(
               children: [
@@ -207,7 +228,10 @@ class _LuchasScreenState extends ConsumerState<LuchasScreen> {
                       setState(() => _isAdding = false);
                     }
                   },
-                  child: const Text('Agregar', style: TextStyle(fontWeight: FontWeight.bold, color: AppTheme.primary)),
+                  child: const Text('Agregar',
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: AppTheme.primary)),
                 ),
               ],
             ),
@@ -219,7 +243,7 @@ class _LuchasScreenState extends ConsumerState<LuchasScreen> {
 
   Widget _buildStruggleCard(BuildContext context, Struggle struggle) {
     final bool isAvailable = !struggle.isStarted;
-    
+
     return GestureDetector(
       onTap: () => context.push('/dashboard/luchas/${struggle.id}'),
       child: Container(
@@ -234,7 +258,10 @@ class _LuchasScreenState extends ConsumerState<LuchasScreen> {
               width: 5,
             ),
           ),
-          boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.04), blurRadius: 10)],
+          boxShadow: [
+            BoxShadow(
+                color: Colors.black.withValues(alpha: 0.04), blurRadius: 10)
+          ],
         ),
         child: Column(
           children: [
@@ -244,27 +271,38 @@ class _LuchasScreenState extends ConsumerState<LuchasScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(struggle.title, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
+                      Text(struggle.title,
+                          style: const TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 18)),
                       const SizedBox(height: 4),
                       Row(
                         children: [
                           Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 8, vertical: 4),
                             decoration: BoxDecoration(
-                              color: isAvailable ? AppTheme.accent.withValues(alpha: 0.1) : AppTheme.primary.withValues(alpha: 0.1),
+                              color: isAvailable
+                                  ? AppTheme.accent.withValues(alpha: 0.1)
+                                  : AppTheme.primary.withValues(alpha: 0.1),
                               borderRadius: BorderRadius.circular(20),
                             ),
                             child: Text(
-                              isAvailable ? 'Plan por iniciar' : 'Día ${struggle.currentDay} / 7',
+                              isAvailable
+                                  ? 'Plan por iniciar'
+                                  : 'Día ${struggle.currentDay} / 7',
                               style: TextStyle(
-                                color: isAvailable ? const Color(0xFFB45309) : AppTheme.primary,
+                                color: isAvailable
+                                    ? const Color(0xFFB45309)
+                                    : AppTheme.primary,
                                 fontWeight: FontWeight.bold,
                                 fontSize: 10,
                               ),
                             ),
                           ),
                           const SizedBox(width: 8),
-                          Text('Ver apartado', style: TextStyle(color: AppTheme.textMuted, fontSize: 11)),
+                          Text('Ver apartado',
+                              style: TextStyle(
+                                  color: AppTheme.textMuted, fontSize: 11)),
                         ],
                       ),
                     ],
@@ -287,37 +325,6 @@ class _LuchasScreenState extends ConsumerState<LuchasScreen> {
             ],
           ],
         ),
-      ),
-    );
-  }
-
-  Widget _buildVictoryCard(String title) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 12),
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: const Color(0xFFD1FAE5),
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: Colors.green.withValues(alpha: 0.1)),
-      ),
-      child: Row(
-        children: [
-          Container(
-            padding: const EdgeInsets.all(8),
-            decoration: const BoxDecoration(color: Colors.green, shape: BoxShape.circle),
-            child: const Icon(Icons.emoji_events, color: Colors.white, size: 16),
-          ),
-          const SizedBox(width: 16),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(title, style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.green)),
-                Text('Vencido con éxito', style: TextStyle(color: Colors.green.withValues(alpha: 0.7), fontSize: 11)),
-              ],
-            ),
-          ),
-        ],
       ),
     );
   }

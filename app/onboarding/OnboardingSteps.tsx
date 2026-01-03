@@ -177,7 +177,7 @@ export default function OnboardingSteps() {
                                     <div className="p-4 rounded-4 mb-5 text-start animate-fade-in" style={{ backgroundColor: 'rgba(255, 255, 255, 0.05)', border: '1px solid rgba(255, 255, 255, 0.1)' }}>
                                         <h6 className="fw-bold text-warning mb-2">Oración</h6>
                                         <p className="fst-italic text-white-50 small m-0">
-                                            "{selectedOption.prayer}"
+                                            &quot;{selectedOption.prayer}&quot;
                                         </p>
                                     </div>
                                 )}
@@ -577,7 +577,7 @@ export default function OnboardingSteps() {
                                         <div>
                                             <h6 className="fw-bold text-white mb-1">Apoyo Anónimo y Seguro</h6>
                                             <p className="text-white-50 small mb-0">
-                                                Tus amigos podrán enviarte pequeños mensajes de ánimo ("¡Estoy orando por ti!") sin necesidad de ver tus luchas o detalles privados.
+                                                Tus amigos podrán enviarte pequeños mensajes de ánimo (&quot;¡Estoy orando por ti!&quot;) sin necesidad de ver tus luchas o detalles privados.
                                             </p>
                                         </div>
                                     </div>
@@ -606,7 +606,7 @@ export default function OnboardingSteps() {
                                 </div>
                                 <h2 className="fw-bold mb-3 text-white">¡Ayúdanos a Crecer!</h2>
                                 <p className="text-white-50 mb-4">
-                                    Conecta+ es un proyecto gratuito hecho con amor. Queremos llegar a más jóvenes publicando la app en Google Play Store.
+                                    Conecta+ BETA es un proyecto gratuito hecho con amor. Queremos llegar a más jóvenes publicando la app en Google Play Store.
                                 </p>
 
                                 <div className="card bg-white text-dark rounded-4 p-4 shadow-lg mb-4 text-start">

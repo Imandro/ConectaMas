@@ -152,7 +152,7 @@ class _SOSScreenState extends State<SOSScreen> {
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(color: Colors.white.withValues(alpha: 0.05), borderRadius: BorderRadius.circular(12)),
                 child: const Text(
-                  'AVISO: Conecta+ es una herramienta espiritual. En caso de emergencia grave, llama al 911.',
+                  'AVISO: Conecta+ BETA es una herramienta espiritual. En caso de emergencia grave, llama al 911.',
                   textAlign: TextAlign.center,
                   style: TextStyle(color: Colors.white30, fontSize: 10),
                 ),

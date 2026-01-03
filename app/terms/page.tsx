@@ -28,7 +28,7 @@ export default function TermsPage() {
                                 1. Aceptación de los Términos
                             </h4>
                             <p className="text-muted">
-                                Al crear una cuenta y acceder a <strong>Conecta+</strong>, aceptas cumplir y estar legalmente obligado por los términos y condiciones descritos en este documento. Si no estás de acuerdo con alguna parte de estos términos, no debes utilizar nuestros servicios.
+                                Al crear una cuenta y acceder a <strong>Conecta+ BETA</strong>, aceptas cumplir y estar legalmente obligado por los términos y condiciones descritos en este documento. Si no estás de acuerdo con alguna parte de estos términos, no debes utilizar nuestros servicios.
                             </p>
                         </div>
 
@@ -38,7 +38,7 @@ export default function TermsPage() {
                                 2. Código de Conducta
                             </h4>
                             <p className="text-muted mb-3">
-                                Conecta+ es un espacio seguro dedicado al crecimiento espiritual y personal. Para mantener esta comunidad segura, aceptas:
+                                Conecta+ BETA es un espacio seguro dedicado al crecimiento espiritual y personal. Para mantener esta comunidad segura, aceptas:
                             </p>
                             <ul className="list-group list-group-flush rounded-3">
                                 <li className="list-group-item bg-light border-0 mb-1">No publicar contenido ofensivo, violento o sexualmente explícito.</li>
@@ -61,7 +61,7 @@ export default function TermsPage() {
                         <div className="mb-5">
                             <h5 className="fw-bold text-secondary mb-2">4. Responsabilidad</h5>
                             <p className="text-muted">
-                                El contenido proporcionado en Conecta+ es para fines educativos y espirituales y no sustituye el consejo médico, psicológico o profesional. Si estás enfrentando una crisis de salud mental, por favor busca ayuda profesional inmediata.
+                                El contenido proporcionado en Conecta+ BETA es para fines educativos y espirituales y no sustituye el consejo médico, psicológico o profesional. Si estás enfrentando una crisis de salud mental, por favor busca ayuda profesional inmediata.
                             </p>
                         </div>
 

@@ -9,16 +9,16 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await initializeDateFormatting('es');
   Intl.defaultLocale = 'es';
-  runApp(const ProviderScope(child: ConectaPlusApp()));
+  runApp(const ProviderScope(child: ConectaPlusBetaApp()));
 }
 
-class ConectaPlusApp extends StatelessWidget {
-  const ConectaPlusApp({super.key});
+class ConectaPlusBetaApp extends StatelessWidget {
+  const ConectaPlusBetaApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
-      title: 'Conecta+',
+      title: 'Conecta+ BETA',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.lightTheme,
       routerConfig: router,

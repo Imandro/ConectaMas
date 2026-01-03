@@ -1,10 +1,8 @@
 "use client";
 
 import React from 'react';
-import { motion } from 'framer-motion';
 import {
     ChevronLeft,
-    Flame,
     Zap,
     Book,
     Sparkles,
@@ -48,7 +46,7 @@ export default function LlamiTutorial() {
                                 </div>
                                 <h4 className="fw-bold">Puntos de Fuego</h4>
                                 <p className="text-white-50">
-                                    Ganarás 1 punto de fuego por cada minuto de lectura en la sección "Biblia".
+                                    Ganarás 1 punto de fuego por cada minuto de lectura en la sección &quot;Biblia&quot;.
                                     Estos puntos sirven para avivar el espíritu de Llami.
                                 </p>
                             </div>

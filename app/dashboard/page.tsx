@@ -152,42 +152,63 @@ export default function DashboardHome() {
 
             {/* Estado y SOS con Llami */}
             <section className="row g-3 mb-4">
-                <div className="col-8" id="tour-streak">
-                    <div className="card border-0 shadow-sm h-100 bg-white">
-                        <div className="card-body p-3 d-flex align-items-center justify-content-between">
-                            <div className="d-flex align-items-center gap-3">
-                                <div className="bg-success-subtle text-success p-2 rounded-circle">
-                                    <Sun size={24} />
+                <div className="col-12 col-md-8">
+                    <div className="card border-0 shadow-sm h-100 bg-white" style={{ borderRadius: '24px' }}>
+                        <div className="card-body p-3">
+                            <div className="row align-items-center">
+                                <div className="col-12 col-sm-7">
+                                    <div className="d-flex flex-column gap-3">
+                                        {/* Días en Victoria */}
+                                        <div className="d-flex align-items-center gap-3">
+                                            <div className="bg-success-subtle text-success p-2 rounded-circle">
+                                                <Sun size={24} />
+                                            </div>
+                                            <div>
+                                                <small className="text-muted d-block lh-1">Días en victoria</small>
+                                                <span className="fw-bold fs-4">{stats?.streak || 0} Días</span>
+                                            </div>
+                                        </div>
+                                        
+                                        {/* Días Libre de Pecado (NUEVO) */}
+                                        <div className="d-flex align-items-center gap-3 pt-2 border-top">
+                                            <div className="bg-primary-subtle text-primary p-2 rounded-circle">
+                                                <ShieldAlert size={24} />
+                                            </div>
+                                            <div>
+                                                <small className="text-muted d-block lh-1">Días libre de pecado</small>
+                                                <span className="fw-bold fs-4 text-primary">{stats?.streak || 0} Días</span>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div>
-                                    <small className="text-muted d-block lh-1">Días en victoria</small>
-                                    <span className="fw-bold fs-4">{stats?.streak || 0} Días</span>
+                                <div className="col-12 col-sm-5 text-center mt-3 mt-sm-0">
+                                    {/* Llami Mascot Link */}
+                                    <Link href="/dashboard/llami" className="text-decoration-none group" id="tour-llami">
+                                        <div className="text-center">
+                                            <div className="hover-scale transition-all">
+                                                <LlamiMascot
+                                                    streak={stats?.streak || 0}
+                                                    lastMood={stats?.lastCheckin?.mood}
+                                                    level={stats?.mascot?.level || 1}
+                                                    name={stats?.mascot?.name}
+                                                />
+                                            </div>
+                                            <div className="badge bg-primary-subtle text-primary rounded-pill mt-1" style={{ fontSize: '0.65rem' }}>
+                                                Nivel {stats?.mascot?.level || 1}
+                                            </div>
+                                        </div>
+                                    </Link>
                                 </div>
                             </div>
-                            {/* Llami Mascot Link */}
-                            <Link href="/dashboard/llami" className="text-decoration-none group" id="tour-llami">
-                                <div className="text-center">
-                                    <div className="hover-scale transition-all">
-                                        <LlamiMascot
-                                            streak={stats?.streak || 0}
-                                            lastMood={stats?.lastCheckin?.mood}
-                                            level={stats?.mascot?.level || 1}
-                                            name={stats?.mascot?.name}
-                                        />
-                                    </div>
-                                    <div className="badge bg-primary-subtle text-primary rounded-pill mt-1" style={{ fontSize: '0.65rem' }}>
-                                        Nivel {stats?.mascot?.level || 1}
-                                    </div>
-                                </div>
-                            </Link>
                         </div>
                     </div>
                 </div>
-                <div className="col-4" id="tour-sos">
-                    <Link href="/dashboard/sos" className="card border-0 shadow-sm h-100 bg-danger text-white text-decoration-none hover-scale">
-                        <div className="card-body p-2 d-flex flex-column align-items-center justify-content-center text-center">
-                            <AlertTriangle size={36} className="mb-1 text-white" />
-                            <span className="fw-bold lh-1 mt-1">SOS</span>
+                <div className="col-12 col-md-4" id="tour-sos">
+                    <Link href="/dashboard/sos" className="card border-0 shadow-sm h-100 bg-danger text-white text-decoration-none hover-scale" style={{ borderRadius: '24px' }}>
+                        <div className="card-body p-3 d-flex flex-column align-items-center justify-content-center text-center">
+                            <AlertTriangle size={48} className="mb-2 text-white" />
+                            <h3 className="fw-bold m-0">SOS</h3>
+                            <small className="opacity-75">Ayuda inmediata</small>
                         </div>
                     </Link>
                 </div>

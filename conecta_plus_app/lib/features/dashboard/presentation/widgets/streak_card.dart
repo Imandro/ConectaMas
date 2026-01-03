@@ -18,7 +18,6 @@ class StreakCard extends ConsumerStatefulWidget {
 }
 
 class _StreakCardState extends ConsumerState<StreakCard> {
-  static const int _streakDays = 10;
   final Random _rng = Random();
 
   Timer? _showTimer;
@@ -106,7 +105,9 @@ class _StreakCardState extends ConsumerState<StreakCard> {
                       size: 24,
                     ),
                   ).animate().scale(
-                      delay: 200.ms, duration: 400.ms, curve: Curves.backOut),
+                      delay: 200.ms,
+                      duration: 400.ms,
+                      curve: Curves.easeOutBack),
                   const SizedBox(width: 12),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -123,7 +124,7 @@ class _StreakCardState extends ConsumerState<StreakCard> {
                       ),
                       const SizedBox(height: 2),
                       Text(
-                        '$_streakDays Días',
+                        '${mascot.streak} Días',
                         style: GoogleFonts.fredoka(
                           fontSize: 26,
                           fontWeight: FontWeight.bold,
@@ -201,7 +202,7 @@ class _StreakCardState extends ConsumerState<StreakCard> {
                         onTap: _showClickMessage,
                         child: Hero(
                           tag: 'llami_mascot',
-                          child: const LlamiMascot(streak: _streakDays)
+                          child: LlamiMascot(streak: mascot.streak)
                               .animate(
                                   onPlay: (controller) =>
                                       controller.repeat(reverse: true))

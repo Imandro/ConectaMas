@@ -5,6 +5,7 @@ class MascotState {
   final int level;
   final int experience;
   final int flamePoints;
+  final int streak;
   final bool hasSeenTutorial;
 
   MascotState({
@@ -12,6 +13,7 @@ class MascotState {
     required this.level,
     required this.experience,
     required this.flamePoints,
+    required this.streak,
     required this.hasSeenTutorial,
   });
 
@@ -20,6 +22,7 @@ class MascotState {
     int? level,
     int? experience,
     int? flamePoints,
+    int? streak,
     bool? hasSeenTutorial,
   }) {
     return MascotState(
@@ -27,6 +30,7 @@ class MascotState {
       level: level ?? this.level,
       experience: experience ?? this.experience,
       flamePoints: flamePoints ?? this.flamePoints,
+      streak: streak ?? this.streak,
       hasSeenTutorial: hasSeenTutorial ?? this.hasSeenTutorial,
     );
   }
@@ -38,6 +42,7 @@ class MascotNotifier extends StateNotifier<MascotState> {
     level: 1,
     experience: 45,
     flamePoints: 20,
+    streak: 10,
     hasSeenTutorial: false,
   ));
 

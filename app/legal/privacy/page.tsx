@@ -18,6 +18,7 @@ export default function PrivacyPolicy() {
                             <ShieldCheck size={48} className="text-primary" />
                         </div>
                         <h1 className="fw-bold text-secondary">Política de Privacidad</h1>
+                        <p className="text-muted">Tu privacidad es nuestra prioridad en <strong>Conecta+ BETA</strong>.</p>
                         <p className="text-muted">Última actualización: 26 de diciembre de 2025</p>
                     </div>
 

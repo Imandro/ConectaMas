@@ -76,7 +76,7 @@ class LandingScreen extends StatelessWidget {
                           height: 80,
                           fit: BoxFit.contain,
                           errorBuilder: (context, error, stackTrace) => Text(
-                            'Conecta+',
+                            'Conecta+ BETA',
                             style: GoogleFonts.fredoka(
                               fontSize: 40,
                               fontWeight: FontWeight.bold,
@@ -86,7 +86,6 @@ class LandingScreen extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(height: 32),
-
                       Text(
                         'No estás solo.',
                         textAlign: TextAlign.center,
@@ -108,7 +107,6 @@ class LandingScreen extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(height: 56),
-
                       SizedBox(
                         width: double.infinity,
                         child: CustomButton(
@@ -127,9 +125,7 @@ class LandingScreen extends StatelessWidget {
                           onPressed: () => context.push('/login'),
                         ),
                       ),
-                      
                       const SizedBox(height: 56),
-                      
                       const Divider(color: Color(0xFFF1F5F9)),
                       const SizedBox(height: 32),
                       Row(
@@ -144,7 +140,7 @@ class LandingScreen extends StatelessWidget {
                       ),
                       const SizedBox(height: 16),
                       Text(
-                        '© 2025 Conecta+',
+                        '© 2025 Conecta+ BETA',
                         style: GoogleFonts.fredoka(
                           fontSize: 12,
                           fontWeight: FontWeight.w500,
@@ -172,7 +168,7 @@ class _FooterLink extends StatelessWidget {
     return Text(
       text,
       style: GoogleFonts.fredoka(
-        fontSize: 14, 
+        fontSize: 14,
         color: const Color(0xFF64748B),
         fontWeight: FontWeight.w500,
       ),

@@ -58,6 +58,7 @@ export default function StrugglePlanContent({
     const [showVictory, setShowVictory] = useState(userStruggle.status === "vencido");
     const [isStarted, setIsStarted] = useState(userStruggle.isStarted);
 
+    const totalDays = plan?.days.length || 7;
     const completedDaysArray = userStruggle.completedDays ? userStruggle.completedDays.split(',').map(Number) : [];
 
     async function handleStartPlan() {
@@ -71,12 +72,12 @@ export default function StrugglePlanContent({
 
     async function handleCompleteDay(dayNum: number) {
         setCompleting(true);
-        const res = await advanceStruggleDay(userStruggle.id, dayNum);
+        const res = await advanceStruggleDay(userStruggle.id, dayNum, totalDays);
         if (res.success) {
-            if (dayNum === 7) {
+            if (dayNum === totalDays) {
                 setShowVictory(true);
             } else {
-                setSelectedDay(Math.min(dayNum + 1, 7));
+                setSelectedDay(Math.min(dayNum + 1, totalDays));
             }
         }
         setCompleting(false);
@@ -84,7 +85,7 @@ export default function StrugglePlanContent({
 
     async function handleMarkAsOvercome() {
         setCompleting(true);
-        const res = await markStruggleAsOvercome(userStruggle.id);
+        const res = await markStruggleAsOvercome(userStruggle.id, totalDays);
         if (res.success) {
             setShowVictory(true);
         }
@@ -116,22 +117,25 @@ export default function StrugglePlanContent({
                         </div>
                         <div>
                             <h1 className="fw-bold m-0 text-white display-6">{userStruggle.title}</h1>
-                            <p className="text-white-50 m-0 lead">{plan?.description || 'Plan de transformación de 7 días'}</p>
+                            <p className="text-white-50 m-0 lead">{plan?.description || `Plan de transformación de ${totalDays} días`}</p>
                         </div>
                     </div>
 
-                    {/* Timeline de Días */}
-                    <div className="d-flex justify-content-between gap-2 mt-5">
-                        {[1, 2, 3, 4, 5, 6, 7].map((d) => (
+                    {/* Timeline de Días - Ahora scrollable si hay muchos días */}
+                    <div className="d-flex gap-2 mt-5 overflow-x-auto pb-3 scrollbar-hide" style={{ scrollSnapType: 'x mandatory' }}>
+                        {Array.from({ length: totalDays }, (_, i) => i + 1).map((d) => (
                             <button
                                 key={d}
                                 onClick={() => setSelectedDay(d)}
-                                className={`flex-grow-1 border-0 rounded-4 p-2 p-md-3 transition-all position-relative`}
+                                className={`flex-shrink-0 border-0 rounded-4 p-2 p-md-3 transition-all position-relative`}
                                 style={{
+                                    width: totalDays > 7 ? '60px' : 'calc(100% / 7)',
+                                    minWidth: '60px',
                                     background: completedDaysArray.includes(d) ? '#d4af37' : (selectedDay === d ? '#3b82f6' : '#334155'),
                                     boxShadow: selectedDay === d ? '0 0 20px rgba(59, 130, 246, 0.4)' : 'none',
                                     opacity: (d > userStruggle.currentDay || !isStarted) && d !== selectedDay ? 0.4 : 1,
-                                    transform: selectedDay === d ? 'translateY(-5px)' : 'none'
+                                    transform: selectedDay === d ? 'translateY(-5px)' : 'none',
+                                    scrollSnapAlign: 'start'
                                 }}
                             >
                                 <div className="d-flex flex-column align-items-center justify-content-center h-100 gap-1">
@@ -167,7 +171,7 @@ export default function StrugglePlanContent({
                                 </div>
                                 <h1 className="fw-extrabold text-dark mb-3 display-4">¡LO HAS LOGRADO!</h1>
                                 <p className="text-muted fs-4 mb-4">
-                                    Has completado los 7 días de este plan. <br />
+                                    Has completado los {totalDays} días de este plan. <br />
                                     Tu victoria es testimonio de la gracia de Dios.
                                 </p>
                                 <Link href="/dashboard/luchas" className="btn btn-primary btn-lg rounded-pill px-5 py-3 fw-bold shadow-lg hover-scale">
@@ -186,7 +190,7 @@ export default function StrugglePlanContent({
                                 </div>
                                 <h1 className="fw-bold text-dark mb-3 display-5">¿Listo para brillar?</h1>
                                 <p className="text-muted mb-5 lead max-w-lg mx-auto">
-                                    Este es un compromiso de 7 días diseñado para fortalecer tu espíritu y darte herramientas prácticas para vencer.
+                                    Este es un compromiso de {totalDays} días diseñado para fortalecer tu espíritu y darte herramientas prácticas para vencer.
                                 </p>
                                 <button
                                     onClick={handleStartPlan}
@@ -211,7 +215,7 @@ export default function StrugglePlanContent({
                                         <BookOpen size={120} />
                                     </div>
                                     <h2 className="fw-extrabold text-dark mb-3">Día {selectedDay}: {currentPlanDay.title}</h2>
-                                    <p className="text-primary fw-bold fs-4 m-0 fst-italic">"{currentPlanDay.scripture}"</p>
+                                    <p className="text-primary fw-bold fs-4 m-0 fst-italic">&quot;{currentPlanDay.scripture}&quot;</p>
                                 </div>
 
                                 <div className="row g-4 mb-5">

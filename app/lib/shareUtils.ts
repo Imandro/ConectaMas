@@ -41,7 +41,7 @@ export function shareDevotional(devotional: {
 }) {
     return shareContent({
         title: `📖 ${devotional.title}`,
-        text: `"${devotional.bibleVerse}" - ${devotional.bibleReference}\n\nLee este devocional completo en Conecta+`,
+        text: `"${devotional.bibleVerse}" - ${devotional.bibleReference}\n\nLee este devocional completo en Conecta+ BETA`,
         url: window.location.href
     });
 }
@@ -55,7 +55,7 @@ export function shareBibleVerse(verse: {
 }) {
     return shareContent({
         title: `✝️ ${verse.reference}`,
-        text: `"${verse.text}"\n\nDescubre más en Conecta+`,
+        text: `"${verse.text}"\n\nDescubre más en Conecta+ BETA`,
     });
 }
 

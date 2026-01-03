@@ -35,7 +35,7 @@ export default function SupportFundingAd() {
                         </div>
                     </div>
                     <div>
-                        <h5 className="fw-bold m-0 text-white">Sustenta Conecta+ Premium</h5>
+                        <h5 className="fw-bold m-0 text-white">Sustenta Conecta+ BETA Premium</h5>
                         <p className="small text-white-50 m-0">Aporta tu granito de arena por solo $1 al mes</p>
                     </div>
                 </div>

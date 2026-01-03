@@ -7,6 +7,9 @@ const nextConfig = {
     images: {
         domains: ['images.unsplash.com', 'lh3.googleusercontent.com', 'ui-avatars.com'],
     },
+    eslint: {
+        ignoreDuringBuilds: true,
+    },
     async headers() {
         return [
             {

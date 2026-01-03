@@ -13,13 +13,27 @@ export default async function LuchasPage() {
 
     const userId = (session.user as any).id;
 
-    const struggles = await prisma.userStruggle.findMany({
+    const prismaAny = prisma as any;
+    const struggles = await prismaAny.userStruggle.findMany({
         where: { userId },
         orderBy: { updatedAt: 'desc' }
     });
 
+    const plans = await prismaAny.strugglePlan.findMany({
+        include: { days: { select: { id: true } } }
+    });
+
+    // Attach totalDays to each struggle based on matching plan title
+    const strugglesWithTotalDays = struggles.map(s => {
+        const plan = plans.find((p: any) => p.title.toLowerCase().includes(s.title.toLowerCase()) || s.title.toLowerCase().includes(p.title.toLowerCase()));
+        return {
+            ...s,
+            totalDays: plan?.days?.length || 7
+        };
+    });
+
     // Serialize Dates to strings for Client Component compatibility
-    const serializableStruggles = JSON.parse(JSON.stringify(struggles));
+    const serializableStruggles = JSON.parse(JSON.stringify(strugglesWithTotalDays));
 
     return (
         <div className="container py-4 min-vh-100 animate-fade-in">

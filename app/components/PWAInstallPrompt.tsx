@@ -46,7 +46,7 @@ export default function PWAInstallPrompt() {
                     <div className="d-flex align-items-center justify-content-between p-3 border-bottom bg-primary text-white">
                         <div className="d-flex align-items-center gap-2">
                             <img src="/logo.png" alt="Logo" width="32" height="32" className="rounded" />
-                            <h6 className="mb-0 fw-bold">Instalar Conecta+</h6>
+                            <h6 className="mb-0 fw-bold">Instalar Conecta+ BETA</h6>
                         </div>
                         <button onClick={handleDismiss} className="btn btn-link p-0 text-white">
                             <X size={20} />
@@ -56,7 +56,7 @@ export default function PWAInstallPrompt() {
                     {/* Content */}
                     <div className="p-4">
                         <p className="small text-muted mb-4">
-                            Usa Conecta+ como una aplicación real en tu teléfono: sin barras de navegación y con acceso rápido.
+                            Usa Conecta+ BETA como una aplicación real en tu teléfono: sin barras de navegación y con acceso rápido.
                         </p>
 
                         {platform === "ios" ? (
@@ -76,7 +76,7 @@ export default function PWAInstallPrompt() {
                                     </div>
                                     <div>
                                         <p className="mb-1 small fw-bold">2. Agregar al inicio</p>
-                                        <p className="mb-0 x-small text-muted">Presiona "Agregar a la pantalla de inicio".</p>
+                                        <p className="mb-0 x-small text-muted">Presiona &quot;Agregar a la pantalla de inicio&quot;.</p>
                                     </div>
                                 </div>
                             </div>
@@ -97,7 +97,7 @@ export default function PWAInstallPrompt() {
                                     </div>
                                     <div>
                                         <p className="mb-1 small fw-bold">2. Instalar aplicación</p>
-                                        <p className="mb-0 x-small text-muted">Selecciona "Instalar aplicación" o "Agregar a pantalla de inicio".</p>
+                                        <p className="mb-0 x-small text-muted">Selecciona &quot;Instalar aplicación&quot; o &quot;Agregar a pantalla de inicio&quot;.</p>
                                     </div>
                                 </div>
                             </div>
@@ -116,7 +116,7 @@ export default function PWAInstallPrompt() {
                 </div>
             </div>
 
-            <style jsx>{`
+            <style>{`
                 @keyframes slideUp {
                     from { transform: translateY(100%); }
                     to { transform: translateY(0); }

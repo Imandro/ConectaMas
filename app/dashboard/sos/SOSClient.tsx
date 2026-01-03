@@ -11,11 +11,18 @@ interface SOSClientProps {
     leaderPhone: string | null;
 }
 
+interface Song {
+    id: string;
+    title: string;
+    artist: string;
+    url: string;
+    category: string;
+}
+
 export default function SOSClient({ leaderPhone }: SOSClientProps) {
-    const [showContent, setShowContent] = useState(false);
     const [showTruths, setShowTruths] = useState(false);
     const [showMusic, setShowMusic] = useState(false);
-    const [songs, setSongs] = useState<any[]>([]);
+    const [songs, setSongs] = useState<Song[]>([]);
     const [randomTruths, setRandomTruths] = useState<string[]>([]);
     const [showUploadModal, setShowUploadModal] = useState(false);
     const [showPrayer, setShowPrayer] = useState(false);
@@ -63,11 +70,9 @@ export default function SOSClient({ leaderPhone }: SOSClientProps) {
     };
 
     useEffect(() => {
-        const timer = setTimeout(() => setShowContent(true), 500);
         seedSongsAction().then(res => {
             fetchSongs();
         });
-        return () => clearTimeout(timer);
     }, []);
 
     const stopMusic = () => {
@@ -99,6 +104,17 @@ export default function SOSClient({ leaderPhone }: SOSClientProps) {
                             <div className="text-start">
                                 <span className="d-block fw-bold">Leer una promesa</span>
                                 <small className="opacity-75">Rompe la mentira con verdad</small>
+                            </div>
+                        </button>
+
+                        <button
+                            onClick={handleShowPrayer}
+                            className="btn bg-white btn-lg shadow-sm text-primary d-flex align-items-center justify-content-start gap-3 p-3 hover-scale transition-all"
+                        >
+                            <BookHeart size={24} className="text-info" />
+                            <div className="text-start">
+                                <span className="d-block fw-bold">Oración de Emergencia</span>
+                                <small className="opacity-75">Habla con tu Padre ahora</small>
                             </div>
                         </button>
 
@@ -187,7 +203,7 @@ export default function SOSClient({ leaderPhone }: SOSClientProps) {
                             <h3 className="fw-bold mb-4 d-flex align-items-center gap-2 text-white"><BookHeart size={28} /> Oración de Emergencia</h3>
                             <div className="bg-white bg-opacity-10 p-4 rounded-4 border border-white-25 mb-4">
                                 <p className="lh-lg fw-medium fs-5 text-white m-0 text-center" style={{ fontStyle: 'italic' }}>
-                                    "{currentPrayer}"
+                                    &quot;{currentPrayer}&quot;
                                 </p>
                             </div>
                             <button

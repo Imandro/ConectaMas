@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import '../../../../config/theme.dart';
 import '../data/announcements_provider.dart';
 import 'widgets/streak_card.dart';
@@ -49,50 +50,69 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         child: ListView(
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
           children: [
-             // 1. Header
-             const DashboardHeader(),
-             const SizedBox(height: 24),
+            // 1. Header
+            const DashboardHeader()
+                .animate()
+                .fadeIn(duration: 400.ms)
+                .slideY(begin: -0.1),
+            const SizedBox(height: 24),
 
-             // 2. Versículo del día
-             const DailyVerse(),
-             const SizedBox(height: 12),
-             
-             // 3. Row: Streak and SOS
-             const IntrinsicHeight(
-               child: Row(
-                 crossAxisAlignment: CrossAxisAlignment.stretch,
-                 children: [
-                   Expanded(
-                     flex: 2,
-                     child: StreakCard(),
-                   ),
-                   SizedBox(width: 16),
-                   Expanded(
-                     flex: 1,
-                     child: SOSCard(),
-                   ),
-                 ],
-               ),
-             ),
-             const SizedBox(height: 24),
+            // 2. Versículo del día
+            const DailyVerse()
+                .animate()
+                .fadeIn(delay: 100.ms, duration: 400.ms)
+                .slideY(begin: 0.1),
+            const SizedBox(height: 12),
 
-             // 4. Mi Seguimiento
-             const StruggleSummary(),
-             const SizedBox(height: 24),
+            // 3. Row: Streak and SOS
+            const IntrinsicHeight(
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Expanded(
+                    flex: 2,
+                    child: StreakCard(),
+                  ),
+                  SizedBox(width: 16),
+                  Expanded(
+                    flex: 1,
+                    child: SOSCard(),
+                  ),
+                ],
+              ),
+            ).animate().fadeIn(delay: 200.ms, duration: 400.ms).scale(
+                begin: const Offset(0.95, 0.95), curve: Curves.easeOutBack),
+            const SizedBox(height: 24),
 
-             // 5. Social Media Cards
-             const SocialMediaCards(),
-             const SizedBox(height: 24),
-             
-             // 6. Daily Prayer
-             const PrayerCard(),
-             const SizedBox(height: 32),
+            // 4. Mi Seguimiento
+            const StruggleSummary()
+                .animate()
+                .fadeIn(delay: 300.ms, duration: 400.ms)
+                .slideY(begin: 0.1),
+            const SizedBox(height: 24),
 
-             // 7. Donation / Support Card
-             const DonationCard(),
-             
-             // Final spacing for navbar
-             const SizedBox(height: 120),
+            // 5. Social Media Cards
+            const SocialMediaCards()
+                .animate()
+                .fadeIn(delay: 400.ms, duration: 400.ms)
+                .slideY(begin: 0.1),
+            const SizedBox(height: 24),
+
+            // 6. Daily Prayer
+            const PrayerCard()
+                .animate()
+                .fadeIn(delay: 500.ms, duration: 400.ms)
+                .slideY(begin: 0.1),
+            const SizedBox(height: 32),
+
+            // 7. Donation / Support Card
+            const DonationCard()
+                .animate()
+                .fadeIn(delay: 600.ms, duration: 400.ms)
+                .slideY(begin: 0.1),
+
+            // Final spacing for navbar
+            const SizedBox(height: 120),
           ],
         ),
       ),

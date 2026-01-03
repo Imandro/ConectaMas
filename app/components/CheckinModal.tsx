@@ -65,12 +65,16 @@ export default function CheckinModal({ hasCheckedIn, onCheckin, isLoading }: Che
                     </div>
 
                     {/* Content */}
-                    <div className="p-4">
+                    <div className="p-4" style={{ overflowX: 'hidden', overflowY: 'hidden' }}>
                         <p className="text-center text-secondary mb-4 small">
                             Comparte cómo te sientes. Dios está contigo en cada momento.
                         </p>
 
-                        <div className="d-flex justify-content-around mb-3">
+                        <div className="d-flex justify-content-center flex-wrap gap-2 mb-4" style={{ 
+                            msOverflowStyle: 'none', 
+                            scrollbarWidth: 'none',
+                            WebkitOverflowScrolling: 'touch'
+                        }}>
                             {[
                                 { emoji: '😔', label: 'Triste' },
                                 { emoji: '😐', label: 'Normal' },
@@ -82,11 +86,11 @@ export default function CheckinModal({ hasCheckedIn, onCheckin, isLoading }: Che
                                     key={idx}
                                     onClick={() => handleMoodSelect(mood.emoji)}
                                     disabled={isLoading}
-                                    className="btn btn-light rounded-4 p-3 shadow-sm border-0 hover-scale transition-all d-flex flex-column align-items-center gap-1"
-                                    style={{ width: '70px' }}
+                                    className="btn btn-light rounded-4 p-2 p-sm-3 shadow-sm border-0 hover-scale transition-all d-flex flex-column align-items-center gap-1"
+                                    style={{ width: '68px', flexShrink: 0 }}
                                 >
-                                    <span className="fs-1">{mood.emoji}</span>
-                                    <small className="text-muted" style={{ fontSize: '0.65rem' }}>{mood.label}</small>
+                                    <span className="fs-2">{mood.emoji}</span>
+                                    <small className="text-muted fw-medium" style={{ fontSize: '0.6rem' }}>{mood.label}</small>
                                 </button>
                             ))}
                         </div>

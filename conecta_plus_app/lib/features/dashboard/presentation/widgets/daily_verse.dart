@@ -141,7 +141,7 @@ class DailyVerse extends StatelessWidget {
               bottom: 16,
               right: 20,
               child: Text(
-                'Conecta+',
+                'Conecta+ BETA',
                 style: GoogleFonts.fredoka(
                   color: Colors.white.withValues(alpha: 0.25),
                   fontSize: 14,

@@ -12,7 +12,7 @@ class FriendsScreen extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
-        title: const Text('Comunidad Conecta+', style: TextStyle(color: AppTheme.primary, fontWeight: FontWeight.bold)),
+        title: const Text('Comunidad Conecta+ BETA', style: TextStyle(color: AppTheme.primary, fontWeight: FontWeight.bold)),
         leading: IconButton(icon: const Icon(Icons.arrow_back, color: AppTheme.primary), onPressed: () => context.pop()),
       ),
       body: ListView(

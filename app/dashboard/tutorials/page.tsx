@@ -77,8 +77,8 @@ export default function TutorialHub() {
         <div className="container-fluid py-4 min-vh-100 bg-light">
             {/* Header */}
             <header className="mb-5">
-                <h1 className="display-6 fw-bold text-secondary mb-2">Centro de Aprendizaje</h1>
-                <p className="text-muted">Todo lo que necesitas saber para dominar Conecta+ y crecer en tu fe.</p>
+                <h1 className="display-6 fw-bold text-secondary mb-2">Guías Conecta+ BETA</h1>
+                <p className="text-muted">Todo lo que necesitas saber para dominar Conecta+ BETA y crecer en tu fe.</p>
             </header>
 
             {/* Featured Tutorial */}

@@ -89,7 +89,7 @@ class DonationCard extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'Sustenta Conecta+ Premium',
+                              'Sustenta Conecta+ BETA Premium',
                               style: GoogleFonts.fredoka(
                                 fontSize: 20,
                                 fontWeight: FontWeight.bold,

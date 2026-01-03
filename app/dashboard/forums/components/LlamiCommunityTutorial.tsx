@@ -92,7 +92,7 @@ export default function LlamiCommunityTutorial({ onComplete }: LlamiCommunityTut
                         </div>
                         <h2 className="fw-bold text-white mb-3">¡Estás listo!</h2>
                         <p className="text-white-50 mb-4">
-                            Tu voz importa. Gracias por ser parte de Conecta+.
+                            Tu voz importa. Gracias por ser parte de Conecta+ BETA.
                             <br />¡Que comience la conversación!
                         </p>
 

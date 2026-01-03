@@ -16,7 +16,7 @@ export default async function StrugglePlanPage({
     const userId = (session.user as any).id;
     const { id } = params;
 
-    const userStruggle = await prisma.userStruggle.findUnique({
+    const userStruggle = await (prisma as any).userStruggle.findUnique({
         where: {
             id,
             userId

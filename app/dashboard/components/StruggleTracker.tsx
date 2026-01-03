@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { CheckCircle2, Plus, ShieldAlert, Trophy, X, ChevronRight, Target } from "lucide-react";
+import { Plus, ShieldAlert, Trophy, X, ChevronRight } from "lucide-react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { createStruggle } from "../actions";
@@ -11,10 +11,11 @@ interface Struggle {
     id: string;
     title: string;
     status: string; // "ACTIVE" | "vencido"
-    startDate: Date;
+    startDate: string | Date;
     currentDay: number;
     completedDays: string;
     isStarted: boolean;
+    totalDays?: number; // Added dynamic total days
 }
 
 export default function StruggleTracker({
@@ -37,14 +38,15 @@ export default function StruggleTracker({
 
         const res = await createStruggle(newStruggleTitle);
         if (res.success && res.struggle) {
-            setStruggles(prev => [res.struggle as any, ...prev]);
+            setStruggles(prev => [res.struggle as Struggle, ...prev]);
             setIsAdding(false);
             setNewStruggleTitle("");
         }
     };
 
     const renderStruggleCard = (struggle: Struggle, isAvailable: boolean = false) => {
-        const progress = (struggle.currentDay / 7) * 100;
+        const totalDays = struggle.totalDays || 7;
+        const progress = (struggle.currentDay / totalDays) * 100;
         return (
             <Link
                 key={struggle.id}
@@ -58,7 +60,7 @@ export default function StruggleTracker({
                             {isAvailable ? (
                                 <div className="badge bg-warning-subtle text-warning rounded-pill">Plan por iniciar</div>
                             ) : (
-                                <div className="badge bg-primary rounded-pill">Día {struggle.currentDay} / 7</div>
+                                <div className="badge bg-primary rounded-pill">Día {struggle.currentDay} / {totalDays}</div>
                             )}
                             <span className="text-muted small">Ver apartado</span>
                         </div>

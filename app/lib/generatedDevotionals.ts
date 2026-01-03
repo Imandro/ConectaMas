@@ -21,7 +21,7 @@ export const generatedDevotionals = [
             "Comparte este versículo o una palabra de ánimo con alguien que sepas que lo necesita."
         ],
         "prayer": "Señor, gracias por tu palabra. Ayúdame a vivir con la paz de Dios hoy. Que Filipenses 4:13 sea mi guía y fortaleza. En el nombre de Jesús, Amén.",
-        "author": "Equipo Conecta+"
+        "author": "Equipo Conecta+ BETA"
     },
     {
         "id": "101",
@@ -45,7 +45,7 @@ export const generatedDevotionals = [
             "Comparte este versículo o una palabra de ánimo con alguien que sepas que lo necesita."
         ],
         "prayer": "Señor, gracias por tu palabra. Ayúdame a vivir con la fe hoy. Que Salmos 23:1 sea mi guía y fortaleza. En el nombre de Jesús, Amén.",
-        "author": "Equipo Conecta+"
+        "author": "Equipo Conecta+ BETA"
     },
     {
         "id": "102",
@@ -69,7 +69,7 @@ export const generatedDevotionals = [
             "Comparte este versículo o una palabra de ánimo con alguien que sepas que lo necesita."
         ],
         "prayer": "Señor, gracias por tu palabra. Ayúdame a vivir con el amor hoy. Que Juan 3:16 sea mi guía y fortaleza. En el nombre de Jesús, Amén.",
-        "author": "Equipo Conecta+"
+        "author": "Equipo Conecta+ BETA"
     },
     {
         "id": "103",
@@ -93,7 +93,7 @@ export const generatedDevotionals = [
             "Comparte este versículo o una palabra de ánimo con alguien que sepas que lo necesita."
         ],
         "prayer": "Señor, gracias por tu palabra. Ayúdame a vivir con la esperanza hoy. Que Jeremías 29:11 sea mi guía y fortaleza. En el nombre de Jesús, Amén.",
-        "author": "Equipo Conecta+"
+        "author": "Equipo Conecta+ BETA"
     },
     {
         "id": "104",
@@ -117,7 +117,7 @@ export const generatedDevotionals = [
             "Comparte este versículo o una palabra de ánimo con alguien que sepas que lo necesita."
         ],
         "prayer": "Señor, gracias por tu palabra. Ayúdame a vivir con tu propósito hoy. Que Isaías 41:10 sea mi guía y fortaleza. En el nombre de Jesús, Amén.",
-        "author": "Equipo Conecta+"
+        "author": "Equipo Conecta+ BETA"
     },
     {
         "id": "105",
@@ -141,7 +141,7 @@ export const generatedDevotionals = [
             "Comparte este versículo o una palabra de ánimo con alguien que sepas que lo necesita."
         ],
         "prayer": "Señor, gracias por tu palabra. Ayúdame a vivir con el perdón hoy. Que Proverbios 3:5 sea mi guía y fortaleza. En el nombre de Jesús, Amén.",
-        "author": "Equipo Conecta+"
+        "author": "Equipo Conecta+ BETA"
     },
     {
         "id": "106",
@@ -165,7 +165,7 @@ export const generatedDevotionals = [
             "Comparte este versículo o una palabra de ánimo con alguien que sepas que lo necesita."
         ],
         "prayer": "Señor, gracias por tu palabra. Ayúdame a vivir con la paz hoy. Que Mateo 11:28 sea mi guía y fortaleza. En el nombre de Jesús, Amén.",
-        "author": "Equipo Conecta+"
+        "author": "Equipo Conecta+ BETA"
     },
     {
         "id": "107",
@@ -189,7 +189,7 @@ export const generatedDevotionals = [
             "Comparte este versículo o una palabra de ánimo con alguien que sepas que lo necesita."
         ],
         "prayer": "Señor, gracias por tu palabra. Ayúdame a vivir con la fortaleza hoy. Que Romanos 8:28 sea mi guía y fortaleza. En el nombre de Jesús, Amén.",
-        "author": "Equipo Conecta+"
+        "author": "Equipo Conecta+ BETA"
     },
     {
         "id": "108",
@@ -213,7 +213,7 @@ export const generatedDevotionals = [
             "Comparte este versículo o una palabra de ánimo con alguien que sepas que lo necesita."
         ],
         "prayer": "Señor, gracias por tu palabra. Ayúdame a vivir con la oración hoy. Que Josué 1:9 sea mi guía y fortaleza. En el nombre de Jesús, Amén.",
-        "author": "Equipo Conecta+"
+        "author": "Equipo Conecta+ BETA"
     },
     {
         "id": "109",
@@ -237,7 +237,7 @@ export const generatedDevotionals = [
             "Comparte este versículo o una palabra de ánimo con alguien que sepas que lo necesita."
         ],
         "prayer": "Señor, gracias por tu palabra. Ayúdame a vivir con la gratitud hoy. Que Salmos 46:1 sea mi guía y fortaleza. En el nombre de Jesús, Amén.",
-        "author": "Equipo Conecta+"
+        "author": "Equipo Conecta+ BETA"
     },
     {
         "id": "110",
@@ -261,7 +261,7 @@ export const generatedDevotionals = [
             "Comparte este versículo o una palabra de ánimo con alguien que sepas que lo necesita."
         ],
         "prayer": "Señor, gracias por tu palabra. Ayúdame a vivir con la paz de Dios hoy. Que Filipenses 4:13 sea mi guía y fortaleza. En el nombre de Jesús, Amén.",
-        "author": "Equipo Conecta+"
+        "author": "Equipo Conecta+ BETA"
     },
     {
         "id": "111",
@@ -285,7 +285,7 @@ export const generatedDevotionals = [
             "Comparte este versículo o una palabra de ánimo con alguien que sepas que lo necesita."
         ],
         "prayer": "Señor, gracias por tu palabra. Ayúdame a vivir con la fe hoy. Que Salmos 23:1 sea mi guía y fortaleza. En el nombre de Jesús, Amén.",
-        "author": "Equipo Conecta+"
+        "author": "Equipo Conecta+ BETA"
     },
     {
         "id": "112",
@@ -309,7 +309,7 @@ export const generatedDevotionals = [
             "Comparte este versículo o una palabra de ánimo con alguien que sepas que lo necesita."
         ],
         "prayer": "Señor, gracias por tu palabra. Ayúdame a vivir con el amor hoy. Que Juan 3:16 sea mi guía y fortaleza. En el nombre de Jesús, Amén.",
-        "author": "Equipo Conecta+"
+        "author": "Equipo Conecta+ BETA"
     },
     {
         "id": "113",
@@ -333,7 +333,7 @@ export const generatedDevotionals = [
             "Comparte este versículo o una palabra de ánimo con alguien que sepas que lo necesita."
         ],
         "prayer": "Señor, gracias por tu palabra. Ayúdame a vivir con la esperanza hoy. Que Jeremías 29:11 sea mi guía y fortaleza. En el nombre de Jesús, Amén.",
-        "author": "Equipo Conecta+"
+        "author": "Equipo Conecta+ BETA"
     },
     {
         "id": "114",
@@ -357,7 +357,7 @@ export const generatedDevotionals = [
             "Comparte este versículo o una palabra de ánimo con alguien que sepas que lo necesita."
         ],
         "prayer": "Señor, gracias por tu palabra. Ayúdame a vivir con tu propósito hoy. Que Isaías 41:10 sea mi guía y fortaleza. En el nombre de Jesús, Amén.",
-        "author": "Equipo Conecta+"
+        "author": "Equipo Conecta+ BETA"
     },
     {
         "id": "115",
@@ -381,7 +381,7 @@ export const generatedDevotionals = [
             "Comparte este versículo o una palabra de ánimo con alguien que sepas que lo necesita."
         ],
         "prayer": "Señor, gracias por tu palabra. Ayúdame a vivir con el perdón hoy. Que Proverbios 3:5 sea mi guía y fortaleza. En el nombre de Jesús, Amén.",
-        "author": "Equipo Conecta+"
+        "author": "Equipo Conecta+ BETA"
     },
     {
         "id": "116",
@@ -405,7 +405,7 @@ export const generatedDevotionals = [
             "Comparte este versículo o una palabra de ánimo con alguien que sepas que lo necesita."
         ],
         "prayer": "Señor, gracias por tu palabra. Ayúdame a vivir con la paz hoy. Que Mateo 11:28 sea mi guía y fortaleza. En el nombre de Jesús, Amén.",
-        "author": "Equipo Conecta+"
+        "author": "Equipo Conecta+ BETA"
     },
     {
         "id": "117",
@@ -429,7 +429,7 @@ export const generatedDevotionals = [
             "Comparte este versículo o una palabra de ánimo con alguien que sepas que lo necesita."
         ],
         "prayer": "Señor, gracias por tu palabra. Ayúdame a vivir con la fortaleza hoy. Que Romanos 8:28 sea mi guía y fortaleza. En el nombre de Jesús, Amén.",
-        "author": "Equipo Conecta+"
+        "author": "Equipo Conecta+ BETA"
     },
     {
         "id": "118",
@@ -453,7 +453,7 @@ export const generatedDevotionals = [
             "Comparte este versículo o una palabra de ánimo con alguien que sepas que lo necesita."
         ],
         "prayer": "Señor, gracias por tu palabra. Ayúdame a vivir con la oración hoy. Que Josué 1:9 sea mi guía y fortaleza. En el nombre de Jesús, Amén.",
-        "author": "Equipo Conecta+"
+        "author": "Equipo Conecta+ BETA"
     },
     {
         "id": "119",
@@ -477,7 +477,7 @@ export const generatedDevotionals = [
             "Comparte este versículo o una palabra de ánimo con alguien que sepas que lo necesita."
         ],
         "prayer": "Señor, gracias por tu palabra. Ayúdame a vivir con la gratitud hoy. Que Salmos 46:1 sea mi guía y fortaleza. En el nombre de Jesús, Amén.",
-        "author": "Equipo Conecta+"
+        "author": "Equipo Conecta+ BETA"
     },
     {
         "id": "120",
@@ -501,7 +501,7 @@ export const generatedDevotionals = [
             "Comparte este versículo o una palabra de ánimo con alguien que sepas que lo necesita."
         ],
         "prayer": "Señor, gracias por tu palabra. Ayúdame a vivir con la paz de Dios hoy. Que Filipenses 4:13 sea mi guía y fortaleza. En el nombre de Jesús, Amén.",
-        "author": "Equipo Conecta+"
+        "author": "Equipo Conecta+ BETA"
     },
     {
         "id": "121",
@@ -525,7 +525,7 @@ export const generatedDevotionals = [
             "Comparte este versículo o una palabra de ánimo con alguien que sepas que lo necesita."
         ],
         "prayer": "Señor, gracias por tu palabra. Ayúdame a vivir con la fe hoy. Que Salmos 23:1 sea mi guía y fortaleza. En el nombre de Jesús, Amén.",
-        "author": "Equipo Conecta+"
+        "author": "Equipo Conecta+ BETA"
     },
     {
         "id": "122",
@@ -549,7 +549,7 @@ export const generatedDevotionals = [
             "Comparte este versículo o una palabra de ánimo con alguien que sepas que lo necesita."
         ],
         "prayer": "Señor, gracias por tu palabra. Ayúdame a vivir con el amor hoy. Que Juan 3:16 sea mi guía y fortaleza. En el nombre de Jesús, Amén.",
-        "author": "Equipo Conecta+"
+        "author": "Equipo Conecta+ BETA"
     },
     {
         "id": "123",
@@ -573,7 +573,7 @@ export const generatedDevotionals = [
             "Comparte este versículo o una palabra de ánimo con alguien que sepas que lo necesita."
         ],
         "prayer": "Señor, gracias por tu palabra. Ayúdame a vivir con la esperanza hoy. Que Jeremías 29:11 sea mi guía y fortaleza. En el nombre de Jesús, Amén.",
-        "author": "Equipo Conecta+"
+        "author": "Equipo Conecta+ BETA"
     },
     {
         "id": "124",
@@ -597,7 +597,7 @@ export const generatedDevotionals = [
             "Comparte este versículo o una palabra de ánimo con alguien que sepas que lo necesita."
         ],
         "prayer": "Señor, gracias por tu palabra. Ayúdame a vivir con tu propósito hoy. Que Isaías 41:10 sea mi guía y fortaleza. En el nombre de Jesús, Amén.",
-        "author": "Equipo Conecta+"
+        "author": "Equipo Conecta+ BETA"
     },
     {
         "id": "125",
@@ -621,7 +621,7 @@ export const generatedDevotionals = [
             "Comparte este versículo o una palabra de ánimo con alguien que sepas que lo necesita."
         ],
         "prayer": "Señor, gracias por tu palabra. Ayúdame a vivir con el perdón hoy. Que Proverbios 3:5 sea mi guía y fortaleza. En el nombre de Jesús, Amén.",
-        "author": "Equipo Conecta+"
+        "author": "Equipo Conecta+ BETA"
     },
     {
         "id": "126",
@@ -645,7 +645,7 @@ export const generatedDevotionals = [
             "Comparte este versículo o una palabra de ánimo con alguien que sepas que lo necesita."
         ],
         "prayer": "Señor, gracias por tu palabra. Ayúdame a vivir con la paz hoy. Que Mateo 11:28 sea mi guía y fortaleza. En el nombre de Jesús, Amén.",
-        "author": "Equipo Conecta+"
+        "author": "Equipo Conecta+ BETA"
     },
     {
         "id": "127",
@@ -669,7 +669,7 @@ export const generatedDevotionals = [
             "Comparte este versículo o una palabra de ánimo con alguien que sepas que lo necesita."
         ],
         "prayer": "Señor, gracias por tu palabra. Ayúdame a vivir con la fortaleza hoy. Que Romanos 8:28 sea mi guía y fortaleza. En el nombre de Jesús, Amén.",
-        "author": "Equipo Conecta+"
+        "author": "Equipo Conecta+ BETA"
     },
     {
         "id": "128",
@@ -693,7 +693,7 @@ export const generatedDevotionals = [
             "Comparte este versículo o una palabra de ánimo con alguien que sepas que lo necesita."
         ],
         "prayer": "Señor, gracias por tu palabra. Ayúdame a vivir con la oración hoy. Que Josué 1:9 sea mi guía y fortaleza. En el nombre de Jesús, Amén.",
-        "author": "Equipo Conecta+"
+        "author": "Equipo Conecta+ BETA"
     },
     {
         "id": "129",
@@ -717,7 +717,7 @@ export const generatedDevotionals = [
             "Comparte este versículo o una palabra de ánimo con alguien que sepas que lo necesita."
         ],
         "prayer": "Señor, gracias por tu palabra. Ayúdame a vivir con la gratitud hoy. Que Salmos 46:1 sea mi guía y fortaleza. En el nombre de Jesús, Amén.",
-        "author": "Equipo Conecta+"
+        "author": "Equipo Conecta+ BETA"
     },
     {
         "id": "130",
@@ -741,7 +741,7 @@ export const generatedDevotionals = [
             "Comparte este versículo o una palabra de ánimo con alguien que sepas que lo necesita."
         ],
         "prayer": "Señor, gracias por tu palabra. Ayúdame a vivir con la paz de Dios hoy. Que Filipenses 4:13 sea mi guía y fortaleza. En el nombre de Jesús, Amén.",
-        "author": "Equipo Conecta+"
+        "author": "Equipo Conecta+ BETA"
     },
     {
         "id": "131",
@@ -765,7 +765,7 @@ export const generatedDevotionals = [
             "Comparte este versículo o una palabra de ánimo con alguien que sepas que lo necesita."
         ],
         "prayer": "Señor, gracias por tu palabra. Ayúdame a vivir con la fe hoy. Que Salmos 23:1 sea mi guía y fortaleza. En el nombre de Jesús, Amén.",
-        "author": "Equipo Conecta+"
+        "author": "Equipo Conecta+ BETA"
     },
     {
         "id": "132",
@@ -789,7 +789,7 @@ export const generatedDevotionals = [
             "Comparte este versículo o una palabra de ánimo con alguien que sepas que lo necesita."
         ],
         "prayer": "Señor, gracias por tu palabra. Ayúdame a vivir con el amor hoy. Que Juan 3:16 sea mi guía y fortaleza. En el nombre de Jesús, Amén.",
-        "author": "Equipo Conecta+"
+        "author": "Equipo Conecta+ BETA"
     },
     {
         "id": "133",
@@ -813,7 +813,7 @@ export const generatedDevotionals = [
             "Comparte este versículo o una palabra de ánimo con alguien que sepas que lo necesita."
         ],
         "prayer": "Señor, gracias por tu palabra. Ayúdame a vivir con la esperanza hoy. Que Jeremías 29:11 sea mi guía y fortaleza. En el nombre de Jesús, Amén.",
-        "author": "Equipo Conecta+"
+        "author": "Equipo Conecta+ BETA"
     },
     {
         "id": "134",
@@ -837,7 +837,7 @@ export const generatedDevotionals = [
             "Comparte este versículo o una palabra de ánimo con alguien que sepas que lo necesita."
         ],
         "prayer": "Señor, gracias por tu palabra. Ayúdame a vivir con tu propósito hoy. Que Isaías 41:10 sea mi guía y fortaleza. En el nombre de Jesús, Amén.",
-        "author": "Equipo Conecta+"
+        "author": "Equipo Conecta+ BETA"
     },
     {
         "id": "135",
@@ -861,7 +861,7 @@ export const generatedDevotionals = [
             "Comparte este versículo o una palabra de ánimo con alguien que sepas que lo necesita."
         ],
         "prayer": "Señor, gracias por tu palabra. Ayúdame a vivir con el perdón hoy. Que Proverbios 3:5 sea mi guía y fortaleza. En el nombre de Jesús, Amén.",
-        "author": "Equipo Conecta+"
+        "author": "Equipo Conecta+ BETA"
     },
     {
         "id": "136",
@@ -885,7 +885,7 @@ export const generatedDevotionals = [
             "Comparte este versículo o una palabra de ánimo con alguien que sepas que lo necesita."
         ],
         "prayer": "Señor, gracias por tu palabra. Ayúdame a vivir con la paz hoy. Que Mateo 11:28 sea mi guía y fortaleza. En el nombre de Jesús, Amén.",
-        "author": "Equipo Conecta+"
+        "author": "Equipo Conecta+ BETA"
     },
     {
         "id": "137",
@@ -909,7 +909,7 @@ export const generatedDevotionals = [
             "Comparte este versículo o una palabra de ánimo con alguien que sepas que lo necesita."
         ],
         "prayer": "Señor, gracias por tu palabra. Ayúdame a vivir con la fortaleza hoy. Que Romanos 8:28 sea mi guía y fortaleza. En el nombre de Jesús, Amén.",
-        "author": "Equipo Conecta+"
+        "author": "Equipo Conecta+ BETA"
     },
     {
         "id": "138",
@@ -933,7 +933,7 @@ export const generatedDevotionals = [
             "Comparte este versículo o una palabra de ánimo con alguien que sepas que lo necesita."
         ],
         "prayer": "Señor, gracias por tu palabra. Ayúdame a vivir con la oración hoy. Que Josué 1:9 sea mi guía y fortaleza. En el nombre de Jesús, Amén.",
-        "author": "Equipo Conecta+"
+        "author": "Equipo Conecta+ BETA"
     },
     {
         "id": "139",
@@ -957,7 +957,7 @@ export const generatedDevotionals = [
             "Comparte este versículo o una palabra de ánimo con alguien que sepas que lo necesita."
         ],
         "prayer": "Señor, gracias por tu palabra. Ayúdame a vivir con la gratitud hoy. Que Salmos 46:1 sea mi guía y fortaleza. En el nombre de Jesús, Amén.",
-        "author": "Equipo Conecta+"
+        "author": "Equipo Conecta+ BETA"
     },
     {
         "id": "140",
@@ -981,7 +981,7 @@ export const generatedDevotionals = [
             "Comparte este versículo o una palabra de ánimo con alguien que sepas que lo necesita."
         ],
         "prayer": "Señor, gracias por tu palabra. Ayúdame a vivir con la paz de Dios hoy. Que Filipenses 4:13 sea mi guía y fortaleza. En el nombre de Jesús, Amén.",
-        "author": "Equipo Conecta+"
+        "author": "Equipo Conecta+ BETA"
     },
     {
         "id": "141",
@@ -1005,7 +1005,7 @@ export const generatedDevotionals = [
             "Comparte este versículo o una palabra de ánimo con alguien que sepas que lo necesita."
         ],
         "prayer": "Señor, gracias por tu palabra. Ayúdame a vivir con la fe hoy. Que Salmos 23:1 sea mi guía y fortaleza. En el nombre de Jesús, Amén.",
-        "author": "Equipo Conecta+"
+        "author": "Equipo Conecta+ BETA"
     },
     {
         "id": "142",
@@ -1029,7 +1029,7 @@ export const generatedDevotionals = [
             "Comparte este versículo o una palabra de ánimo con alguien que sepas que lo necesita."
         ],
         "prayer": "Señor, gracias por tu palabra. Ayúdame a vivir con el amor hoy. Que Juan 3:16 sea mi guía y fortaleza. En el nombre de Jesús, Amén.",
-        "author": "Equipo Conecta+"
+        "author": "Equipo Conecta+ BETA"
     },
     {
         "id": "143",
@@ -1053,7 +1053,7 @@ export const generatedDevotionals = [
             "Comparte este versículo o una palabra de ánimo con alguien que sepas que lo necesita."
         ],
         "prayer": "Señor, gracias por tu palabra. Ayúdame a vivir con la esperanza hoy. Que Jeremías 29:11 sea mi guía y fortaleza. En el nombre de Jesús, Amén.",
-        "author": "Equipo Conecta+"
+        "author": "Equipo Conecta+ BETA"
     },
     {
         "id": "144",
@@ -1077,7 +1077,7 @@ export const generatedDevotionals = [
             "Comparte este versículo o una palabra de ánimo con alguien que sepas que lo necesita."
         ],
         "prayer": "Señor, gracias por tu palabra. Ayúdame a vivir con tu propósito hoy. Que Isaías 41:10 sea mi guía y fortaleza. En el nombre de Jesús, Amén.",
-        "author": "Equipo Conecta+"
+        "author": "Equipo Conecta+ BETA"
     },
     {
         "id": "145",
@@ -1101,7 +1101,7 @@ export const generatedDevotionals = [
             "Comparte este versículo o una palabra de ánimo con alguien que sepas que lo necesita."
         ],
         "prayer": "Señor, gracias por tu palabra. Ayúdame a vivir con el perdón hoy. Que Proverbios 3:5 sea mi guía y fortaleza. En el nombre de Jesús, Amén.",
-        "author": "Equipo Conecta+"
+        "author": "Equipo Conecta+ BETA"
     },
     {
         "id": "146",
@@ -1125,7 +1125,7 @@ export const generatedDevotionals = [
             "Comparte este versículo o una palabra de ánimo con alguien que sepas que lo necesita."
         ],
         "prayer": "Señor, gracias por tu palabra. Ayúdame a vivir con la paz hoy. Que Mateo 11:28 sea mi guía y fortaleza. En el nombre de Jesús, Amén.",
-        "author": "Equipo Conecta+"
+        "author": "Equipo Conecta+ BETA"
     },
     {
         "id": "147",
@@ -1149,7 +1149,7 @@ export const generatedDevotionals = [
             "Comparte este versículo o una palabra de ánimo con alguien que sepas que lo necesita."
         ],
         "prayer": "Señor, gracias por tu palabra. Ayúdame a vivir con la fortaleza hoy. Que Romanos 8:28 sea mi guía y fortaleza. En el nombre de Jesús, Amén.",
-        "author": "Equipo Conecta+"
+        "author": "Equipo Conecta+ BETA"
     },
     {
         "id": "148",
@@ -1173,7 +1173,7 @@ export const generatedDevotionals = [
             "Comparte este versículo o una palabra de ánimo con alguien que sepas que lo necesita."
         ],
         "prayer": "Señor, gracias por tu palabra. Ayúdame a vivir con la oración hoy. Que Josué 1:9 sea mi guía y fortaleza. En el nombre de Jesús, Amén.",
-        "author": "Equipo Conecta+"
+        "author": "Equipo Conecta+ BETA"
     },
     {
         "id": "149",
@@ -1197,7 +1197,7 @@ export const generatedDevotionals = [
             "Comparte este versículo o una palabra de ánimo con alguien que sepas que lo necesita."
         ],
         "prayer": "Señor, gracias por tu palabra. Ayúdame a vivir con la gratitud hoy. Que Salmos 46:1 sea mi guía y fortaleza. En el nombre de Jesús, Amén.",
-        "author": "Equipo Conecta+"
+        "author": "Equipo Conecta+ BETA"
     },
     {
         "id": "150",
@@ -1221,7 +1221,7 @@ export const generatedDevotionals = [
             "Comparte este versículo o una palabra de ánimo con alguien que sepas que lo necesita."
         ],
         "prayer": "Señor, gracias por tu palabra. Ayúdame a vivir con la paz de Dios hoy. Que Filipenses 4:13 sea mi guía y fortaleza. En el nombre de Jesús, Amén.",
-        "author": "Equipo Conecta+"
+        "author": "Equipo Conecta+ BETA"
     },
     {
         "id": "151",
@@ -1245,7 +1245,7 @@ export const generatedDevotionals = [
             "Comparte este versículo o una palabra de ánimo con alguien que sepas que lo necesita."
         ],
         "prayer": "Señor, gracias por tu palabra. Ayúdame a vivir con la fe hoy. Que Salmos 23:1 sea mi guía y fortaleza. En el nombre de Jesús, Amén.",
-        "author": "Equipo Conecta+"
+        "author": "Equipo Conecta+ BETA"
     },
     {
         "id": "152",
@@ -1269,7 +1269,7 @@ export const generatedDevotionals = [
             "Comparte este versículo o una palabra de ánimo con alguien que sepas que lo necesita."
         ],
         "prayer": "Señor, gracias por tu palabra. Ayúdame a vivir con el amor hoy. Que Juan 3:16 sea mi guía y fortaleza. En el nombre de Jesús, Amén.",
-        "author": "Equipo Conecta+"
+        "author": "Equipo Conecta+ BETA"
     },
     {
         "id": "153",
@@ -1293,7 +1293,7 @@ export const generatedDevotionals = [
             "Comparte este versículo o una palabra de ánimo con alguien que sepas que lo necesita."
         ],
         "prayer": "Señor, gracias por tu palabra. Ayúdame a vivir con la esperanza hoy. Que Jeremías 29:11 sea mi guía y fortaleza. En el nombre de Jesús, Amén.",
-        "author": "Equipo Conecta+"
+        "author": "Equipo Conecta+ BETA"
     },
     {
         "id": "154",
@@ -1317,7 +1317,7 @@ export const generatedDevotionals = [
             "Comparte este versículo o una palabra de ánimo con alguien que sepas que lo necesita."
         ],
         "prayer": "Señor, gracias por tu palabra. Ayúdame a vivir con tu propósito hoy. Que Isaías 41:10 sea mi guía y fortaleza. En el nombre de Jesús, Amén.",
-        "author": "Equipo Conecta+"
+        "author": "Equipo Conecta+ BETA"
     },
     {
         "id": "155",
@@ -1341,7 +1341,7 @@ export const generatedDevotionals = [
             "Comparte este versículo o una palabra de ánimo con alguien que sepas que lo necesita."
         ],
         "prayer": "Señor, gracias por tu palabra. Ayúdame a vivir con el perdón hoy. Que Proverbios 3:5 sea mi guía y fortaleza. En el nombre de Jesús, Amén.",
-        "author": "Equipo Conecta+"
+        "author": "Equipo Conecta+ BETA"
     },
     {
         "id": "156",
@@ -1365,7 +1365,7 @@ export const generatedDevotionals = [
             "Comparte este versículo o una palabra de ánimo con alguien que sepas que lo necesita."
         ],
         "prayer": "Señor, gracias por tu palabra. Ayúdame a vivir con la paz hoy. Que Mateo 11:28 sea mi guía y fortaleza. En el nombre de Jesús, Amén.",
-        "author": "Equipo Conecta+"
+        "author": "Equipo Conecta+ BETA"
     },
     {
         "id": "157",
@@ -1389,7 +1389,7 @@ export const generatedDevotionals = [
             "Comparte este versículo o una palabra de ánimo con alguien que sepas que lo necesita."
         ],
         "prayer": "Señor, gracias por tu palabra. Ayúdame a vivir con la fortaleza hoy. Que Romanos 8:28 sea mi guía y fortaleza. En el nombre de Jesús, Amén.",
-        "author": "Equipo Conecta+"
+        "author": "Equipo Conecta+ BETA"
     },
     {
         "id": "158",
@@ -1413,7 +1413,7 @@ export const generatedDevotionals = [
             "Comparte este versículo o una palabra de ánimo con alguien que sepas que lo necesita."
         ],
         "prayer": "Señor, gracias por tu palabra. Ayúdame a vivir con la oración hoy. Que Josué 1:9 sea mi guía y fortaleza. En el nombre de Jesús, Amén.",
-        "author": "Equipo Conecta+"
+        "author": "Equipo Conecta+ BETA"
     },
     {
         "id": "159",
@@ -1437,7 +1437,7 @@ export const generatedDevotionals = [
             "Comparte este versículo o una palabra de ánimo con alguien que sepas que lo necesita."
         ],
         "prayer": "Señor, gracias por tu palabra. Ayúdame a vivir con la gratitud hoy. Que Salmos 46:1 sea mi guía y fortaleza. En el nombre de Jesús, Amén.",
-        "author": "Equipo Conecta+"
+        "author": "Equipo Conecta+ BETA"
     },
     {
         "id": "160",
@@ -1461,7 +1461,7 @@ export const generatedDevotionals = [
             "Comparte este versículo o una palabra de ánimo con alguien que sepas que lo necesita."
         ],
         "prayer": "Señor, gracias por tu palabra. Ayúdame a vivir con la paz de Dios hoy. Que Filipenses 4:13 sea mi guía y fortaleza. En el nombre de Jesús, Amén.",
-        "author": "Equipo Conecta+"
+        "author": "Equipo Conecta+ BETA"
     },
     {
         "id": "161",
@@ -1485,7 +1485,7 @@ export const generatedDevotionals = [
             "Comparte este versículo o una palabra de ánimo con alguien que sepas que lo necesita."
         ],
         "prayer": "Señor, gracias por tu palabra. Ayúdame a vivir con la fe hoy. Que Salmos 23:1 sea mi guía y fortaleza. En el nombre de Jesús, Amén.",
-        "author": "Equipo Conecta+"
+        "author": "Equipo Conecta+ BETA"
     },
     {
         "id": "162",
@@ -1509,7 +1509,7 @@ export const generatedDevotionals = [
             "Comparte este versículo o una palabra de ánimo con alguien que sepas que lo necesita."
         ],
         "prayer": "Señor, gracias por tu palabra. Ayúdame a vivir con el amor hoy. Que Juan 3:16 sea mi guía y fortaleza. En el nombre de Jesús, Amén.",
-        "author": "Equipo Conecta+"
+        "author": "Equipo Conecta+ BETA"
     },
     {
         "id": "163",
@@ -1533,7 +1533,7 @@ export const generatedDevotionals = [
             "Comparte este versículo o una palabra de ánimo con alguien que sepas que lo necesita."
         ],
         "prayer": "Señor, gracias por tu palabra. Ayúdame a vivir con la esperanza hoy. Que Jeremías 29:11 sea mi guía y fortaleza. En el nombre de Jesús, Amén.",
-        "author": "Equipo Conecta+"
+        "author": "Equipo Conecta+ BETA"
     },
     {
         "id": "164",
@@ -1557,7 +1557,7 @@ export const generatedDevotionals = [
             "Comparte este versículo o una palabra de ánimo con alguien que sepas que lo necesita."
         ],
         "prayer": "Señor, gracias por tu palabra. Ayúdame a vivir con tu propósito hoy. Que Isaías 41:10 sea mi guía y fortaleza. En el nombre de Jesús, Amén.",
-        "author": "Equipo Conecta+"
+        "author": "Equipo Conecta+ BETA"
     },
     {
         "id": "165",
@@ -1581,7 +1581,7 @@ export const generatedDevotionals = [
             "Comparte este versículo o una palabra de ánimo con alguien que sepas que lo necesita."
         ],
         "prayer": "Señor, gracias por tu palabra. Ayúdame a vivir con el perdón hoy. Que Proverbios 3:5 sea mi guía y fortaleza. En el nombre de Jesús, Amén.",
-        "author": "Equipo Conecta+"
+        "author": "Equipo Conecta+ BETA"
     },
     {
         "id": "166",
@@ -1605,7 +1605,7 @@ export const generatedDevotionals = [
             "Comparte este versículo o una palabra de ánimo con alguien que sepas que lo necesita."
         ],
         "prayer": "Señor, gracias por tu palabra. Ayúdame a vivir con la paz hoy. Que Mateo 11:28 sea mi guía y fortaleza. En el nombre de Jesús, Amén.",
-        "author": "Equipo Conecta+"
+        "author": "Equipo Conecta+ BETA"
     },
     {
         "id": "167",
@@ -1629,7 +1629,7 @@ export const generatedDevotionals = [
             "Comparte este versículo o una palabra de ánimo con alguien que sepas que lo necesita."
         ],
         "prayer": "Señor, gracias por tu palabra. Ayúdame a vivir con la fortaleza hoy. Que Romanos 8:28 sea mi guía y fortaleza. En el nombre de Jesús, Amén.",
-        "author": "Equipo Conecta+"
+        "author": "Equipo Conecta+ BETA"
     },
     {
         "id": "168",
@@ -1653,7 +1653,7 @@ export const generatedDevotionals = [
             "Comparte este versículo o una palabra de ánimo con alguien que sepas que lo necesita."
         ],
         "prayer": "Señor, gracias por tu palabra. Ayúdame a vivir con la oración hoy. Que Josué 1:9 sea mi guía y fortaleza. En el nombre de Jesús, Amén.",
-        "author": "Equipo Conecta+"
+        "author": "Equipo Conecta+ BETA"
     },
     {
         "id": "169",
@@ -1677,7 +1677,7 @@ export const generatedDevotionals = [
             "Comparte este versículo o una palabra de ánimo con alguien que sepas que lo necesita."
         ],
         "prayer": "Señor, gracias por tu palabra. Ayúdame a vivir con la gratitud hoy. Que Salmos 46:1 sea mi guía y fortaleza. En el nombre de Jesús, Amén.",
-        "author": "Equipo Conecta+"
+        "author": "Equipo Conecta+ BETA"
     },
     {
         "id": "170",
@@ -1701,7 +1701,7 @@ export const generatedDevotionals = [
             "Comparte este versículo o una palabra de ánimo con alguien que sepas que lo necesita."
         ],
         "prayer": "Señor, gracias por tu palabra. Ayúdame a vivir con la paz de Dios hoy. Que Filipenses 4:13 sea mi guía y fortaleza. En el nombre de Jesús, Amén.",
-        "author": "Equipo Conecta+"
+        "author": "Equipo Conecta+ BETA"
     },
     {
         "id": "171",
@@ -1725,7 +1725,7 @@ export const generatedDevotionals = [
             "Comparte este versículo o una palabra de ánimo con alguien que sepas que lo necesita."
         ],
         "prayer": "Señor, gracias por tu palabra. Ayúdame a vivir con la fe hoy. Que Salmos 23:1 sea mi guía y fortaleza. En el nombre de Jesús, Amén.",
-        "author": "Equipo Conecta+"
+        "author": "Equipo Conecta+ BETA"
     },
     {
         "id": "172",
@@ -1749,7 +1749,7 @@ export const generatedDevotionals = [
             "Comparte este versículo o una palabra de ánimo con alguien que sepas que lo necesita."
         ],
         "prayer": "Señor, gracias por tu palabra. Ayúdame a vivir con el amor hoy. Que Juan 3:16 sea mi guía y fortaleza. En el nombre de Jesús, Amén.",
-        "author": "Equipo Conecta+"
+        "author": "Equipo Conecta+ BETA"
     },
     {
         "id": "173",
@@ -1773,7 +1773,7 @@ export const generatedDevotionals = [
             "Comparte este versículo o una palabra de ánimo con alguien que sepas que lo necesita."
         ],
         "prayer": "Señor, gracias por tu palabra. Ayúdame a vivir con la esperanza hoy. Que Jeremías 29:11 sea mi guía y fortaleza. En el nombre de Jesús, Amén.",
-        "author": "Equipo Conecta+"
+        "author": "Equipo Conecta+ BETA"
     },
     {
         "id": "174",
@@ -1797,7 +1797,7 @@ export const generatedDevotionals = [
             "Comparte este versículo o una palabra de ánimo con alguien que sepas que lo necesita."
         ],
         "prayer": "Señor, gracias por tu palabra. Ayúdame a vivir con tu propósito hoy. Que Isaías 41:10 sea mi guía y fortaleza. En el nombre de Jesús, Amén.",
-        "author": "Equipo Conecta+"
+        "author": "Equipo Conecta+ BETA"
     },
     {
         "id": "175",
@@ -1821,7 +1821,7 @@ export const generatedDevotionals = [
             "Comparte este versículo o una palabra de ánimo con alguien que sepas que lo necesita."
         ],
         "prayer": "Señor, gracias por tu palabra. Ayúdame a vivir con el perdón hoy. Que Proverbios 3:5 sea mi guía y fortaleza. En el nombre de Jesús, Amén.",
-        "author": "Equipo Conecta+"
+        "author": "Equipo Conecta+ BETA"
     },
     {
         "id": "176",
@@ -1845,7 +1845,7 @@ export const generatedDevotionals = [
             "Comparte este versículo o una palabra de ánimo con alguien que sepas que lo necesita."
         ],
         "prayer": "Señor, gracias por tu palabra. Ayúdame a vivir con la paz hoy. Que Mateo 11:28 sea mi guía y fortaleza. En el nombre de Jesús, Amén.",
-        "author": "Equipo Conecta+"
+        "author": "Equipo Conecta+ BETA"
     },
     {
         "id": "177",
@@ -1869,7 +1869,7 @@ export const generatedDevotionals = [
             "Comparte este versículo o una palabra de ánimo con alguien que sepas que lo necesita."
         ],
         "prayer": "Señor, gracias por tu palabra. Ayúdame a vivir con la fortaleza hoy. Que Romanos 8:28 sea mi guía y fortaleza. En el nombre de Jesús, Amén.",
-        "author": "Equipo Conecta+"
+        "author": "Equipo Conecta+ BETA"
     },
     {
         "id": "178",
@@ -1893,7 +1893,7 @@ export const generatedDevotionals = [
             "Comparte este versículo o una palabra de ánimo con alguien que sepas que lo necesita."
         ],
         "prayer": "Señor, gracias por tu palabra. Ayúdame a vivir con la oración hoy. Que Josué 1:9 sea mi guía y fortaleza. En el nombre de Jesús, Amén.",
-        "author": "Equipo Conecta+"
+        "author": "Equipo Conecta+ BETA"
     },
     {
         "id": "179",
@@ -1917,7 +1917,7 @@ export const generatedDevotionals = [
             "Comparte este versículo o una palabra de ánimo con alguien que sepas que lo necesita."
         ],
         "prayer": "Señor, gracias por tu palabra. Ayúdame a vivir con la gratitud hoy. Que Salmos 46:1 sea mi guía y fortaleza. En el nombre de Jesús, Amén.",
-        "author": "Equipo Conecta+"
+        "author": "Equipo Conecta+ BETA"
     },
     {
         "id": "180",
@@ -1941,7 +1941,7 @@ export const generatedDevotionals = [
             "Comparte este versículo o una palabra de ánimo con alguien que sepas que lo necesita."
         ],
         "prayer": "Señor, gracias por tu palabra. Ayúdame a vivir con la paz de Dios hoy. Que Filipenses 4:13 sea mi guía y fortaleza. En el nombre de Jesús, Amén.",
-        "author": "Equipo Conecta+"
+        "author": "Equipo Conecta+ BETA"
     },
     {
         "id": "181",
@@ -1965,7 +1965,7 @@ export const generatedDevotionals = [
             "Comparte este versículo o una palabra de ánimo con alguien que sepas que lo necesita."
         ],
         "prayer": "Señor, gracias por tu palabra. Ayúdame a vivir con la fe hoy. Que Salmos 23:1 sea mi guía y fortaleza. En el nombre de Jesús, Amén.",
-        "author": "Equipo Conecta+"
+        "author": "Equipo Conecta+ BETA"
     },
     {
         "id": "182",
@@ -1989,7 +1989,7 @@ export const generatedDevotionals = [
             "Comparte este versículo o una palabra de ánimo con alguien que sepas que lo necesita."
         ],
         "prayer": "Señor, gracias por tu palabra. Ayúdame a vivir con el amor hoy. Que Juan 3:16 sea mi guía y fortaleza. En el nombre de Jesús, Amén.",
-        "author": "Equipo Conecta+"
+        "author": "Equipo Conecta+ BETA"
     },
     {
         "id": "183",
@@ -2013,7 +2013,7 @@ export const generatedDevotionals = [
             "Comparte este versículo o una palabra de ánimo con alguien que sepas que lo necesita."
         ],
         "prayer": "Señor, gracias por tu palabra. Ayúdame a vivir con la esperanza hoy. Que Jeremías 29:11 sea mi guía y fortaleza. En el nombre de Jesús, Amén.",
-        "author": "Equipo Conecta+"
+        "author": "Equipo Conecta+ BETA"
     },
     {
         "id": "184",
@@ -2037,7 +2037,7 @@ export const generatedDevotionals = [
             "Comparte este versículo o una palabra de ánimo con alguien que sepas que lo necesita."
         ],
         "prayer": "Señor, gracias por tu palabra. Ayúdame a vivir con tu propósito hoy. Que Isaías 41:10 sea mi guía y fortaleza. En el nombre de Jesús, Amén.",
-        "author": "Equipo Conecta+"
+        "author": "Equipo Conecta+ BETA"
     },
     {
         "id": "185",
@@ -2061,7 +2061,7 @@ export const generatedDevotionals = [
             "Comparte este versículo o una palabra de ánimo con alguien que sepas que lo necesita."
         ],
         "prayer": "Señor, gracias por tu palabra. Ayúdame a vivir con el perdón hoy. Que Proverbios 3:5 sea mi guía y fortaleza. En el nombre de Jesús, Amén.",
-        "author": "Equipo Conecta+"
+        "author": "Equipo Conecta+ BETA"
     },
     {
         "id": "186",
@@ -2085,7 +2085,7 @@ export const generatedDevotionals = [
             "Comparte este versículo o una palabra de ánimo con alguien que sepas que lo necesita."
         ],
         "prayer": "Señor, gracias por tu palabra. Ayúdame a vivir con la paz hoy. Que Mateo 11:28 sea mi guía y fortaleza. En el nombre de Jesús, Amén.",
-        "author": "Equipo Conecta+"
+        "author": "Equipo Conecta+ BETA"
     },
     {
         "id": "187",
@@ -2109,7 +2109,7 @@ export const generatedDevotionals = [
             "Comparte este versículo o una palabra de ánimo con alguien que sepas que lo necesita."
         ],
         "prayer": "Señor, gracias por tu palabra. Ayúdame a vivir con la fortaleza hoy. Que Romanos 8:28 sea mi guía y fortaleza. En el nombre de Jesús, Amén.",
-        "author": "Equipo Conecta+"
+        "author": "Equipo Conecta+ BETA"
     },
     {
         "id": "188",
@@ -2133,7 +2133,7 @@ export const generatedDevotionals = [
             "Comparte este versículo o una palabra de ánimo con alguien que sepas que lo necesita."
         ],
         "prayer": "Señor, gracias por tu palabra. Ayúdame a vivir con la oración hoy. Que Josué 1:9 sea mi guía y fortaleza. En el nombre de Jesús, Amén.",
-        "author": "Equipo Conecta+"
+        "author": "Equipo Conecta+ BETA"
     },
     {
         "id": "189",
@@ -2157,7 +2157,7 @@ export const generatedDevotionals = [
             "Comparte este versículo o una palabra de ánimo con alguien que sepas que lo necesita."
         ],
         "prayer": "Señor, gracias por tu palabra. Ayúdame a vivir con la gratitud hoy. Que Salmos 46:1 sea mi guía y fortaleza. En el nombre de Jesús, Amén.",
-        "author": "Equipo Conecta+"
+        "author": "Equipo Conecta+ BETA"
     },
     {
         "id": "190",
@@ -2181,7 +2181,7 @@ export const generatedDevotionals = [
             "Comparte este versículo o una palabra de ánimo con alguien que sepas que lo necesita."
         ],
         "prayer": "Señor, gracias por tu palabra. Ayúdame a vivir con la paz de Dios hoy. Que Filipenses 4:13 sea mi guía y fortaleza. En el nombre de Jesús, Amén.",
-        "author": "Equipo Conecta+"
+        "author": "Equipo Conecta+ BETA"
     },
     {
         "id": "191",
@@ -2205,7 +2205,7 @@ export const generatedDevotionals = [
             "Comparte este versículo o una palabra de ánimo con alguien que sepas que lo necesita."
         ],
         "prayer": "Señor, gracias por tu palabra. Ayúdame a vivir con la fe hoy. Que Salmos 23:1 sea mi guía y fortaleza. En el nombre de Jesús, Amén.",
-        "author": "Equipo Conecta+"
+        "author": "Equipo Conecta+ BETA"
     },
     {
         "id": "192",
@@ -2229,7 +2229,7 @@ export const generatedDevotionals = [
             "Comparte este versículo o una palabra de ánimo con alguien que sepas que lo necesita."
         ],
         "prayer": "Señor, gracias por tu palabra. Ayúdame a vivir con el amor hoy. Que Juan 3:16 sea mi guía y fortaleza. En el nombre de Jesús, Amén.",
-        "author": "Equipo Conecta+"
+        "author": "Equipo Conecta+ BETA"
     },
     {
         "id": "193",
@@ -2253,7 +2253,7 @@ export const generatedDevotionals = [
             "Comparte este versículo o una palabra de ánimo con alguien que sepas que lo necesita."
         ],
         "prayer": "Señor, gracias por tu palabra. Ayúdame a vivir con la esperanza hoy. Que Jeremías 29:11 sea mi guía y fortaleza. En el nombre de Jesús, Amén.",
-        "author": "Equipo Conecta+"
+        "author": "Equipo Conecta+ BETA"
     },
     {
         "id": "194",
@@ -2277,7 +2277,7 @@ export const generatedDevotionals = [
             "Comparte este versículo o una palabra de ánimo con alguien que sepas que lo necesita."
         ],
         "prayer": "Señor, gracias por tu palabra. Ayúdame a vivir con tu propósito hoy. Que Isaías 41:10 sea mi guía y fortaleza. En el nombre de Jesús, Amén.",
-        "author": "Equipo Conecta+"
+        "author": "Equipo Conecta+ BETA"
     },
     {
         "id": "195",
@@ -2301,7 +2301,7 @@ export const generatedDevotionals = [
             "Comparte este versículo o una palabra de ánimo con alguien que sepas que lo necesita."
         ],
         "prayer": "Señor, gracias por tu palabra. Ayúdame a vivir con el perdón hoy. Que Proverbios 3:5 sea mi guía y fortaleza. En el nombre de Jesús, Amén.",
-        "author": "Equipo Conecta+"
+        "author": "Equipo Conecta+ BETA"
     },
     {
         "id": "196",
@@ -2325,7 +2325,7 @@ export const generatedDevotionals = [
             "Comparte este versículo o una palabra de ánimo con alguien que sepas que lo necesita."
         ],
         "prayer": "Señor, gracias por tu palabra. Ayúdame a vivir con la paz hoy. Que Mateo 11:28 sea mi guía y fortaleza. En el nombre de Jesús, Amén.",
-        "author": "Equipo Conecta+"
+        "author": "Equipo Conecta+ BETA"
     },
     {
         "id": "197",
@@ -2349,7 +2349,7 @@ export const generatedDevotionals = [
             "Comparte este versículo o una palabra de ánimo con alguien que sepas que lo necesita."
         ],
         "prayer": "Señor, gracias por tu palabra. Ayúdame a vivir con la fortaleza hoy. Que Romanos 8:28 sea mi guía y fortaleza. En el nombre de Jesús, Amén.",
-        "author": "Equipo Conecta+"
+        "author": "Equipo Conecta+ BETA"
     },
     {
         "id": "198",
@@ -2373,7 +2373,7 @@ export const generatedDevotionals = [
             "Comparte este versículo o una palabra de ánimo con alguien que sepas que lo necesita."
         ],
         "prayer": "Señor, gracias por tu palabra. Ayúdame a vivir con la oración hoy. Que Josué 1:9 sea mi guía y fortaleza. En el nombre de Jesús, Amén.",
-        "author": "Equipo Conecta+"
+        "author": "Equipo Conecta+ BETA"
     },
     {
         "id": "199",
@@ -2397,7 +2397,7 @@ export const generatedDevotionals = [
             "Comparte este versículo o una palabra de ánimo con alguien que sepas que lo necesita."
         ],
         "prayer": "Señor, gracias por tu palabra. Ayúdame a vivir con la gratitud hoy. Que Salmos 46:1 sea mi guía y fortaleza. En el nombre de Jesús, Amén.",
-        "author": "Equipo Conecta+"
+        "author": "Equipo Conecta+ BETA"
     },
     {
         "id": "200",
@@ -2421,7 +2421,7 @@ export const generatedDevotionals = [
             "Comparte este versículo o una palabra de ánimo con alguien que sepas que lo necesita."
         ],
         "prayer": "Señor, gracias por tu palabra. Ayúdame a vivir con la paz de Dios hoy. Que Filipenses 4:13 sea mi guía y fortaleza. En el nombre de Jesús, Amén.",
-        "author": "Equipo Conecta+"
+        "author": "Equipo Conecta+ BETA"
     },
     {
         "id": "201",
@@ -2445,7 +2445,7 @@ export const generatedDevotionals = [
             "Comparte este versículo o una palabra de ánimo con alguien que sepas que lo necesita."
         ],
         "prayer": "Señor, gracias por tu palabra. Ayúdame a vivir con la fe hoy. Que Salmos 23:1 sea mi guía y fortaleza. En el nombre de Jesús, Amén.",
-        "author": "Equipo Conecta+"
+        "author": "Equipo Conecta+ BETA"
     },
     {
         "id": "202",
@@ -2469,7 +2469,7 @@ export const generatedDevotionals = [
             "Comparte este versículo o una palabra de ánimo con alguien que sepas que lo necesita."
         ],
         "prayer": "Señor, gracias por tu palabra. Ayúdame a vivir con el amor hoy. Que Juan 3:16 sea mi guía y fortaleza. En el nombre de Jesús, Amén.",
-        "author": "Equipo Conecta+"
+        "author": "Equipo Conecta+ BETA"
     },
     {
         "id": "203",
@@ -2493,7 +2493,7 @@ export const generatedDevotionals = [
             "Comparte este versículo o una palabra de ánimo con alguien que sepas que lo necesita."
         ],
         "prayer": "Señor, gracias por tu palabra. Ayúdame a vivir con la esperanza hoy. Que Jeremías 29:11 sea mi guía y fortaleza. En el nombre de Jesús, Amén.",
-        "author": "Equipo Conecta+"
+        "author": "Equipo Conecta+ BETA"
     },
     {
         "id": "204",
@@ -2517,7 +2517,7 @@ export const generatedDevotionals = [
             "Comparte este versículo o una palabra de ánimo con alguien que sepas que lo necesita."
         ],
         "prayer": "Señor, gracias por tu palabra. Ayúdame a vivir con tu propósito hoy. Que Isaías 41:10 sea mi guía y fortaleza. En el nombre de Jesús, Amén.",
-        "author": "Equipo Conecta+"
+        "author": "Equipo Conecta+ BETA"
     },
     {
         "id": "205",
@@ -2541,7 +2541,7 @@ export const generatedDevotionals = [
             "Comparte este versículo o una palabra de ánimo con alguien que sepas que lo necesita."
         ],
         "prayer": "Señor, gracias por tu palabra. Ayúdame a vivir con el perdón hoy. Que Proverbios 3:5 sea mi guía y fortaleza. En el nombre de Jesús, Amén.",
-        "author": "Equipo Conecta+"
+        "author": "Equipo Conecta+ BETA"
     },
     {
         "id": "206",
@@ -2565,7 +2565,7 @@ export const generatedDevotionals = [
             "Comparte este versículo o una palabra de ánimo con alguien que sepas que lo necesita."
         ],
         "prayer": "Señor, gracias por tu palabra. Ayúdame a vivir con la paz hoy. Que Mateo 11:28 sea mi guía y fortaleza. En el nombre de Jesús, Amén.",
-        "author": "Equipo Conecta+"
+        "author": "Equipo Conecta+ BETA"
     },
     {
         "id": "207",
@@ -2589,7 +2589,7 @@ export const generatedDevotionals = [
             "Comparte este versículo o una palabra de ánimo con alguien que sepas que lo necesita."
         ],
         "prayer": "Señor, gracias por tu palabra. Ayúdame a vivir con la fortaleza hoy. Que Romanos 8:28 sea mi guía y fortaleza. En el nombre de Jesús, Amén.",
-        "author": "Equipo Conecta+"
+        "author": "Equipo Conecta+ BETA"
     },
     {
         "id": "208",
@@ -2613,7 +2613,7 @@ export const generatedDevotionals = [
             "Comparte este versículo o una palabra de ánimo con alguien que sepas que lo necesita."
         ],
         "prayer": "Señor, gracias por tu palabra. Ayúdame a vivir con la oración hoy. Que Josué 1:9 sea mi guía y fortaleza. En el nombre de Jesús, Amén.",
-        "author": "Equipo Conecta+"
+        "author": "Equipo Conecta+ BETA"
     },
     {
         "id": "209",
@@ -2637,6 +2637,6 @@ export const generatedDevotionals = [
             "Comparte este versículo o una palabra de ánimo con alguien que sepas que lo necesita."
         ],
         "prayer": "Señor, gracias por tu palabra. Ayúdame a vivir con la gratitud hoy. Que Salmos 46:1 sea mi guía y fortaleza. En el nombre de Jesús, Amén.",
-        "author": "Equipo Conecta+"
+        "author": "Equipo Conecta+ BETA"
     }
 ];

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import '../../../config/theme.dart';
 import '../../dashboard/data/struggle_provider.dart';
 import '../../dashboard/data/models/struggle_model.dart';
@@ -43,14 +44,17 @@ class _DevotionalsScreenState extends ConsumerState<DevotionalsScreen> {
       // If user has active struggles, prioritize those categories
       if (activeStruggleTitles.isNotEmpty) {
         recommendedDevotionals = devotionalState.devotionals.where((d) {
-          return activeStruggleTitles.any((title) => d.category.toLowerCase().contains(title) || title.contains(d.category.toLowerCase()));
+          return activeStruggleTitles.any((title) =>
+              d.category.toLowerCase().contains(title) ||
+              title.contains(d.category.toLowerCase()));
         }).toList();
       }
-      
+
       // If no matches or few matches, add default recommendations
       if (recommendedDevotionals.length < 2) {
         final additional = devotionalState.devotionals
-            .where((d) => d.isRecommended && !recommendedDevotionals.contains(d))
+            .where(
+                (d) => d.isRecommended && !recommendedDevotionals.contains(d))
             .toList();
         recommendedDevotionals.addAll(additional);
       }
@@ -58,7 +62,9 @@ class _DevotionalsScreenState extends ConsumerState<DevotionalsScreen> {
 
     final filteredDevotionals = _selectedCategory == 'Para ti'
         ? devotionalState.devotionals
-        : devotionalState.devotionals.where((d) => d.category == _selectedCategory).toList();
+        : devotionalState.devotionals
+            .where((d) => d.category == _selectedCategory)
+            .toList();
 
     return Scaffold(
       backgroundColor: const Color(0xFFF8FAFC),
@@ -78,25 +84,27 @@ class _DevotionalsScreenState extends ConsumerState<DevotionalsScreen> {
                         fontWeight: FontWeight.bold,
                         color: AppTheme.primary,
                       ),
-                    ),
+                    ).animate().fadeIn().slideX(begin: -0.1),
                     const SizedBox(height: 8),
                     Text(
                       'Alimento diario para tu espíritu.',
                       style: TextStyle(color: AppTheme.textMuted, fontSize: 16),
-                    ),
+                    ).animate().fadeIn(delay: 100.ms).slideX(begin: -0.1),
                   ],
                 ),
               ),
             ),
 
             // Recommended Section
-            if (_selectedCategory == 'Para ti' && recommendedDevotionals.isNotEmpty) ...[
+            if (_selectedCategory == 'Para ti' &&
+                recommendedDevotionals.isNotEmpty) ...[
               SliverToBoxAdapter(
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 24),
                   child: Row(
                     children: [
-                      const Icon(Icons.auto_awesome, color: AppTheme.accent, size: 20),
+                      const Icon(Icons.auto_awesome,
+                          color: AppTheme.accent, size: 20),
                       const SizedBox(width: 8),
                       Text(
                         'RECOMENDADOS PARA TI',
@@ -116,11 +124,17 @@ class _DevotionalsScreenState extends ConsumerState<DevotionalsScreen> {
                   height: 160,
                   child: ListView.builder(
                     scrollDirection: Axis.horizontal,
-                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 16, vertical: 16),
                     itemCount: recommendedDevotionals.length,
                     itemBuilder: (context, index) {
                       final dev = recommendedDevotionals[index];
-                      return _buildRecommendedCard(dev);
+                      return _buildRecommendedCard(dev)
+                          .animate()
+                          .fadeIn(delay: (200 + index * 100).ms)
+                          .scale(
+                              begin: const Offset(0.9, 0.9),
+                              curve: Curves.easeOutBack);
                     },
                   ),
                 ),
@@ -150,11 +164,16 @@ class _DevotionalsScreenState extends ConsumerState<DevotionalsScreen> {
                         selectedColor: AppTheme.primary,
                         labelStyle: TextStyle(
                           color: isSelected ? Colors.white : AppTheme.primary,
-                          fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                          fontWeight:
+                              isSelected ? FontWeight.bold : FontWeight.normal,
                         ),
                         backgroundColor: Colors.white,
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-                        side: BorderSide(color: isSelected ? AppTheme.primary : Colors.transparent),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20)),
+                        side: BorderSide(
+                            color: isSelected
+                                ? AppTheme.primary
+                                : Colors.transparent),
                       ),
                     );
                   },
@@ -169,13 +188,16 @@ class _DevotionalsScreenState extends ConsumerState<DevotionalsScreen> {
                 delegate: SliverChildBuilderDelegate(
                   (context, index) {
                     final dev = filteredDevotionals[index];
-                    return _buildDevotionalCard(dev);
+                    return _buildDevotionalCard(dev)
+                        .animate()
+                        .fadeIn(delay: (400 + index * 50).ms)
+                        .slideY(begin: 0.1);
                   },
                   childCount: filteredDevotionals.length,
                 ),
               ),
             ),
-            
+
             const SliverToBoxAdapter(child: SizedBox(height: 100)),
           ],
         ),
@@ -192,8 +214,12 @@ class _DevotionalsScreenState extends ConsumerState<DevotionalsScreen> {
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(24),
-          border: Border.all(color: AppTheme.primary.withValues(alpha: 0.1), width: 2),
-          boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.05), blurRadius: 10)],
+          border: Border.all(
+              color: AppTheme.primary.withValues(alpha: 0.1), width: 2),
+          boxShadow: [
+            BoxShadow(
+                color: Colors.black.withValues(alpha: 0.05), blurRadius: 10)
+          ],
         ),
         child: Row(
           children: [
@@ -204,7 +230,9 @@ class _DevotionalsScreenState extends ConsumerState<DevotionalsScreen> {
                   image: NetworkImage(dev.image),
                   fit: BoxFit.cover,
                 ),
-                borderRadius: const BorderRadius.only(topLeft: Radius.circular(22), bottomLeft: Radius.circular(22)),
+                borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(22),
+                    bottomLeft: Radius.circular(22)),
               ),
             ),
             Expanded(
@@ -215,14 +243,27 @@ class _DevotionalsScreenState extends ConsumerState<DevotionalsScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                      decoration: BoxDecoration(color: AppTheme.primary, borderRadius: BorderRadius.circular(12)),
-                      child: Text(dev.category, style: const TextStyle(color: Colors.white, fontSize: 10, fontWeight: FontWeight.bold)),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 8, vertical: 4),
+                      decoration: BoxDecoration(
+                          color: AppTheme.primary,
+                          borderRadius: BorderRadius.circular(12)),
+                      child: Text(dev.category,
+                          style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 10,
+                              fontWeight: FontWeight.bold)),
                     ),
                     const SizedBox(height: 8),
-                    Text(dev.title, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14), maxLines: 2, overflow: TextOverflow.ellipsis),
+                    Text(dev.title,
+                        style: const TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 14),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis),
                     const SizedBox(height: 4),
-                    Text('${dev.time} lectura', style: TextStyle(color: AppTheme.textMuted, fontSize: 11)),
+                    Text('${dev.time} lectura',
+                        style:
+                            TextStyle(color: AppTheme.textMuted, fontSize: 11)),
                   ],
                 ),
               ),
@@ -242,7 +283,10 @@ class _DevotionalsScreenState extends ConsumerState<DevotionalsScreen> {
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(24),
-          boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.03), blurRadius: 10)],
+          boxShadow: [
+            BoxShadow(
+                color: Colors.black.withValues(alpha: 0.03), blurRadius: 10)
+          ],
         ),
         child: Row(
           children: [
@@ -266,21 +310,36 @@ class _DevotionalsScreenState extends ConsumerState<DevotionalsScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                        decoration: BoxDecoration(color: Colors.grey.shade100, borderRadius: BorderRadius.circular(12)),
-                        child: Text(dev.category, style: TextStyle(color: AppTheme.textMuted, fontSize: 10, fontWeight: FontWeight.bold)),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 10, vertical: 4),
+                        decoration: BoxDecoration(
+                            color: Colors.grey.shade100,
+                            borderRadius: BorderRadius.circular(12)),
+                        child: Text(dev.category,
+                            style: TextStyle(
+                                color: AppTheme.textMuted,
+                                fontSize: 10,
+                                fontWeight: FontWeight.bold)),
                       ),
-                      const Icon(Icons.favorite_border, size: 18, color: Colors.grey),
+                      const Icon(Icons.favorite_border,
+                          size: 18, color: Colors.grey),
                     ],
                   ),
                   const SizedBox(height: 8),
-                  Text(dev.title, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16, height: 1.2)),
+                  Text(dev.title,
+                      style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                          height: 1.2)),
                   const SizedBox(height: 12),
                   Row(
                     children: [
-                      const Icon(Icons.access_time, size: 14, color: Colors.grey),
+                      const Icon(Icons.access_time,
+                          size: 14, color: Colors.grey),
                       const SizedBox(width: 4),
-                      Text('${dev.time} lectura', style: const TextStyle(color: Colors.grey, fontSize: 12)),
+                      Text('${dev.time} lectura',
+                          style: const TextStyle(
+                              color: Colors.grey, fontSize: 12)),
                     ],
                   ),
                 ],

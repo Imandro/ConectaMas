@@ -6,7 +6,7 @@ final tutorialsProvider = Provider<List<TutorialModel>>((ref) {
     TutorialModel(
       id: 'install',
       title: 'Instalación PWA',
-      description: 'Cómo instalar Conecta+ en tu pantalla de inicio como una App real.',
+      description: 'Cómo instalar Conecta+ BETA en tu pantalla de inicio como una App real.',
       category: 'Esencial',
       iconName: 'download',
       colorHex: '0B1B32',

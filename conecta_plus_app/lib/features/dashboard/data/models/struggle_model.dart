@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 enum StruggleStatus {
   active,
   vencido,
@@ -103,14 +101,21 @@ class Struggle {
       id: json['id'],
       title: json['title'],
       description: json['description'] ?? '',
-      status: json['status'] == 'vencido' ? StruggleStatus.vencido : StruggleStatus.active,
+      status: json['status'] == 'vencido'
+          ? StruggleStatus.vencido
+          : StruggleStatus.active,
       currentDay: json['currentDay'] ?? 1,
-      completedDays: json['completedDays'] != null 
-          ? (json['completedDays'] as String).split(',').where((s) => s.isNotEmpty).map(int.parse).toList()
+      completedDays: json['completedDays'] != null
+          ? (json['completedDays'] as String)
+              .split(',')
+              .where((s) => s.isNotEmpty)
+              .map(int.parse)
+              .toList()
           : [],
       isStarted: json['isStarted'] ?? false,
-      startDate: json['startDate'] != null ? DateTime.parse(json['startDate']) : null,
-      days: json['days'] != null 
+      startDate:
+          json['startDate'] != null ? DateTime.parse(json['startDate']) : null,
+      days: json['days'] != null
           ? (json['days'] as List).map((d) => StruggleDay.fromJson(d)).toList()
           : [],
     );

@@ -14,13 +14,13 @@ const fredoka = Fredoka({
 });
 
 export const metadata: Metadata = {
-    title: 'Conecta+ | Acompañamiento Espiritual',
+    title: 'Conecta+ BETA | Acompañamiento Espiritual',
     description: 'No estás solo. Dios sigue contigo. Una app para crecer y sanar.',
     manifest: '/manifest.json', // Para PWA
     appleWebApp: {
         capable: true,
         statusBarStyle: 'default',
-        title: 'Conecta+',
+        title: 'Conecta+ BETA',
     },
     formatDetection: {
         telephone: false,

@@ -37,7 +37,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       return;
     }
 
-    final success = await ref.read(authProvider.notifier).login(identifier, password);
+    final success =
+        await ref.read(authProvider.notifier).login(identifier, password);
 
     if (success && mounted) {
       context.go('/dashboard');
@@ -81,23 +82,38 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       Center(
                         child: Column(
                           children: [
-                            Image.asset('assets/images/logo.png', height: 60, fit: BoxFit.contain, errorBuilder: (c, e, s) => const Icon(Icons.flash_on, color: AppTheme.primary, size: 60)),
+                            Image.asset('assets/images/logo.png',
+                                height: 60,
+                                fit: BoxFit.contain,
+                                errorBuilder: (c, e, s) => const Icon(
+                                    Icons.flash_on,
+                                    color: AppTheme.primary,
+                                    size: 60)),
                             const SizedBox(height: 32),
                             Text(
                               'Bienvenido de nuevo',
-                              style: GoogleFonts.fredoka(fontSize: 28, fontWeight: FontWeight.bold, color: AppTheme.primary),
+                              style: GoogleFonts.fredoka(
+                                  fontSize: 28,
+                                  fontWeight: FontWeight.bold,
+                                  color: AppTheme.primary),
                             ),
                             const SizedBox(height: 8),
                             Text(
                               'Ingresa para continuar tu camino.',
-                              style: GoogleFonts.fredoka(color: const Color(0xFF64748B), fontSize: 16, fontWeight: FontWeight.w500),
+                              style: GoogleFonts.fredoka(
+                                  color: const Color(0xFF64748B),
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500),
                             ),
                           ],
                         ),
                       ),
                       const SizedBox(height: 48),
-
-                      Text('  Email o Usuario', style: GoogleFonts.fredoka(fontWeight: FontWeight.bold, fontSize: 14, color: AppTheme.primary)),
+                      Text('  Email o Usuario',
+                          style: GoogleFonts.fredoka(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 14,
+                              color: AppTheme.primary)),
                       const SizedBox(height: 8),
                       CustomInputField(
                         label: 'Email o Usuario',
@@ -105,8 +121,11 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         controller: _identifierController,
                       ),
                       const SizedBox(height: 24),
-
-                      Text('  Contraseña', style: GoogleFonts.fredoka(fontWeight: FontWeight.bold, fontSize: 14, color: AppTheme.primary)),
+                      Text('  Contraseña',
+                          style: GoogleFonts.fredoka(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 14,
+                              color: AppTheme.primary)),
                       const SizedBox(height: 8),
                       CustomInputField(
                         label: 'Contraseña',
@@ -114,11 +133,15 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         controller: _passwordController,
                         obscureText: !_showPassword,
                         suffixIcon: IconButton(
-                          icon: Icon(_showPassword ? Icons.visibility_off : Icons.visibility, color: const Color(0xFF94A3B8)),
-                          onPressed: () => setState(() => _showPassword = !_showPassword),
+                          icon: Icon(
+                              _showPassword
+                                  ? Icons.visibility_off
+                                  : Icons.visibility,
+                              color: const Color(0xFF94A3B8)),
+                          onPressed: () =>
+                              setState(() => _showPassword = !_showPassword),
                         ),
                       ),
-                      
                       const SizedBox(height: 12),
                       Align(
                         alignment: Alignment.centerRight,
@@ -126,35 +149,44 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                           onPressed: () {},
                           child: Text(
                             '¿Olvidaste tu contraseña?',
-                            style: GoogleFonts.fredoka(color: const Color(0xFF64748B), fontSize: 14, fontWeight: FontWeight.w500),
+                            style: GoogleFonts.fredoka(
+                                color: const Color(0xFF64748B),
+                                fontSize: 14,
+                                fontWeight: FontWeight.w500),
                           ),
                         ),
                       ),
                       const SizedBox(height: 32),
-
                       SizedBox(
                         width: double.infinity,
                         child: CustomButton(
-                          text: authState.isLoading ? 'Cargando...' : 'Iniciar Sesión',
+                          text: authState.isLoading
+                              ? 'Cargando...'
+                              : 'Iniciar Sesión',
                           backgroundColor: AppTheme.accent,
                           textColor: AppTheme.primary,
                           onPressed: authState.isLoading ? null : _handleLogin,
                         ),
                       ),
                       const SizedBox(height: 32),
-
                       const Divider(color: Color(0xFFF1F5F9)),
                       const SizedBox(height: 16),
                       Center(
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Text('¿No tienes cuenta? ', style: GoogleFonts.fredoka(color: const Color(0xFF64748B), fontSize: 15)),
+                            Text('¿No tienes cuenta? ',
+                                style: GoogleFonts.fredoka(
+                                    color: const Color(0xFF64748B),
+                                    fontSize: 15)),
                             GestureDetector(
                               onTap: () => context.push('/register'),
                               child: Text(
                                 'Regístrate aquí',
-                                style: GoogleFonts.fredoka(color: AppTheme.primary, fontWeight: FontWeight.bold, fontSize: 15),
+                                style: GoogleFonts.fredoka(
+                                    color: AppTheme.primary,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 15),
                               ),
                             ),
                           ],
@@ -165,9 +197,12 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 ),
                 const SizedBox(height: 40),
                 Text(
-                  '© 2025 Conecta+\nTu espacio seguro.',
+                  '© 2025 Conecta+ BETA\nTu espacio seguro.',
                   textAlign: TextAlign.center,
-                  style: GoogleFonts.fredoka(color: const Color(0xFF94A3B8), fontSize: 13, fontWeight: FontWeight.w500),
+                  style: GoogleFonts.fredoka(
+                      color: const Color(0xFF94A3B8),
+                      fontSize: 13,
+                      fontWeight: FontWeight.w500),
                 ),
               ],
             ),

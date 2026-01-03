@@ -30,7 +30,7 @@ export async function getStrugglePlan(title: string) {
     }
 }
 
-export async function advanceStruggleDay(userStruggleId: string, completedDay: number) {
+export async function advanceStruggleDay(userStruggleId: string, completedDay: number, totalDays: number = 7) {
     try {
         const session = await auth();
         if (!session?.user) throw new Error("Unauthorized");
@@ -42,13 +42,13 @@ export async function advanceStruggleDay(userStruggleId: string, completedDay: n
         if (!userStruggle) throw new Error("Struggle not found");
 
         // Update completed days string (comma separated)
-        let completedDaysArray = userStruggle.completedDays ? userStruggle.completedDays.split(',') : [];
+        let completedDaysArray = userStruggle.completedDays ? userStruggle.completedDays.split(',').filter(Boolean) : [];
         if (!completedDaysArray.includes(completedDay.toString())) {
             completedDaysArray.push(completedDay.toString());
         }
 
         // Calculate next currentDay
-        const nextDay = Math.min(completedDay + 1, 7);
+        const nextDay = Math.min(completedDay + 1, totalDays);
 
         const updated = await prismaAny.userStruggle.update({
             where: { id: userStruggleId },
@@ -67,7 +67,7 @@ export async function advanceStruggleDay(userStruggleId: string, completedDay: n
     }
 }
 
-export async function markStruggleAsOvercome(userStruggleId: string) {
+export async function markStruggleAsOvercome(userStruggleId: string, totalDays: number = 7) {
     try {
         const session = await auth();
         if (!session?.user) throw new Error("Unauthorized");
@@ -76,7 +76,7 @@ export async function markStruggleAsOvercome(userStruggleId: string) {
             where: { id: userStruggleId },
             data: {
                 status: "vencido",
-                currentDay: 7 // Ensure it's marked as finished
+                currentDay: totalDays // Ensure it's marked as finished
             }
         });
 

@@ -74,13 +74,13 @@ export default function RegisterPage() {
                     <div className="position-relative" style={{ width: '120px', height: '50px', margin: '0 auto' }}>
                         <Image
                             src="/logo.png"
-                            alt="Conecta+ Logo"
+                            alt="Conecta+ BETA Logo"
                             fill
                             style={{ objectFit: 'contain' }}
                         />
                     </div>
                 </Link>
-                <h3 className="fw-bold text-secondary">Únete a Conecta+</h3>
+                <h3 className="fw-bold text-secondary">Únete a Conecta+ BETA</h3>
                 <p className="text-muted small">Tu viaje hacia la libertad comienza hoy.</p>
             </div>
 

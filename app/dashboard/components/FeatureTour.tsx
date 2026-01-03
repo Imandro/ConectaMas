@@ -26,8 +26,8 @@ interface TourStep {
 const tourSteps: TourStep[] = [
     {
         targetId: 'install-step', // Virtual ID for installation
-        title: 'Instala Conecta+',
-        content: 'Usa Conecta+ como una App real en tu teléfono. Tendrás acceso más rápido y una mejor experiencia.',
+        title: 'Instala Conecta+ BETA',
+        content: 'Usa Conecta+ BETA como una App real en tu teléfono. Tendrás acceso más rápido y una mejor experiencia.',
         icon: <Download className="text-primary" size={24} />
     },
     {
