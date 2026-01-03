@@ -159,29 +159,29 @@ export default function DashboardHome() {
             </section>
 
             {/* Estado y SOS con Llami */}
-            <section className="row g-3 mb-4">
-                <div className="col-12 col-md-7">
-                    <div className="card border-0 shadow-sm h-100 bg-white overflow-visible" style={{ borderRadius: '32px' }}>
-                        <div className="card-body p-4">
+            <section className="row g-2 mb-4">
+                <div className="col-7">
+                    <div className="card border-0 shadow-sm h-100 bg-white overflow-visible" style={{ borderRadius: '24px' }}>
+                        <div className="card-body p-3">
                             <div className="row align-items-between h-100">
                                 <div className="col-7 d-flex flex-column justify-content-center">
-                                    <p className="text-muted fw-bold mb-3" style={{ fontSize: '1.2rem', color: '#94A3B8' }}>Días en victoria</p>
+                                    <p className="text-muted fw-bold mb-1" style={{ fontSize: '0.8rem', color: '#94A3B8' }}>Días en victoria</p>
 
-                                    <div className="d-flex align-items-center gap-3">
-                                        <div className="bg-success-subtle text-success p-2 rounded-circle d-flex align-items-center justify-content-center" style={{ width: '48px', height: '48px' }}>
-                                            <Sun size={28} />
+                                    <div className="d-flex align-items-center gap-1">
+                                        <div className="bg-success-subtle text-success p-1 rounded-circle d-flex align-items-center justify-content-center" style={{ width: '32px', height: '32px' }}>
+                                            <Sun size={20} />
                                         </div>
-                                        <span className="fw-black text-dark" style={{ fontSize: '3.5rem', lineHeight: '1' }}>{stats?.streak || 10}</span>
+                                        <span className="fw-black text-dark" style={{ fontSize: '2.5rem', lineHeight: '1' }}>{stats?.streak || 10}</span>
                                     </div>
 
-                                    <h2 className="fw-black text-dark mt-1" style={{ fontSize: '2.5rem', marginLeft: '60px' }}>Días</h2>
+                                    <h2 className="fw-black text-dark m-0" style={{ fontSize: '1.8rem', marginLeft: '35px' }}>Días</h2>
                                 </div>
                                 <div className="col-5 text-center position-relative d-flex flex-column align-items-center justify-content-center">
                                     {/* Llami Mascot Link with Speech Bubble */}
-                                    <Link href="/dashboard/llami" className="text-decoration-none group mb-2">
+                                    <Link href="/dashboard/llami" className="text-decoration-none group mb-1">
                                         <div className="position-relative d-inline-block">
                                             <div className="hover-scale transition-all">
-                                                <div className="bg-warning-subtle rounded-circle p-3" style={{ width: '140px', height: '140px' }}>
+                                                <div className="bg-warning-subtle rounded-circle p-2" style={{ width: '100px', height: '100px' }}>
                                                     <LlamiMascot
                                                         streak={stats?.streak || 10}
                                                         lastMood={stats?.lastCheckin?.mood}
@@ -200,13 +200,13 @@ export default function DashboardHome() {
                         </div>
                     </div>
                 </div>
-                <div className="col-12 col-md-5">
-                    <Link href="/dashboard/sos" className="card border-0 shadow-sm h-100 bg-danger text-white text-decoration-none hover-scale overflow-hidden" style={{ borderRadius: '32px' }}>
-                        <div className="card-body p-4 d-flex flex-column align-items-center justify-content-center text-center">
-                            <div className="bg-white bg-opacity-20 p-4 rounded-4 mb-3">
-                                <AlertTriangle size={80} className="text-white" />
+                <div className="col-5">
+                    <Link href="/dashboard/sos" className="card border-0 shadow-sm h-100 bg-danger text-white text-decoration-none hover-scale overflow-hidden" style={{ borderRadius: '24px' }}>
+                        <div className="card-body p-3 d-flex flex-column align-items-center justify-content-center text-center">
+                            <div className="bg-white bg-opacity-20 p-3 rounded-4 mb-2">
+                                <ShieldAlert size={40} className="text-white" />
                             </div>
-                            <h1 className="fw-black m-0" style={{ fontSize: '3.5rem' }}>SOS</h1>
+                            <h1 className="fw-black m-0" style={{ fontSize: '2.5rem' }}>SOS</h1>
                         </div>
                     </Link>
                 </div>

@@ -11,6 +11,7 @@ const categories = ['Para ti', 'Ansiedad', 'Identidad', 'Integridad', 'Fe', 'Rel
 export default function DevotionalsPage() {
     const [selectedCategory, setSelectedCategory] = useState('Para ti');
     const [recommendedDevotionals, setRecommendedDevotionals] = useState<any[]>([]);
+    const [selectedGroup, setSelectedGroup] = useState<any | null>(null);
 
     // Safe session hook - may be undefined during build
     let session;
@@ -141,7 +142,7 @@ export default function DevotionalsPage() {
                             return (
                                 <div key={`group-${idx}`} className="col-12 col-md-6">
                                     <div className="card border-0 shadow-sm hover-scale h-100 cursor-pointer"
-                                        data-bs-toggle="modal" data-bs-target={`#modal-${idx}`}>
+                                        onClick={() => setSelectedGroup(item)}>
                                         <div className="d-flex h-100">
                                             <div className="bg-primary-subtle text-primary rounded-start py-5 px-4 d-flex align-items-center justify-content-center" style={{ width: '100px' }}>
                                                 <BookOpen size={32} />
@@ -152,44 +153,6 @@ export default function DevotionalsPage() {
                                             </div>
                                             <div className="d-flex align-items-center px-3 text-muted">
                                                 <ChevronRight size={20} />
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    {/* Series Modal */}
-                                    <div className="modal fade" id={`modal-${idx}`} tabIndex={-1} aria-hidden="true">
-                                        <div className="modal-dialog modal-dialog-centered">
-                                            <div className="modal-content rounded-5 border-0 shadow">
-                                                <div className="modal-header border-0 pb-0">
-                                                    <h5 className="modal-title fw-bold">{item.name}</h5>
-                                                    <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                </div>
-                                                <div className="modal-body p-4">
-                                                    <p className="text-muted small mb-4">Selecciona un día para continuar:</p>
-                                                    <div className="list-group gap-2">
-                                                        {item.devotionals.map((dev: any, dIdx: number) => (
-                                                            <Link
-                                                                key={dev.id}
-                                                                href={`/dashboard/devotionals/${dev.id}`}
-                                                                className="list-group-item list-group-item-action border-0 rounded-4 bg-light d-flex align-items-center justify-content-between p-3"
-                                                                onClick={() => {
-                                                                    // Close modal manually if needed, usually Link does it or BS does it
-                                                                    const modal = document.getElementById(`modal-${idx}`);
-                                                                    if (modal) {
-                                                                        const bsModal = (window as any).bootstrap?.Modal.getInstance(modal);
-                                                                        bsModal?.hide();
-                                                                    }
-                                                                }}
-                                                            >
-                                                                <div className="d-flex align-items-center gap-3">
-                                                                    <span className="badge bg-primary rounded-circle d-flex align-items-center justify-content-center p-0" style={{ width: '24px', height: '24px' }}>{dIdx + 1}</span>
-                                                                    <span className="fw-bold text-dark">{dev.title}</span>
-                                                                </div>
-                                                                <ChevronRight size={16} className="text-muted" />
-                                                            </Link>
-                                                        ))}
-                                                    </div>
-                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -230,6 +193,40 @@ export default function DevotionalsPage() {
                     </div>
                 )}
             </div>
+
+            {/* Custom React Modal for Groups */}
+            {selectedGroup && (
+                <div className="position-fixed top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center p-3 animate-fade-in" style={{ zIndex: 1050, backgroundColor: 'rgba(0,0,0,0.5)', backdropFilter: 'blur(4px)' }}>
+                    <div className="bg-white rounded-5 shadow-lg w-100 overflow-hidden" style={{ maxWidth: '500px' }}>
+                        <div className="p-4 border-bottom d-flex justify-content-between align-items-center bg-light">
+                            <h5 className="fw-bold m-0 text-primary">{selectedGroup.name}</h5>
+                            <button onClick={() => setSelectedGroup(null)} className="btn-close"></button>
+                        </div>
+                        <div className="p-4" style={{ maxHeight: '70vh', overflowY: 'auto' }}>
+                            <p className="text-muted small mb-3">Selecciona un día para continuar:</p>
+                            <div className="list-group gap-2">
+                                {selectedGroup.devotionals.map((dev: any, dIdx: number) => (
+                                    <Link
+                                        key={dev.id}
+                                        href={`/dashboard/devotionals/${dev.id}`}
+                                        className="list-group-item list-group-item-action border-0 rounded-4 bg-light d-flex align-items-center justify-content-between p-3"
+                                        onClick={() => setSelectedGroup(null)}
+                                    >
+                                        <div className="d-flex align-items-center gap-3">
+                                            <span className="badge bg-primary rounded-circle d-flex align-items-center justify-content-center p-0" style={{ width: '24px', height: '24px' }}>{dIdx + 1}</span>
+                                            <span className="fw-bold text-dark">{dev.title}</span>
+                                        </div>
+                                        <ChevronRight size={16} className="text-muted" />
+                                    </Link>
+                                ))}
+                            </div>
+                        </div>
+                        <div className="p-3 text-center bg-light">
+                            <button onClick={() => setSelectedGroup(null)} className="btn btn-primary rounded-pill px-4">Cerrar</button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }
