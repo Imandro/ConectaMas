@@ -41,3 +41,6 @@ next-env.d.ts
 conecta-plus-debug.apk
 android/app/build/
 android/.gradle/
+conecta_plus_app/android/.gradle/
+conecta_plus_app/android/.kotlin/
+conecta_plus_app/build/
