@@ -176,7 +176,7 @@ export default function DashboardHome() {
 
                                     <h2 className="fw-black text-dark m-0" style={{ fontSize: '1.8rem', marginLeft: '35px' }}>Días</h2>
                                 </div>
-                                <div className="col-5 text-center position-relative d-flex flex-column align-items-center justify-content-center">
+                                <div className="col-5 text-center position-relative d-flex flex-column align-items-center justify-content-center pe-3">
                                     {/* Llami Mascot Link with Speech Bubble */}
                                     <Link href="/dashboard/llami" className="text-decoration-none group mb-1">
                                         <div className="position-relative d-inline-block">
@@ -202,11 +202,11 @@ export default function DashboardHome() {
                 </div>
                 <div className="col-5">
                     <Link href="/dashboard/sos" className="card border-0 shadow-sm h-100 bg-danger text-white text-decoration-none hover-scale overflow-hidden" style={{ borderRadius: '24px' }}>
-                        <div className="card-body p-3 d-flex flex-column align-items-center justify-content-center text-center">
-                            <div className="bg-white bg-opacity-20 p-2 rounded-4 mb-2 d-flex align-items-center justify-content-center" style={{ width: '80px', height: '80px' }}>
-                                <Shield size={56} className="text-white" fill="currentColor" fillOpacity={0.15} />
+                        <div className="card-body p-2 d-flex flex-column align-items-center justify-content-center text-center">
+                            <div className="mb-2 d-flex align-items-center justify-content-center">
+                                <Shield size={72} className="text-white" fill="white" fillOpacity={0.2} />
                             </div>
-                            <h1 className="fw-black m-0" style={{ fontSize: '2.5rem' }}>SOS</h1>
+                            <h1 className="fw-black m-0" style={{ fontSize: '2.5rem', letterSpacing: '-1px' }}>SOS</h1>
                         </div>
                     </Link>
                 </div>
