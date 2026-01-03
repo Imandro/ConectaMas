@@ -105,7 +105,7 @@ export default function LlamiMascot({ streak, lastMood, level = 1, forceStage, n
     }
 
     return (
-        <div className="position-relative d-inline-block text-center" style={{ width: "100px", height: "120px" }}>
+        <div className="position-relative d-flex align-items-center justify-content-center text-center" style={{ width: "100%", height: "100%" }}>
 
             <AnimatePresence>
                 {showMessage && (
@@ -134,8 +134,8 @@ export default function LlamiMascot({ streak, lastMood, level = 1, forceStage, n
                 whileTap={{ scale: 0.92 }}
                 animate={{ y: [0, -4, 0] }}
                 transition={{ y: { duration: 2, repeat: Infinity, ease: "easeInOut" } }}
-                className="cursor-pointer mx-auto position-relative"
-                style={{ width: "90px", height: "90px", marginTop: "8px" }}
+                className="cursor-pointer mx-auto position-relative d-flex align-items-center justify-content-center"
+                style={{ width: "85px", height: "85px" }}
             >
                 <svg viewBox="0 0 100 100" className="w-100 h-100 drop-shadow-lg overflow-visible">
                     <defs>

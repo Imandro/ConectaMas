@@ -1,7 +1,7 @@
 "use client";
 
 import Link from 'next/link';
-import { Sun, AlertTriangle, Loader2, HelpCircle, ChevronRight, ShieldAlert, Users } from 'lucide-react';
+import { Sun, AlertTriangle, Loader2, HelpCircle, ChevronRight, Shield, Users } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import DailyVerse from './components/DailyVerse';
 import DailyPrayerCard from '../components/DailyPrayerCard';
@@ -203,8 +203,8 @@ export default function DashboardHome() {
                 <div className="col-5">
                     <Link href="/dashboard/sos" className="card border-0 shadow-sm h-100 bg-danger text-white text-decoration-none hover-scale overflow-hidden" style={{ borderRadius: '24px' }}>
                         <div className="card-body p-3 d-flex flex-column align-items-center justify-content-center text-center">
-                            <div className="bg-white bg-opacity-20 p-3 rounded-4 mb-2">
-                                <ShieldAlert size={40} className="text-white" />
+                            <div className="bg-white bg-opacity-20 p-2 rounded-4 mb-2 d-flex align-items-center justify-content-center" style={{ width: '80px', height: '80px' }}>
+                                <Shield size={56} className="text-white" fill="currentColor" fillOpacity={0.15} />
                             </div>
                             <h1 className="fw-black m-0" style={{ fontSize: '2.5rem' }}>SOS</h1>
                         </div>
@@ -220,7 +220,7 @@ export default function DashboardHome() {
                             <div className="d-flex align-items-center justify-content-between mb-3">
                                 <div className="d-flex align-items-center gap-3">
                                     <div className="bg-primary-subtle text-primary p-3 rounded-4">
-                                        <ShieldAlert size={28} />
+                                        <Shield size={28} />
                                     </div>
                                     <div>
                                         <h5 className="fw-extrabold text-secondary m-0">Mi Seguimiento</h5>
