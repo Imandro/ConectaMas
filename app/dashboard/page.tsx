@@ -8,6 +8,7 @@ import DailyPrayerCard from '../components/DailyPrayerCard';
 import LlamiMascot from '../components/LlamiMascot';
 import FeatureTour from './components/FeatureTour';
 import AgePrompt from './components/AgePrompt';
+import ChallengeCard from './components/ChallengeCard';
 
 import SupportFundingAd from './components/SupportFundingAd';
 import SupportAdModal from './components/SupportAdModal';
@@ -145,9 +146,16 @@ export default function DashboardHome() {
                 </div>
             </header>
 
+
+
             {/* Versículo del día */}
             <section className="mb-4" id="tour-verse">
                 <DailyVerse />
+            </section>
+
+            {/* Nuevo: Reto Diario Estilo Duolingo */}
+            <section className="mb-4">
+                <ChallengeCard />
             </section>
 
             {/* Estado y SOS con Llami */}
@@ -155,43 +163,38 @@ export default function DashboardHome() {
                 <div className="col-12 col-md-7">
                     <div className="card border-0 shadow-sm h-100 bg-white overflow-visible" style={{ borderRadius: '32px' }}>
                         <div className="card-body p-4">
-                            <div className="row align-items-center">
-                                <div className="col-7">
-                                    <div className="d-flex align-items-center gap-3 mb-2">
-                                        <div className="bg-success-subtle text-success p-2 rounded-circle">
-                                            <Sun size={32} />
+                            <div className="row align-items-between h-100">
+                                <div className="col-7 d-flex flex-column justify-content-center">
+                                    <p className="text-muted fw-bold mb-3" style={{ fontSize: '1.2rem', color: '#94A3B8' }}>Días en victoria</p>
+
+                                    <div className="d-flex align-items-center gap-3">
+                                        <div className="bg-success-subtle text-success p-2 rounded-circle d-flex align-items-center justify-content-center" style={{ width: '48px', height: '48px' }}>
+                                            <Sun size={28} />
                                         </div>
-                                        <div>
-                                            <p className="text-muted fw-bold m-0" style={{ fontSize: '1.1rem' }}>Días en victoria</p>
-                                        </div>
+                                        <span className="fw-black text-dark" style={{ fontSize: '3.5rem', lineHeight: '1' }}>{stats?.streak || 10}</span>
                                     </div>
-                                    <div className="ps-1">
-                                        <span className="fw-black text-dark" style={{ fontSize: '3rem', lineHeight: '1' }}>{stats?.streak || 10}</span>
-                                        <h2 className="fw-black text-dark m-0" style={{ fontSize: '2.5rem' }}>Días</h2>
-                                    </div>
-                                    <div className="mt-2">
-                                        <span className="badge bg-secondary-subtle text-dark rounded-pill px-3 py-1 fw-bold">Nivel {stats?.mascot?.level || 2}</span>
-                                    </div>
+
+                                    <h2 className="fw-black text-dark mt-1" style={{ fontSize: '2.5rem', marginLeft: '60px' }}>Días</h2>
                                 </div>
-                                <div className="col-5 text-center position-relative">
+                                <div className="col-5 text-center position-relative d-flex flex-column align-items-center justify-content-center">
                                     {/* Llami Mascot Link with Speech Bubble */}
-                                    <Link href="/dashboard/llami" className="text-decoration-none group">
+                                    <Link href="/dashboard/llami" className="text-decoration-none group mb-2">
                                         <div className="position-relative d-inline-block">
                                             {/* Static Speech Bubble to match photo */}
                                             <div className="position-absolute bottom-100 start-50 translate-middle-x mb-4" style={{ width: '160px', zIndex: 10 }}>
                                                 <div className="bg-white rounded-4 shadow-sm p-2 border border-3 border-warning position-relative">
                                                     <p className="text-dark mb-0 fw-black text-center lh-sm" style={{ fontSize: '0.85rem' }}>
-                                                        ¡Mira cómo creces!<br/>Estoy orgulloso de ti
+                                                        ¡Mira cómo creces!<br />Estoy orgulloso de ti
                                                     </p>
-                                                    <div className="position-absolute top-100 start-50 translate-middle-x" 
+                                                    <div className="position-absolute top-100 start-50 translate-middle-x"
                                                         style={{ width: 0, height: 0, borderLeft: '10px solid transparent', borderRight: '10px solid transparent', borderTop: '10px solid #FFC107', marginTop: '-1px' }}>
                                                     </div>
-                                                    <div className="position-absolute top-100 start-50 translate-middle-x" 
+                                                    <div className="position-absolute top-100 start-50 translate-middle-x"
                                                         style={{ width: 0, height: 0, borderLeft: '7px solid transparent', borderRight: '7px solid transparent', borderTop: '7px solid white', marginTop: '-4px' }}>
                                                     </div>
                                                 </div>
                                             </div>
-                                            
+
                                             <div className="hover-scale transition-all">
                                                 <div className="bg-warning-subtle rounded-circle p-3" style={{ width: '140px', height: '140px' }}>
                                                     <LlamiMascot
@@ -204,6 +207,9 @@ export default function DashboardHome() {
                                             </div>
                                         </div>
                                     </Link>
+                                    <div className="mt-1">
+                                        <span className="badge bg-secondary-subtle text-dark rounded-pill px-3 py-1 fw-bold">Nivel {stats?.mascot?.level || 2}</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -212,10 +218,10 @@ export default function DashboardHome() {
                 <div className="col-12 col-md-5">
                     <Link href="/dashboard/sos" className="card border-0 shadow-sm h-100 bg-danger text-white text-decoration-none hover-scale overflow-hidden" style={{ borderRadius: '32px' }}>
                         <div className="card-body p-4 d-flex flex-column align-items-center justify-content-center text-center">
-                            <div className="bg-white bg-opacity-20 p-3 rounded-4 mb-3">
-                                <AlertTriangle size={64} className="text-white" />
+                            <div className="bg-white bg-opacity-20 p-4 rounded-4 mb-3">
+                                <AlertTriangle size={80} className="text-white" />
                             </div>
-                            <h1 className="fw-black m-0" style={{ fontSize: '3rem' }}>SOS</h1>
+                            <h1 className="fw-black m-0" style={{ fontSize: '3.5rem' }}>SOS</h1>
                         </div>
                     </Link>
                 </div>

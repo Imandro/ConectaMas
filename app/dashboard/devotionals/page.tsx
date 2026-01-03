@@ -1,7 +1,7 @@
 "use client";
 
 import Link from 'next/link';
-import { Clock, BookOpen, Heart, Sparkles } from 'lucide-react';
+import { Clock, BookOpen, Heart, Sparkles, ChevronRight } from 'lucide-react';
 import { devotionalsData } from '@/app/lib/devotionalsData';
 import { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
@@ -55,6 +55,34 @@ export default function DevotionalsPage() {
         ? devotionalsData
         : devotionalsData.filter(dev => dev.category === selectedCategory);
 
+    const getGroupName = (title: string) => {
+        if (title.includes(':')) return title.split(':')[0].trim();
+        const regex = /\s+D[íi]a\s+/i;
+        if (regex.test(title)) return title.split(regex)[0].trim();
+        return title;
+    };
+
+    const groupedDevs: Record<string, any[]> = {};
+    const displayItems: any[] = [];
+
+    filteredDevotionals.forEach(dev => {
+        const groupName = getGroupName(dev.title);
+        if (groupName !== dev.title) {
+            if (!groupedDevs[groupName]) groupedDevs[groupName] = [];
+            groupedDevs[groupName].push(dev);
+        } else {
+            displayItems.push(dev);
+        }
+    });
+
+    Object.entries(groupedDevs).forEach(([name, devs]) => {
+        if (devs.length > 1) {
+            displayItems.push({ type: 'group', name, devotionals: devs });
+        } else {
+            displayItems.push(...devs);
+        }
+    });
+
     return (
         <div className="animate-fade-in">
             <h2 className="fw-bold text-secondary mb-4">Devocionales</h2>
@@ -71,7 +99,7 @@ export default function DevotionalsPage() {
                             <div key={dev.id} className="col-12 col-md-6">
                                 <Link href={`/dashboard/devotionals/${dev.id}`} className="card border-primary border-2 shadow-sm text-decoration-none hover-scale h-100">
                                     <div className="d-flex h-100">
-                                        <div className={`rounded-start py-5 px-4 d-flex align-items-center justify-content-center ${dev.image}`} style={{ width: '100px' }}>
+                                        <div className={`rounded-start py-5 px-4 d-flex align-items-center justify-content-center ${dev.image}`} style={{ width: '100px', backgroundColor: '#f8f9fa' }}>
                                             <BookOpen className="text-secondary opacity-50" size={32} />
                                         </div>
                                         <div className="card-body py-3">
@@ -79,7 +107,7 @@ export default function DevotionalsPage() {
                                                 <span className="badge bg-primary text-white rounded-pill fw-normal">{dev.category}</span>
                                                 <Heart size={16} className="text-danger" />
                                             </div>
-                                            <h6 className="fw-bold text-dark mb-1 lh-base">{dev.title}</h6>
+                                            <h6 className="fw-bold text-dark mb-1">{dev.title}</h6>
                                             <div className="d-flex align-items-center text-muted small mt-auto">
                                                 <Clock size={14} className="me-1" />
                                                 {dev.time} lectura
@@ -93,7 +121,7 @@ export default function DevotionalsPage() {
                 </div>
             )}
 
-            {/* Categories Filter (Scrollable) */}
+            {/* Categories Filter */}
             <div className="d-flex gap-2 overflow-auto pb-2 mb-4 no-scrollbar">
                 {categories.map((cat, i) => (
                     <button
@@ -107,30 +135,92 @@ export default function DevotionalsPage() {
             </div>
 
             <div className="row g-3">
-                {filteredDevotionals.length > 0 ? (
-                    filteredDevotionals.map((dev) => (
-                        <div key={dev.id} className="col-12 col-md-6">
-                            <Link href={`/dashboard/devotionals/${dev.id}`} className="card border-0 shadow-sm text-decoration-none hover-scale h-100">
-                                <div className="d-flex h-100">
-                                    {/* Thumbnail Placeholder */}
-                                    <div className={`rounded-start py-5 px-4 d-flex align-items-center justify-content-center ${dev.image}`} style={{ width: '100px' }}>
-                                        <BookOpen className="text-secondary opacity-50" size={32} />
-                                    </div>
-                                    <div className="card-body py-3">
-                                        <div className="d-flex justify-content-between align-items-start mb-1">
-                                            <span className="badge bg-light text-secondary rounded-pill fw-normal">{dev.category}</span>
-                                            <Heart size={16} className="text-muted" />
+                {displayItems.length > 0 ? (
+                    displayItems.map((item, idx) => {
+                        if (item.type === 'group') {
+                            return (
+                                <div key={`group-${idx}`} className="col-12 col-md-6">
+                                    <div className="card border-0 shadow-sm hover-scale h-100 cursor-pointer"
+                                        data-bs-toggle="modal" data-bs-target={`#modal-${idx}`}>
+                                        <div className="d-flex h-100">
+                                            <div className="bg-primary-subtle text-primary rounded-start py-5 px-4 d-flex align-items-center justify-content-center" style={{ width: '100px' }}>
+                                                <BookOpen size={32} />
+                                            </div>
+                                            <div className="card-body py-3 d-flex flex-column justify-content-center">
+                                                <h6 className="fw-bold text-dark mb-1">{item.name}</h6>
+                                                <p className="text-muted small m-0">{item.devotionals.length} días de contenido</p>
+                                            </div>
+                                            <div className="d-flex align-items-center px-3 text-muted">
+                                                <ChevronRight size={20} />
+                                            </div>
                                         </div>
-                                        <h6 className="fw-bold text-dark mb-1 lh-base">{dev.title}</h6>
-                                        <div className="d-flex align-items-center text-muted small mt-auto">
-                                            <Clock size={14} className="me-1" />
-                                            {dev.time} lectura
+                                    </div>
+
+                                    {/* Series Modal */}
+                                    <div className="modal fade" id={`modal-${idx}`} tabIndex={-1} aria-hidden="true">
+                                        <div className="modal-dialog modal-dialog-centered">
+                                            <div className="modal-content rounded-5 border-0 shadow">
+                                                <div className="modal-header border-0 pb-0">
+                                                    <h5 className="modal-title fw-bold">{item.name}</h5>
+                                                    <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div className="modal-body p-4">
+                                                    <p className="text-muted small mb-4">Selecciona un día para continuar:</p>
+                                                    <div className="list-group gap-2">
+                                                        {item.devotionals.map((dev: any, dIdx: number) => (
+                                                            <Link
+                                                                key={dev.id}
+                                                                href={`/dashboard/devotionals/${dev.id}`}
+                                                                className="list-group-item list-group-item-action border-0 rounded-4 bg-light d-flex align-items-center justify-content-between p-3"
+                                                                onClick={() => {
+                                                                    // Close modal manually if needed, usually Link does it or BS does it
+                                                                    const modal = document.getElementById(`modal-${idx}`);
+                                                                    if (modal) {
+                                                                        const bsModal = (window as any).bootstrap?.Modal.getInstance(modal);
+                                                                        bsModal?.hide();
+                                                                    }
+                                                                }}
+                                                            >
+                                                                <div className="d-flex align-items-center gap-3">
+                                                                    <span className="badge bg-primary rounded-circle d-flex align-items-center justify-content-center p-0" style={{ width: '24px', height: '24px' }}>{dIdx + 1}</span>
+                                                                    <span className="fw-bold text-dark">{dev.title}</span>
+                                                                </div>
+                                                                <ChevronRight size={16} className="text-muted" />
+                                                            </Link>
+                                                        ))}
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </Link>
-                        </div>
-                    ))
+                            );
+                        }
+
+                        const dev = item;
+                        return (
+                            <div key={dev.id} className="col-12 col-md-6">
+                                <Link href={`/dashboard/devotionals/${dev.id}`} className="card border-0 shadow-sm text-decoration-none hover-scale h-100">
+                                    <div className="d-flex h-100">
+                                        <div className={`rounded-start py-5 px-4 d-flex align-items-center justify-content-center ${dev.image}`} style={{ width: '100px', backgroundColor: '#f8f9fa' }}>
+                                            <BookOpen className="text-secondary opacity-50" size={32} />
+                                        </div>
+                                        <div className="card-body py-3">
+                                            <div className="d-flex justify-content-between align-items-start mb-1">
+                                                <span className="badge bg-light text-secondary rounded-pill fw-normal">{dev.category}</span>
+                                                <Heart size={16} className="text-muted" />
+                                            </div>
+                                            <h6 className="fw-bold text-dark mb-1">{dev.title}</h6>
+                                            <div className="d-flex align-items-center text-muted small mt-auto">
+                                                <Clock size={14} className="me-1" />
+                                                {dev.time} lectura
+                                            </div>
+                                        </div>
+                                    </div>
+                                </Link>
+                            </div>
+                        );
+                    })
                 ) : (
                     <div className="col-12 text-center py-5">
                         <p className="text-muted">No hay devocionales en esta categoría aún.</p>

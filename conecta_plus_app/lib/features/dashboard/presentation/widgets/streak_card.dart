@@ -95,7 +95,17 @@ class _StreakCardState extends ConsumerState<StreakCard> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+                  Text(
+                    'Días en victoria',
+                    style: GoogleFonts.fredoka(
+                      fontSize: 14,
+                      color: const Color(0xFF94A3B8),
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  const SizedBox(height: 12),
                   Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Container(
                         padding: const EdgeInsets.all(8),
@@ -109,107 +119,106 @@ class _StreakCardState extends ConsumerState<StreakCard> {
                           size: 20,
                         ),
                       ),
-                      const SizedBox(width: 8),
+                      const SizedBox(width: 12),
                       Text(
-                        'Días en\nvictoria',
+                        '${mascot.streak}',
                         style: GoogleFonts.fredoka(
-                          fontSize: 14,
-                          color: const Color(0xFF94A3B8),
-                          fontWeight: FontWeight.w500,
-                          height: 1.1,
+                          fontSize: 36,
+                          fontWeight: FontWeight.bold,
+                          color: const Color(0xFF1E293B),
+                          height: 1.0,
                         ),
                       ),
                     ],
                   ),
-                  const SizedBox(height: 8),
-                  Text(
-                    '${mascot.streak}',
-                    style: GoogleFonts.fredoka(
-                      fontSize: 32,
-                      fontWeight: FontWeight.bold,
-                      color: const Color(0xFF1E293B),
-                      height: 1.0,
+                  const SizedBox(height: 4),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 48), // Align with number
+                    child: Text(
+                      'Días',
+                      style: GoogleFonts.fredoka(
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold,
+                        color: const Color(0xFF1E293B),
+                        height: 1.0,
+                      ),
                     ),
                   ),
-                  Text(
-                    'Días',
-                    style: GoogleFonts.fredoka(
-                      fontSize: 22,
-                      fontWeight: FontWeight.bold,
-                      color: const Color(0xFF1E293B),
-                      height: 1.0,
-                    ),
-                  ),
-                  const SizedBox(height: 12),
-                  _LevelPill(label: 'Nivel ${mascot.level}'),
                 ],
               ),
             ),
             Expanded(
               flex: 2,
-              child: Stack(
-                clipBehavior: Clip.none,
-                alignment: Alignment.center,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Positioned(
-                    bottom: 80,
-                    left: -40,
-                    right: -40,
-                    child: AnimatedOpacity(
-                      opacity: _showMessage ? 1 : 0,
-                      duration: const Duration(milliseconds: 200),
-                      child: AnimatedScale(
-                        scale: _showMessage ? 1 : 0.92,
-                        duration: const Duration(milliseconds: 220),
-                        curve: Curves.easeOutBack,
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Container(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 10, vertical: 8),
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(16),
-                                border: Border.all(
-                                    color: const Color(0xFFFFD166), width: 2),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.black.withValues(alpha: 0.08),
-                                    blurRadius: 18,
-                                    offset: const Offset(0, 10),
+                  Stack(
+                    clipBehavior: Clip.none,
+                    alignment: Alignment.center,
+                    children: [
+                      Positioned(
+                        bottom: 80,
+                        left: -40,
+                        right: -40,
+                        child: AnimatedOpacity(
+                          opacity: _showMessage ? 1 : 0,
+                          duration: const Duration(milliseconds: 200),
+                          child: AnimatedScale(
+                            scale: _showMessage ? 1 : 0.92,
+                            duration: const Duration(milliseconds: 220),
+                            curve: Curves.easeOutBack,
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Container(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 10, vertical: 8),
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(16),
+                                    border: Border.all(
+                                        color: const Color(0xFFFFD166), width: 2),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.black.withValues(alpha: 0.08),
+                                        blurRadius: 18,
+                                        offset: const Offset(0, 10),
+                                      ),
+                                    ],
                                   ),
-                                ],
-                              ),
-                              child: Text(
-                                _message,
-                                textAlign: TextAlign.center,
-                                style: GoogleFonts.fredoka(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 10,
-                                  color: const Color(0xFF0F172A),
-                                  height: 1.1,
+                                  child: Text(
+                                    _message,
+                                    textAlign: TextAlign.center,
+                                    style: GoogleFonts.fredoka(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 10,
+                                      color: const Color(0xFF0F172A),
+                                      height: 1.1,
+                                    ),
+                                  ),
                                 ),
-                              ),
+                                CustomPaint(
+                                  size: const Size(12, 8),
+                                  painter: _BubbleTriangle(),
+                                ),
+                              ],
                             ),
-                            CustomPaint(
-                              size: const Size(12, 8),
-                              painter: _BubbleTriangle(),
-                            ),
-                          ],
+                          ),
                         ),
                       ),
-                    ),
-                  ),
-                  GestureDetector(
-                    onTap: _showClickMessage,
-                    child: Hero(
-                      tag: 'llami_mascot',
-                      child: IntrinsicHeight(
-                        child: LlamiMascot(streak: mascot.streak),
+                      GestureDetector(
+                        onTap: _showClickMessage,
+                        child: Hero(
+                          tag: 'llami_mascot',
+                          child: IntrinsicHeight(
+                            child: LlamiMascot(streak: mascot.streak),
+                          ),
+                        ),
                       ),
-                    ),
+                    ],
                   ),
+                  const SizedBox(height: 8),
+                  _LevelPill(label: 'Nivel ${mascot.level}'),
                 ],
               ),
             ),
