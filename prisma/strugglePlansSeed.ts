@@ -6,7 +6,7 @@ const prisma = new PrismaClient();
 const strugglePlans = [
     {
         title: "Pornografía / Contenido Sexual",
-        description: "Plan: Pureza Radical. Una hoja de ruta táctica para retomar el control de tu vida con el poder de Dios.",
+        description: "Plan: Pureza Radical 21. Una hoja de ruta táctica para retomar el control de tu vida con el poder de Dios.",
         days: [
             {
                 dayNumber: 1,
@@ -64,12 +64,333 @@ const strugglePlans = [
             },
             {
                 dayNumber: 7,
-                title: "Viviendo en la Luz",
-                bibleStudy: "Llegaste al día 7, pero esto no termina aquí. La libertad es un estilo de vida, no un destino. Mantente alerta y sigue avivando tu fuego. Eres un guerrero de la luz y tu testimonio será la llave para liberar a otros.",
-                practicalExercise: "Plan de Mantenimiento. Escribe 3 reglas innegociables para tu vida digital de ahora en adelante.",
-                youthAdvice: "¡Felicidades, guerrero! Has demostrado que con Dios se puede. No bajes la guardia, ¡sigue brillando!",
-                reflectionQuestions: "¿Cómo voy a usar mi libertad para servir a otros?",
+                title: "Dopamina Divina vs Dopamina Barata",
+                bibleStudy: "Tu cerebro ha sido 'secuestrado' por picos de dopamina artificiales. Necesitas resetear tus circuitos de recompensa. La satisfacción de una vida con propósito dura más que 5 segundos de placer robado. Dios quiere que disfrutes la vida, no que te anestesies con ella.",
+                practicalExercise: "Plan de Reemplazo. Identifica un hobby o actividad que ames (deporte, música, lectura) y dedícale al menos 1 hora hoy. Recupera el placer real.",
+                youthAdvice: "Si estás aburrido, ora o muévete. El aburrimiento es el taller del enemigo para la curiosidad sexual.",
+                reflectionQuestions: "¿Qué actividades me hacen sentir vivo sin hacerme sentir culpable?",
+                scripture: "Salmo 16:11"
+            },
+            {
+                dayNumber: 8,
+                title: "Identidad Blindada",
+                bibleStudy: "No eres un 'adicto', eres un hijo de Dios en proceso de entrenamiento. El lenguaje que usas sobre ti mismo importa. Si te etiquetas como esclavo, actuarás como tal. Empieza a hablar de tu libertad antes de verla completamente.",
+                practicalExercise: "Declaraciones de Identidad. Escribe 5 verdades bíblicas sobre quién eres en Cristo y léelas en voz alta 3 veces hoy.",
+                youthAdvice: "Tu valor no se define por tu racha, se define por la Cruz. ¡Camina con la frente en alto!",
+                reflectionQuestions: "¿Cómo me veo a mí mismo cuando fallo? ¿Cómo me ve Dios?",
+                scripture: "2 Corintios 5:17"
+            },
+            {
+                dayNumber: 9,
+                title: "Huyendo de la 'Zona Roja'",
+                bibleStudy: "José no se quedó a discutir con la mujer de Potifar sobre teología, él salió corriendo. Hay momentos donde la única victoria es la huida. No pongas a prueba tu autocontrol innecesariamente.",
+                practicalExercise: "Limpieza Digital. Revisa tus redes sociales. Deja de seguir cualquier cuenta que sea un tropiezo sutil. No negocies con la tentación.",
+                youthAdvice: "Ser valiente es saber cuándo huir. ¡José es el MVP de la pureza por saber correr!",
+                reflectionQuestions: "¿Qué 'Zonas Rojas' estoy frecuentando que debería evitar?",
+                scripture: "2 Timoteo 2:22"
+            },
+            {
+                dayNumber: 10,
+                title: "El Poder de la Gracia Incomprendida",
+                bibleStudy: "La gracia no es solo perdón para ayer, es poder para hoy. Muchos creen que la gracia es 'puedo pecar y Dios me perdona', pero la verdadera gracia es 'Dios me capacita para no pecar'. Es el motor de tu transformación.",
+                practicalExercise: "Oración de Empoderamiento. Pide al Espíritu Santo que te dé la fuerza sobrenatural para decir NO cuando tus instintos digan SÍ.",
+                youthAdvice: "No intentes esto con tus fuerzas. Es como querer mover un auto sin combustible. ¡Pide la Gracia!",
+                reflectionQuestions: "¿Estoy tratando de ser puro por mi voluntad o por la gracia de Dios?",
+                scripture: "Tito 2:11-12"
+            },
+            {
+                dayNumber: 11,
+                title: "Mente en el Reino, Ojos en el Cielo",
+                bibleStudy: "Donde está tu tesoro, ahí estará tu corazón. Si pasas todo el día alimentando impulsos mundanos, tu mente será una zona de guerra. Enfoca tus pensamientos en cosas que edifiquen. La pureza mental requiere una dieta estricta de contenido celestial.",
+                practicalExercise: "Ayuno de Entretenimiento Secuular. Hoy solo consume música, podcasts o videos que hablen de Dios o de crecimiento personal.",
+                youthAdvice: "Tu cerebro es un procesador. Si le metes basura, saca basura. ¡Actualiza el software!",
+                reflectionQuestions: "¿Qué estoy dejando que 'alquile' espacio en mi mente hoy?",
+                scripture: "Colosenses 3:2"
+            },
+            {
+                dayNumber: 12,
+                title: "El Mito de la Soledad Creativa",
+                bibleStudy: "La tentación te susurra que estás solo y que a nadie le importa si caes. Es una mentira diseñada para aislarte. Jesús está en tu cuarto, observando y amándote. Vive en la conciencia de Su presencia constante.",
+                practicalExercise: "La Silla de Jesús. Imagina que Jesús está sentado en tu habitación contigo hoy mientras usas tu celular o computadora. ¿Cómo cambia eso tu comportamiento?",
+                youthAdvice: "La privacidad es una ilusión del diablo. Vive para la audiencia de Uno.",
+                reflectionQuestions: "¿Actuaría diferente si pudiera ver físicamente a Cristo a mi lado?",
+                scripture: "Salmo 139:7-12"
+            },
+            {
+                dayNumber: 13,
+                title: "Restaurando la Imagen Masculina/Femenina",
+                bibleStudy: "La porno deshumaniza. Convierte a personas creadas a imagen de Dios en objetos de consumo. Aprende a ver la dignidad en cada ser humano. Amar al prójimo significa no usarlo para tu propia satisfacción egoísta, ni siquiera en píxeles.",
+                practicalExercise: "Ejercicio de Dignidad. Hoy, mira a las personas a los ojos y piensa: 'Esa persona es amada por Dios y tiene un propósito'.",
+                youthAdvice: "Trata a cada mujer como una hermana y a cada hombre como un hermano. ¡Esa es la regla de oro!",
+                reflectionQuestions: "¿He estado viendo a las personas como objetos o como tesoros de Dios?",
+                scripture: "1 Pedro 1:22"
+            },
+            {
+                dayNumber: 14,
+                title: "La Victoria es un Estilo de Vida",
+                bibleStudy: "Has llegado a las dos semanas. ¡Increíble! Pero no bajes la guardia. El enemigo espera el cansancio para atacar. La constancia no es perfección, es perseverancia. Sigue alimentando tu espíritu diariamente.",
+                practicalExercise: "Carta a mi Futuro Yo. Escribe una carta para cuando sientas ganas de rendirte, recordándote por qué vale la pena luchar por la pureza.",
+                youthAdvice: "La victoria de hoy no garantiza la de mañana, pero construye el carácter para ganarla. ¡Sigue adelante!",
+                reflectionQuestions: "¿Qué es lo más valioso que he ganado en estos 14 días?",
+                scripture: "1 Corintios 15:58"
+            },
+            {
+                dayNumber: 15,
+                title: "Matando el Orgullo de la Racha",
+                bibleStudy: "El peligro de ir bien es creer que ya lo lograste por tus méritos. El orgullo precede a la caída. Mantente humilde y dependiente de Dios. La autoconfianza es el primer paso hacia el tropiezo.",
+                practicalExercise: "Oración de Humildad. Reconoce ante Dios que sin Él no podrías haber llegado hasta aquí. Pide Su protección para la última semana del plan.",
+                youthAdvice: "Incluso con 100 días, necesitas a Jesús tanto como en el día 1. ¡No te confíes!",
+                reflectionQuestions: "¿Estoy empezando a sentirme 'invencible' por mi cuenta?",
+                scripture: "Proverbios 16:18"
+            },
+            {
+                dayNumber: 16,
+                title: "El Propósito de tu Sexualidad",
+                bibleStudy: "Dios no es aburrido y no odia el sexo; Él lo creó. Pero lo creó para un contexto de pacto, amor y protección. Usarlo fuera de su diseño es como usar un teléfono como martillo: se rompe. Respeta el diseño original del Creador.",
+                practicalExercise: "Estudio del Diseño. Busca lo que la Biblia dice sobre el matrimonio y la sexualidad sana. Empieza a soñar con una relación que honre a Dios.",
+                youthAdvice: "No quemes las etapas. El fuego en la chimenea calienta la casa, fuera de ella la quema.",
+                reflectionQuestions: "¿Creo que el diseño de Dios para la sexualidad es mejor que el del mundo?",
+                scripture: "Hebreos 13:4"
+            },
+            {
+                dayNumber: 17,
+                title: "Venciendo el Tedio Espiritual",
+                bibleStudy: "A veces nos aburrimos de la santidad. El mundo parece más 'divertido'. Es una trampa óptica. La santidad es la aventura más grande. Seguir a Jesús requiere más valor que seguir tus impulsos. ¡No te rindas ante el aburrimiento!",
+                practicalExercise: "Aventura de Fe. Haz algo hoy que requiera fe radical: comparte tu fe con alguien difícil o sirve en algo que te dé miedo.",
+                youthAdvice: "Si tu fe es aburrida, es porque no la estás viviendo a tope. ¡Arriésgate por Cristo!",
+                reflectionQuestions: "¿Estoy buscando entretenimiento o transformación?",
+                scripture: "Salmo 34:8"
+            },
+            {
+                dayNumber: 18,
+                title: "Limpiando el Historial del Alma",
+                bibleStudy: "No solo necesitas limpiar tu navegador, necesitas que el Espíritu Santo limpie tu imaginación. Las imágenes grabadas tardan en borrarse, pero la Palabra puede renovar tu mente. No te enfoques en no pensar en lo malo, enfócate en pensar en lo bueno.",
+                practicalExercise: "Llenado Espiritual. Lee un Salmo completo y medita en sus imágenes de paz y poder. Llena tu 'disco duro' visual con la belleza de Dios.",
+                youthAdvice: "No luches contra la oscuridad, ¡prende la luz! Cuando te enfocas en Jesús, lo sucio pierde su brillo.",
+                reflectionQuestions: "¿Qué imágenes estoy permitiendo que se queden en mi mente?",
+                scripture: "Filipenses 4:8"
+            },
+            {
+                dayNumber: 19,
+                title: "Guerreros de Luz en un Mundo Oscuro",
+                bibleStudy: "Tú no estás llamado a ser igual a todos. Estas llamado a ser un referente. Tu pureza no es solo para ti, es para inspirar a otros que están atrapados. Tu vida es un mensaje. ¿Qué estás predicando con tus acciones?",
+                practicalExercise: "Misión de Aliento. Comparte con alguien (sin entrar en detalles vergonzosos) que Dios te está ayudando a vencer una debilidad y anímalo a él también.",
+                youthAdvice: "Ser diferente es tu superpoder. ¡No intentes encajar cuando naciste para destacar!",
+                reflectionQuestions: "¿Cómo puedo ayudar a otros a ver la luz que yo encontré?",
+                scripture: "Mateo 5:14-16"
+            },
+            {
+                dayNumber: 20,
+                title: "La Armadura Completa para el Largo Plazo",
+                bibleStudy: "Esto no es un sprint de 21 días, es una maratón de toda la vida. Mañana termina el plan, pero la guerra sigue. Asegúrate de tener cada pieza de la armadura bien puesta: Verdad, Justicia, Paz, Fe, Salvación y la Palabra.",
+                practicalExercise: "Checklist de Equipo. Revisa cada pieza de la armadura de Efesios 6 y asegúrate de que la estás usando diariamente.",
+                youthAdvice: "Un soldado que se quita la armadura en medio del campo de batalla es un blanco fácil. ¡Duerme con ella puesta!",
+                reflectionQuestions: "¿Qué pieza de mi armadura ha estado más floja últimamente?",
+                scripture: "Efesios 6:10-18"
+            },
+            {
+                dayNumber: 21,
+                title: "Libertad: El Nuevo Punto de Partida",
+                bibleStudy: "¡LO LOGRASTE! 21 días de pureza radical. Has demostrado que con Dios TODO es posible. Pero escucha bien: esto no es la meta, es el punto de partida. Ahora eres libre para amar, servir y cumplir tu propósito sin cadenas. ¡No mires atrás!",
+                practicalExercise: "Celebración y Compromiso. Haz algo especial hoy para celebrar tu victoria ante Dios. Escribe tu compromiso de seguir viviendo en pureza por el resto de tu vida.",
+                youthAdvice: "¡Felicidades, guerrero/a! Has recuperado tu territorio. Ahora ve y conquista las naciones para Cristo. ¡ERES LIBRE!",
+                reflectionQuestions: "¿Qué es lo que más me emociona de mi nueva vida en libertad?",
                 scripture: "Gálatas 5:1"
+            }
+        ]
+    },
+    {
+        title: "Ansiedad / Estrés",
+        description: "Plan: Calma Radical 21. Navegando el caos con la paz que el mundo no entiende pero que tú ya tienes.",
+        days: [
+            {
+                dayNumber: 1,
+                title: "El Mito del Control Absoluto",
+                bibleStudy: "Vivimos estresados porque queremos ser el GPS de nuestra vida. La ansiedad es el humo que sale cuando intentas controlar cosas que solo le pertenecen a Dios. ¡Relájate, tu Padre alimenta a los pájaros y ellos no tienen cuenta de ahorro!",
+                practicalExercise: "Vaciado de Preocupaciones. Escribe en un papel todo lo que te quita el sueño hoy. Luego, en oración, dáselo a Dios y rompe el papel. ¡Él se encarga!",
+                youthAdvice: "Vive en 'modo un día a la vez'. Dios te da batería para 24 horas, no para el próximo mes.",
+                reflectionQuestions: "¿Por qué me asusta tanto que Dios tenga el control total?",
+                scripture: "Mateo 6:25-34"
+            },
+            {
+                dayNumber: 2,
+                title: "La Paz no es un Sentimiento, es una Persona",
+                bibleStudy: "La paz de Dios no es la ausencia de problemas, sino la presencia de una Persona: Jesús. No esperes a 'sentirte bien' para reclamar tu paz. La paz se activa por fe, no por emociones. Es la calma en el ojo del huracán.",
+                practicalExercise: "Respiración Espiritual. Cierra los ojos y por 2 minutos solo repite: 'Tú eres mi paz'. Enfócate en Su presencia protectora.",
+                youthAdvice: "La paz es un músculo que se entrena cuando todo sale mal. ¡No te rindas ante el ruido!",
+                reflectionQuestions: "¿Estoy buscando paz en mis circunstancias o en mi Salvador?",
+                scripture: "Juan 14:27"
+            },
+            {
+                dayNumber: 3,
+                title: "Desarmando al Gigante del '¿Y si...?'",
+                bibleStudy: "El 90% de las cosas que te angustian del futuro nunca pasarán. La ansiedad vive en el futuro, pero Dios vive en el presente. No pagues intereses por un problema que aún no ha llegado a tu puerta.",
+                practicalExercise: "Filtro de Pensamientos. Cada vez que pienses '¿qué pasará si...?', cámbialo por 'Dios estará ahí cuando...'. Reemplaza el miedo por confianza táctica.",
+                youthAdvice: "No puedes pelear las batallas de mañana con las fuerzas de hoy. ¡Enfócate en el ahora con Cristo!",
+                reflectionQuestions: "¿Qué porcentaje de mis miedos actuales son reales y manejables hoy mismo?",
+                scripture: "Mateo 6:34"
+            },
+            {
+                dayNumber: 4,
+                title: "La Oración como Antídoto Químico",
+                bibleStudy: "Filipenses dice: 'Por nada estéis afanosos'. La receta bíblica es: Oración + Ruego + Acción de Gracias. Cuando conviertes tu preocupación en oración, Dios convierte tu ansiedad en paz que sobrepasa tu lógica.",
+                practicalExercise: "Inventario de Gratitud. Escribe 5 cosas por las que estás agradecido HOY. La gratitud y la ansiedad no pueden vivir en el mismo corazón al mismo tiempo.",
+                youthAdvice: "Si algo es lo suficientemente grande para preocuparte, es lo suficientemente importante para orar por ello.",
+                reflectionQuestions: "¿He pasado más tiempo preocupándome o hablando con Dios sobre esto?",
+                scripture: "Filipenses 4:6-7"
+            },
+            {
+                dayNumber: 5,
+                title: "Descansando en el Dios que no Duerme",
+                bibleStudy: "Si Dios está despierto cuidando el universo entero, tú puedes dormir tranquilo. Tu ansiedad no ayuda a Dios a resolver nada, solo te agota a ti y nubla tu juicio. Descansar es un acto de fe radical.",
+                practicalExercise: "Salmo de Cuna. Lee el Salmo 4 en voz alta antes de apagar la luz. Declara que Dios te hace vivir confiado pase lo que pase afuera.",
+                youthAdvice: "Dormir bien es una disciplina espiritual. Es confiar en que Dios sigue trabajando mientras tú recuperas fuerzas.",
+                reflectionQuestions: "¿Me permito descansar realmente o sigo 'trabajando' en mi mente por la noche?",
+                scripture: "Salmo 4:8"
+            },
+            {
+                dayNumber: 6,
+                title: "Filtro Digital: Protegiendo tu Frecuencia",
+                bibleStudy: "Tu mente es un campo de batalla. Si dejas que el ruido del mundo entre sin filtro, tendrás ansiedad garantizada. Pablo nos dice en qué pensar: lo verdadero, lo honesto, lo puro. Filtra tus entradas antes de que ellas te consuman.",
+                practicalExercise: "Detox de Contenido. Deja de seguir cuentas o ver noticias que solo te generen estrés hoy. Elige contenido que edifique tu fe y te dé esperanza.",
+                youthAdvice: "Cuida lo que consumes en redes. El algoritmo de Dios siempre te lleva a la calma, el del mundo al caos.",
+                reflectionQuestions: "¿Qué basura digital he estado dejando entrar a mi 'casa mental' últimamente?",
+                scripture: "Filipenses 4:8"
+            },
+            {
+                dayNumber: 7,
+                title: "Calma en el Caos: Primera Semana",
+                bibleStudy: "Has llegado al día 7. No dejes que la ansiedad te domine. Recuerda: las tormentas vendrán, pero tú tienes al que Calma las Tormentas en tu barca. Si Jesús no está asustado, tú tampoco tienes por qué estarlo.",
+                practicalExercise: "Voto de Confianza. Elige una promesa de paz de la Biblia y llévala contigo todo el día (física o digitalmente). Hazla tu escudo.",
+                youthAdvice: "¡Felicidades, guerrero de paz! El mañana le pertenece a Dios, y tú estás seguro en Sus manos.",
+                reflectionQuestions: "¿Cómo ha cambiado mi nivel de paz en esta primera semana?",
+                scripture: "Isaías 26:3"
+            },
+            {
+                dayNumber: 8,
+                title: "Hackeando el Sistema de Miedo",
+                bibleStudy: "El miedo es una reacción, la fe es una respuesta. Dios no te ha dado un espíritu de temor, sino de poder, amor y dominio propio. Tienes el equipo de fábrica para vencer la ansiedad. ¡Reclámalo!",
+                practicalExercise: "Declaración de Poder. Repite hoy 5 veces: 'No tengo miedo porque Dios me dio poder y dominio propio'. Siente la verdad bajando a tu corazón.",
+                youthAdvice: "La ansiedad te miente diciendo que eres débil. Dios te dice que eres un guerrero blindado. ¡Cree a Dios!",
+                reflectionQuestions: "¿Qué mentira de debilidad me he estado creyendo?",
+                scripture: "2 Timoteo 1:7"
+            },
+            {
+                dayNumber: 9,
+                title: "El Poder del 'Hoy'",
+                bibleStudy: "La ansiedad se alimenta del 'mañana'. Pero la gracia de Dios se da para el 'hoy'. No intentes cargar las preocupaciones de la próxima semana con la fuerza de este martes. Aprovecha la dosis diaria de gracia.",
+                practicalExercise: "Enfoque 24h. Hoy prohíbete planear nada a largo plazo. Vive cada hora con excelencia y gratitud. Deja el futuro en el congelador divino.",
+                youthAdvice: "Dios no te dio luz para todo el camino, solo para el siguiente paso. ¡Da el paso!",
+                reflectionQuestions: "¿Estoy intentando vivir en el jueves cuando hoy es lunes?",
+                scripture: "Mateo 6:34"
+            },
+            {
+                dayNumber: 10,
+                title: "Silenciando las Voces del Pánico",
+                bibleStudy: "El enemigo susurra crisis, Dios susurra promesas. ¿A qué voz le vas a dar el micrófono hoy? Aprende a ignorar los pensamientos intrusivos y a enfocarte en la voz del Buen Pastor. Él sabe a dónde te lleva.",
+                practicalExercise: "Ejercicio de Silencio. Pasa 10 minutos hoy en total silencio, sin música, sin celular. Solo escuchando los latidos de tu corazón y la paz de Dios.",
+                youthAdvice: "Si el ruido del mundo es muy fuerte, sube el volumen de tu Biblia. ¡La Verdad siempre grita más fuerte que la mentira!",
+                reflectionQuestions: "¿Qué voces han estado ganando la discusión en mi cabeza?",
+                scripture: "Juan 10:27"
+            },
+            {
+                dayNumber: 11,
+                title: "La Ansiedad es una Invitación",
+                bibleStudy: "Cada vez que sientas ansiedad, úsala como una alarma que te avisa que es hora de conectar con Dios. No la veas como un fracaso, sino como una oportunidad de entregarle el mando a Aquel que realmente puede con todo.",
+                practicalExercise: "Ancla de Oración. Cada vez que sientas el 'nudo' en el pecho hoy, haz una oración rápida: 'Señor, esto es Tuyo, yo descanso'. Úsalo como un ancla.",
+                youthAdvice: "No luches contra la ansiedad, ríndela. Rendirse ante Dios es la mayor victoria estratégica.",
+                reflectionQuestions: "¿Puedo ver mi ansiedad como un recordatorio para depender de Dios?",
+                scripture: "1 Pedro 5:7"
+            },
+            {
+                dayNumber: 12,
+                title: "Cuerpo Sano, Mente en Paz",
+                bibleStudy: "Tu cuerpo es el templo del Espíritu. A veces la ansiedad es física: falta de sueño, mala alimentación, cero ejercicio. Dios quiere que te cuides integralmente. Elías recibió comida y sueño antes de recibir revelación divina.",
+                practicalExercise: "Reset Físico. Duerme al menos 8 horas hoy, toma mucha agua y camina 15 minutos al aire libre. Dale un respiro a tu sistema nervioso.",
+                youthAdvice: "A veces la solución más espiritual es una buena siesta. ¡No descuides tu motor!",
+                reflectionQuestions: "¿Cómo he estado tratando al 'templo' de mi espíritu últimamente?",
+                scripture: "1 Corintios 6:19"
+            },
+            {
+                dayNumber: 13,
+                title: "El Escudo de la Fe",
+                bibleStudy: "La fe no es ignorancia, es confianza en una Persona mayor que el problema. Cuando usas tu escudo, los dardos encendidos del enemigo (pensamientos de crisis, miedo al fracaso) se apagan. ¡No bajes el escudo!",
+                practicalExercise: "Visualización de Fe. Imagina hoy que cada preocupación es una flecha que choca contra el escudo de lo que Dios prometió. Mira cómo se rompen.",
+                youthAdvice: "Tu fe no tiene que ser gigante, solo tiene que estar puesta en un Dios Gigante. ¡Confía!",
+                reflectionQuestions: "¿He estado bajando mi escudo últimamente?",
+                scripture: "Efesios 6:16"
+            },
+            {
+                dayNumber: 14,
+                title: "Dos Semanas de Resistencia",
+                bibleStudy: "Has mantenido la calma por 14 días. ¡Es un gran logro! Pero recuerda: el estrés es un maratón, no un sprint. Sigue respirando la gracia de Dios. Estás construyendo un carácter que no se quiebra bajo presión.",
+                practicalExercise: "Repaso de Victorias. Mira hacia atrás a estos 14 días. ¿En qué momentos lograste mantener la paz cuando antes hubieras colapsado? Agradece por ello.",
+                youthAdvice: "La constancia es lo que separa a los aficionados de los profesionales de la paz. ¡Sigue firme!",
+                reflectionQuestions: "¿Qué herramienta me ha servido más hasta ahora?",
+                scripture: "Santiago 1:12"
+            },
+            {
+                dayNumber: 15,
+                title: "Matando la Necesidad de Aprobación",
+                bibleStudy: "Gran parte de nuestro estrés viene de querer quedar bien con todos. Si vives para el aplauso, morirás por la crítica. Busca solo la aprobación de Dios. Él ya te dio un 10 en la Cruz. ¡Descansa en Su amor!",
+                practicalExercise: "Día de Cero Postureo. Haz algo bueno hoy y no se lo cuentes a nadie. Disfruta de la sonrisa secreta de Dios sobre tu vida.",
+                youthAdvice: "No eres un producto para ser calificado. Eres un hijo para ser amado. ¡Suelta la presión del qué dirán!",
+                reflectionQuestions: "¿A quién estoy tratando de impresionar y por qué me agota tanto?",
+                scripture: "Gálatas 1:10"
+            },
+            {
+                dayNumber: 16,
+                title: "La Sabiduría de Decir 'No'",
+                bibleStudy: "Jesús a veces se alejaba de las multitudes para descansar. Tú no puedes salvar al mundo tú solo. Aprende a poner límites. Estar ocupado no es lo mismo que ser productivo. El estrés excesivo suele ser falta de límites.",
+                practicalExercise: "Limpieza de Agenda. Identifica una actividad que te genere estrés innecesario y cancélala o pospónla. Prioriza tu paz mental hoy.",
+                youthAdvice: "Decir 'no' a lo bueno es decir 'sí' a lo mejor. ¡Protege tu margen!",
+                reflectionQuestions: "¿En qué áreas me he sobrecargado por no poner límites?",
+                scripture: "Marcos 6:31"
+            },
+            {
+                dayNumber: 17,
+                title: "Confianza en la Soberanía Divina",
+                bibleStudy: "Dios sabe lo que hace. Incluso cuando el plan parece un desastre, Él está tejiendo algo hermoso. Confiar en Su soberanía es el mayor sedante para el alma. Nada pasa sin que Él lo permita, y lo que permite es para tu bien.",
+                practicalExercise: "Oración de Entrega. Dile a Dios: 'Señor, no entiendo este capítulo, pero confío en el Autor del libro'. Suéltalo todo.",
+                youthAdvice: "Si Dios es el capitán, deja de preocuparte por las olas. ¡Disfruta el viaje!",
+                reflectionQuestions: "¿Realmente creo que Dios tiene el control de mi 'tormenta' actual?",
+                scripture: "Romanos 8:28"
+            },
+            {
+                dayNumber: 18,
+                title: "El Poder Sanador de la Alabanza",
+                bibleStudy: "La música cristiana no es solo entretenimiento, es guerra espiritual. La alabanza ahuyenta el espíritu de angustia. Cuando cantas las verdades de Dios, tu cerebro se recalibra para la esperanza.",
+                practicalExercise: "Concierto de Paz. Pon tu playlist de adoración favorita por 20 minutos hoy. Canta a todo pulmón o escucha en silencio profundo.",
+                youthAdvice: "No puedes estar ansioso y adorando al mismo tiempo. ¡Elige adorar!",
+                reflectionQuestions: "¿Cómo cambia mi ánimo después de pasar tiempo alabando a Dios?",
+                scripture: "Salmo 147:1"
+            },
+            {
+                dayNumber: 19,
+                title: "Siendo un Agente de Calma",
+                bibleStudy: "Bienaventurados los pacificadores. En un mundo de pánico, tu calma es un faro. No te dejes contagiar por el estrés de otros; contagia tú la paz de Cristo. Tienes algo que el mundo necesita desesperadamente.",
+                practicalExercise: "Misión de Paz. Hoy, sé el que lleve calma a una situación tensa en tu familia o amigos. Escucha más, habla menos, ora siempre.",
+                youthAdvice: "Tu paz interior es tu mayor testimonio. ¡Sé el termostato, no el termómetro!",
+                reflectionQuestions: "¿Estoy ayudando a bajar el nivel de ansiedad en mi entorno?",
+                scripture: "Mateo 5:9"
+            },
+            {
+                dayNumber: 20,
+                title: "Fortaleza para el Largo Plazo",
+                bibleStudy: "El plan está por terminar, pero la vida sigue. No bajes la guardia. La paz es un hábito diario, no un evento de 21 días. Asegúrate de que tus raíces en la Palabra sean lo suficientemente profundas para cualquier sequía.",
+                practicalExercise: "Plan de Mantenimiento. Escribe 3 reglas de oro que seguirás para proteger tu paz de ahora en adelante. Haz un pacto contigo mismo.",
+                youthAdvice: "La paz no es una meta, es el camino. ¡Sigue caminando con paso firme y cabeza fría!",
+                reflectionQuestions: "¿Qué hábitos de estos 21 días se quedarán conmigo para siempre?",
+                scripture: "Colosenses 3:15"
+            },
+            {
+                dayNumber: 21,
+                title: "Calma Radical: Tu Nueva Normalidad",
+                bibleStudy: "¡LO LOGRASTE! 21 días de entrenamiento en paz. Ya no eres un esclavo del pánico. Has descubierto que en Jesús tienes un refugio inexpugnable. Ahora ve y vive con valentía, sabiendo que nada puede separarte del amor y la paz de Dios.",
+                practicalExercise: "Celebración de Libertad. Dedica tiempo hoy a celebrar con Dios tu nueva libertad mental. Escribe una oración de victoria final.",
+                youthAdvice: "¡Felicidades, guerrero de la calma! Has vencido al gigante del estrés. ¡Ahora ve y conquista tus sueños sin miedo!",
+                reflectionQuestions: "¿Cómo se siente ser el dueño de tu paz en lugar de su esclavo?",
+                scripture: "Filipenses 4:9"
             }
         ]
     },

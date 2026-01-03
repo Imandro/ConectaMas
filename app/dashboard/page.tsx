@@ -127,19 +127,19 @@ export default function DashboardHome() {
             {/* Header */}
             <header className="d-flex justify-content-between align-items-center mb-4">
                 <div>
-                    <small className="text-muted fw-bold text-capitalize">{currentDate}</small>
-                    <h2 className="fw-bold text-secondary m-0">Hola, {stats?.name || 'Campeón'}</h2>
+                    <h3 className="text-secondary fw-bold text-capitalize mb-1" style={{ fontSize: '1.1rem' }}>{currentDate}</h3>
+                    <h1 className="fw-extrabold text-warning m-0" style={{ fontSize: '2.5rem' }}>Hola, {stats?.name || 'Mario'}</h1>
                 </div>
                 <div className="bg-white rounded-pill shadow-sm p-1 d-flex align-items-center gap-1 border">
-                    <Link href="/dashboard/tutorials" className="btn btn-light bg-transparent border-0 rounded-circle p-2 text-primary hover-scale" title="Tutoriales">
-                        <HelpCircle size={24} />
+                    <Link href="/dashboard/tutorials" className="btn btn-light bg-transparent border-0 rounded-circle p-1 text-dark hover-scale" title="Tutoriales">
+                        <HelpCircle size={32} />
                     </Link>
-                    <Link href="/dashboard/friends" className="btn btn-light bg-transparent border-0 rounded-circle p-2 text-primary hover-scale" title="Amigos">
-                        <Users size={24} />
+                    <Link href="/dashboard/friends" className="btn btn-light bg-transparent border-0 rounded-circle p-1 text-dark hover-scale" title="Amigos">
+                        <Users size={32} />
                     </Link>
                     <Link href="/dashboard/profile">
-                        <div className="bg-secondary text-white rounded-circle d-flex align-items-center justify-content-center fw-bold text-decoration-none shadow-sm" style={{ width: '40px', height: '40px' }}>
-                            {stats?.name ? stats.name.charAt(0).toUpperCase() : 'U'}
+                        <div className="bg-warning text-dark rounded-circle d-flex align-items-center justify-content-center fw-bold text-decoration-none shadow-sm" style={{ width: '48px', height: '48px', fontSize: '1.2rem' }}>
+                            {stats?.name ? stats.name.charAt(0).toUpperCase() : 'M'}
                         </div>
                     </Link>
                 </div>
@@ -152,49 +152,55 @@ export default function DashboardHome() {
 
             {/* Estado y SOS con Llami */}
             <section className="row g-3 mb-4">
-                <div className="col-12 col-md-8">
-                    <div className="card border-0 shadow-sm h-100 bg-white" style={{ borderRadius: '24px' }}>
-                        <div className="card-body p-3">
+                <div className="col-12 col-md-7">
+                    <div className="card border-0 shadow-sm h-100 bg-white overflow-visible" style={{ borderRadius: '32px' }}>
+                        <div className="card-body p-4">
                             <div className="row align-items-center">
-                                <div className="col-12 col-sm-7">
-                                    <div className="d-flex flex-column gap-3">
-                                        {/* Días en Victoria */}
-                                        <div className="d-flex align-items-center gap-3">
-                                            <div className="bg-success-subtle text-success p-2 rounded-circle">
-                                                <Sun size={24} />
-                                            </div>
-                                            <div>
-                                                <small className="text-muted d-block lh-1">Días en victoria</small>
-                                                <span className="fw-bold fs-4">{stats?.streak || 0} Días</span>
-                                            </div>
+                                <div className="col-7">
+                                    <div className="d-flex align-items-center gap-3 mb-2">
+                                        <div className="bg-success-subtle text-success p-2 rounded-circle">
+                                            <Sun size={32} />
                                         </div>
-                                        
-                                        {/* Días Libre de Pecado (NUEVO) */}
-                                        <div className="d-flex align-items-center gap-3 pt-2 border-top">
-                                            <div className="bg-primary-subtle text-primary p-2 rounded-circle">
-                                                <ShieldAlert size={24} />
-                                            </div>
-                                            <div>
-                                                <small className="text-muted d-block lh-1">Días libre de pecado</small>
-                                                <span className="fw-bold fs-4 text-primary">{stats?.streak || 0} Días</span>
-                                            </div>
+                                        <div>
+                                            <p className="text-muted fw-bold m-0" style={{ fontSize: '1.1rem' }}>Días en victoria</p>
                                         </div>
                                     </div>
+                                    <div className="ps-1">
+                                        <span className="fw-black text-dark" style={{ fontSize: '3rem', lineHeight: '1' }}>{stats?.streak || 10}</span>
+                                        <h2 className="fw-black text-dark m-0" style={{ fontSize: '2.5rem' }}>Días</h2>
+                                    </div>
+                                    <div className="mt-2">
+                                        <span className="badge bg-secondary-subtle text-dark rounded-pill px-3 py-1 fw-bold">Nivel {stats?.mascot?.level || 2}</span>
+                                    </div>
                                 </div>
-                                <div className="col-12 col-sm-5 text-center mt-3 mt-sm-0">
-                                    {/* Llami Mascot Link */}
-                                    <Link href="/dashboard/llami" className="text-decoration-none group" id="tour-llami">
-                                        <div className="text-center">
-                                            <div className="hover-scale transition-all">
-                                                <LlamiMascot
-                                                    streak={stats?.streak || 0}
-                                                    lastMood={stats?.lastCheckin?.mood}
-                                                    level={stats?.mascot?.level || 1}
-                                                    name={stats?.mascot?.name}
-                                                />
+                                <div className="col-5 text-center position-relative">
+                                    {/* Llami Mascot Link with Speech Bubble */}
+                                    <Link href="/dashboard/llami" className="text-decoration-none group">
+                                        <div className="position-relative d-inline-block">
+                                            {/* Static Speech Bubble to match photo */}
+                                            <div className="position-absolute bottom-100 start-50 translate-middle-x mb-4" style={{ width: '160px', zIndex: 10 }}>
+                                                <div className="bg-white rounded-4 shadow-sm p-2 border border-3 border-warning position-relative">
+                                                    <p className="text-dark mb-0 fw-black text-center lh-sm" style={{ fontSize: '0.85rem' }}>
+                                                        ¡Mira cómo creces!<br/>Estoy orgulloso de ti
+                                                    </p>
+                                                    <div className="position-absolute top-100 start-50 translate-middle-x" 
+                                                        style={{ width: 0, height: 0, borderLeft: '10px solid transparent', borderRight: '10px solid transparent', borderTop: '10px solid #FFC107', marginTop: '-1px' }}>
+                                                    </div>
+                                                    <div className="position-absolute top-100 start-50 translate-middle-x" 
+                                                        style={{ width: 0, height: 0, borderLeft: '7px solid transparent', borderRight: '7px solid transparent', borderTop: '7px solid white', marginTop: '-4px' }}>
+                                                    </div>
+                                                </div>
                                             </div>
-                                            <div className="badge bg-primary-subtle text-primary rounded-pill mt-1" style={{ fontSize: '0.65rem' }}>
-                                                Nivel {stats?.mascot?.level || 1}
+                                            
+                                            <div className="hover-scale transition-all">
+                                                <div className="bg-warning-subtle rounded-circle p-3" style={{ width: '140px', height: '140px' }}>
+                                                    <LlamiMascot
+                                                        streak={stats?.streak || 10}
+                                                        lastMood={stats?.lastCheckin?.mood}
+                                                        level={stats?.mascot?.level || 2}
+                                                        name={stats?.mascot?.name}
+                                                    />
+                                                </div>
                                             </div>
                                         </div>
                                     </Link>
@@ -203,12 +209,13 @@ export default function DashboardHome() {
                         </div>
                     </div>
                 </div>
-                <div className="col-12 col-md-4" id="tour-sos">
-                    <Link href="/dashboard/sos" className="card border-0 shadow-sm h-100 bg-danger text-white text-decoration-none hover-scale" style={{ borderRadius: '24px' }}>
-                        <div className="card-body p-3 d-flex flex-column align-items-center justify-content-center text-center">
-                            <AlertTriangle size={48} className="mb-2 text-white" />
-                            <h3 className="fw-bold m-0">SOS</h3>
-                            <small className="opacity-75">Ayuda inmediata</small>
+                <div className="col-12 col-md-5">
+                    <Link href="/dashboard/sos" className="card border-0 shadow-sm h-100 bg-danger text-white text-decoration-none hover-scale overflow-hidden" style={{ borderRadius: '32px' }}>
+                        <div className="card-body p-4 d-flex flex-column align-items-center justify-content-center text-center">
+                            <div className="bg-white bg-opacity-20 p-3 rounded-4 mb-3">
+                                <AlertTriangle size={64} className="text-white" />
+                            </div>
+                            <h1 className="fw-black m-0" style={{ fontSize: '3rem' }}>SOS</h1>
                         </div>
                     </Link>
                 </div>
