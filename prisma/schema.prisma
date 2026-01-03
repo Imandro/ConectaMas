@@ -429,3 +429,28 @@ model ResetToken {
 
   @@unique([identifier, token])
 }
+
+model Tutorial {
+  id          String   @id @default(cuid())
+  title       String
+  description String
+  category    String
+  icon        String   // Name of the icon
+  color       String   // Hex code or color name
+  href        String   // Route or URL
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+}
+
+model Announcement {
+  id          String   @id @default(cuid())
+  title       String
+  subtitle    String?
+  content     String   @db.Text
+  isCritical  Boolean  @default(false)
+  actionText  String?
+  actionUrl   String?
+  stats       String?  // JSON string e.g. '[{"label": "Visitas", "value": "20k"}]'
+  publishedAt DateTime @default(now())
+  expiresAt   DateTime?
+}

@@ -1,0 +1,55 @@
+﻿Running Gradle task 'assembleRelease'...                        
+Expected to find fonts for (MaterialIcons, packages/cupertino_icons/CupertinoIcons), but found (MaterialIcons). This usually means you are referring to font families in an IconData class but not including them in the assets section of your pubspec.yaml, are missing the package that would include them, or are missing "uses-material-design: true".
+Font asset "MaterialIcons-Regular.otf" was tree-shaken, reducing it from 1645184 to 11328 bytes (99.3% reduction). Tree-shaking can be disabled by providing the --no-tree-shake-icons flag when building your app.
+flutter : warning: [options] source value 8 
+is obsolete and will be removed in a future 
+release
+En línea: 1 Carácter: 1
++ flutter build apk --release > 
+build_log_6.txt 2>&1
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~
+    + CategoryInfo          : NotSpecified:  
+   (warning: [optio... future release:Strin  
+  g) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandE 
+   rror
+ 
+warning: [options] target value 8 is 
+obsolete and will be removed in a future 
+release
+warning: [options] To suppress warnings 
+about obsolete options, use -Xlint:-options.
+3 warnings
+Info: Proguard configuration rule does not match anything: `-keepclassmembers class j$.util.concurrent.ConcurrentHashMap$TreeBin {
+  int lockState;
+}`
+Info: Proguard configuration rule does not match anything: `-keepclassmembers class j$.util.concurrent.ConcurrentHashMap {
+  int sizeCtl;
+  int transferIndex;
+  long baseCount;
+  int cellsBusy;
+}`
+Info: Proguard configuration rule does not match anything: `-keepclassmembers class j$.util.concurrent.ConcurrentHashMap$CounterCell {
+  long value;
+}`
+Info: Proguard configuration rule does not match anything: `-keepclassmembers class j$.util.IntSummaryStatistics {
+  long count;
+  long sum;
+  int min;
+  int max;
+}`
+Info: Proguard configuration rule does not match anything: `-keepclassmembers class j$.util.LongSummaryStatistics {
+  long count;
+  long sum;
+  long min;
+  long max;
+}`
+Info: Proguard configuration rule does not match anything: `-keepclassmembers class j$.util.DoubleSummaryStatistics {
+  long count;
+  double sum;
+  double min;
+  double max;
+}`
+Running Gradle task 'assembleRelease'...                          139,7s
+ÔêÜ Built build\app\outputs\flutter-apk\app-release.apk (55.1MB)

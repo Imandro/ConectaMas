@@ -1,0 +1,108 @@
+﻿Running Gradle task 'assembleRelease'...                        
+Warning: The plugin path_provider_android requires Android SDK version 36 or higher.
+For more information about build configuration, see https://flutter.dev/to/review-gradle-config.
+Warning: The plugin shared_preferences_android requires Android SDK version 36 or higher.
+For more information about build configuration, see https://flutter.dev/to/review-gradle-config.
+Warning: The plugin sqflite_android requires Android SDK version 36 or higher.
+For more information about build configuration, see https://flutter.dev/to/review-gradle-config.
+Warning: The plugin url_launcher_android requires Android SDK version 36 or higher.
+For more information about build configuration, see https://flutter.dev/to/review-gradle-config.
+flutter : Your project is configured to 
+compile against Android SDK 35, but the 
+following plugin(s) require to be compiled 
+against a higher Android SDK version:
+En línea: 1 Carácter: 1
++ flutter build apk --release > 
+build_log_3.txt 2>&1
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~
+    + CategoryInfo          : NotSpecified:  
+   (Your project is...id SDK version::Strin  
+  g) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandE 
+   rror
+ 
+- path_provider_android compiles against 
+Android SDK 36
+- shared_preferences_android compiles 
+against Android SDK 36
+- sqflite_android compiles against Android 
+SDK 36
+- url_launcher_android compiles against 
+Android SDK 36
+Fix this issue by compiling against the 
+highest Android SDK version (they are 
+backward compatible).
+Add the following to C:\Users\Zbook\Desktop\C
+onectaAPP\conecta_plus_app\android\app\build.
+gradle:
+
+    android {
+        compileSdk = 36
+        ...
+    }
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task 
+':app:mergeReleaseResources'.
+> Multiple task action failures occurred:
+   > A failure occurred while executing com.a
+ndroid.build.gradle.internal.res.Aapt2Compile
+Runnable
+      > Android resource compilation failed
+        ERROR: C:\Users\Zbook\Desktop\Conecta
+APP\conecta_plus_app\android\app\src\main\res
+\mipmap-mdpi\ic_launcher.png: AAPT: error: 
+file failed to compile.
+
+   > A failure occurred while executing com.a
+ndroid.build.gradle.internal.res.Aapt2Compile
+Runnable
+      > Android resource compilation failed
+        ERROR: C:\Users\Zbook\Desktop\Conecta
+APP\conecta_plus_app\android\app\src\main\res
+\mipmap-xxhdpi\ic_launcher.png: AAPT: error: 
+file failed to compile.
+
+   > A failure occurred while executing com.a
+ndroid.build.gradle.internal.res.Aapt2Compile
+Runnable
+      > Android resource compilation failed
+        ERROR: C:\Users\Zbook\Desktop\Conecta
+APP\conecta_plus_app\android\app\src\main\res
+\mipmap-xxxhdpi\ic_launcher.png: AAPT: 
+error: file failed to compile.
+
+   > A failure occurred while executing com.a
+ndroid.build.gradle.internal.res.Aapt2Compile
+Runnable
+      > Android resource compilation failed
+        ERROR: C:\Users\Zbook\Desktop\Conecta
+APP\conecta_plus_app\android\app\src\main\res
+\mipmap-xhdpi\ic_launcher.png: AAPT: error: 
+file failed to compile.
+
+   > A failure occurred while executing com.a
+ndroid.build.gradle.internal.res.Aapt2Compile
+Runnable
+      > Android resource compilation failed
+        ERROR: C:\Users\Zbook\Desktop\Conecta
+APP\conecta_plus_app\android\app\src\main\res
+\mipmap-hdpi\ic_launcher.png: AAPT: error: 
+file failed to compile.
+
+
+* Try:
+> Run with --stacktrace option to get the 
+stack trace.
+> Run with --info or --debug option to get 
+more log output.
+> Run with --scan to get full insights.
+> Get more help at https://help.gradle.org.
+
+BUILD FAILED in 19s
+Running Gradle task 'assembleRelease'...                           19,9s
+Gradle task assembleRelease failed with exit 
+code 1

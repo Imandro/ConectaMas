@@ -4,10 +4,10 @@
 
 **Nombre:** Conecta+
 **Tipo:** Progressive Web App (PWA)
-**Propósito:** Plataforma espiritual para jóvenes cristianos
+**Propósito:** Plataforma espiritual para adolescentes y jóvenes cristianos
 **Desarrollador:** Mario Alvarez
 **Stack Tecnológico:** Next.js, TypeScript, Prisma, PostgreSQL, NextAuth
-**Objetivo Principal:** Llevar la aplicación a Google Play Store para alcanzar a miles de jóvenes
+**Objetivo Principal:** Llevar la aplicación a Google Play Store para alcanzar a miles de adolescentes y jóvenes cristianos
 
 ---
 

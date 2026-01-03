@@ -1,0 +1,442 @@
+﻿Analyzing conecta_plus_app...                                   
+
+warning - Unused import: 'package:flutter/material.dart' - lib\config\routes.dart:1:8 - unused_import
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\auth\presentation\login_screen.dart:36:45 - deprecated_member_use
+  error - The named parameter 'label' is required, but there's no corresponding argument - lib\features\auth\presentation\login_screen.dart:68:29 - missing_required_argument
+  error - The named parameter 'placeholder' is required, but there's no corresponding argument - lib\features\auth\presentation\login_screen.dart:68:29 - missing_required_argument
+  error - The named parameter 'hintText' isn't defined - lib\features\auth\presentation\login_screen.dart:69:25 - undefined_named_parameter
+  error - The named parameter 'prefixIcon' isn't defined - lib\features\auth\presentation\login_screen.dart:70:25 - undefined_named_parameter
+  error - The named parameter 'label' is required, but there's no corresponding argument - lib\features\auth\presentation\login_screen.dart:77:23 - missing_required_argument
+  error - The named parameter 'placeholder' is required, but there's no corresponding argument - lib\features\auth\presentation\login_screen.dart:77:23 - missing_required_argument
+  error - The named parameter 'hintText' isn't defined - lib\features\auth\presentation\login_screen.dart:78:25 - undefined_named_parameter
+  error - The named parameter 'prefixIcon' isn't defined - lib\features\auth\presentation\login_screen.dart:79:25 - undefined_named_parameter
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\auth\presentation\login_screen.dart:136:62 - deprecated_member_use
+  error - Target of URI doesn't exist: 'widgets/llami_mascot.dart' - lib\features\auth\presentation\onboarding_screen.dart:5:8 - uri_does_not_exist
+warning - The value of the field '_mascotName' isn't used - lib\features\auth\presentation\onboarding_screen.dart:25:10 - unused_field
+warning - The value of the field '_leaderPhone' isn't used - lib\features\auth\presentation\onboarding_screen.dart:26:10 - unused_field
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\auth\presentation\onboarding_screen.dart:50:39 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\auth\presentation\onboarding_screen.dart:103:33 - deprecated_member_use
+  error - The argument type 'void Function()?' can't be assigned to the parameter type 'VoidCallback'.  - lib\features\auth\presentation\onboarding_screen.dart:150:24 - argument_type_not_assignable
+  error - Illegal character '24515' - lib\features\auth\presentation\onboarding_screen.dart:162:32 - illegal_character
+  error - The getter 'Õ┐â_broken' isn't defined for the type 'Icons' - lib\features\auth\presentation\onboarding_screen.dart:162:32 - undefined_getter
+  error - The argument type 'void Function()?' can't be assigned to the parameter type 'VoidCallback'.  - lib\features\auth\presentation\onboarding_screen.dart:242:92 - argument_type_not_assignable
+  error - Invalid constant value - lib\features\auth\presentation\onboarding_screen.dart:274:29 - invalid_constant
+  error - The method 'LlamiMascot' isn't defined for the type '_OnboardingScreenState' - lib\features\auth\presentation\onboarding_screen.dart:274:29 - undefined_method
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\auth\presentation\onboarding_screen.dart:285:54 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\auth\presentation\onboarding_screen.dart:306:54 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\auth\presentation\onboarding_screen.dart:308:37 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\auth\presentation\onboarding_screen.dart:328:57 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\auth\presentation\onboarding_screen.dart:383:57 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\auth\presentation\onboarding_screen.dart:383:115 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\auth\presentation\onboarding_screen.dart:420:47 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\auth\presentation\onboarding_screen.dart:420:79 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\auth\presentation\onboarding_screen.dart:421:81 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\auth\presentation\onboarding_screen.dart:452:47 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\auth\presentation\onboarding_screen.dart:452:79 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\auth\presentation\onboarding_screen.dart:453:81 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\auth\presentation\register_screen.dart:37:45 - deprecated_member_use
+  error - The named parameter 'label' is required, but there's no corresponding argument - lib\features\auth\presentation\register_screen.dart:69:29 - missing_required_argument
+  error - The named parameter 'placeholder' is required, but there's no corresponding argument - lib\features\auth\presentation\register_screen.dart:69:29 - missing_required_argument
+  error - The named parameter 'hintText' isn't defined - lib\features\auth\presentation\register_screen.dart:69:46 - undefined_named_parameter
+  error - The named parameter 'prefixIcon' isn't defined - lib\features\auth\presentation\register_screen.dart:69:74 - undefined_named_parameter
+  error - The named parameter 'label' is required, but there's no corresponding argument - lib\features\auth\presentation\register_screen.dart:75:29 - missing_required_argument
+  error - The named parameter 'placeholder' is required, but there's no corresponding argument - lib\features\auth\presentation\register_screen.dart:75:29 - missing_required_argument
+  error - The named parameter 'hintText' isn't defined - lib\features\auth\presentation\register_screen.dart:75:46 - undefined_named_parameter
+  error - The named parameter 'prefixIcon' isn't defined - lib\features\auth\presentation\register_screen.dart:75:68 - undefined_named_parameter
+  error - The named parameter 'label' is required, but there's no corresponding argument - lib\features\auth\presentation\register_screen.dart:81:29 - missing_required_argument
+  error - The named parameter 'placeholder' is required, but there's no corresponding argument - lib\features\auth\presentation\register_screen.dart:81:29 - missing_required_argument
+  error - The named parameter 'hintText' isn't defined - lib\features\auth\presentation\register_screen.dart:81:46 - undefined_named_parameter
+  error - The named parameter 'prefixIcon' isn't defined - lib\features\auth\presentation\register_screen.dart:81:78 - undefined_named_parameter
+  error - The named parameter 'label' is required, but there's no corresponding argument - lib\features\auth\presentation\register_screen.dart:87:23 - missing_required_argument
+  error - The named parameter 'placeholder' is required, but there's no corresponding argument - lib\features\auth\presentation\register_screen.dart:87:23 - missing_required_argument
+  error - The named parameter 'hintText' isn't defined - lib\features\auth\presentation\register_screen.dart:88:25 - undefined_named_parameter
+  error - The named parameter 'prefixIcon' isn't defined - lib\features\auth\presentation\register_screen.dart:89:25 - undefined_named_parameter
+  error - The named parameter 'label' is required, but there's no corresponding argument - lib\features\auth\presentation\register_screen.dart:102:29 - missing_required_argument
+  error - The named parameter 'placeholder' is required, but there's no corresponding argument - lib\features\auth\presentation\register_screen.dart:102:29 - missing_required_argument
+  error - The named parameter 'hintText' isn't defined - lib\features\auth\presentation\register_screen.dart:102:46 - undefined_named_parameter
+  error - The named parameter 'prefixIcon' isn't defined - lib\features\auth\presentation\register_screen.dart:102:85 - undefined_named_parameter
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\auth\presentation\register_screen.dart:106:68 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\auth\presentation\register_screen.dart:140:68 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\auth\presentation\register_screen.dart:170:62 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\bible\presentation\bible_screen.dart:99:57 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\bible\presentation\bible_screen.dart:152:57 - deprecated_member_use
+warning - Unused import: 'package:google_fonts/google_fonts.dart' - lib\features\community\presentation\community_post_detail_screen.dart:3:8 - unused_import
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\community\presentation\community_post_detail_screen.dart:72:57 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\community\presentation\community_post_detail_screen.dart:111:65 - deprecated_member_use
+warning - Unused import: 'package:google_fonts/google_fonts.dart' - lib\features\community\presentation\community_posts_screen.dart:3:8 - unused_import
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\community\presentation\community_posts_screen.dart:96:53 - deprecated_member_use
+warning - Unused import: 'package:go_router/go_router.dart' - lib\features\community\presentation\community_screen.dart:2:8 - unused_import
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\community\presentation\community_screen.dart:86:51 - deprecated_member_use
+warning - Unused import: 'package:google_fonts/google_fonts.dart' - lib\features\community\presentation\new_post_screen.dart:3:8 - unused_import
+   info - 'activeColor' is deprecated and shouldn't be used. Use activeThumbColor instead. This feature was deprecated after v3.31.0-2.0.pre - lib\features\community\presentation\new_post_screen.dart:110:21 - deprecated_member_use
+  error - Undefined class 'TextEditingController' - lib\features\dashboard\presentation\checkin_screen.dart:17:9 - undefined_class
+  error - The method 'TextEditingController' isn't defined for the type '_CheckinScreenState' - lib\features\dashboard\presentation\checkin_screen.dart:17:49 - undefined_method
+  error - Undefined class 'Widget' - lib\features\dashboard\presentation\checkin_screen.dart:26:3 - undefined_class
+  error - Undefined class 'BuildContext' - lib\features\dashboard\presentation\checkin_screen.dart:26:16 - undefined_class
+  error - The method 'Scaffold' isn't defined for the type '_CheckinScreenState' - lib\features\dashboard\presentation\checkin_screen.dart:30:12 - undefined_method
+  error - The name 'Color' isn't a class - lib\features\dashboard\presentation\checkin_screen.dart:31:30 - creation_with_non_type
+  error - The method 'AppBar' isn't defined for the type '_CheckinScreenState' - lib\features\dashboard\presentation\checkin_screen.dart:32:15 - undefined_method
+  error - Undefined name 'Colors' - lib\features\dashboard\presentation\checkin_screen.dart:33:26 - undefined_identifier
+  error - The method 'Text' isn't defined for the type '_CheckinScreenState' - lib\features\dashboard\presentation\checkin_screen.dart:35:16 - undefined_method
+  error - Undefined name 'FontWeight' - lib\features\dashboard\presentation\checkin_screen.dart:35:78 - undefined_identifier
+  error - The method 'IconButton' isn't defined for the type '_CheckinScreenState' - lib\features\dashboard\presentation\checkin_screen.dart:36:18 - undefined_method
+  error - The name 'Icon' isn't a class - lib\features\dashboard\presentation\checkin_screen.dart:36:41 - creation_with_non_type
+  error - Undefined name 'Icons' - lib\features\dashboard\presentation\checkin_screen.dart:36:46 - undefined_identifier
+  error - The method 'SingleChildScrollView' isn't defined for the type '_CheckinScreenState' - lib\features\dashboard\presentation\checkin_screen.dart:38:13 - undefined_method
+  error - Undefined name 'EdgeInsets' - lib\features\dashboard\presentation\checkin_screen.dart:39:24 - undefined_identifier
+  error - The method 'Column' isn't defined for the type '_CheckinScreenState' - lib\features\dashboard\presentation\checkin_screen.dart:40:16 - undefined_method
+  error - Undefined name 'CrossAxisAlignment' - lib\features\dashboard\presentation\checkin_screen.dart:41:31 - undefined_identifier
+  error - The method 'Container' isn't defined for the type '_CheckinScreenState' - lib\features\dashboard\presentation\checkin_screen.dart:44:13 - undefined_method
+  error - Undefined name 'EdgeInsets' - lib\features\dashboard\presentation\checkin_screen.dart:45:30 - undefined_identifier
+  error - The method 'BoxDecoration' isn't defined for the type '_CheckinScreenState' - lib\features\dashboard\presentation\checkin_screen.dart:46:27 - undefined_method
+  error - Undefined name 'Colors' - lib\features\dashboard\presentation\checkin_screen.dart:47:24 - undefined_identifier
+  error - Undefined name 'BorderRadius' - lib\features\dashboard\presentation\checkin_screen.dart:48:31 - undefined_identifier
+  error - The method 'BoxShadow' isn't defined for the type '_CheckinScreenState' - lib\features\dashboard\presentation\checkin_screen.dart:49:29 - undefined_method
+  error - Undefined name 'Colors' - lib\features\dashboard\presentation\checkin_screen.dart:49:46 - undefined_identifier
+  error - The method 'Column' isn't defined for the type '_CheckinScreenState' - lib\features\dashboard\presentation\checkin_screen.dart:51:22 - undefined_method
+  error - The name 'Text' isn't a class - lib\features\dashboard\presentation\checkin_screen.dart:53:25 - creation_with_non_type
+  error - The method 'TextStyle' isn't defined for the type '_CheckinScreenState' - lib\features\dashboard\presentation\checkin_screen.dart:53:62 - undefined_method
+  error - Undefined name 'FontWeight' - lib\features\dashboard\presentation\checkin_screen.dart:53:98 - undefined_identifier
+  error - The name 'SizedBox' isn't a class - lib\features\dashboard\presentation\checkin_screen.dart:54:25 - creation_with_non_type
+  error - The method 'Row' isn't defined for the type '_CheckinScreenState' - lib\features\dashboard\presentation\checkin_screen.dart:55:19 - undefined_method
+  error - Undefined name 'MainAxisAlignment' - lib\features\dashboard\presentation\checkin_screen.dart:56:40 - undefined_identifier
+  error - Undefined name 'Colors' - lib\features\dashboard\presentation\checkin_screen.dart:58:46 - undefined_identifier
+  error - The name 'SizedBox' isn't a class - lib\features\dashboard\presentation\checkin_screen.dart:59:29 - creation_with_non_type
+  error - Undefined name 'Colors' - lib\features\dashboard\presentation\checkin_screen.dart:60:46 - undefined_identifier
+  error - The name 'SizedBox' isn't a class - lib\features\dashboard\presentation\checkin_screen.dart:61:29 - creation_with_non_type
+  error - Undefined name 'Colors' - lib\features\dashboard\presentation\checkin_screen.dart:62:46 - undefined_identifier
+  error - The name 'SizedBox' isn't a class - lib\features\dashboard\presentation\checkin_screen.dart:65:25 - creation_with_non_type
+  error - The method 'TextField' isn't defined for the type '_CheckinScreenState' - lib\features\dashboard\presentation\checkin_screen.dart:66:19 - undefined_method
+  error - The method 'InputDecoration' isn't defined for the type '_CheckinScreenState' - lib\features\dashboard\presentation\checkin_screen.dart:69:33 - undefined_method
+  error - The name 'Color' isn't a class - lib\features\dashboard\presentation\checkin_screen.dart:71:40 - creation_with_non_type
+  error - The method 'OutlineInputBorder' isn't defined for the type '_CheckinScreenState' - lib\features\dashboard\presentation\checkin_screen.dart:73:31 - undefined_method
+  error - Undefined name 'BorderRadius' - lib\features\dashboard\presentation\checkin_screen.dart:73:64 - undefined_identifier
+  error - Undefined name 'BorderSide' - lib\features\dashboard\presentation\checkin_screen.dart:73:103 - undefined_identifier
+  error - The name 'SizedBox' isn't a class - lib\features\dashboard\presentation\checkin_screen.dart:76:25 - creation_with_non_type
+  error - The method 'SizedBox' isn't defined for the type '_CheckinScreenState' - lib\features\dashboard\presentation\checkin_screen.dart:77:19 - undefined_method
+  error - The method 'ElevatedButton' isn't defined for the type '_CheckinScreenState' - lib\features\dashboard\presentation\checkin_screen.dart:80:28 - undefined_method
+  error - Undefined name 'ScaffoldMessenger' - lib\features\dashboard\presentation\checkin_screen.dart:87:29 - undefined_identifier
+  error - The name 'SnackBar' isn't a class - lib\features\dashboard\presentation\checkin_screen.dart:87:78 - creation_with_non_type
+  error - The method 'Text' isn't defined for the type '_CheckinScreenState' - lib\features\dashboard\presentation\checkin_screen.dart:87:96 - undefined_method
+  error - Undefined name 'ElevatedButton' - lib\features\dashboard\presentation\checkin_screen.dart:92:30 - undefined_identifier
+  error - The method 'RoundedRectangleBorder' isn't defined for the type '_CheckinScreenState' - lib\features\dashboard\presentation\checkin_screen.dart:94:32 - undefined_method
+  error - Undefined name 'BorderRadius' - lib\features\dashboard\presentation\checkin_screen.dart:94:69 - undefined_identifier
+  error - The method 'Text' isn't defined for the type '_CheckinScreenState' - lib\features\dashboard\presentation\checkin_screen.dart:96:30 - undefined_method
+  error - The name 'TextStyle' isn't a class - lib\features\dashboard\presentation\checkin_screen.dart:96:97 - creation_with_non_type
+  error - Undefined name 'Colors' - lib\features\dashboard\presentation\checkin_screen.dart:96:114 - undefined_identifier
+  error - Undefined name 'FontWeight' - lib\features\dashboard\presentation\checkin_screen.dart:96:140 - undefined_identifier
+  error - The name 'SizedBox' isn't a class - lib\features\dashboard\presentation\checkin_screen.dart:102:19 - creation_with_non_type
+  error - The method 'Row' isn't defined for the type '_CheckinScreenState' - lib\features\dashboard\presentation\checkin_screen.dart:105:13 - undefined_method
+  error - Undefined name 'MainAxisAlignment' - lib\features\dashboard\presentation\checkin_screen.dart:106:34 - undefined_identifier
+  error - The name 'Text' isn't a class - lib\features\dashboard\presentation\checkin_screen.dart:108:23 - creation_with_non_type
+  error - The method 'TextStyle' isn't defined for the type '_CheckinScreenState' - lib\features\dashboard\presentation\checkin_screen.dart:108:45 - undefined_method
+  error - Undefined name 'FontWeight' - lib\features\dashboard\presentation\checkin_screen.dart:108:81 - undefined_identifier
+  error - The method 'Container' isn't defined for the type '_CheckinScreenState' - lib\features\dashboard\presentation\checkin_screen.dart:109:17 - undefined_method
+  error - Undefined name 'EdgeInsets' - lib\features\dashboard\presentation\checkin_screen.dart:110:34 - undefined_identifier
+  error - The method 'BoxDecoration' isn't defined for the type '_CheckinScreenState' - lib\features\dashboard\presentation\checkin_screen.dart:111:31 - undefined_method
+  error - Undefined name 'Colors' - lib\features\dashboard\presentation\checkin_screen.dart:111:52 - undefined_identifier
+  error - Undefined name 'BorderRadius' - lib\features\dashboard\presentation\checkin_screen.dart:111:80 - undefined_identifier
+  error - Undefined name 'Border' - lib\features\dashboard\presentation\checkin_screen.dart:111:115 - undefined_identifier
+  error - Undefined name 'Colors' - lib\features\dashboard\presentation\checkin_screen.dart:111:133 - undefined_identifier
+  error - The method 'Row' isn't defined for the type '_CheckinScreenState' - lib\features\dashboard\presentation\checkin_screen.dart:112:26 - undefined_method
+  error - The name 'Icon' isn't a class - lib\features\dashboard\presentation\checkin_screen.dart:114:29 - creation_with_non_type
+  error - Undefined name 'Icons' - lib\features\dashboard\presentation\checkin_screen.dart:114:34 - undefined_identifier
+  error - Undefined name 'Colors' - lib\features\dashboard\presentation\checkin_screen.dart:114:73 - undefined_identifier
+  error - The name 'SizedBox' isn't a class - lib\features\dashboard\presentation\checkin_screen.dart:115:29 - creation_with_non_type
+  error - The method 'Text' isn't defined for the type '_CheckinScreenState' - lib\features\dashboard\presentation\checkin_screen.dart:116:23 - undefined_method
+  error - The name 'TextStyle' isn't a class - lib\features\dashboard\presentation\checkin_screen.dart:116:93 - creation_with_non_type
+  error - Undefined name 'FontWeight' - lib\features\dashboard\presentation\checkin_screen.dart:116:129 - undefined_identifier
+  error - Undefined name 'Colors' - lib\features\dashboard\presentation\checkin_screen.dart:116:153 - undefined_identifier
+  error - The name 'SizedBox' isn't a class - lib\features\dashboard\presentation\checkin_screen.dart:122:19 - creation_with_non_type
+  error - The method 'Container' isn't defined for the type '_CheckinScreenState' - lib\features\dashboard\presentation\checkin_screen.dart:125:13 - undefined_method
+  error - Undefined name 'EdgeInsets' - lib\features\dashboard\presentation\checkin_screen.dart:126:30 - undefined_identifier
+  error - The method 'BoxDecoration' isn't defined for the type '_CheckinScreenState' - lib\features\dashboard\presentation\checkin_screen.dart:127:27 - undefined_method
+  error - Undefined name 'Colors' - lib\features\dashboard\presentation\checkin_screen.dart:127:48 - undefined_identifier
+  error - Undefined name 'BorderRadius' - lib\features\dashboard\presentation\checkin_screen.dart:127:76 - undefined_identifier
+  error - The method 'BoxShadow' isn't defined for the type '_CheckinScreenState' - lib\features\dashboard\presentation\checkin_screen.dart:127:115 - undefined_method
+  error - Undefined name 'Colors' - lib\features\dashboard\presentation\checkin_screen.dart:127:132 - undefined_identifier
+  error - The method 'Wrap' isn't defined for the type '_CheckinScreenState' - lib\features\dashboard\presentation\checkin_screen.dart:128:22 - undefined_method
+  error - The method 'Container' isn't defined for the type '_CheckinScreenState' - lib\features\dashboard\presentation\checkin_screen.dart:137:26 - undefined_method
+  error - The method 'BoxDecoration' isn't defined for the type '_CheckinScreenState' - lib\features\dashboard\presentation\checkin_screen.dart:140:33 - undefined_method
+  error - Undefined name 'Colors' - lib\features\dashboard\presentation\checkin_screen.dart:141:79 - undefined_identifier
+  error - Undefined name 'Colors' - lib\features\dashboard\presentation\checkin_screen.dart:141:111 - undefined_identifier
+  error - Undefined name 'BoxShape' - lib\features\dashboard\presentation\checkin_screen.dart:142:30 - undefined_identifier
+  error - Undefined name 'Border' - lib\features\dashboard\presentation\checkin_screen.dart:143:41 - undefined_identifier
+  error - The method 'Center' isn't defined for the type '_CheckinScreenState' - lib\features\dashboard\presentation\checkin_screen.dart:145:28 - undefined_method
+  error - The method 'Text' isn't defined for the type '_CheckinScreenState' - lib\features\dashboard\presentation\checkin_screen.dart:147:27 - undefined_method
+  error - The name 'TextStyle' isn't a class - lib\features\dashboard\presentation\checkin_screen.dart:147:51 - creation_with_non_type
+  error - The method 'Text' isn't defined for the type '_CheckinScreenState' - lib\features\dashboard\presentation\checkin_screen.dart:148:27 - undefined_method
+  error - The method 'TextStyle' isn't defined for the type '_CheckinScreenState' - lib\features\dashboard\presentation\checkin_screen.dart:148:47 - undefined_method
+  error - Undefined name 'FontWeight' - lib\features\dashboard\presentation\checkin_screen.dart:148:83 - undefined_identifier
+  error - Undefined name 'Colors' - lib\features\dashboard\presentation\checkin_screen.dart:148:118 - undefined_identifier
+  error - Undefined name 'Colors' - lib\features\dashboard\presentation\checkin_screen.dart:148:141 - undefined_identifier
+  error - The name 'SizedBox' isn't a class - lib\features\dashboard\presentation\checkin_screen.dart:154:19 - creation_with_non_type
+  error - Undefined class 'Widget' - lib\features\dashboard\presentation\checkin_screen.dart:161:3 - undefined_class
+  error - Undefined class 'Color' - lib\features\dashboard\presentation\checkin_screen.dart:161:41 - undefined_class
+  error - The method 'GestureDetector' isn't defined for the type '_CheckinScreenState' - lib\features\dashboard\presentation\checkin_screen.dart:163:12 - undefined_method
+  error - The method 'Container' isn't defined for the type '_CheckinScreenState' - lib\features\dashboard\presentation\checkin_screen.dart:165:14 - undefined_method
+  error - Undefined name 'EdgeInsets' - lib\features\dashboard\presentation\checkin_screen.dart:166:24 - undefined_identifier
+  error - The method 'BoxDecoration' isn't defined for the type '_CheckinScreenState' - lib\features\dashboard\presentation\checkin_screen.dart:167:21 - undefined_method
+  error - Undefined name 'Colors' - lib\features\dashboard\presentation\checkin_screen.dart:168:39 - undefined_identifier
+  error - Undefined name 'BoxShape' - lib\features\dashboard\presentation\checkin_screen.dart:169:18 - undefined_identifier
+  error - The method 'BoxShadow' isn't defined for the type '_CheckinScreenState' - lib\features\dashboard\presentation\checkin_screen.dart:170:36 - undefined_method
+  error - The name 'Offset' isn't a class - lib\features\dashboard\presentation\checkin_screen.dart:170:107 - creation_with_non_type
+  error - The method 'Text' isn't defined for the type '_CheckinScreenState' - lib\features\dashboard\presentation\checkin_screen.dart:172:16 - undefined_method
+  error - The method 'TextStyle' isn't defined for the type '_CheckinScreenState' - lib\features\dashboard\presentation\checkin_screen.dart:172:35 - undefined_method
+  error - Undefined name 'Colors' - lib\features\dashboard\presentation\checkin_screen.dart:172:79 - undefined_identifier
+  error - Undefined name 'Colors' - lib\features\dashboard\presentation\checkin_screen.dart:172:94 - undefined_identifier
+  error - Undefined class 'Color' - lib\features\dashboard\presentation\checkin_screen.dart:177:3 - undefined_class
+  error - Undefined name 'Colors' - lib\features\dashboard\presentation\checkin_screen.dart:178:30 - undefined_identifier
+  error - Undefined name 'Colors' - lib\features\dashboard\presentation\checkin_screen.dart:179:30 - undefined_identifier
+  error - Undefined name 'Colors' - lib\features\dashboard\presentation\checkin_screen.dart:180:30 - undefined_identifier
+  error - Undefined name 'Colors' - lib\features\dashboard\presentation\checkin_screen.dart:181:12 - undefined_identifier
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\dashboard\presentation\llami_refuge_screen.dart:112:67 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\dashboard\presentation\llami_refuge_screen.dart:147:173 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\dashboard\presentation\llami_refuge_screen.dart:164:77 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\dashboard\presentation\llami_refuge_screen.dart:182:64 - deprecated_member_use
+  error - The named parameter 'name' isn't defined - lib\features\dashboard\presentation\llami_refuge_screen.dart:193:65 - undefined_named_parameter
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\dashboard\presentation\llami_refuge_screen.dart:219:67 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\dashboard\presentation\luchas_screen.dart:97:51 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\dashboard\presentation\luchas_screen.dart:134:53 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\dashboard\presentation\luchas_screen.dart:151:68 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\dashboard\presentation\luchas_screen.dart:151:104 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\dashboard\presentation\luchas_screen.dart:197:48 - deprecated_member_use
+  error - The named parameter 'opacity' isn't defined - lib\features\dashboard\presentation\luchas_screen.dart:212:101 - undefined_named_parameter
+warning - Unused import: 'package:google_fonts/google_fonts.dart' - lib\features\dashboard\presentation\struggle_detail_screen.dart:3:8 - unused_import
+warning - The value of the field '_isStarted' isn't used - lib\features\dashboard\presentation\struggle_detail_screen.dart:16:8 - unused_field
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\dashboard\presentation\struggle_detail_screen.dart:45:41 - deprecated_member_use
+warning - The value of the local variable 'isLocked' isn't used - lib\features\dashboard\presentation\struggle_detail_screen.dart:90:25 - unused_local_variable
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\dashboard\presentation\struggle_detail_screen.dart:100:79 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\dashboard\presentation\struggle_detail_screen.dart:134:55 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\dashboard\presentation\struggle_detail_screen.dart:228:51 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\dashboard\presentation\struggle_detail_screen.dart:243:48 - deprecated_member_use
+warning - Unused import: 'package:google_fonts/google_fonts.dart' - lib\features\dashboard\presentation\trivia_screen.dart:3:8 - unused_import
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\dashboard\presentation\trivia_screen.dart:102:145 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\dashboard\presentation\trivia_screen.dart:115:84 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\dashboard\presentation\trivia_screen.dart:115:114 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\dashboard\presentation\trivia_screen.dart:125:153 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\dashboard\presentation\trivia_screen.dart:171:33 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\dashboard\presentation\trivia_screen.dart:210:63 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\dashboard\presentation\tutorials_screen.dart:31:61 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\dashboard\presentation\tutorials_screen.dart:62:137 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\dashboard\presentation\tutorials_screen.dart:65:95 - deprecated_member_use
+  error - Target of URI doesn't exist: '../../../shared/widgets/custom_button.dart' - lib\features\dashboard\presentation\widgets\check_in_card.dart:4:8 - uri_does_not_exist
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\dashboard\presentation\widgets\check_in_card.dart:14:32 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\dashboard\presentation\widgets\check_in_card.dart:16:51 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\dashboard\presentation\widgets\check_in_card.dart:25:42 - deprecated_member_use
+  error - The method 'CustomButton' isn't defined for the type 'CheckInCard' - lib\features\dashboard\presentation\widgets\check_in_card.dart:60:20 - undefined_method
+warning - The value of the field '_ansxiety' isn't used - lib\features\dashboard\presentation\widgets\check_in_card.dart:81:10 - unused_field
+  error - The method 'CustomButton' isn't defined for the type '_CheckInDialogState' - lib\features\dashboard\presentation\widgets\check_in_card.dart:151:20 - undefined_method
+warning - Unused import: '../../../../config/theme.dart' - lib\features\dashboard\presentation\widgets\daily_verse.dart:3:8 - unused_import
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\dashboard\presentation\widgets\daily_verse.dart:21:33 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\dashboard\presentation\widgets\daily_verse.dart:41:32 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\dashboard\presentation\widgets\daily_verse.dart:42:32 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\dashboard\presentation\widgets\daily_verse.dart:56:37 - deprecated_member_use
+  error - The method 'DateFormat' isn't defined for the type 'DashboardHeader' - lib\features\dashboard\presentation\widgets\dashboard_header.dart:13:23 - undefined_method
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\dashboard\presentation\widgets\dashboard_header.dart:52:37 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\dashboard\presentation\widgets\dashboard_header.dart:84:37 - deprecated_member_use
+  error - Expected to find ')' - lib\features\dashboard\presentation\widgets\dashboard_header.dart:100:6 - expected_token
+  error - Target of URI doesn't exist: '../../../config/theme.dart' - lib\features\dashboard\presentation\widgets\donation_card.dart:3:8 - uri_does_not_exist
+  error - Target of URI doesn't exist: '../../../shared/widgets/custom_button.dart' - lib\features\dashboard\presentation\widgets\donation_card.dart:4:8 - uri_does_not_exist
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\dashboard\presentation\widgets\donation_card.dart:18:33 - deprecated_member_use
+  error - Undefined name 'AppTheme' - lib\features\dashboard\presentation\widgets\donation_card.dart:34:72 - undefined_identifier
+  error - Undefined name 'AppTheme' - lib\features\dashboard\presentation\widgets\donation_card.dart:52:57 - undefined_identifier
+  error - Invalid constant value - lib\features\dashboard\presentation\widgets\donation_card.dart:63:70 - invalid_constant
+  error - Undefined name 'AppTheme' - lib\features\dashboard\presentation\widgets\donation_card.dart:63:70 - undefined_identifier
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\dashboard\presentation\widgets\donation_card.dart:100:43 - deprecated_member_use
+  error - Invalid constant value - lib\features\dashboard\presentation\widgets\donation_card.dart:106:73 - invalid_constant
+  error - Undefined name 'AppTheme' - lib\features\dashboard\presentation\widgets\donation_card.dart:106:73 - undefined_identifier
+  error - The method 'CustomButton' isn't defined for the type 'DonationCard' - lib\features\dashboard\presentation\widgets\donation_card.dart:120:28 - undefined_method
+  error - Undefined name 'AppTheme' - lib\features\dashboard\presentation\widgets\donation_card.dart:122:40 - undefined_identifier
+warning - The value of the local variable 'secondaryColor' isn't used - lib\features\dashboard\presentation\widgets\llami_mascot.dart:64:11 - unused_local_variable
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\dashboard\presentation\widgets\llami_mascot.dart:91:30 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\dashboard\presentation\widgets\prayer_card.dart:24:32 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\dashboard\presentation\widgets\prayer_card.dart:29:47 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\dashboard\presentation\widgets\prayer_card.dart:41:41 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\dashboard\presentation\widgets\prayer_card.dart:52:80 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\dashboard\presentation\widgets\prayer_card.dart:70:47 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\dashboard\presentation\widgets\prayer_card.dart:81:43 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\dashboard\presentation\widgets\social_media_cards.dart:68:35 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\dashboard\presentation\widgets\sos_card.dart:20:37 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\dashboard\presentation\widgets\streak_card.dart:17:33 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\dashboard\presentation\widgets\streak_card.dart:70:43 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\dashboard\presentation\widgets\struggle_summary.dart:15:33 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\dashboard\presentation\widgets\struggle_summary.dart:37:55 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\dashboard\presentation\widgets\struggle_summary.dart:68:46 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\dashboard\presentation\widgets\struggle_summary.dart:123:28 - deprecated_member_use
+  error - Undefined class 'Widget' - lib\features\devotionals\presentation\devotional_detail_screen.dart:12:3 - undefined_class
+  error - Undefined class 'BuildContext' - lib\features\devotionals\presentation\devotional_detail_screen.dart:12:16 - undefined_class
+  error - The method 'Scaffold' isn't defined for the type 'DevotionalDetailScreen' - lib\features\devotionals\presentation\devotional_detail_screen.dart:13:12 - undefined_method
+  error - Undefined name 'Colors' - lib\features\devotionals\presentation\devotional_detail_screen.dart:14:24 - undefined_identifier
+  error - The method 'AppBar' isn't defined for the type 'DevotionalDetailScreen' - lib\features\devotionals\presentation\devotional_detail_screen.dart:15:15 - undefined_method
+  error - Undefined name 'Colors' - lib\features\devotionals\presentation\devotional_detail_screen.dart:16:26 - undefined_identifier
+  error - The method 'Padding' isn't defined for the type 'DevotionalDetailScreen' - lib\features\devotionals\presentation\devotional_detail_screen.dart:18:18 - undefined_method
+  error - Undefined name 'EdgeInsets' - lib\features\devotionals\presentation\devotional_detail_screen.dart:19:26 - undefined_identifier
+  error - The method 'CircleAvatar' isn't defined for the type 'DevotionalDetailScreen' - lib\features\devotionals\presentation\devotional_detail_screen.dart:20:18 - undefined_method
+  error - Undefined name 'Colors' - lib\features\devotionals\presentation\devotional_detail_screen.dart:21:30 - undefined_identifier
+  error - The method 'IconButton' isn't defined for the type 'DevotionalDetailScreen' - lib\features\devotionals\presentation\devotional_detail_screen.dart:22:20 - undefined_method
+  error - The name 'Icon' isn't a class - lib\features\devotionals\presentation\devotional_detail_screen.dart:23:27 - creation_with_non_type
+  error - Undefined name 'Icons' - lib\features\devotionals\presentation\devotional_detail_screen.dart:23:32 - undefined_identifier
+  error - The method 'IconButton' isn't defined for the type 'DevotionalDetailScreen' - lib\features\devotionals\presentation\devotional_detail_screen.dart:29:11 - undefined_method
+  error - The name 'Icon' isn't a class - lib\features\devotionals\presentation\devotional_detail_screen.dart:29:34 - creation_with_non_type
+  error - Undefined name 'Icons' - lib\features\devotionals\presentation\devotional_detail_screen.dart:29:39 - undefined_identifier
+  error - The name 'SizedBox' isn't a class - lib\features\devotionals\presentation\devotional_detail_screen.dart:30:17 - creation_with_non_type
+  error - The method 'SingleChildScrollView' isn't defined for the type 'DevotionalDetailScreen' - lib\features\devotionals\presentation\devotional_detail_screen.dart:33:13 - undefined_method
+  error - Undefined name 'EdgeInsets' - lib\features\devotionals\presentation\devotional_detail_screen.dart:34:24 - undefined_identifier
+  error - The method 'Column' isn't defined for the type 'DevotionalDetailScreen' - lib\features\devotionals\presentation\devotional_detail_screen.dart:35:16 - undefined_method
+  error - Undefined name 'CrossAxisAlignment' - lib\features\devotionals\presentation\devotional_detail_screen.dart:36:31 - undefined_identifier
+  error - The method 'Container' isn't defined for the type 'DevotionalDetailScreen' - lib\features\devotionals\presentation\devotional_detail_screen.dart:38:13 - undefined_method
+  error - Undefined name 'EdgeInsets' - lib\features\devotionals\presentation\devotional_detail_screen.dart:39:30 - undefined_identifier
+  error - The method 'BoxDecoration' isn't defined for the type 'DevotionalDetailScreen' - lib\features\devotionals\presentation\devotional_detail_screen.dart:40:27 - undefined_method
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\devotionals\presentation\devotional_detail_screen.dart:40:65 - deprecated_member_use
+  error - Undefined name 'BorderRadius' - lib\features\devotionals\presentation\devotional_detail_screen.dart:40:98 - undefined_identifier
+  error - Undefined name 'Border' - lib\features\devotionals\presentation\devotional_detail_screen.dart:40:133 - undefined_identifier
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\devotionals\presentation\devotional_detail_screen.dart:40:168 - deprecated_member_use
+  error - The name 'Text' isn't a class - lib\features\devotionals\presentation\devotional_detail_screen.dart:41:28 - creation_with_non_type
+  error - The method 'TextStyle' isn't defined for the type 'DevotionalDetailScreen' - lib\features\devotionals\presentation\devotional_detail_screen.dart:41:52 - undefined_method
+  error - Undefined name 'FontWeight' - lib\features\devotionals\presentation\devotional_detail_screen.dart:41:99 - undefined_identifier
+  error - The name 'SizedBox' isn't a class - lib\features\devotionals\presentation\devotional_detail_screen.dart:43:19 - creation_with_non_type
+  error - The method 'Text' isn't defined for the type 'DevotionalDetailScreen' - lib\features\devotionals\presentation\devotional_detail_screen.dart:44:13 - undefined_method
+  error - Undefined name 'FontWeight' - lib\features\devotionals\presentation\devotional_detail_screen.dart:46:66 - undefined_identifier
+  error - Undefined name 'Colors' - lib\features\devotionals\presentation\devotional_detail_screen.dart:46:90 - undefined_identifier
+  error - The name 'SizedBox' isn't a class - lib\features\devotionals\presentation\devotional_detail_screen.dart:48:19 - creation_with_non_type
+  error - The method 'Row' isn't defined for the type 'DevotionalDetailScreen' - lib\features\devotionals\presentation\devotional_detail_screen.dart:49:13 - undefined_method
+  error - The name 'CircleAvatar' isn't a class - lib\features\devotionals\presentation\devotional_detail_screen.dart:51:23 - creation_with_non_type
+  error - Undefined name 'Colors' - lib\features\devotionals\presentation\devotional_detail_screen.dart:51:65 - undefined_identifier
+  error - The method 'Icon' isn't defined for the type 'DevotionalDetailScreen' - lib\features\devotionals\presentation\devotional_detail_screen.dart:51:85 - undefined_method
+  error - Undefined name 'Icons' - lib\features\devotionals\presentation\devotional_detail_screen.dart:51:90 - undefined_identifier
+  error - Undefined name 'Colors' - lib\features\devotionals\presentation\devotional_detail_screen.dart:51:121 - undefined_identifier
+  error - The name 'SizedBox' isn't a class - lib\features\devotionals\presentation\devotional_detail_screen.dart:52:23 - creation_with_non_type
+  error - The name 'Text' isn't a class - lib\features\devotionals\presentation\devotional_detail_screen.dart:53:23 - creation_with_non_type
+  error - The method 'TextStyle' isn't defined for the type 'DevotionalDetailScreen' - lib\features\devotionals\presentation\devotional_detail_screen.dart:53:54 - undefined_method
+  error - Undefined name 'Colors' - lib\features\devotionals\presentation\devotional_detail_screen.dart:53:71 - undefined_identifier
+  error - The name 'SizedBox' isn't a class - lib\features\devotionals\presentation\devotional_detail_screen.dart:54:23 - creation_with_non_type
+  error - The name 'Text' isn't a class - lib\features\devotionals\presentation\devotional_detail_screen.dart:55:23 - creation_with_non_type
+  error - The method 'TextStyle' isn't defined for the type 'DevotionalDetailScreen' - lib\features\devotionals\presentation\devotional_detail_screen.dart:55:40 - undefined_method
+  error - Undefined name 'Colors' - lib\features\devotionals\presentation\devotional_detail_screen.dart:55:57 - undefined_identifier
+  error - The name 'SizedBox' isn't a class - lib\features\devotionals\presentation\devotional_detail_screen.dart:56:23 - creation_with_non_type
+  error - The name 'Text' isn't a class - lib\features\devotionals\presentation\devotional_detail_screen.dart:57:23 - creation_with_non_type
+  error - The method 'TextStyle' isn't defined for the type 'DevotionalDetailScreen' - lib\features\devotionals\presentation\devotional_detail_screen.dart:57:52 - undefined_method
+  error - Undefined name 'Colors' - lib\features\devotionals\presentation\devotional_detail_screen.dart:57:69 - undefined_identifier
+  error - The name 'SizedBox' isn't a class - lib\features\devotionals\presentation\devotional_detail_screen.dart:60:19 - creation_with_non_type
+  error - The method 'Container' isn't defined for the type 'DevotionalDetailScreen' - lib\features\devotionals\presentation\devotional_detail_screen.dart:63:13 - undefined_method
+  error - Undefined name 'EdgeInsets' - lib\features\devotionals\presentation\devotional_detail_screen.dart:64:30 - undefined_identifier
+  error - The method 'BoxDecoration' isn't defined for the type 'DevotionalDetailScreen' - lib\features\devotionals\presentation\devotional_detail_screen.dart:65:27 - undefined_method
+  error - The name 'Color' isn't a class - lib\features\devotionals\presentation\devotional_detail_screen.dart:66:30 - creation_with_non_type
+  error - Undefined name 'BorderRadius' - lib\features\devotionals\presentation\devotional_detail_screen.dart:67:31 - undefined_identifier
+  error - The name 'Border' isn't a class - lib\features\devotionals\presentation\devotional_detail_screen.dart:68:31 - creation_with_non_type
+  error - The method 'BorderSide' isn't defined for the type 'DevotionalDetailScreen' - lib\features\devotionals\presentation\devotional_detail_screen.dart:68:44 - undefined_method
+  error - The name 'Text' isn't a class - lib\features\devotionals\presentation\devotional_detail_screen.dart:70:28 - creation_with_non_type
+  error - The method 'TextStyle' isn't defined for the type 'DevotionalDetailScreen' - lib\features\devotionals\presentation\devotional_detail_screen.dart:72:24 - undefined_method
+  error - Undefined name 'FontWeight' - lib\features\devotionals\presentation\devotional_detail_screen.dart:72:60 - undefined_identifier
+  error - Undefined name 'FontStyle' - lib\features\devotionals\presentation\devotional_detail_screen.dart:72:88 - undefined_identifier
+  error - The name 'SizedBox' isn't a class - lib\features\devotionals\presentation\devotional_detail_screen.dart:75:19 - creation_with_non_type
+  error - The name 'Align' isn't a class - lib\features\devotionals\presentation\devotional_detail_screen.dart:76:19 - creation_with_non_type
+  error - Undefined name 'Alignment' - lib\features\devotionals\presentation\devotional_detail_screen.dart:76:36 - undefined_identifier
+  error - The method 'Text' isn't defined for the type 'DevotionalDetailScreen' - lib\features\devotionals\presentation\devotional_detail_screen.dart:76:66 - undefined_method
+  error - The method 'TextStyle' isn't defined for the type 'DevotionalDetailScreen' - lib\features\devotionals\presentation\devotional_detail_screen.dart:76:94 - undefined_method
+  error - Undefined name 'FontWeight' - lib\features\devotionals\presentation\devotional_detail_screen.dart:76:116 - undefined_identifier
+  error - Undefined name 'Colors' - lib\features\devotionals\presentation\devotional_detail_screen.dart:76:140 - undefined_identifier
+  error - The name 'SizedBox' isn't a class - lib\features\devotionals\presentation\devotional_detail_screen.dart:77:19 - creation_with_non_type
+  error - The name 'Text' isn't a class - lib\features\devotionals\presentation\devotional_detail_screen.dart:80:19 - creation_with_non_type
+  error - The method 'TextStyle' isn't defined for the type 'DevotionalDetailScreen' - lib\features\devotionals\presentation\devotional_detail_screen.dart:82:22 - undefined_method
+  error - Undefined name 'Colors' - lib\features\devotionals\presentation\devotional_detail_screen.dart:82:66 - undefined_identifier
+  error - The name 'SizedBox' isn't a class - lib\features\devotionals\presentation\devotional_detail_screen.dart:84:19 - creation_with_non_type
+  error - The name 'Text' isn't a class - lib\features\devotionals\presentation\devotional_detail_screen.dart:85:19 - creation_with_non_type
+  error - The method 'TextStyle' isn't defined for the type 'DevotionalDetailScreen' - lib\features\devotionals\presentation\devotional_detail_screen.dart:87:22 - undefined_method
+  error - Undefined name 'Colors' - lib\features\devotionals\presentation\devotional_detail_screen.dart:87:66 - undefined_identifier
+  error - The name 'SizedBox' isn't a class - lib\features\devotionals\presentation\devotional_detail_screen.dart:90:19 - creation_with_non_type
+  error - The name 'Text' isn't a class - lib\features\devotionals\presentation\devotional_detail_screen.dart:91:19 - creation_with_non_type
+  error - The method 'TextStyle' isn't defined for the type 'DevotionalDetailScreen' - lib\features\devotionals\presentation\devotional_detail_screen.dart:91:54 - undefined_method
+  error - Undefined name 'FontWeight' - lib\features\devotionals\presentation\devotional_detail_screen.dart:91:90 - undefined_identifier
+  error - The name 'SizedBox' isn't a class - lib\features\devotionals\presentation\devotional_detail_screen.dart:92:19 - creation_with_non_type
+  error - The name 'SizedBox' isn't a class - lib\features\devotionals\presentation\devotional_detail_screen.dart:97:19 - creation_with_non_type
+  error - The name 'Text' isn't a class - lib\features\devotionals\presentation\devotional_detail_screen.dart:98:19 - creation_with_non_type
+  error - The method 'TextStyle' isn't defined for the type 'DevotionalDetailScreen' - lib\features\devotionals\presentation\devotional_detail_screen.dart:98:42 - undefined_method
+  error - Undefined name 'FontWeight' - lib\features\devotionals\presentation\devotional_detail_screen.dart:98:78 - undefined_identifier
+  error - The name 'SizedBox' isn't a class - lib\features\devotionals\presentation\devotional_detail_screen.dart:99:19 - creation_with_non_type
+  error - The method 'Container' isn't defined for the type 'DevotionalDetailScreen' - lib\features\devotionals\presentation\devotional_detail_screen.dart:100:13 - undefined_method
+  error - Undefined name 'EdgeInsets' - lib\features\devotionals\presentation\devotional_detail_screen.dart:101:30 - undefined_identifier
+  error - The method 'BoxDecoration' isn't defined for the type 'DevotionalDetailScreen' - lib\features\devotionals\presentation\devotional_detail_screen.dart:102:27 - undefined_method
+  error - The name 'Color' isn't a class - lib\features\devotionals\presentation\devotional_detail_screen.dart:102:54 - creation_with_non_type
+  error - Undefined name 'BorderRadius' - lib\features\devotionals\presentation\devotional_detail_screen.dart:102:87 - undefined_identifier
+  error - The name 'Text' isn't a class - lib\features\devotionals\presentation\devotional_detail_screen.dart:103:28 - creation_with_non_type
+  error - The method 'TextStyle' isn't defined for the type 'DevotionalDetailScreen' - lib\features\devotionals\presentation\devotional_detail_screen.dart:105:24 - undefined_method
+  error - Undefined name 'FontStyle' - lib\features\devotionals\presentation\devotional_detail_screen.dart:105:59 - undefined_identifier
+  error - Undefined name 'Colors' - lib\features\devotionals\presentation\devotional_detail_screen.dart:105:84 - undefined_identifier
+  error - The name 'SizedBox' isn't a class - lib\features\devotionals\presentation\devotional_detail_screen.dart:109:19 - creation_with_non_type
+  error - The method 'SizedBox' isn't defined for the type 'DevotionalDetailScreen' - lib\features\devotionals\presentation\devotional_detail_screen.dart:110:13 - undefined_method
+  error - The method 'ElevatedButton' isn't defined for the type 'DevotionalDetailScreen' - lib\features\devotionals\presentation\devotional_detail_screen.dart:113:22 - undefined_method
+  error - Undefined name 'ScaffoldMessenger' - lib\features\devotionals\presentation\devotional_detail_screen.dart:116:19 - undefined_identifier
+  error - The name 'SnackBar' isn't a class - lib\features\devotionals\presentation\devotional_detail_screen.dart:117:27 - creation_with_non_type
+  error - The method 'Text' isn't defined for the type 'DevotionalDetailScreen' - lib\features\devotionals\presentation\devotional_detail_screen.dart:117:45 - undefined_method
+  error - Undefined name 'ElevatedButton' - lib\features\devotionals\presentation\devotional_detail_screen.dart:121:24 - undefined_identifier
+  error - The method 'RoundedRectangleBorder' isn't defined for the type 'DevotionalDetailScreen' - lib\features\devotionals\presentation\devotional_detail_screen.dart:123:26 - undefined_method
+  error - Undefined name 'BorderRadius' - lib\features\devotionals\presentation\devotional_detail_screen.dart:123:63 - undefined_identifier
+  error - The name 'Row' isn't a class - lib\features\devotionals\presentation\devotional_detail_screen.dart:126:30 - creation_with_non_type
+  error - Undefined name 'MainAxisAlignment' - lib\features\devotionals\presentation\devotional_detail_screen.dart:127:38 - undefined_identifier
+  error - The method 'Icon' isn't defined for the type 'DevotionalDetailScreen' - lib\features\devotionals\presentation\devotional_detail_screen.dart:129:21 - undefined_method
+  error - Undefined name 'Icons' - lib\features\devotionals\presentation\devotional_detail_screen.dart:129:26 - undefined_identifier
+  error - Undefined name 'Colors' - lib\features\devotionals\presentation\devotional_detail_screen.dart:129:61 - undefined_identifier
+  error - The method 'SizedBox' isn't defined for the type 'DevotionalDetailScreen' - lib\features\devotionals\presentation\devotional_detail_screen.dart:130:21 - undefined_method
+  error - The method 'Text' isn't defined for the type 'DevotionalDetailScreen' - lib\features\devotionals\presentation\devotional_detail_screen.dart:131:21 - undefined_method
+  error - The method 'TextStyle' isn't defined for the type 'DevotionalDetailScreen' - lib\features\devotionals\presentation\devotional_detail_screen.dart:131:59 - undefined_method
+  error - Undefined name 'FontWeight' - lib\features\devotionals\presentation\devotional_detail_screen.dart:131:81 - undefined_identifier
+  error - Undefined name 'Colors' - lib\features\devotionals\presentation\devotional_detail_screen.dart:131:119 - undefined_identifier
+  error - The name 'SizedBox' isn't a class - lib\features\devotionals\presentation\devotional_detail_screen.dart:136:19 - creation_with_non_type
+  error - Undefined class 'Widget' - lib\features\devotionals\presentation\devotional_detail_screen.dart:143:3 - undefined_class
+  error - The method 'Padding' isn't defined for the type 'DevotionalDetailScreen' - lib\features\devotionals\presentation\devotional_detail_screen.dart:144:12 - undefined_method
+  error - Undefined name 'EdgeInsets' - lib\features\devotionals\presentation\devotional_detail_screen.dart:145:22 - undefined_identifier
+  error - The method 'Row' isn't defined for the type 'DevotionalDetailScreen' - lib\features\devotionals\presentation\devotional_detail_screen.dart:146:14 - undefined_method
+  error - Undefined name 'CrossAxisAlignment' - lib\features\devotionals\presentation\devotional_detail_screen.dart:147:29 - undefined_identifier
+  error - The method 'Container' isn't defined for the type 'DevotionalDetailScreen' - lib\features\devotionals\presentation\devotional_detail_screen.dart:149:11 - undefined_method
+  error - The name 'BoxDecoration' isn't a class - lib\features\devotionals\presentation\devotional_detail_screen.dart:152:31 - creation_with_non_type
+  error - Undefined name 'Colors' - lib\features\devotionals\presentation\devotional_detail_screen.dart:152:52 - undefined_identifier
+  error - Undefined name 'BoxShape' - lib\features\devotionals\presentation\devotional_detail_screen.dart:152:73 - undefined_identifier
+  error - The method 'Center' isn't defined for the type 'DevotionalDetailScreen' - lib\features\devotionals\presentation\devotional_detail_screen.dart:153:20 - undefined_method
+  error - The method 'Text' isn't defined for the type 'DevotionalDetailScreen' - lib\features\devotionals\presentation\devotional_detail_screen.dart:153:34 - undefined_method
+  error - The name 'TextStyle' isn't a class - lib\features\devotionals\presentation\devotional_detail_screen.dart:153:60 - creation_with_non_type
+  error - Undefined name 'Colors' - lib\features\devotionals\presentation\devotional_detail_screen.dart:153:77 - undefined_identifier
+  error - Undefined name 'FontWeight' - lib\features\devotionals\presentation\devotional_detail_screen.dart:153:103 - undefined_identifier
+  error - The name 'SizedBox' isn't a class - lib\features\devotionals\presentation\devotional_detail_screen.dart:155:17 - creation_with_non_type
+  error - The method 'Expanded' isn't defined for the type 'DevotionalDetailScreen' - lib\features\devotionals\presentation\devotional_detail_screen.dart:156:11 - undefined_method
+  error - The method 'Text' isn't defined for the type 'DevotionalDetailScreen' - lib\features\devotionals\presentation\devotional_detail_screen.dart:156:27 - undefined_method
+  error - The name 'TextStyle' isn't a class - lib\features\devotionals\presentation\devotional_detail_screen.dart:156:51 - creation_with_non_type
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\devotionals\presentation\devotionals_screen.dart:190:54 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\devotionals\presentation\devotionals_screen.dart:191:53 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\devotionals\presentation\devotionals_screen.dart:198:41 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\devotionals\presentation\devotionals_screen.dart:238:53 - deprecated_member_use
+  error - The class 'EdgeInsets' doesn't have a constant constructor 'bottom' - lib\features\devotionals\presentation\widgets\devotional_card.dart:25:32 - const_with_undefined_constructor
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\devotionals\presentation\widgets\devotional_card.dart:37:37 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\devotionals\presentation\widgets\devotional_card.dart:49:42 - deprecated_member_use
+warning - Unused import: 'package:google_fonts/google_fonts.dart' - lib\features\friends\presentation\friends_screen.dart:3:8 - unused_import
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\friends\presentation\friends_screen.dart:25:144 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\friends\presentation\friends_screen.dart:76:207 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\friends\presentation\friends_screen.dart:97:137 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\friends\presentation\friends_screen.dart:106:137 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\landing\presentation\landing_screen.dart:26:48 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\landing\presentation\landing_screen.dart:42:41 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\landing\presentation\landing_screen.dart:59:41 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\landing\presentation\landing_screen.dart:61:60 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\landing\presentation\landing_screen.dart:64:45 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\landing\presentation\landing_screen.dart:157:53 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\landing\presentation\landing_screen.dart:196:52 - deprecated_member_use
+warning - Unused import: 'package:google_fonts/google_fonts.dart' - lib\features\profile\presentation\profile_screen.dart:4:8 - unused_import
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\profile\presentation\profile_screen.dart:37:59 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\profile\presentation\profile_screen.dart:71:71 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\profile\presentation\profile_screen.dart:89:145 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\profile\presentation\profile_screen.dart:105:145 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\sos\presentation\sos_screen.dart:111:63 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\sos\presentation\sos_screen.dart:149:63 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\sos\presentation\sos_screen.dart:168:161 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\sos\presentation\sos_screen.dart:221:72 - deprecated_member_use
+  error - Target of URI doesn't exist: '../data/mascot_provider.dart' - lib\features\trivia\presentation\trivia_screen.dart:6:8 - uri_does_not_exist
+  error - Undefined name 'mascotProvider' - lib\features\trivia\presentation\trivia_screen.dart:81:16 - undefined_identifier
+  error - Undefined name 'mascotProvider' - lib\features\trivia\presentation\trivia_screen.dart:82:16 - undefined_identifier
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\trivia\presentation\trivia_screen.dart:124:153 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\trivia\presentation\trivia_screen.dart:191:53 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\shared\navigation\scaffold_with_navbar.dart:24:35 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\shared\widgets\custom_button.dart:28:54 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\shared\widgets\custom_button.dart:49:35 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\shared\widgets\custom_input_field.dart:47:60 - deprecated_member_use
+

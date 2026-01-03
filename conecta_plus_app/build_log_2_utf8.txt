@@ -1,0 +1,182 @@
+﻿Running Gradle task 'assembleRelease'...                        
+Warning: The plugin audioplayers_android requires Android SDK version 35 or higher.
+For more information about build configuration, see https://flutter.dev/to/review-gradle-config.
+Warning: The plugin path_provider_android requires Android SDK version 36 or higher.
+For more information about build configuration, see https://flutter.dev/to/review-gradle-config.
+Warning: The plugin shared_preferences_android requires Android SDK version 36 or higher.
+For more information about build configuration, see https://flutter.dev/to/review-gradle-config.
+Warning: The plugin sqflite_android requires Android SDK version 36 or higher.
+For more information about build configuration, see https://flutter.dev/to/review-gradle-config.
+Warning: The plugin url_launcher_android requires Android SDK version 36 or higher.
+For more information about build configuration, see https://flutter.dev/to/review-gradle-config.
+flutter : Your project is configured to 
+compile against Android SDK 34, but the 
+following plugin(s) require to be compiled 
+against a higher Android SDK version:
+En línea: 1 Carácter: 1
++ flutter build apk --release > 
+build_log_2.txt 2>&1
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~
+    + CategoryInfo          : NotSpecified:  
+   (Your project is...id SDK version::Strin  
+  g) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandE 
+   rror
+ 
+- audioplayers_android compiles against 
+Android SDK 35
+- path_provider_android compiles against 
+Android SDK 36
+- shared_preferences_android compiles 
+against Android SDK 36
+- sqflite_android compiles against Android 
+SDK 36
+- url_launcher_android compiles against 
+Android SDK 36
+Fix this issue by compiling against the 
+highest Android SDK version (they are 
+backward compatible).
+Add the following to C:\Users\Zbook\Desktop\C
+onectaAPP\conecta_plus_app\android\app\build.
+gradle:
+
+    android {
+        compileSdk = 36
+        ...
+    }
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task 
+':app:checkReleaseAarMetadata'.
+> A failure occurred while executing com.andr
+oid.build.gradle.internal.tasks.CheckAarMetad
+ataWorkAction
+   > 6 issues were found when checking AAR 
+metadata:
+
+       1.  Dependency 
+'androidx.browser:browser:1.9.0' requires 
+libraries and applications that
+           depend on it to compile against 
+version 36 or later of the
+           Android APIs.
+
+           :app is currently compiled 
+against android-34.
+
+           Also, the maximum recommended 
+compile SDK version for Android Gradle
+           plugin 8.6.0 is 35.
+
+           Recommended action: Update this 
+project's version of the Android Gradle
+           plugin to one that supports 36, 
+then update this project to use
+           compileSdk of at least 36.
+
+           Note that updating a library or 
+application's compileSdk (which
+           allows newer APIs to be used) can 
+be done separately from updating
+           targetSdk (which opts the app in 
+to new runtime behavior) and
+           minSdk (which determines which 
+devices the app can be installed
+           on).
+
+       2.  Dependency 
+'androidx.browser:browser:1.9.0' requires 
+Android Gradle plugin 8.9.1 or higher.
+
+           This build currently uses Android 
+Gradle plugin 8.6.0.
+
+       3.  Dependency 
+'androidx.core:core-ktx:1.17.0' requires 
+libraries and applications that
+           depend on it to compile against 
+version 36 or later of the
+           Android APIs.
+
+           :app is currently compiled 
+against android-34.
+
+           Also, the maximum recommended 
+compile SDK version for Android Gradle
+           plugin 8.6.0 is 35.
+
+           Recommended action: Update this 
+project's version of the Android Gradle
+           plugin to one that supports 36, 
+then update this project to use
+           compileSdk of at least 36.
+
+           Note that updating a library or 
+application's compileSdk (which
+           allows newer APIs to be used) can 
+be done separately from updating
+           targetSdk (which opts the app in 
+to new runtime behavior) and
+           minSdk (which determines which 
+devices the app can be installed
+           on).
+
+       4.  Dependency 
+'androidx.core:core-ktx:1.17.0' requires 
+Android Gradle plugin 8.9.1 or higher.
+
+           This build currently uses Android 
+Gradle plugin 8.6.0.
+
+       5.  Dependency 
+'androidx.core:core:1.17.0' requires 
+libraries and applications that
+           depend on it to compile against 
+version 36 or later of the
+           Android APIs.
+
+           :app is currently compiled 
+against android-34.
+
+           Also, the maximum recommended 
+compile SDK version for Android Gradle
+           plugin 8.6.0 is 35.
+
+           Recommended action: Update this 
+project's version of the Android Gradle
+           plugin to one that supports 36, 
+then update this project to use
+           compileSdk of at least 36.
+
+           Note that updating a library or 
+application's compileSdk (which
+           allows newer APIs to be used) can 
+be done separately from updating
+           targetSdk (which opts the app in 
+to new runtime behavior) and
+           minSdk (which determines which 
+devices the app can be installed
+           on).
+
+       6.  Dependency 
+'androidx.core:core:1.17.0' requires Android 
+Gradle plugin 8.9.1 or higher.
+
+           This build currently uses Android 
+Gradle plugin 8.6.0.
+
+* Try:
+> Run with --stacktrace option to get the 
+stack trace.
+> Run with --info or --debug option to get 
+more log output.
+> Run with --scan to get full insights.
+> Get more help at https://help.gradle.org.
+
+BUILD FAILED in 3s
+Running Gradle task 'assembleRelease'...                            4,3s
+Gradle task assembleRelease failed with exit 
+code 1
