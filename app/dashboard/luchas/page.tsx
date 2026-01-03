@@ -24,7 +24,7 @@ export default async function LuchasPage() {
     });
 
     // Attach totalDays to each struggle based on matching plan title
-    const strugglesWithTotalDays = struggles.map(s => {
+    const strugglesWithTotalDays = struggles.map((s: any) => {
         const plan = plans.find((p: any) => p.title.toLowerCase().includes(s.title.toLowerCase()) || s.title.toLowerCase().includes(p.title.toLowerCase()));
         return {
             ...s,
