@@ -75,7 +75,7 @@ class _StreakCardState extends ConsumerState<StreakCard> {
     return GestureDetector(
       onTap: () => context.push('/dashboard/llami'),
       child: Container(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(20),
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(24),
@@ -88,152 +88,134 @@ class _StreakCardState extends ConsumerState<StreakCard> {
           ],
         ),
         child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Expanded(
-              child: Row(
+              flex: 3,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Container(
-                    padding: const EdgeInsets.all(10),
-                    decoration: const BoxDecoration(
-                      color: Color(0xFFF0FDF4),
-                      shape: BoxShape.circle,
-                    ),
-                    child: const Icon(
-                      Icons.wb_sunny_rounded,
-                      color: Color(0xFF22C55E),
-                      size: 24,
-                    ),
-                  ).animate().scale(
-                      delay: 200.ms,
-                      duration: 400.ms,
-                      curve: Curves.easeOutBack),
-                  const SizedBox(width: 12),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
+                  Row(
                     children: [
+                      Container(
+                        padding: const EdgeInsets.all(8),
+                        decoration: const BoxDecoration(
+                          color: Color(0xFFDCFCE7),
+                          shape: BoxShape.circle,
+                        ),
+                        child: const Icon(
+                          Icons.wb_sunny_rounded,
+                          color: Color(0xFF22C55E),
+                          size: 20,
+                        ),
+                      ),
+                      const SizedBox(width: 8),
                       Text(
-                        'Días en victoria',
+                        'Días en\nvictoria',
                         style: GoogleFonts.fredoka(
-                          fontSize: 12,
+                          fontSize: 14,
                           color: const Color(0xFF94A3B8),
                           fontWeight: FontWeight.w500,
-                          height: 1.0,
-                        ),
-                      ),
-                      const SizedBox(height: 2),
-                      Text(
-                        '${mascot.streak} Días',
-                        style: GoogleFonts.fredoka(
-                          fontSize: 26,
-                          fontWeight: FontWeight.bold,
-                          color: AppTheme.primary,
-                          height: 1.0,
-                        ),
-                      ),
-                    ],
-                  ).animate().fadeIn(delay: 300.ms).slideX(begin: -0.1),
-                ],
-              ),
-            ),
-            const SizedBox(width: 12),
-            SizedBox(
-              width: 80, // Reduced from 104 to avoid overlap
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Stack(
-                    clipBehavior: Clip.none,
-                    alignment: Alignment.center,
-                    children: [
-                      Positioned(
-                        bottom: 70, // Adjusted from 90
-                        left: -30,
-                        right: -30,
-                        child: AnimatedOpacity(
-                          opacity: _showMessage ? 1 : 0,
-                          duration: const Duration(milliseconds: 200),
-                          child: AnimatedScale(
-                            scale: _showMessage ? 1 : 0.92,
-                            duration: const Duration(milliseconds: 220),
-                            curve: Curves.easeOutBack,
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Container(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 10, vertical: 8),
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(16),
-                                    border: Border.all(
-                                        color: AppTheme.accent, width: 2),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.black
-                                            .withValues(alpha: 0.08),
-                                        blurRadius: 18,
-                                        offset: const Offset(0, 10),
-                                      ),
-                                    ],
-                                  ),
-                                  child: Text(
-                                    _message,
-                                    textAlign: TextAlign.center,
-                                    style: GoogleFonts.fredoka(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 11,
-                                      color: const Color(0xFF0F172A),
-                                      height: 1.1,
-                                    ),
-                                  ),
-                                ),
-                                CustomPaint(
-                                  size: const Size(16, 10),
-                                  painter: _BubbleTriangle(),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                      GestureDetector(
-                        onTap: _showClickMessage,
-                        child: Hero(
-                          tag: 'llami_mascot',
-                          child: LlamiMascot(streak: mascot.streak)
-                              .animate(
-                                  onPlay: (controller) =>
-                                      controller.repeat(reverse: true))
-                              .moveY(
-                                  begin: -5,
-                                  end: 5,
-                                  duration: 2.seconds,
-                                  curve: Curves.easeInOut)
-                              .scale(
-                                  begin: const Offset(0.95, 0.95),
-                                  end: const Offset(1.05, 1.05),
-                                  duration: 2.seconds,
-                                  curve: Curves.easeInOut),
+                          height: 1.1,
                         ),
                       ),
                     ],
                   ),
-                  const SizedBox(height: 6),
-                  _LevelPill(label: 'Nivel ${mascot.level}')
-                      .animate()
-                      .fadeIn(delay: 500.ms)
-                      .scale(delay: 500.ms),
+                  const SizedBox(height: 8),
+                  Text(
+                    '${mascot.streak}',
+                    style: GoogleFonts.fredoka(
+                      fontSize: 32,
+                      fontWeight: FontWeight.bold,
+                      color: const Color(0xFF1E293B),
+                      height: 1.0,
+                    ),
+                  ),
+                  Text(
+                    'Días',
+                    style: GoogleFonts.fredoka(
+                      fontSize: 22,
+                      fontWeight: FontWeight.bold,
+                      color: const Color(0xFF1E293B),
+                      height: 1.0,
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  _LevelPill(label: 'Nivel ${mascot.level}'),
+                ],
+              ),
+            ),
+            Expanded(
+              flex: 2,
+              child: Stack(
+                clipBehavior: Clip.none,
+                alignment: Alignment.center,
+                children: [
+                  Positioned(
+                    bottom: 80,
+                    left: -40,
+                    right: -40,
+                    child: AnimatedOpacity(
+                      opacity: _showMessage ? 1 : 0,
+                      duration: const Duration(milliseconds: 200),
+                      child: AnimatedScale(
+                        scale: _showMessage ? 1 : 0.92,
+                        duration: const Duration(milliseconds: 220),
+                        curve: Curves.easeOutBack,
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 8),
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(16),
+                                border: Border.all(
+                                    color: const Color(0xFFFFD166), width: 2),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black.withValues(alpha: 0.08),
+                                    blurRadius: 18,
+                                    offset: const Offset(0, 10),
+                                  ),
+                                ],
+                              ),
+                              child: Text(
+                                _message,
+                                textAlign: TextAlign.center,
+                                style: GoogleFonts.fredoka(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 10,
+                                  color: const Color(0xFF0F172A),
+                                  height: 1.1,
+                                ),
+                              ),
+                            ),
+                            CustomPaint(
+                              size: const Size(12, 8),
+                              painter: _BubbleTriangle(),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: _showClickMessage,
+                    child: Hero(
+                      tag: 'llami_mascot',
+                      child: IntrinsicHeight(
+                        child: LlamiMascot(streak: mascot.streak),
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ),
           ],
         ),
-      )
-          .animate()
-          .fadeIn(duration: 600.ms)
-          .slideY(begin: 0.2, curve: Curves.easeOutCubic),
+      ),
     );
   }
 }

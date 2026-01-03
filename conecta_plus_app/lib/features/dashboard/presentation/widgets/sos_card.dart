@@ -12,45 +12,36 @@ class SOSCard extends StatelessWidget {
     return GestureDetector(
       onTap: () => context.push('/sos'),
       child: Container(
-        padding: const EdgeInsets.all(8),
+        padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: AppTheme.error,
+          color: const Color(0xFFFF5252), // Vibrant red matching image
           borderRadius: BorderRadius.circular(24),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withValues(alpha: 0.08),
-              blurRadius: 10,
-              offset: const Offset(0, 4),
+              color: Colors.black.withValues(alpha: 0.15),
+              blurRadius: 20,
+              offset: const Offset(0, 10),
             ),
           ],
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Icon(Icons.warning_rounded, color: Colors.white, size: 36)
-                .animate(onPlay: (c) => c.repeat(reverse: true))
-                .scale(
-                    begin: const Offset(0.9, 0.9),
-                    end: const Offset(1.1, 1.1),
-                    duration: 1.seconds,
-                    curve: Curves.easeInOut),
-            const SizedBox(height: 6),
-            Text('SOS',
-                style: GoogleFonts.fredoka(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16,
-                  height: 1.0,
-                )),
+            const Icon(Icons.warning_amber_rounded,
+                color: Colors.white, size: 48),
+            const SizedBox(height: 8),
+            Text(
+              'SOS',
+              style: GoogleFonts.fredoka(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+                fontSize: 18,
+                letterSpacing: 1.2,
+              ),
+            ),
           ],
         ),
-      )
-          .animate(onPlay: (c) => c.repeat(reverse: true))
-          .shimmer(
-              duration: 3.seconds, color: Colors.white.withValues(alpha: 0.3))
-          .animate()
-          .fadeIn(duration: 400.ms)
-          .scale(begin: const Offset(0.9, 0.9), curve: Curves.easeOutBack),
+      ),
     );
   }
 }

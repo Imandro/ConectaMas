@@ -82,6 +82,7 @@ class _LuchasScreenState extends ConsumerState<LuchasScreen> {
           : RefreshIndicator(
               onRefresh: () => ref.read(struggleProvider.notifier).refresh(),
               child: ListView(
+                physics: const ClampingScrollPhysics(),
                 padding: const EdgeInsets.all(24),
                 children: [
                   if (struggleState.error != null)
@@ -289,7 +290,7 @@ class _LuchasScreenState extends ConsumerState<LuchasScreen> {
                             child: Text(
                               isAvailable
                                   ? 'Plan por iniciar'
-                                  : 'Día ${struggle.currentDay} / 7',
+                                  : 'Día ${struggle.currentDay} / 21',
                               style: TextStyle(
                                 color: isAvailable
                                     ? const Color(0xFFB45309)

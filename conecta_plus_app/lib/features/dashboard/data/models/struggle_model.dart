@@ -70,7 +70,7 @@ class Struggle {
     this.days = const [],
   });
 
-  double get progress => (completedDays.length / 7.0);
+  double get progress => (completedDays.length / 21.0);
 
   Struggle copyWith({
     String? id,

@@ -12,6 +12,14 @@ Future<void> main() async {
   runApp(const ProviderScope(child: ConectaPlusBetaApp()));
 }
 
+class MyCustomScrollBehavior extends MaterialScrollBehavior {
+  @override
+  Widget buildScrollbar(
+      BuildContext context, Widget child, ScrollableDetails details) {
+    return child;
+  }
+}
+
 class ConectaPlusBetaApp extends StatelessWidget {
   const ConectaPlusBetaApp({super.key});
 
@@ -22,6 +30,7 @@ class ConectaPlusBetaApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: AppTheme.lightTheme,
       routerConfig: router,
+      scrollBehavior: MyCustomScrollBehavior(),
     );
   }
 }

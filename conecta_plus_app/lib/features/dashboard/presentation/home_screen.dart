@@ -12,6 +12,7 @@ import 'widgets/daily_verse.dart';
 import 'widgets/social_media_cards.dart';
 import 'widgets/donation_card.dart';
 import 'widgets/announcement_modal.dart';
+import 'widgets/challenge_card.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
@@ -48,6 +49,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       backgroundColor: AppTheme.background,
       body: SafeArea(
         child: ListView(
+          physics: const ClampingScrollPhysics(),
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
           children: [
             // 1. Header
@@ -61,6 +63,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             const DailyVerse()
                 .animate()
                 .fadeIn(delay: 100.ms, duration: 400.ms)
+                .slideY(begin: 0.1),
+            const SizedBox(height: 12),
+
+            const ChallengeCard()
+                .animate()
+                .fadeIn(delay: 150.ms, duration: 400.ms)
                 .slideY(begin: 0.1),
             const SizedBox(height: 12),
 

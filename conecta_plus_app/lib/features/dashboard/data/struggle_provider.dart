@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'models/struggle_model.dart';
 import 'struggle_service.dart';
+import 'struggle_devotionals.dart';
 
 class StruggleState {
   final List<Struggle> struggles;
@@ -91,16 +92,6 @@ class StruggleNotifier extends StateNotifier<StruggleState> {
   }
 
   List<StruggleDay> _getGenericDays(String title) {
-    return List.generate(
-        7,
-        (index) => StruggleDay(
-              dayNumber: index + 1,
-              title: 'Día ${index + 1} de $title',
-              bibleStudy: 'Estudio sobre $title.',
-              practicalExercise: 'Ejercicio práctico para $title.',
-              youthAdvice: 'Consejo para jóvenes sobre $title.',
-              reflectionQuestions: 'Preguntas de reflexión sobre $title.',
-              scripture: 'Filipenses 4:13',
-            ));
+    return StruggleDevotionals.getDaysForStruggle(title);
   }
 }

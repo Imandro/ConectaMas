@@ -97,36 +97,62 @@ class _StruggleDetailScreenState extends ConsumerState<StruggleDetailScreen> {
               ),
               const SizedBox(height: 32),
               // Day Timeline
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: List.generate(7, (index) {
-                  final dayNum = index + 1;
-                  final isCompleted = struggle.completedDays.contains(dayNum);
-                  final isSelected = _selectedDay == dayNum;
+              SizedBox(
+                height: 70,
+                child: ListView.separated(
+                  scrollDirection: Axis.horizontal,
+                  padding: const EdgeInsets.symmetric(horizontal: 4),
+                  itemCount: 21,
+                  separatorBuilder: (context, index) => const SizedBox(width: 12),
+                  itemBuilder: (context, index) {
+                    final dayNum = index + 1;
+                    final isCompleted = struggle.completedDays.contains(dayNum);
+                    final isSelected = _selectedDay == dayNum;
 
-                  return GestureDetector(
-                    onTap: () => setState(() => _selectedDay = dayNum),
-                    child: Container(
-                      width: 42,
-                      height: 54,
-                      decoration: BoxDecoration(
-                        color: isCompleted ? AppTheme.accent : (isSelected ? AppTheme.primary : const Color(0xFF334155)),
-                        borderRadius: BorderRadius.circular(12),
-                        boxShadow: isSelected ? [BoxShadow(color: AppTheme.primary.withValues(alpha: 0.4), blurRadius: 10)] : null,
+                    return GestureDetector(
+                      onTap: () => setState(() => _selectedDay = dayNum),
+                      child: Container(
+                        width: 50,
+                        decoration: BoxDecoration(
+                          color: isCompleted
+                              ? const Color(0xFF22C55E)
+                              : (isSelected
+                                  ? AppTheme.primary
+                                  : const Color(0xFF334155)),
+                          borderRadius: BorderRadius.circular(16),
+                          boxShadow: isSelected
+                              ? [
+                                  BoxShadow(
+                                      color: AppTheme.primary
+                                          .withValues(alpha: 0.4),
+                                      blurRadius: 10)
+                                ]
+                              : null,
+                        ),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            if (isCompleted)
+                              const Icon(Icons.check_circle,
+                                  color: Colors.white, size: 24)
+                            else
+                              Text('$dayNum',
+                                  style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w900,
+                                      height: 1.0)),
+                            const Text('DÍA',
+                                style: TextStyle(
+                                    color: Colors.white54,
+                                    fontSize: 9,
+                                    fontWeight: FontWeight.bold)),
+                          ],
+                        ),
                       ),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          if (isCompleted)
-                            const Icon(Icons.check_circle, color: Colors.white, size: 24)
-                          else
-                            Text('$dayNum', style: const TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w900)),
-                          const Text('DÍA', style: TextStyle(color: Colors.white54, fontSize: 8)),
-                        ],
-                      ),
-                    ),
-                  );
-                }),
+                    );
+                  },
+                ),
               ),
             ],
           ),

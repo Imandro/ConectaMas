@@ -20,6 +20,7 @@ import '../features/sos/presentation/sos_screen.dart';
 import '../features/bible/presentation/bible_screen.dart';
 import '../features/trivia/presentation/trivia_screen.dart';
 import '../features/profile/presentation/profile_screen.dart';
+import '../features/challenges/presentation/challenge_screen.dart';
 import '../shared/navigation/scaffold_with_navbar.dart';
 
 final router = GoRouter(
@@ -32,6 +33,10 @@ final router = GoRouter(
     GoRoute(
       path: '/sos',
       builder: (context, state) => const SOSScreen(),
+    ),
+    GoRoute(
+      path: '/challenge',
+      builder: (context, state) => const ChallengeScreen(),
     ),
     GoRoute(
       path: '/login',

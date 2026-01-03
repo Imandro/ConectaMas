@@ -60,16 +60,33 @@ class _DevotionalsScreenState extends ConsumerState<DevotionalsScreen> {
       }
     }
 
-    final filteredDevotionals = _selectedCategory == 'Para ti'
-        ? devotionalState.devotionals
-        : devotionalState.devotionals
-            .where((d) => d.category == _selectedCategory)
-            .toList();
+    // --- Grouping Logic ---
+    final Map<String, List<Devotional>> groupedDevs = {};
+    final List<dynamic> displayItems = [];
+
+    for (var dev in filteredDevotionals) {
+      final name = _getGroupName(dev.title);
+      if (name != dev.title) {
+        groupedDevs.putIfAbsent(name, () => []).add(dev);
+      } else {
+        displayItems.add(dev);
+      }
+    }
+
+    groupedDevs.forEach((name, devs) {
+      if (devs.length > 1) {
+        displayItems.add({'type': 'group', 'name': name, 'devotionals': devs});
+      } else {
+        displayItems.addAll(devs);
+      }
+    });
+    // --- End Grouping Logic ---
 
     return Scaffold(
       backgroundColor: const Color(0xFFF8FAFC),
       body: SafeArea(
         child: CustomScrollView(
+          physics: const ClampingScrollPhysics(),
           slivers: [
             SliverToBoxAdapter(
               child: Padding(
@@ -187,18 +204,166 @@ class _DevotionalsScreenState extends ConsumerState<DevotionalsScreen> {
               sliver: SliverList(
                 delegate: SliverChildBuilderDelegate(
                   (context, index) {
-                    final dev = filteredDevotionals[index];
+                    final item = displayItems[index];
+
+                    if (item is Map) {
+                      return _buildGroupCard(item['name'], item['devotionals'])
+                          .animate()
+                          .fadeIn(delay: (400 + index * 50).ms)
+                          .slideY(begin: 0.1);
+                    }
+
+                    final dev = item as Devotional;
                     return _buildDevotionalCard(dev)
                         .animate()
                         .fadeIn(delay: (400 + index * 50).ms)
                         .slideY(begin: 0.1);
                   },
-                  childCount: filteredDevotionals.length,
+                  childCount: displayItems.length,
                 ),
               ),
             ),
 
             const SliverToBoxAdapter(child: SizedBox(height: 100)),
+          ],
+        ),
+      ),
+    );
+  }
+
+  String _getGroupName(String title) {
+    if (title.contains(':')) return title.split(':').first.trim();
+    final regex = RegExp(r'\s+D[íi]a\s+', caseSensitive: false);
+    if (regex.hasMatch(title)) {
+      return title.split(regex).first.trim();
+    }
+    return title;
+  }
+
+  Widget _buildGroupCard(String name, List<Devotional> devs) {
+    return GestureDetector(
+      onTap: () {
+        // Show days in a bottom sheet or navigate
+        _showGroupDays(name, devs);
+      },
+      child: Container(
+        margin: const EdgeInsets.only(bottom: 16),
+        padding: const EdgeInsets.all(20),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(24),
+          border: const Border(
+            left: BorderSide(color: AppTheme.primary, width: 5),
+          ),
+          boxShadow: [
+            BoxShadow(
+                color: Colors.black.withValues(alpha: 0.04), blurRadius: 10)
+          ],
+        ),
+        child: Row(
+          children: [
+            Container(
+              height: 60,
+              width: 60,
+              decoration: BoxDecoration(
+                color: AppTheme.primary.withValues(alpha: 0.1),
+                borderRadius: BorderRadius.circular(15),
+              ),
+              child: const Icon(Icons.collections_bookmark_rounded,
+                  color: AppTheme.primary, size: 30),
+            ),
+            const SizedBox(width: 16),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(name,
+                      style: const TextStyle(
+                          fontWeight: FontWeight.bold, fontSize: 18)),
+                  const SizedBox(height: 4),
+                  Text('${devs.length} días de contenido',
+                      style:
+                          TextStyle(color: AppTheme.textMuted, fontSize: 13)),
+                ],
+              ),
+            ),
+            Icon(Icons.chevron_right, color: AppTheme.textMuted),
+          ],
+        ),
+      ),
+    );
+  }
+
+  void _showGroupDays(String name, List<Devotional> devs) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (context) => Container(
+        height: MediaQuery.of(context).size.height * 0.75,
+        decoration: const BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.vertical(top: Radius.circular(32)),
+        ),
+        child: Column(
+          children: [
+            const SizedBox(height: 12),
+            Container(
+              width: 40,
+              height: 4,
+              decoration: BoxDecoration(
+                color: Colors.grey.shade300,
+                borderRadius: BorderRadius.circular(2),
+              ),
+            ),
+            const SizedBox(height: 24),
+            Text(
+              name,
+              style: GoogleFonts.fredoka(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+                color: AppTheme.primary,
+              ),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              'Selecciona un día para continuar',
+              style: TextStyle(color: AppTheme.textMuted),
+            ),
+            const SizedBox(height: 24),
+            Expanded(
+              child: ListView.builder(
+                padding: const EdgeInsets.symmetric(horizontal: 24),
+                itemCount: devs.length,
+                itemBuilder: (context, index) {
+                  final dev = devs[index];
+                  return Padding(
+                    padding: const EdgeInsets.only(bottom: 12),
+                    child: ListTile(
+                      contentPadding: const EdgeInsets.all(12),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20),
+                        side: BorderSide(color: Colors.grey.shade100),
+                      ),
+                      leading: CircleAvatar(
+                        backgroundColor: AppTheme.primary.withValues(alpha: 0.1),
+                        child: Text('${index + 1}',
+                            style: const TextStyle(
+                                color: AppTheme.primary,
+                                fontWeight: FontWeight.bold)),
+                      ),
+                      title: Text(dev.title,
+                          style: const TextStyle(fontWeight: FontWeight.bold)),
+                      trailing: const Icon(Icons.arrow_forward_ios, size: 14),
+                      onTap: () {
+                        Navigator.pop(context);
+                        context.push('/devotionals/${dev.id}');
+                      },
+                    ),
+                  );
+                },
+              ),
+            ),
           ],
         ),
       ),
