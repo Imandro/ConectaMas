@@ -51,99 +51,110 @@ class DailyVerse extends StatelessWidget {
             ),
 
             // Decorative top-left circle
-          Positioned(
-            top: -30,
-            left: -30,
-            child: Container(
-              width: 100,
-              height: 100,
-              decoration: BoxDecoration(
-                color: Colors.white.withValues(alpha: 0.10),
-                shape: BoxShape.circle,
+            Positioned(
+              top: -30,
+              left: -30,
+              child: Container(
+                width: 100,
+                height: 100,
+                decoration: BoxDecoration(
+                  color: Colors.white.withValues(alpha: 0.10),
+                  shape: BoxShape.circle,
+                ),
               ),
-            ),
-          ),
+            ).animate(onPlay: (c) => c.repeat(reverse: true)).scale(
+                begin: const Offset(1, 1),
+                end: const Offset(1.2, 1.2),
+                duration: 4.seconds,
+                curve: Curves.easeInOut),
 
             // Download Icon
-          Positioned(
-            top: 16,
-            right: 16,
-            child: GestureDetector(
-              onTap: () {},
-              child: Container(
-                padding: const EdgeInsets.all(8),
-                decoration: BoxDecoration(
-                  color: Colors.white.withValues(alpha: 0.75),
-                  shape: BoxShape.circle,
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withValues(alpha: 0.15),
-                      blurRadius: 10,
-                      offset: const Offset(0, 6),
-                    ),
-                  ],
+            Positioned(
+              top: 16,
+              right: 16,
+              child: GestureDetector(
+                onTap: () {},
+                child: Container(
+                  padding: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    color: Colors.white.withValues(alpha: 0.75),
+                    shape: BoxShape.circle,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withValues(alpha: 0.15),
+                        blurRadius: 10,
+                        offset: const Offset(0, 6),
+                      ),
+                    ],
+                  ),
+                  child: const Icon(Icons.download,
+                      color: Color(0xFF0F172A), size: 18),
                 ),
-                child: const Icon(Icons.download, color: Color(0xFF0F172A), size: 18),
               ),
-            ),
-          ),
+            ).animate().fadeIn(delay: 400.ms).scale(),
 
             // Content
-          Padding(
-            padding: const EdgeInsets.all(24),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  'VERSÍCULO DEL DÍA',
-                  style: GoogleFonts.fredoka(
-                    color: Colors.white.withValues(alpha: 0.5),
-                    fontWeight: FontWeight.bold,
-                    fontSize: 13,
-                    letterSpacing: 2,
-                  ),
-                ),
-                const SizedBox(height: 16),
-                Text(
-                  '"$verseText"',
-                  textAlign: TextAlign.center,
-                  style: GoogleFonts.fredoka(
-                    color: Colors.white,
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                    fontStyle: FontStyle.italic,
-                    height: 1.3,
-                  ),
-                ),
-                const SizedBox(height: 16),
-                Text(
-                  '— $verseRef',
-                  style: GoogleFonts.fredoka(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w600,
-                    fontSize: 16,
-                  ),
-                ),
-              ],
-            ),
-          ),
-
-            // Branding Watermark
-          Positioned(
-            bottom: 16,
-            right: 20,
-            child: Text(
-              'Conecta+',
-              style: GoogleFonts.fredoka(
-                color: Colors.white.withValues(alpha: 0.25),
-                fontSize: 14,
-                fontWeight: FontWeight.w500,
+            Padding(
+              padding: const EdgeInsets.all(24),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    'VERSÍCULO DEL DÍA',
+                    style: GoogleFonts.fredoka(
+                      color: Colors.white.withValues(alpha: 0.5),
+                      fontWeight: FontWeight.bold,
+                      fontSize: 13,
+                      letterSpacing: 2,
+                    ),
+                  ).animate().fadeIn(delay: 200.ms).slideY(begin: -0.2),
+                  const SizedBox(height: 16),
+                  Text(
+                    '"$verseText"',
+                    textAlign: TextAlign.center,
+                    style: GoogleFonts.fredoka(
+                      color: Colors.white,
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      fontStyle: FontStyle.italic,
+                      height: 1.3,
+                    ),
+                  )
+                      .animate()
+                      .fadeIn(delay: 400.ms)
+                      .scale(begin: const Offset(0.9, 0.9)),
+                  const SizedBox(height: 16),
+                  Text(
+                    '— $verseRef',
+                    style: GoogleFonts.fredoka(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w600,
+                      fontSize: 16,
+                    ),
+                  ).animate().fadeIn(delay: 600.ms),
+                ],
               ),
             ),
-          ),
+
+            // Branding Watermark
+            Positioned(
+              bottom: 16,
+              right: 20,
+              child: Text(
+                'Conecta+',
+                style: GoogleFonts.fredoka(
+                  color: Colors.white.withValues(alpha: 0.25),
+                  fontSize: 14,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ),
           ],
         ),
-      ),
+      )
+          .animate()
+          .fadeIn(duration: 600.ms)
+          .scale(begin: const Offset(0.95, 0.95), curve: Curves.easeOutBack),
     );
   }
 }
