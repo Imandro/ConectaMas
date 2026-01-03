@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import '../../../../config/theme.dart';
 
 class SocialMediaCards extends StatelessWidget {
@@ -19,7 +20,8 @@ class SocialMediaCards extends StatelessWidget {
           titleColor: AppTheme.primary,
           subtitleColor: const Color(0xFF64748B),
           onTap: () async {
-            final url = Uri.parse('https://chat.whatsapp.com/BymmU4EoImgFxLVbUfCzBX');
+            final url =
+                Uri.parse('https://chat.whatsapp.com/BymmU4EoImgFxLVbUfCzBX');
             if (await canLaunchUrl(url)) {
               await launchUrl(url, mode: LaunchMode.externalApplication);
             }
@@ -45,7 +47,8 @@ class SocialMediaCards extends StatelessWidget {
           titleColor: Colors.white,
           subtitleColor: Colors.white,
           onTap: () async {
-            final url = Uri.parse('https://www.instagram.com/_conectamass?igsh=MTBrMnJtYjI1Z3FlOA==');
+            final url = Uri.parse(
+                'https://www.instagram.com/_conectamass?igsh=MTBrMnJtYjI1Z3FlOA==');
             if (await canLaunchUrl(url)) {
               await launchUrl(url, mode: LaunchMode.externalApplication);
             }
@@ -103,10 +106,20 @@ class _SocialCard extends StatelessWidget {
           children: [
             Container(
               padding: const EdgeInsets.all(12),
-              decoration: const BoxDecoration(color: Colors.white, shape: BoxShape.circle),
-              child: Icon(icon, color: iconColor, size: 32),
+              decoration: BoxDecoration(
+                color:
+                    Colors.white.withValues(alpha: bgColor != null ? 1.0 : 0.2),
+                borderRadius: BorderRadius.circular(16),
+              ),
+              child: Icon(icon, color: iconColor, size: 28)
+                  .animate(onPlay: (c) => c.repeat(reverse: true))
+                  .scale(
+                      begin: const Offset(0.9, 0.9),
+                      end: const Offset(1.1, 1.1),
+                      duration: 2.seconds,
+                      curve: Curves.easeInOut),
             ),
-            const SizedBox(width: 16),
+            const SizedBox(width: 20),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -114,18 +127,18 @@ class _SocialCard extends StatelessWidget {
                   Text(
                     title,
                     style: GoogleFonts.fredoka(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20,
+                      fontSize: 18,
+                      fontWeight: FontWeight.w800,
                       color: titleColor,
                     ),
                   ),
+                  const SizedBox(height: 4),
                   Text(
                     subtitle,
                     style: GoogleFonts.fredoka(
-                      fontSize: 14,
-                      color: subtitleColor == Colors.white ? subtitleColor.withValues(alpha: 0.9) : subtitleColor,
+                      fontSize: 13,
+                      color: subtitleColor,
                       fontWeight: FontWeight.w500,
-                      height: 1.2,
                     ),
                   ),
                 ],
@@ -134,6 +147,6 @@ class _SocialCard extends StatelessWidget {
           ],
         ),
       ),
-    );
+    ).animate().fadeIn(duration: 400.ms).slideY(begin: 0.2);
   }
 }
