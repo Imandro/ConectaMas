@@ -180,21 +180,6 @@ export default function DashboardHome() {
                                     {/* Llami Mascot Link with Speech Bubble */}
                                     <Link href="/dashboard/llami" className="text-decoration-none group mb-2">
                                         <div className="position-relative d-inline-block">
-                                            {/* Static Speech Bubble to match photo */}
-                                            <div className="position-absolute bottom-100 start-50 translate-middle-x mb-4" style={{ width: '160px', zIndex: 10 }}>
-                                                <div className="bg-white rounded-4 shadow-sm p-2 border border-3 border-warning position-relative">
-                                                    <p className="text-dark mb-0 fw-black text-center lh-sm" style={{ fontSize: '0.85rem' }}>
-                                                        ¡Mira cómo creces!<br />Estoy orgulloso de ti
-                                                    </p>
-                                                    <div className="position-absolute top-100 start-50 translate-middle-x"
-                                                        style={{ width: 0, height: 0, borderLeft: '10px solid transparent', borderRight: '10px solid transparent', borderTop: '10px solid #FFC107', marginTop: '-1px' }}>
-                                                    </div>
-                                                    <div className="position-absolute top-100 start-50 translate-middle-x"
-                                                        style={{ width: 0, height: 0, borderLeft: '7px solid transparent', borderRight: '7px solid transparent', borderTop: '7px solid white', marginTop: '-4px' }}>
-                                                    </div>
-                                                </div>
-                                            </div>
-
                                             <div className="hover-scale transition-all">
                                                 <div className="bg-warning-subtle rounded-circle p-3" style={{ width: '140px', height: '140px' }}>
                                                     <LlamiMascot

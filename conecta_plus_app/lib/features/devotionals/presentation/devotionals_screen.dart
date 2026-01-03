@@ -60,6 +60,12 @@ class _DevotionalsScreenState extends ConsumerState<DevotionalsScreen> {
       }
     }
 
+    final filteredDevotionals = _selectedCategory == 'Para ti'
+        ? devotionalState.devotionals
+        : devotionalState.devotionals
+            .where((d) => d.category == _selectedCategory)
+            .toList();
+
     // --- Grouping Logic ---
     final Map<String, List<Devotional>> groupedDevs = {};
     final List<dynamic> displayItems = [];

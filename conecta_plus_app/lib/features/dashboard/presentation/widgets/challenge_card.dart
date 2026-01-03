@@ -4,7 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../config/theme.dart';
-import '../data/challenge_provider.dart';
+import '../../challenges/data/challenge_provider.dart';
 
 class ChallengeCard extends ConsumerWidget {
   const ChallengeCard({super.key});
@@ -34,6 +34,11 @@ class ChallengeCard extends ConsumerWidget {
               color: (isCompleted ? const Color(0xFF22C55E) : const Color(0xFF6366F1)).withValues(alpha: 0.3),
               blurRadius: 15,
               offset: const Offset(0, 8),
+            ),
+            BoxShadow(
+              color: Colors.white.withValues(alpha: 0.1),
+              blurRadius: 0,
+              offset: const Offset(0, 4),
             ),
           ],
         ),
@@ -69,9 +74,12 @@ class ChallengeCard extends ConsumerWidget {
                   Text(
                     isCompleted 
                       ? 'Vuelve mañana para más.' 
-                      : 'Completa 5 versículos/verdades.',
+                      : (challengeState.currentChallenges.isNotEmpty && challengeState.dailyProgress < challengeState.currentChallenges.length
+                          ? 'Hoy: ${challengeState.currentChallenges[challengeState.dailyProgress].reference}'
+                          : 'Completa 5 versículos/verdades.'),
                     style: GoogleFonts.openSans(
                       fontSize: 14,
+                      fontWeight: FontWeight.w600,
                       color: Colors.white.withValues(alpha: 0.9),
                     ),
                   ),
@@ -87,14 +95,18 @@ class ChallengeCard extends ConsumerWidget {
                           borderRadius: BorderRadius.circular(4),
                         ),
                       ),
-                      AnimatedContainer(
-                        duration: 500.ms,
-                        height: 8,
-                        width: (MediaQuery.of(context).size.width - 120) * progress,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(4),
-                        ),
+                      LayoutBuilder(
+                        builder: (context, constraints) {
+                          return AnimatedContainer(
+                            duration: 500.ms,
+                            height: 8,
+                            width: constraints.maxWidth * progress,
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(4),
+                            ),
+                          );
+                        }
                       ),
                     ],
                   ),

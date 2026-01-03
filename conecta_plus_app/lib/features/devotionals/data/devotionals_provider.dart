@@ -71,7 +71,7 @@ class DevotionalNotifier extends StateNotifier<DevotionalState> {
       devotionals: [
         Devotional(
           id: '1',
-          title: 'Cuando la ansiedad ataca',
+          title: 'Ansiedad: Día 1 - Cuando la ansiedad ataca',
           category: 'Ansiedad',
           time: '3 min',
           image: 'https://images.unsplash.com/photo-1474418397713-7ede21d49118?auto=format&fit=crop&q=80',
@@ -92,6 +92,43 @@ class DevotionalNotifier extends StateNotifier<DevotionalState> {
           prayer: 'Señor, hoy te entrego mi mente acelerada. No puedo con esto, pero Tú sí. Gracias porque no tengo que ser fuerte todo el tiempo. Recibo tu paz ahora. Amén.',
           author: 'Mario Alvarez',
           isRecommended: true,
+        ),
+        Devotional(
+          id: '1-2',
+          title: 'Ansiedad: Día 2 - El control es una ilusión',
+          category: 'Ansiedad',
+          time: '4 min',
+          image: 'https://images.unsplash.com/photo-1499209974431-9dac3adaf471?auto=format&fit=crop&q=80',
+          bibleVerse: '¿Quién de vosotros, por ansioso que esté, puede añadir una hora a su vida?',
+          bibleReference: 'Mateo 6:27',
+          content: [
+            'La ansiedad nos hace creer que si pensamos lo suficiente en un problema, podremos controlarlo. Pero la preocupación no es preparación. Es como una mecedora: te mantiene ocupado pero no te lleva a ninguna parte.',
+            'Jesús nos recuerda que nuestro control es limitado. No podemos añadir tiempo a nuestra vida ni cambiar el pasado con angustia. La verdadera paz viene cuando aceptamos nuestra limitación y confiamos en la soberanía de Dios.',
+          ],
+          applicationSteps: [
+            'Identifica algo que NO puedes controlar hoy.',
+            'Di en voz alta: "Confío en que Dios tiene el control de esto".'
+          ],
+          prayer: 'Padre, perdóname por tratar de ser Dios. Suelto mi necesidad de controlarlo todo y descanso en tu sabiduría. Amén.',
+          author: 'Mario Alvarez',
+        ),
+        Devotional(
+          id: '1-3',
+          title: 'Ansiedad: Día 3 - Mañana tiene su propia aflicción',
+          category: 'Ansiedad',
+          time: '3 min',
+          image: 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&q=80',
+          bibleVerse: 'Basta a cada día su propio mal.',
+          bibleReference: 'Mateo 6:34',
+          content: [
+            'La ansiedad es pedir prestados problemas al mañana. Dios nos da la gracia para hoy, no para mañana. Cuando intentas cargar con los "qué pasaría si" del futuro, te agotas porque aún no tienes la unción para esa batalla.',
+          ],
+          applicationSteps: [
+            'Enfócate solo en lo que tienes que hacer en las próximas 2 horas.',
+            'Agradece por 3 cosas buenas que tienes AHORA.'
+          ],
+          prayer: 'Señor, ayúdame a vivir en el presente. Tu gracia es suficiente para hoy. No temeré al mañana porque Tú ya estás allí. Amén.',
+          author: 'Mario Alvarez',
         ),
         Devotional(
           id: '2',

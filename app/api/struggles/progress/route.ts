@@ -44,7 +44,7 @@ export async function PATCH(req: Request) {
                 completedDaysArray.push(dayNumber.toString());
             }
 
-            const nextDay = Math.min(Number(dayNumber) + 1, 7);
+            const nextDay = Math.min(Number(dayNumber) + 1, 21);
 
             updated = await prismaAny.userStruggle.update({
                 where: { id },
@@ -58,7 +58,18 @@ export async function PATCH(req: Request) {
                 where: { id },
                 data: {
                     status: "vencido",
-                    currentDay: 7
+                    currentDay: 21
+                }
+            });
+        } else if (action === 'RESET') {
+            updated = await prismaAny.userStruggle.update({
+                where: { id },
+                data: {
+                    status: "ACTIVE",
+                    currentDay: 1,
+                    completedDays: "",
+                    isStarted: false,
+                    startDate: null
                 }
             });
         } else {

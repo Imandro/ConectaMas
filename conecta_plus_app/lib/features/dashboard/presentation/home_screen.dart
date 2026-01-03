@@ -25,22 +25,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    // Show announcement modal after a short delay
-    Future.delayed(const Duration(milliseconds: 1500), () {
-      if (mounted) {
-        final announcements = ref.read(announcementsProvider);
-        if (announcements.isNotEmpty) {
-          showDialog(
-            context: context,
-            barrierDismissible: false,
-            builder: (context) => AnnouncementModal(
-              announcement: announcements.first,
-              onClose: () => Navigator.of(context).pop(),
-            ),
-          );
-        }
-      }
-    });
   }
 
   @override
@@ -66,12 +50,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 .slideY(begin: 0.1),
             const SizedBox(height: 12),
 
-            const ChallengeCard()
-                .animate()
-                .fadeIn(delay: 150.ms, duration: 400.ms)
-                .slideY(begin: 0.1),
-            const SizedBox(height: 12),
-
             // 3. Row: Streak and SOS
             const IntrinsicHeight(
               child: Row(
@@ -88,8 +66,14 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   ),
                 ],
               ),
-            ).animate().fadeIn(delay: 200.ms, duration: 400.ms).scale(
+            ).animate().fadeIn(delay: 150.ms, duration: 400.ms).scale(
                 begin: const Offset(0.95, 0.95), curve: Curves.easeOutBack),
+            const SizedBox(height: 16),
+
+            const ChallengeCard()
+                .animate()
+                .fadeIn(delay: 200.ms, duration: 400.ms)
+                .slideY(begin: 0.1),
             const SizedBox(height: 24),
 
             // 4. Mi Seguimiento

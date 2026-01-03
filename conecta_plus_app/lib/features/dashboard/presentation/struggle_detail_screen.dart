@@ -279,6 +279,33 @@ class _StruggleDetailScreenState extends ConsumerState<StruggleDetailScreen> {
               ),
             ),
           ),
+        const SizedBox(height: 16),
+        if (struggle.isStarted)
+          Center(
+            child: TextButton.icon(
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                    title: const Text('¿Reiniciar plan?'),
+                    content: const Text('Esto borrará tu progreso actual en este plan.'),
+                    actions: [
+                      TextButton(onPressed: () => Navigator.pop(context), child: const Text('Cancelar')),
+                      TextButton(
+                        onPressed: () {
+                          ref.read(struggleProvider.notifier).resetStruggle(struggle.id);
+                          Navigator.pop(context);
+                        },
+                        child: const Text('Reiniciar', style: TextStyle(color: Colors.red)),
+                      ),
+                    ],
+                  ),
+                );
+              },
+              icon: const Icon(Icons.refresh, color: AppTheme.textMuted),
+              label: const Text('REINICIAR PLAN', style: TextStyle(color: AppTheme.textMuted, fontWeight: FontWeight.bold)),
+            ),
+          ),
         const SizedBox(height: 40),
       ],
     );

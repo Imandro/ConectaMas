@@ -91,6 +91,15 @@ class StruggleNotifier extends StateNotifier<StruggleState> {
     }
   }
 
+  Future<void> resetStruggle(String id) async {
+    try {
+      await _service.updateProgress(id, 'RESET');
+      await refresh();
+    } catch (e) {
+      state = state.copyWith(error: e.toString());
+    }
+  }
+
   List<StruggleDay> _getGenericDays(String title) {
     return StruggleDevotionals.getDaysForStruggle(title);
   }

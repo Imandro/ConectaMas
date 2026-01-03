@@ -52,6 +52,8 @@ class AuthNotifier extends StateNotifier<AuthState> {
   Future<bool> login(String identifier, String password) async {
     state = state.copyWith(isLoading: true, error: null);
     try {
+      final targetUrl = '${_dio.options.baseUrl}/auth/mobile/login';
+      print('Attempting login at: $targetUrl');
       final response = await _dio.post('/auth/mobile/login', data: {
         'identifier': identifier,
         'password': password,

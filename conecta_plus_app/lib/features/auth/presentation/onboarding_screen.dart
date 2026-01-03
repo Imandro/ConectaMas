@@ -198,7 +198,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           child: CustomButton(
             text: 'Continuar',
             backgroundColor: AppTheme.accent,
-            onPressed: _spiritualStatus.isEmpty ? null : _nextStep,
+            onPressed: _spiritualStatus.isEmpty ? null : () => _nextStep(),
           ),
         ),
         const SizedBox(height: 24),
@@ -241,7 +241,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         const SizedBox(height: 16),
         SizedBox(
             width: double.infinity,
-            child: CustomButton(text: 'Continuar', onPressed: _nextStep)),
+            child: CustomButton(text: 'Continuar', onPressed: () => _nextStep())),
         const SizedBox(height: 24),
       ],
     );
@@ -279,7 +279,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         const SizedBox(height: 16),
         SizedBox(
             width: double.infinity,
-            child: CustomButton(text: 'Continuar', onPressed: _nextStep)),
+            child: CustomButton(text: 'Continuar', onPressed: () => _nextStep())),
         const SizedBox(height: 24),
       ],
     );
@@ -320,7 +320,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         const SizedBox(height: 16),
         SizedBox(
             width: double.infinity,
-            child: CustomButton(text: 'Continuar', onPressed: _nextStep)),
+            child: CustomButton(text: 'Continuar', onPressed: () => _nextStep())),
         const SizedBox(height: 24),
       ],
     );
@@ -353,7 +353,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             width: double.infinity,
             child: CustomButton(
                 text: 'Continuar',
-                onPressed: _gender.isEmpty ? null : _nextStep)),
+                onPressed: _gender.isEmpty ? null : () => _nextStep())),
         const SizedBox(height: 24),
       ],
     );
@@ -388,7 +388,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         const Spacer(),
         SizedBox(
             width: double.infinity,
-            child: CustomButton(text: 'Continuar', onPressed: _nextStep)),
+            child: CustomButton(text: 'Continuar', onPressed: () => _nextStep())),
         const SizedBox(height: 24),
       ],
     );
@@ -450,7 +450,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         const Spacer(),
         SizedBox(
             width: double.infinity,
-            child: CustomButton(text: 'Continuar', onPressed: _nextStep)),
+            child: CustomButton(text: 'Continuar', onPressed: () => _nextStep())),
         const SizedBox(height: 24),
       ],
     );
@@ -490,10 +490,10 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         const Spacer(),
         SizedBox(
             width: double.infinity,
-            child: CustomButton(text: 'Continuar', onPressed: _nextStep)),
+            child: CustomButton(text: 'Continuar', onPressed: () => _nextStep())),
         const SizedBox(height: 8),
         TextButton(
-            onPressed: _nextStep,
+            onPressed: () => _nextStep(),
             child: const Text('Prefiero omitir',
                 style: TextStyle(color: Colors.white54))),
         const SizedBox(height: 16),
@@ -533,7 +533,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         SizedBox(
             width: double.infinity,
             child: CustomButton(
-                text: '¡Me encanta! Continuar', onPressed: _nextStep)),
+                text: '¡Me encanta! Continuar', onPressed: () => _nextStep())),
         const SizedBox(height: 24),
       ],
     );
@@ -578,7 +578,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 onPressed: () {})),
         const SizedBox(height: 8),
         TextButton(
-            onPressed: _nextStep,
+            onPressed: () => _nextStep(),
             child: const Text('Continuar por ahora',
                 style: TextStyle(color: Colors.white54))),
         const SizedBox(height: 16),
@@ -621,7 +621,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             child: CustomButton(
                 text: '¡Empezar mi Camino!',
                 backgroundColor: AppTheme.accent,
-                onPressed: _nextStep)),
+                onPressed: () => _nextStep())),
         const SizedBox(height: 24),
       ],
     );
