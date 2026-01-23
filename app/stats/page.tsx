@@ -1,4 +1,4 @@
-﻿import prisma from '@/app/lib/prisma';
+﻿import { prisma } from '@/app/lib/prisma';
 import Link from 'next/link';
 import { BarChart3, Globe, Users, TrendingUp } from 'lucide-react';
 
