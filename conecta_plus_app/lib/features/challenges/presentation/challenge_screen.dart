@@ -222,9 +222,9 @@ class _ChallengeScreenState extends ConsumerState<ChallengeScreen> {
                       width: double.infinity,
                       padding: const EdgeInsets.all(20),
                       decoration: BoxDecoration(
-                        color: AppTheme.secondary.withValues(alpha: 0.1),
+                        color: AppTheme.accent.withValues(alpha: 0.1),
                         borderRadius: BorderRadius.circular(24),
-                        border: Border.all(color: AppTheme.secondary.withValues(alpha: 0.3)),
+                        border: Border.all(color: AppTheme.accent.withValues(alpha: 0.3)),
                       ),
                       child: Column(
                         children: [

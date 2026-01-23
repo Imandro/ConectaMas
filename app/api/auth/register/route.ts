@@ -5,17 +5,18 @@ import bcrypt from 'bcryptjs';
 
 export async function POST(req: Request) {
     try {
-        const body = await req.json();
+        const body = await req.json().catch(() => ({}));
+        console.log('Registration attempt body keys:', Object.keys(body));
+
         const { name, password, username, securityAnswer } = body;
         const email = body.email?.toLowerCase();
 
         // Validation
-        if (!email || !password || !name || !username || !securityAnswer) {
-            return NextResponse.json(
-                { message: 'Faltan datos requeridos (nombre, usuario, email, password, pregunta de seguridad)' },
-                { status: 400 }
-            );
-        }
+        if (!email) return NextResponse.json({ message: 'El email es requerido' }, { status: 400 });
+        if (!password) return NextResponse.json({ message: 'La contraseña es requerida' }, { status: 400 });
+        if (!name) return NextResponse.json({ message: 'El nombre es requerido' }, { status: 400 });
+        if (!username) return NextResponse.json({ message: 'El nombre de usuario es requerido' }, { status: 400 });
+        if (!securityAnswer) return NextResponse.json({ message: 'La respuesta de seguridad es requerida' }, { status: 400 });
 
         // Check if user exists (email or username)
         const existingUser = await prisma.user.findFirst({

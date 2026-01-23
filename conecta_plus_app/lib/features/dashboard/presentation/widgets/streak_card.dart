@@ -6,7 +6,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../../config/theme.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 import 'llami_mascot.dart';
 import '../../data/mascot_provider.dart';
 

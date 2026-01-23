@@ -4,7 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../config/theme.dart';
-import '../../challenges/data/challenge_provider.dart';
+import '../../../challenges/data/challenge_provider.dart';
 
 class ChallengeCard extends ConsumerWidget {
   const ChallengeCard({super.key});

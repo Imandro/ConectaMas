@@ -37,16 +37,28 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       return;
     }
 
-    final success =
-        await ref.read(authProvider.notifier).login(identifier, password);
+    try {
+      final success =
+          await ref.read(authProvider.notifier).login(identifier, password);
 
-    if (success && mounted) {
-      context.go('/dashboard');
-    } else if (mounted) {
-      final error = ref.read(authProvider).error;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(error ?? 'Error al iniciar sesión')),
-      );
+      if (success && mounted) {
+        context.go('/dashboard');
+      } else if (mounted) {
+        final error = ref.read(authProvider).error;
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(error ?? 'Error al iniciar sesión'),
+            duration: const Duration(seconds: 5),
+            backgroundColor: Colors.redAccent,
+          ),
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error crítico en UI: $e')),
+        );
+      }
     }
   }
 

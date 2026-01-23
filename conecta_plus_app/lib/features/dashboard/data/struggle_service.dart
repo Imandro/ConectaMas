@@ -4,7 +4,11 @@ import '../../../config/api_config.dart';
 import 'models/struggle_model.dart';
 
 class StruggleService {
-  final Dio _dio = Dio(BaseOptions(baseUrl: ApiConfig.baseUrl));
+  final Dio _dio = Dio(BaseOptions(
+    baseUrl: ApiConfig.baseUrl,
+    connectTimeout: const Duration(seconds: 30),
+    receiveTimeout: const Duration(seconds: 30),
+  ));
 
   Future<List<Struggle>> fetchStruggles() async {
     final prefs = await SharedPreferences.getInstance();
@@ -14,7 +18,7 @@ class StruggleService {
 
     try {
       final response = await _dio.get(
-        '/struggles',
+        'struggles',
         options: Options(headers: {'Authorization': 'Bearer $token'}),
       );
 
@@ -25,7 +29,12 @@ class StruggleService {
         throw Exception('Failed to load struggles');
       }
     } on DioException catch (e) {
-      throw Exception(e.response?.data['message'] ?? 'Error fetching struggles');
+      final data = e.response?.data;
+      String? msg;
+      if (data is Map) {
+        msg = data['message']?.toString();
+      }
+      throw Exception(msg ?? e.response?.statusMessage ?? 'Error fetching struggles');
     }
   }
 
@@ -57,7 +66,7 @@ class StruggleService {
 
     try {
       await _dio.patch(
-        '/struggles/progress',
+        'struggles/progress',
         data: {
           'id': id,
           'action': action,

@@ -5,17 +5,17 @@ class StruggleDevotionals {
     String normalizedTitle = title.toLowerCase();
 
     if (normalizedTitle.contains('porn')) {
-      return _getPornographyDays();
+      return getPornographyDays();
     } else if (normalizedTitle.contains('ansiedad')) {
-      return _getAnxietyDays();
+      return getAnxietyDays();
     } else if (normalizedTitle.contains('depre')) {
-      return _getDepressionDays();
+      return getDepressionDays();
     } else if (normalizedTitle.contains('ira') || normalizedTitle.contains('enojo')) {
-      return _getAngerDays();
+      return getAngerDays();
     } else if (normalizedTitle.contains('mentira') || normalizedTitle.contains('engaño')) {
       return _getLyingDays();
     } else if (normalizedTitle.contains('orgullo') || normalizedTitle.contains('soberbia')) {
-      return _getPrideDays();
+      return getPrideDays();
     }
 
     // Default for any other struggle
@@ -991,6 +991,8 @@ class StruggleDevotionals {
         scripture: 'Juan 14:27',
       ),
     ];
+  }
+
   static List<StruggleDay> _getPornographyDays() {
     return [
       StruggleDay(
@@ -1189,7 +1191,7 @@ class StruggleDevotionals {
   // ... and so on for other fields and struggles ...
 
   static List<StruggleDay> _getGeneric21Days(String title) {
-    final dailyData = [
+    final dailyData = [ /*
       {
         'title': 'El Primer Paso: Honestidad',
         'study': 'La libertad comienza cuando dejamos de ocultar nuestra lucha. Dios ya sabe lo que pasas con $title, solo espera que tú se lo confieses.',
@@ -1358,7 +1360,7 @@ class StruggleDevotionals {
         'questions': '¿Qué es lo más valioso que has aprendido en este proceso?',
         'scripture': '1 Corintios 15:57',
       },
-    ];
+    */ ];
 
     return List.generate(21, (i) {
       final data = dailyData[i];
@@ -1373,4 +1375,14 @@ class StruggleDevotionals {
       );
     });
   }
+
+  static List<StruggleDay> getPornographyDays() => _getGeneric21Days('Lujuria / Pornografía');
+
+  static List<StruggleDay> getAnxietyDays() => _getGeneric21Days('Ansiedad / Estrés');
+
+  static List<StruggleDay> getDepressionDays() => _getGeneric21Days('Depresión');
+
+  static List<StruggleDay> getAngerDays() => _getGeneric21Days('Ira / Enojo');
+
+  static List<StruggleDay> getPrideDays() => _getGeneric21Days('Orgullo');
 }

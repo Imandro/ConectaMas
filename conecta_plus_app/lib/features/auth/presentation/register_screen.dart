@@ -5,19 +5,91 @@ import '../../../config/theme.dart';
 import '../../../shared/widgets/custom_button.dart';
 import '../../../shared/widgets/custom_input_field.dart';
 
-class RegisterScreen extends StatefulWidget {
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../data/auth_provider.dart';
+
+class RegisterScreen extends ConsumerStatefulWidget {
   const RegisterScreen({super.key});
 
   @override
-  State<RegisterScreen> createState() => _RegisterScreenState();
+  ConsumerState<RegisterScreen> createState() => _RegisterScreenState();
 }
 
-class _RegisterScreenState extends State<RegisterScreen> {
+class _RegisterScreenState extends ConsumerState<RegisterScreen> {
   bool _showPassword = false;
   bool _termsAccepted = false;
+  
+  final _nameController = TextEditingController();
+  final _usernameController = TextEditingController();
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+  final _securityAnswerController = TextEditingController();
+
+  @override
+  void dispose() {
+    _nameController.dispose();
+    _usernameController.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
+    _securityAnswerController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _handleRegister() async {
+    if (!_termsAccepted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Debes aceptar los términos y condiciones')),
+      );
+      return;
+    }
+
+    final name = _nameController.text.trim();
+    final username = _usernameController.text.trim();
+    final email = _emailController.text.trim();
+    final password = _passwordController.text;
+    final securityAnswer = _securityAnswerController.text.trim();
+
+    if (name.isEmpty || username.isEmpty || email.isEmpty || password.isEmpty || securityAnswer.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Por favor completa todos los campos')),
+      );
+      return;
+    }
+
+    try {
+      final success = await ref.read(authProvider.notifier).register(
+            name: name,
+            username: username,
+            email: email,
+            password: password,
+            securityAnswer: securityAnswer,
+          );
+
+      if (success && mounted) {
+        context.go('/onboarding');
+      } else if (mounted) {
+        final error = ref.read(authProvider).error;
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(error ?? 'Error al crear la cuenta'),
+            duration: const Duration(seconds: 5),
+            backgroundColor: Colors.redAccent,
+          ),
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error crítico en UI: $e')),
+        );
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
+    final authState = ref.watch(authProvider);
+
     return Scaffold(
       backgroundColor: const Color(0xFFF8FAFC),
       body: SafeArea(
@@ -79,9 +151,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               fontSize: 14,
                               color: AppTheme.primary)),
                       const SizedBox(height: 8),
-                      const CustomInputField(
+                      CustomInputField(
                         label: 'Nombre Completo',
                         placeholder: 'Tu nombre real',
+                        controller: _nameController,
                       ),
                       const SizedBox(height: 24),
                       Text('  Nombre de Usuario',
@@ -90,9 +163,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               fontSize: 14,
                               color: AppTheme.primary)),
                       const SizedBox(height: 8),
-                      const CustomInputField(
+                      CustomInputField(
                         label: 'Nombre de Usuario',
                         placeholder: '@usuario',
+                        controller: _usernameController,
                       ),
                       const SizedBox(height: 24),
                       Text('  Email',
@@ -101,10 +175,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               fontSize: 14,
                               color: AppTheme.primary)),
                       const SizedBox(height: 8),
-                      const CustomInputField(
+                      CustomInputField(
                         label: 'Email',
                         placeholder: 'nombre@ejemplo.com',
                         keyboardType: TextInputType.emailAddress,
+                        controller: _emailController,
                       ),
                       const SizedBox(height: 24),
                       Text('  Contraseña',
@@ -117,6 +192,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         label: 'Contraseña',
                         placeholder: 'Mínimo 6 caracteres',
                         obscureText: !_showPassword,
+                        controller: _passwordController,
                         suffixIcon: IconButton(
                           icon: Icon(
                               _showPassword
@@ -137,9 +213,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           style: GoogleFonts.fredoka(
                               color: const Color(0xFF64748B), fontSize: 13)),
                       const SizedBox(height: 8),
-                      const CustomInputField(
+                      CustomInputField(
                         label: 'Respuesta de Seguridad',
                         placeholder: 'Escribe la respuesta aquí',
+                        controller: _securityAnswerController,
                       ),
                       const SizedBox(height: 12),
                       Text(
@@ -173,10 +250,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       SizedBox(
                         width: double.infinity,
                         child: CustomButton(
-                          text: 'Crear mi cuenta',
+                          text: authState.isLoading ? 'Cargando...' : 'Crear mi cuenta',
                           backgroundColor: AppTheme.accent,
                           textColor: AppTheme.primary,
-                          onPressed: () => context.go('/onboarding'),
+                          onPressed: authState.isLoading ? null : _handleRegister,
                         ),
                       ),
                       const SizedBox(height: 16),

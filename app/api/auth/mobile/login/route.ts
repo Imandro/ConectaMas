@@ -7,10 +7,15 @@ export const dynamic = 'force-dynamic';
 
 export async function POST(req: Request) {
     try {
-        const { identifier, password } = await req.json();
+        const body = await req.json().catch(() => ({}));
+        console.log('Mobile Login attempt body keys:', Object.keys(body));
+        const { identifier, password } = body;
 
-        if (!identifier || !password) {
-            return NextResponse.json({ message: 'Credenciales requeridas' }, { status: 400 });
+        if (!identifier) {
+            return NextResponse.json({ message: 'El email o usuario es requerido' }, { status: 400 });
+        }
+        if (!password) {
+            return NextResponse.json({ message: 'La contraseña es requerida' }, { status: 400 });
         }
 
         const user = await prisma.user.findFirst({
