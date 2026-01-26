@@ -70,6 +70,7 @@ export default async function RootLayout({
                         <Analytics />
                         <Toaster position="top-center" />
                     </Providers>
+                </LanguageProvider>
             </body>
         </html>
     );
