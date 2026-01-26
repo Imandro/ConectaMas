@@ -69,7 +69,7 @@ export default function ChallengePage() {
         } catch (e) {
             console.error(e);
         }
-        setCompleted(true);
+        setIsCompleted(true);
     };
 
     if (challenges.length === 0) return null;
