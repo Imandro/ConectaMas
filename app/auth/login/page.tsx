@@ -7,56 +7,50 @@ import { signIn } from 'next-auth/react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Eye, EyeOff, Loader2 } from 'lucide-react';
 
+import { useLanguage } from '../../LanguageContext';
+
 export default function LoginPage() {
     const router = useRouter();
+    const { t } = useLanguage();
     const searchParams = useSearchParams();
-    const [loading, setLoading] = useState(false);
+
+    const [formData, setFormData] = useState({ identifier: '', password: '' });
     const [showPassword, setShowPassword] = useState(false);
+    const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
     const [successMessage, setSuccessMessage] = useState('');
 
-    const [formData, setFormData] = useState({
-        identifier: '',
-        password: ''
-    });
-
     useEffect(() => {
         if (searchParams.get('registered') === 'true') {
-            setSuccessMessage('Cuenta creada exitosamente. Por favor, inicia sesión.');
+            setSuccessMessage(t.auth.account_created);
         }
-    }, [searchParams]);
+    }, [searchParams, t]);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setFormData({ ...formData, [e.target.id]: e.target.value });
+        setError('');
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        setError('');
         setLoading(true);
+        setError('');
 
         try {
             const res = await signIn('credentials', {
-                identifier: formData.identifier,
+                email: formData.identifier,
                 password: formData.password,
                 redirect: false,
             });
 
             if (res?.error) {
-                setError('Credenciales inválidas');
+                setError(t.auth.invalid_credentials);
             } else {
-                // Fetch session to check onboarding status
-                const sessionRes = await fetch('/api/auth/session');
-                const session = await sessionRes.json();
-
-                if (session?.user && !session.user.hasCompletedOnboarding) {
-                    window.location.href = '/onboarding';
-                } else {
-                    window.location.href = '/dashboard';
-                }
+                router.push('/dashboard');
+                router.refresh();
             }
         } catch (err) {
-            setError('Ocurrió un error al iniciar sesión');
+            setError(t.auth.login_error);
         } finally {
             setLoading(false);
         }
@@ -75,8 +69,8 @@ export default function LoginPage() {
                         />
                     </div>
                 </Link>
-                <h3 className="fw-bold text-secondary">Bienvenido de nuevo</h3>
-                <p className="text-muted small">Ingresa para continuar tu camino.</p>
+                <h3 className="fw-bold text-secondary">{t.auth.welcome_back}</h3>
+                <p className="text-muted small">{t.auth.login_subtitle}</p>
             </div>
 
             {successMessage && (
@@ -93,12 +87,12 @@ export default function LoginPage() {
 
             <form onSubmit={handleSubmit}>
                 <div className="mb-3">
-                    <label htmlFor="identifier" className="form-label small fw-bold text-primary ps-2">Email o Usuario</label>
+                    <label htmlFor="identifier" className="form-label small fw-bold text-primary ps-2">{t.auth.email_user}</label>
                     <input
                         type="text"
                         className="form-control form-control-lg bg-light border-0"
                         id="identifier"
-                        placeholder="usuario o nombre@ejemplo.com"
+                        placeholder={t.auth.placeholder_email}
                         value={formData.identifier}
                         onChange={handleChange}
                         required
@@ -106,13 +100,13 @@ export default function LoginPage() {
                 </div>
 
                 <div className="mb-4">
-                    <label htmlFor="password" className="form-label small fw-bold text-primary ps-2">Contraseña</label>
+                    <label htmlFor="password" className="form-label small fw-bold text-primary ps-2">{t.auth.password}</label>
                     <div className="position-relative">
                         <input
                             type={showPassword ? "text" : "password"}
                             className="form-control form-control-lg bg-light border-0 pe-5"
                             id="password"
-                            placeholder="Ingrese su contraseña"
+                            placeholder={t.auth.placeholder_password}
                             value={formData.password}
                             onChange={handleChange}
                             required
@@ -130,7 +124,7 @@ export default function LoginPage() {
 
                 <div className="text-end mb-4">
                     <Link href="/auth/forgot-password" className="small text-muted text-decoration-none">
-                        ¿Olvidaste tu contraseña?
+                        {t.auth.forgot_password}
                     </Link>
                 </div>
 
@@ -139,12 +133,12 @@ export default function LoginPage() {
                     className="btn btn-primary btn-lg w-100 text-white shadow-sm mb-3 hover-scale rounded-pill fw-bold"
                     disabled={loading}
                 >
-                    {loading ? <Loader2 className="animate-spin" /> : 'Iniciar Sesión'}
+                    {loading ? <Loader2 className="animate-spin" /> : t.auth.login_button}
                 </button>
 
                 <div className="text-center border-top pt-3">
                     <p className="small text-muted mb-0">
-                        ¿No tienes cuenta? <Link href="/auth/register" className="text-primary fw-bold text-decoration-none">Regístrate aquí</Link>
+                        {t.auth.no_account} <Link href="/auth/register" className="text-primary fw-bold text-decoration-none">{t.auth.register_link}</Link>
                     </p>
                 </div>
             </form>

@@ -45,7 +45,13 @@ model User {
   leaderPhone            String?   // For SC kontakt
   age                    Int?
   lastUsernameChange     DateTime?
+  lastChallengeCompleted DateTime?
+  lastChallengeCompleted DateTime?
   lastForumCheck         DateTime?  @default(now())
+  
+  preferredLanguage      String    @default("es") // es, en, pt
+  region                 String    @default("LATAM") // LATAM, US, BR, ES
+
 
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt

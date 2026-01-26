@@ -21,6 +21,7 @@ export async function GET(req: Request) {
                 hasFollowedInstagram: true,
                 country: true,
                 age: true,
+                lastChallengeCompleted: true, // Add this
                 streak: {
                     select: { currentStreak: true }
                 },
@@ -54,6 +55,7 @@ export async function GET(req: Request) {
             hasFollowedInstagram: (user as any).hasFollowedInstagram || false,
             country: (user as any).country || null,
             age: (user as any).age || null,
+            lastChallengeCompleted: (user as any).lastChallengeCompleted || null,
         };
 
         return NextResponse.json(stats);

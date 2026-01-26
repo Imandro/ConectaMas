@@ -32,7 +32,10 @@ interface DashboardStats {
     hasFollowedInstagram: boolean;
     country?: string;
     age?: number;
+    lastChallengeCompleted?: string;
 }
+
+import { useLanguage } from '../LanguageContext';
 
 export default function DashboardHome() {
     const [stats, setStats] = useState<DashboardStats | null>(null);
@@ -115,6 +118,8 @@ export default function DashboardHome() {
     };
 
 
+    const { t } = useLanguage();
+
     if (loading) {
         return (
             <div className="d-flex justify-content-center align-items-center min-vh-100">
@@ -129,7 +134,7 @@ export default function DashboardHome() {
             <header className="d-flex justify-content-between align-items-center mb-4">
                 <div>
                     <h3 className="text-secondary fw-bold text-capitalize mb-1" style={{ fontSize: '1.1rem' }}>{currentDate}</h3>
-                    <h1 className="fw-extrabold text-warning m-0" style={{ fontSize: '2.5rem' }}>Hola, {stats?.name || 'Mario'}</h1>
+                    <h1 className="fw-extrabold text-warning m-0" style={{ fontSize: '2.5rem' }}>{t.dashboard.greeting}, {stats?.name || 'Mario'}</h1>
                 </div>
                 <div className="bg-white rounded-pill shadow-sm p-1 d-flex align-items-center gap-1 border">
                     <Link href="/dashboard/tutorials" className="btn btn-light bg-transparent border-0 rounded-circle p-1 text-dark hover-scale" title="Tutoriales">
@@ -155,7 +160,13 @@ export default function DashboardHome() {
 
             {/* Nuevo: Reto Diario Estilo Duolingo */}
             <section className="mb-4">
-                <ChallengeCard />
+                <ChallengeCard
+                    isCompleted={
+                        stats?.lastChallengeCompleted
+                            ? new Date(stats.lastChallengeCompleted).toDateString() === new Date().toDateString()
+                            : false
+                    }
+                />
             </section>
 
             {/* Estado y SOS con Llami */}
@@ -165,7 +176,7 @@ export default function DashboardHome() {
                         <div className="card-body p-3">
                             <div className="row align-items-between h-100">
                                 <div className="col-7 d-flex flex-column justify-content-center">
-                                    <p className="text-muted fw-bold mb-1" style={{ fontSize: '0.8rem', color: '#94A3B8' }}>Días en victoria</p>
+                                    <p className="text-muted fw-bold mb-1" style={{ fontSize: '0.8rem', color: '#94A3B8' }}>{t.dashboard.streak_label}</p>
 
                                     <div className="d-flex align-items-center gap-1">
                                         <div className="bg-success-subtle text-success p-1 rounded-circle d-flex align-items-center justify-content-center" style={{ width: '32px', height: '32px' }}>
@@ -174,7 +185,7 @@ export default function DashboardHome() {
                                         <span className="fw-black text-dark" style={{ fontSize: '2.5rem', lineHeight: '1' }}>{stats?.streak || 10}</span>
                                     </div>
 
-                                    <h2 className="fw-black text-dark m-0" style={{ fontSize: '1.8rem', marginLeft: '35px' }}>Días</h2>
+                                    <h2 className="fw-black text-dark m-0" style={{ fontSize: '1.8rem', marginLeft: '35px' }}>{t.dashboard.days}</h2>
                                 </div>
                                 <div className="col-5 text-center position-relative d-flex flex-column align-items-center justify-content-center pe-3">
                                     {/* Llami Mascot Link with Speech Bubble */}

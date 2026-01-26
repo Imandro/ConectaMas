@@ -6,75 +6,232 @@ import { Check, ArrowRight, Shield, Heart, User, Sparkles, RefreshCw, Zap, X, Us
 import { useRouter } from "next/navigation";
 import LlamiMascot from "@/app/components/LlamiMascot";
 
-const SPIRITUAL_STATUS_OPTIONS = [
+import { useLanguage } from "../LanguageContext";
+
+const getSpiritualStatusOptions = (t: any) => [
     {
         id: "ACCEPT",
-        title: "Aceptar a Jesús por Primera Vez",
+        title: t.onboarding.status_accept,
         icon: Sparkles,
         color: "success",
-        prayer: "Señor Jesús, hoy decido seguirte. Reconozco que eres el Hijo de Dios y que moriste por mis pecados. Te pido perdón y te invito a ser el Señor de mi vida. Gracias por tu amor incondicional. Amén."
+        prayer: t.onboarding.prayer_accept
     },
     {
         id: "RENEW",
-        title: "Reconciliar y Renovar mi Fe",
+        title: t.onboarding.status_renew,
         icon: RefreshCw,
         color: "warning",
-        prayer: "Padre, he estado lejos de Ti. Reconozco que me alejé, pero hoy vuelvo a casa. Perdóname por las veces que te fallé. Renuevo mi compromiso contigo y te pido que restaures mi primer amor. Amén."
+        prayer: t.onboarding.prayer_renew
     },
     {
         id: "DEEPEN",
-        title: "Conectar Más Profundamente con Jesús",
+        title: t.onboarding.status_deepen,
         icon: Zap,
         color: "primary",
-        prayer: "Jesús, quiero conocerte más. Llévame más allá de lo superficial. Enséñame a orar, a escucharte y a caminar contigo cada día. Hambre y sedienta mi alma de Ti. Amén."
+        prayer: t.onboarding.prayer_deepen
     },
     {
         id: "UNSURE",
-        title: "No Estoy Seguro / Prefiero Omitir",
+        title: t.onboarding.status_unsure,
         icon: X,
         color: "secondary",
         prayer: null
     }
 ];
 
-const SIN_OPTIONS = [
-    "Pornografía / Contenido Sexual",
-    "Mentira",
-    "Enojo / Ira",
-    "Orgullo",
-    "Envidia",
-    "Pereza Espiritual",
-    "Chisme / Murmuración",
-    "Adicciones (alcohol, drogas, etc.)",
-    "Relaciones Tóxicas",
-    "Otros"
+const getSinOptions = (t: any) => [
+    t.onboarding.sin_pride,
+    t.onboarding.sin_anger,
+    t.onboarding.sin_lust,
+    t.onboarding.sin_gluttony,
+    t.onboarding.sin_greed,
+    t.onboarding.sin_sloth,
+    t.onboarding.sin_envy,
+    t.onboarding.sin_lying,
+    t.onboarding.sin_gossip,
+    t.onboarding.sin_impatience,
+    t.onboarding.sin_fear,
+    t.onboarding.sin_doubt,
+    t.onboarding.sin_anxiety,
+    t.onboarding.sin_procrastination,
+    t.onboarding.sin_addiction,
+    t.onboarding.sin_pornography,
+    t.onboarding.sin_masturbation,
+    t.onboarding.sin_fornication,
+    t.onboarding.sin_adultery,
+    t.onboarding.sin_idolatry,
+    t.onboarding.sin_blasphemy,
+    t.onboarding.sin_unforgiveness,
+    t.onboarding.sin_rebellion,
+    t.onboarding.sin_apathy,
+    t.onboarding.sin_selfishness,
+    t.onboarding.sin_materialism,
+    t.onboarding.sin_lack_of_faith,
+    t.onboarding.sin_disobedience,
+    t.onboarding.sin_complaining,
+    t.onboarding.sin_bitterness,
+    t.onboarding.sin_jealousy,
+    t.onboarding.sin_control,
+    t.onboarding.sin_manipulation,
+    t.onboarding.sin_judgment,
+    t.onboarding.sin_criticism,
+    t.onboarding.sin_ingratitude,
+    t.onboarding.sin_cowardice,
+    t.onboarding.sin_passivity,
+    t.onboarding.sin_arrogance,
+    t.onboarding.sin_vanity,
+    t.onboarding.sin_superstition,
+    t.onboarding.sin_witchcraft,
+    t.onboarding.sin_occultism,
+    t.onboarding.sin_drug_abuse,
+    t.onboarding.sin_alcohol_abuse,
+    t.onboarding.sin_gambling,
+    t.onboarding.sin_theft,
+    t.onboarding.sin_violence,
+    t.onboarding.sin_murder,
+    t.onboarding.sin_abortion,
+    t.onboarding.sin_euthanasia,
+    t.onboarding.sin_suicide_thoughts,
+    t.onboarding.sin_self_harm,
+    t.onboarding.sin_rejection,
+    t.onboarding.sin_abandonment,
+    t.onboarding.sin_loneliness,
+    t.onboarding.sin_depression,
+    t.onboarding.sin_grief,
+    t.onboarding.sin_trauma,
+    t.onboarding.sin_abuse,
+    t.onboarding.sin_sexual_abuse,
+    t.onboarding.sin_physical_abuse,
+    t.onboarding.sin_emotional_abuse,
+    t.onboarding.sin_spiritual_abuse,
+    t.onboarding.sin_financial_problems,
+    t.onboarding.sin_work_problems,
+    t.onboarding.sin_family_problems,
+    t.onboarding.sin_relationship_problems,
+    t.onboarding.sin_health_problems,
+    t.onboarding.sin_mental_health_problems,
+    t.onboarding.sin_identity_crisis,
+    t.onboarding.sin_purpose_crisis,
+    t.onboarding.sin_lack_of_direction,
+    t.onboarding.sin_lack_of_motivation,
+    t.onboarding.sin_lack_of_discipline,
+    t.onboarding.sin_lack_of_self_control,
+    t.onboarding.sin_lack_of_peace,
+    t.onboarding.sin_lack_of_joy,
+    t.onboarding.sin_lack_of_love,
+    t.onboarding.sin_lack_of_hope,
+    t.onboarding.sin_lack_of_wisdom,
+    t.onboarding.sin_lack_of_understanding,
+    t.onboarding.sin_lack_of_knowledge,
+    t.onboarding.sin_lack_of_truth,
+    t.onboarding.sin_lack_of_justice,
+    t.onboarding.sin_lack_of_mercy,
+    t.onboarding.sin_lack_of_grace,
+    t.onboarding.sin_lack_of_forgiveness,
+    t.onboarding.sin_lack_of_compassion,
+    t.onboarding.sin_lack_of_patience,
+    t.onboarding.sin_lack_of_kindness,
+    t.onboarding.sin_lack_of_goodness,
+    t.onboarding.sin_lack_of_faithfulness,
+    t.onboarding.sin_lack_of_gentleness,
+    t.onboarding.sin_lack_of_self_control_fruit,
+    t.onboarding.sin_other
 ];
 
-const PROBLEM_OPTIONS = [
-    "Ansiedad / Estrés",
-    "Depresión / Tristeza",
-    "Soledad",
-    "Baja autoestima",
-    "Problemas familiares",
-    "Presión de grupo",
-    "Dudas sobre mi fe",
-    "Tentación constante",
-    "Falta de propósito",
-    "Otros"
+const getProblemOptions = (t: any) => [
+    t.onboarding.problem_anxiety,
+    t.onboarding.problem_depression,
+    t.onboarding.problem_fear,
+    t.onboarding.problem_loneliness,
+    t.onboarding.problem_grief,
+    t.onboarding.problem_addiction,
+    t.onboarding.problem_relationship,
+    t.onboarding.problem_family,
+    t.onboarding.problem_work,
+    t.onboarding.problem_financial,
+    t.onboarding.problem_health,
+    t.onboarding.problem_identity,
+    t.onboarding.problem_purpose,
+    t.onboarding.problem_self_esteem,
+    t.onboarding.problem_anger,
+    t.onboarding.problem_unforgiveness,
+    t.onboarding.problem_bitterness,
+    t.onboarding.problem_guilt,
+    t.onboarding.problem_shame,
+    t.onboarding.problem_rejection,
+    t.onboarding.problem_abandonment,
+    t.onboarding.problem_abuse,
+    t.onboarding.problem_trauma,
+    t.onboarding.problem_spiritual_dryness,
+    t.onboarding.problem_doubt,
+    t.onboarding.problem_lack_of_faith,
+    t.onboarding.problem_lack_of_direction,
+    t.onboarding.problem_procrastination,
+    t.onboarding.problem_stress,
+    t.onboarding.problem_burnout,
+    t.onboarding.problem_insomnia,
+    t.onboarding.problem_eating_disorder,
+    t.onboarding.problem_perfectionism,
+    t.onboarding.problem_comparison,
+    t.onboarding.problem_envy,
+    t.onboarding.problem_jealousy,
+    t.onboarding.problem_pride,
+    t.onboarding.problem_control,
+    t.onboarding.problem_manipulation,
+    t.onboarding.problem_lying,
+    t.onboarding.problem_gossip,
+    t.onboarding.problem_criticism,
+    t.onboarding.problem_judgment,
+    t.onboarding.problem_materialism,
+    t.onboarding.problem_consumerism,
+    t.onboarding.problem_apathy,
+    t.onboarding.problem_passivity,
+    t.onboarding.problem_cowardice,
+    t.onboarding.problem_disobedience,
+    t.onboarding.problem_rebellion,
+    t.onboarding.problem_idolatry,
+    t.onboarding.problem_occultism,
+    t.onboarding.problem_superstition,
+    t.onboarding.problem_other
 ];
 
-const CONNECTION_OPTIONS = [
-    "Orar más consistentemente",
-    "Leer la Biblia diariamente",
-    "Ayunar y buscar a Dios",
-    "Unirme a un grupo pequeño",
-    "Servir en la iglesia",
-    "Compartir mi fe con otros",
-    "Adorar más (música, alabanza)",
-    "Estudiar la Palabra más profundo"
+const getConnectionOptions = (t: any) => [
+    t.onboarding.connection_prayer,
+    t.onboarding.connection_bible_study,
+    t.onboarding.connection_community,
+    t.onboarding.connection_worship,
+    t.onboarding.connection_service,
+    t.onboarding.connection_evangelism,
+    t.onboarding.connection_discipleship,
+    t.onboarding.connection_fasting,
+    t.onboarding.connection_meditation,
+    t.onboarding.connection_solitude,
+    t.onboarding.connection_journaling,
+    t.onboarding.connection_generosity,
+    t.onboarding.connection_gratitude,
+    t.onboarding.connection_forgiveness,
+    t.onboarding.connection_confession,
+    t.onboarding.connection_mentorship,
+    t.onboarding.connection_small_group,
+    t.onboarding.connection_retreats,
+    t.onboarding.connection_missions,
+    t.onboarding.connection_social_justice,
+    t.onboarding.connection_creation_care,
+    t.onboarding.connection_spiritual_gifts,
+    t.onboarding.connection_theology,
+    t.onboarding.connection_apologetics,
+    t.onboarding.connection_history,
+    t.onboarding.connection_arts,
+    t.onboarding.connection_music,
+    t.onboarding.connection_writing,
+    t.onboarding.connection_nature,
+    t.onboarding.connection_silence,
+    t.onboarding.connection_reflection,
+    t.onboarding.connection_other
 ];
 
 export default function OnboardingSteps() {
+    const { t } = useLanguage();
     const [step, setStep] = useState(1);
     const [spiritualStatus, setSpiritualStatus] = useState<string>("");
     const [sinsSelected, setSinsSelected] = useState<string[]>([]);
@@ -86,6 +243,11 @@ export default function OnboardingSteps() {
     const [leaderPhone, setLeaderPhone] = useState("");
     const [isSubmitting, setIsSubmitting] = useState(false);
     const router = useRouter();
+
+    const SPIRITUAL_STATUS_OPTIONS = getSpiritualStatusOptions(t);
+    const SIN_OPTIONS = getSinOptions(t);
+    const PROBLEM_OPTIONS = getProblemOptions(t);
+    const CONNECTION_OPTIONS = getConnectionOptions(t);
 
     const totalSteps = 10;
 
@@ -113,7 +275,7 @@ export default function OnboardingSteps() {
             router.push('/dashboard');
         } catch (error) {
             console.error(error);
-            alert('Hubo un error al guardar. Intenta de nuevo.');
+            alert(t.common.error || 'Error');
         } finally {
             setIsSubmitting(false);
         }
@@ -143,10 +305,10 @@ export default function OnboardingSteps() {
                                     <Shield className="text-warning" size={32} />
                                 </div>
                                 <h1 className="fw-bold mb-2 text-white" style={{ fontSize: '2rem' }}>
-                                    Bienvenido a Conecta<span className="text-warning">+</span>
+                                    {t.onboarding.welcome || "Bienvenido a Conecta+"}
                                 </h1>
                                 <p className="text-white-50 lead mb-4" style={{ fontSize: '1.1rem' }}>
-                                    ¿Dónde estás espiritualmente?
+                                    {t.onboarding.spiritual_status_title}
                                 </p>
 
                                 <div className="d-flex flex-column gap-3 mb-5">
@@ -175,7 +337,7 @@ export default function OnboardingSteps() {
 
                                 {selectedOption && selectedOption.prayer && (
                                     <div className="p-4 rounded-4 mb-5 text-start animate-fade-in" style={{ backgroundColor: 'rgba(255, 255, 255, 0.05)', border: '1px solid rgba(255, 255, 255, 0.1)' }}>
-                                        <h6 className="fw-bold text-warning mb-2">Oración</h6>
+                                        <h6 className="fw-bold text-warning mb-2">{t.onboarding.prayer || "Oración"}</h6>
                                         <p className="fst-italic text-white-50 small m-0">
                                             &quot;{selectedOption.prayer}&quot;
                                         </p>
@@ -193,7 +355,7 @@ export default function OnboardingSteps() {
                                         fontSize: '1.1rem'
                                     }}
                                 >
-                                    Continuar <ArrowRight size={20} />
+                                    {t.common.continue || "Continuar"} <ArrowRight size={20} />
                                 </button>
                             </div>
                         )}
@@ -201,9 +363,9 @@ export default function OnboardingSteps() {
                         {/* STEP 2: Sins to Overcome */}
                         {step === 2 && (
                             <div className="animate-fade-in">
-                                <h2 className="fw-bold mb-2 text-center text-white" style={{ fontSize: '1.8rem' }}>Pecados que Quiero Dejar</h2>
+                                <h2 className="fw-bold mb-2 text-center text-white" style={{ fontSize: '1.8rem' }}>{t.onboarding.sins_title}</h2>
                                 <p className="text-white-50 text-center mb-4" style={{ fontSize: '1rem' }}>
-                                    Selecciona lo que resuene contigo. Esto es privado.
+                                    {t.onboarding.sins_subtitle}
                                 </p>
 
                                 <div className="d-flex flex-column gap-2 mb-4" style={{ maxHeight: '450px', overflowY: 'auto', paddingRight: '5px' }}>
@@ -230,7 +392,7 @@ export default function OnboardingSteps() {
                                             onClick={() => setStep(3)}
                                             className="btn btn-link text-white-50 text-decoration-none w-100 rounded-pill"
                                         >
-                                            Prefiero omitir este paso
+                                            {t.onboarding.skip}
                                         </button>
                                     </div>
                                 </div>
@@ -244,7 +406,7 @@ export default function OnboardingSteps() {
                                         fontSize: '1.1rem'
                                     }}
                                 >
-                                    Continuar <ArrowRight size={20} />
+                                    {t.common.continue || "Continuar"} <ArrowRight size={20} />
                                 </button>
                             </div>
                         )}
@@ -252,9 +414,9 @@ export default function OnboardingSteps() {
                         {/* STEP 3: Problems Faced */}
                         {step === 3 && (
                             <div className="animate-fade-in">
-                                <h2 className="fw-bold mb-2 text-center text-white" style={{ fontSize: '1.8rem' }}>Problemas que Enfrento</h2>
+                                <h2 className="fw-bold mb-2 text-center text-white" style={{ fontSize: '1.8rem' }}>{t.onboarding.problems_title}</h2>
                                 <p className="text-white-50 text-center mb-4" style={{ fontSize: '1rem' }}>
-                                    ¿Con qué luchas actualmente?
+                                    {t.onboarding.problems_subtitle}
                                 </p>
 
                                 <div className="d-flex flex-column gap-2 mb-4" style={{ maxHeight: '450px', overflowY: 'auto', paddingRight: '5px' }}>
@@ -281,7 +443,7 @@ export default function OnboardingSteps() {
                                             onClick={() => setStep(4)}
                                             className="btn btn-link text-white-50 text-decoration-none w-100 rounded-pill"
                                         >
-                                            Prefiero omitir este paso
+                                            {t.onboarding.skip}
                                         </button>
                                     </div>
                                 </div>
@@ -295,7 +457,7 @@ export default function OnboardingSteps() {
                                         fontSize: '1.1rem'
                                     }}
                                 >
-                                    Continuar <ArrowRight size={20} />
+                                    {t.common.continue || "Continuar"} <ArrowRight size={20} />
                                 </button>
                             </div>
                         )}
@@ -303,9 +465,9 @@ export default function OnboardingSteps() {
                         {/* STEP 4: Connection Methods */}
                         {step === 4 && (
                             <div className="animate-fade-in">
-                                <h2 className="fw-bold mb-2 text-center text-white" style={{ fontSize: '1.8rem' }}>¿Cómo Quiero Conectar Más?</h2>
+                                <h2 className="fw-bold mb-2 text-center text-white" style={{ fontSize: '1.8rem' }}>{t.onboarding.connection_title}</h2>
                                 <p className="text-white-50 text-center mb-4" style={{ fontSize: '1rem' }}>
-                                    ¿De qué formas quieres crecer en tu relación con Dios?
+                                    {t.onboarding.connection_subtitle}
                                 </p>
 
                                 <div className="d-flex flex-column gap-2 mb-4" style={{ maxHeight: '450px', overflowY: 'auto', paddingRight: '5px' }}>
@@ -332,7 +494,7 @@ export default function OnboardingSteps() {
                                             onClick={() => setStep(5)}
                                             className="btn btn-link text-white-50 text-decoration-none w-100 rounded-pill"
                                         >
-                                            Prefiero omitir este paso
+                                            {t.onboarding.skip}
                                         </button>
                                     </div>
                                 </div>
@@ -346,7 +508,7 @@ export default function OnboardingSteps() {
                                         fontSize: '1.1rem'
                                     }}
                                 >
-                                    Continuar <ArrowRight size={20} />
+                                    {t.common.continue || "Continuar"} <ArrowRight size={20} />
                                 </button>
                             </div>
                         )}
@@ -358,9 +520,9 @@ export default function OnboardingSteps() {
                                     <div className="mx-auto rounded-circle d-flex align-items-center justify-content-center mb-4" style={{ width: '64px', height: '64px', backgroundColor: 'rgba(255, 255, 255, 0.05)' }}>
                                         <User size={32} className="text-warning" />
                                     </div>
-                                    <h2 className="fw-bold mb-2 text-white" style={{ fontSize: '1.8rem' }}>Sobre ti</h2>
+                                    <h2 className="fw-bold mb-2 text-white" style={{ fontSize: '1.8rem' }}>{t.onboarding.gender_title}</h2>
                                     <p className="text-white-50 mb-4">
-                                        Para personalizar tu experiencia, dinos tu género.
+                                        {t.onboarding.gender_subtitle}
                                     </p>
                                 </div>
 
@@ -376,7 +538,7 @@ export default function OnboardingSteps() {
                                             }}
                                         >
                                             <span className="fs-1">👨</span>
-                                            <span className="text-white">Hombre</span>
+                                            <span className="text-white">{t.onboarding.gender_male}</span>
                                         </button>
                                     </div>
                                     <div className="col-6">
@@ -390,7 +552,7 @@ export default function OnboardingSteps() {
                                             }}
                                         >
                                             <span className="fs-1">👩</span>
-                                            <span className="text-white">Mujer</span>
+                                            <span className="text-white">{t.onboarding.gender_female}</span>
                                         </button>
                                     </div>
                                 </div>
@@ -406,7 +568,7 @@ export default function OnboardingSteps() {
                                         fontSize: '1.1rem'
                                     }}
                                 >
-                                    Continuar <ArrowRight size={20} />
+                                    {t.common.continue || "Continuar"} <ArrowRight size={20} />
                                 </button>
                             </div>
                         )}
@@ -417,9 +579,9 @@ export default function OnboardingSteps() {
                                 <div className="mx-auto rounded-circle d-flex align-items-center justify-content-center mb-4" style={{ width: '64px', height: '64px', backgroundColor: 'rgba(255, 255, 255, 0.05)' }}>
                                     <User size={32} className="text-warning" />
                                 </div>
-                                <h2 className="fw-bold mb-2 text-white" style={{ fontSize: '1.8rem' }}>Tu Edad</h2>
+                                <h2 className="fw-bold mb-2 text-white" style={{ fontSize: '1.8rem' }}>{t.onboarding.age_title}</h2>
                                 <p className="text-white-50 mb-4">
-                                    Ayúdanos a personalizar tu experiencia.
+                                    {t.onboarding.age_subtitle}
                                 </p>
 
                                 <div className="mb-4 d-flex justify-content-center">
@@ -453,7 +615,7 @@ export default function OnboardingSteps() {
                                         fontSize: '1.1rem'
                                     }}
                                 >
-                                    Continuar <ArrowRight size={20} />
+                                    {t.common.continue || "Continuar"} <ArrowRight size={20} />
                                 </button>
                             </div>
                         )}
@@ -467,9 +629,9 @@ export default function OnboardingSteps() {
                                     </div>
                                 </div>
 
-                                <h2 className="fw-bold mb-2 text-white" style={{ fontSize: '1.8rem' }}>Dale nombre a tu compañera</h2>
+                                <h2 className="fw-bold mb-2 text-white" style={{ fontSize: '1.8rem' }}>{t.onboarding.mascot_title}</h2>
                                 <p className="text-white-50 mb-4" style={{ fontSize: '1rem' }}>
-                                    Tu mascota te acompañará en cada paso. ¿Cómo quieres que se llame?
+                                    {t.onboarding.mascot_subtitle}
                                 </p>
 
                                 <div className="mb-4">
@@ -498,7 +660,7 @@ export default function OnboardingSteps() {
                                         fontSize: '1.1rem'
                                     }}
                                 >
-                                    Continuar <ArrowRight size={20} />
+                                    {t.common.continue || "Continuar"} <ArrowRight size={20} />
                                 </button>
                             </div>
                         )}
@@ -510,9 +672,9 @@ export default function OnboardingSteps() {
                                     <Shield size={40} className="text-warning" />
                                 </div>
 
-                                <h2 className="fw-bold mb-2 text-white" style={{ fontSize: '1.8rem' }}>Contacto de Emergencia</h2>
+                                <h2 className="fw-bold mb-2 text-white" style={{ fontSize: '1.8rem' }}>{t.onboarding.leader_title}</h2>
                                 <p className="text-white-50 mb-4" style={{ fontSize: '1rem' }}>
-                                    Ingresa el número de WhatsApp de tu líder o mentor para tenerlo a mano en caso de necesitar ayuda (SOS).
+                                    {t.onboarding.leader_subtitle}
                                 </p>
 
                                 <div className="mb-4">
@@ -542,7 +704,7 @@ export default function OnboardingSteps() {
                                             fontSize: '1.1rem'
                                         }}
                                     >
-                                        Continuar <ArrowRight size={20} />
+                                        {t.common.continue || "Continuar"} <ArrowRight size={20} />
                                     </button>
 
                                     <button
@@ -552,7 +714,7 @@ export default function OnboardingSteps() {
                                         }}
                                         className="btn btn-link text-white-50 text-decoration-none"
                                     >
-                                        Prefiero omitir este paso
+                                        {t.onboarding.skip}
                                     </button>
                                 </div>
                             </div>
@@ -564,9 +726,9 @@ export default function OnboardingSteps() {
                                 <div className="mx-auto rounded-circle d-flex align-items-center justify-content-center mb-4" style={{ width: '80px', height: '80px', backgroundColor: 'rgba(255, 255, 255, 0.05)' }}>
                                     <Users size={40} className="text-warning" />
                                 </div>
-                                <h2 className="fw-bold mb-3 text-white">Comunidad de Apoyo</h2>
+                                <h2 className="fw-bold mb-3 text-white">{t.onboarding.community_title}</h2>
                                 <p className="text-white-50 mb-4">
-                                    En Conecta+ no estás solo. Puedes agregar amigos para orar unos por otros.
+                                    {t.onboarding.community_subtitle}
                                 </p>
 
                                 <div className="card bg-white bg-opacity-10 border-0 rounded-4 p-4 text-start mb-4">
@@ -592,7 +754,7 @@ export default function OnboardingSteps() {
                                         fontSize: '1.1rem'
                                     }}
                                 >
-                                    ¡Me encanta! Continuar <ArrowRight size={20} />
+                                    {t.common.continue || "Continuar"} <ArrowRight size={20} />
                                 </button>
                             </div>
                         )}
@@ -604,13 +766,13 @@ export default function OnboardingSteps() {
                                 <div className="mx-auto rounded-circle d-flex align-items-center justify-content-center mb-4" style={{ width: '80px', height: '80px', backgroundColor: 'rgba(255, 255, 255, 0.05)' }}>
                                     <Heart size={40} className="text-warning" />
                                 </div>
-                                <h2 className="fw-bold mb-3 text-white">¡Ayúdanos a Crecer!</h2>
+                                <h2 className="fw-bold mb-3 text-white">{t.onboarding.support_title}</h2>
                                 <p className="text-white-50 mb-4">
-                                    Conecta+ BETA es un proyecto gratuito hecho con amor. Queremos llegar a más jóvenes publicando la app en Google Play Store.
+                                    {t.onboarding.support_subtitle}
                                 </p>
 
                                 <div className="card bg-white text-dark rounded-4 p-4 shadow-lg mb-4 text-start">
-                                    <h5 className="fw-bold text-primary mb-2">Meta: Licencia Play Store ($25 USD)</h5>
+                                    <h5 className="fw-bold text-primary mb-2">{t.onboarding.support_goal}</h5>
                                     <div className="progress bg-secondary bg-opacity-10 rounded-pill mb-3" style={{ height: '12px' }}>
                                         <div
                                             className="progress-bar bg-warning rounded-pill"
@@ -630,14 +792,14 @@ export default function OnboardingSteps() {
                                     className="btn btn-warning w-100 fw-bold py-3 rounded-pill d-flex align-items-center justify-content-center gap-2 text-primary shadow-lg mb-3"
                                     style={{ backgroundColor: '#f3b33e', border: 'none' }}
                                 >
-                                    <Heart size={20} fill="currentColor" /> Quiero Apoyar
+                                    <Heart size={20} fill="currentColor" /> {t.onboarding.support_button}
                                 </a>
 
                                 <button
                                     onClick={() => setStep(11)}
                                     className="btn btn-link text-white-50 text-decoration-none w-100"
                                 >
-                                    Continuar sin apoyar por ahora
+                                    {t.onboarding.continue_without_support}
                                 </button>
                             </div>
                         )}
@@ -648,9 +810,9 @@ export default function OnboardingSteps() {
                                 <div className="mx-auto rounded-circle d-flex align-items-center justify-content-center mb-4" style={{ width: '80px', height: '80px', backgroundColor: 'rgba(255, 255, 255, 0.05)' }}>
                                     <Sparkles size={40} className="text-warning" />
                                 </div>
-                                <h2 className="fw-bold mb-3 text-white">¡Todo Listo!</h2>
+                                <h2 className="fw-bold mb-3 text-white">{t.onboarding.final_title}</h2>
                                 <p className="text-white-50 mb-4">
-                                    Has dado el primer paso hacia una vida de mayor conexión con Dios. Estamos emocionados de acompañarte.
+                                    {t.onboarding.final_subtitle}
                                 </p>
 
                                 <div className="p-4 rounded-4 mb-4 text-start" style={{ backgroundColor: 'rgba(255, 255, 255, 0.05)', border: '1px solid rgba(255, 255, 255, 0.1)' }}>
@@ -671,9 +833,9 @@ export default function OnboardingSteps() {
                                     }}
                                 >
                                     {isSubmitting ? (
-                                        <span>Guardando...</span>
+                                        <span>{t.onboarding.saving}...</span>
                                     ) : (
-                                        <>¡Empezar mi Camino! <ArrowRight size={20} /></>
+                                        <>{t.onboarding.start_journey} <ArrowRight size={20} /></>
                                     )}
                                 </button>
                             </div>

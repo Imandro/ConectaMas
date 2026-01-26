@@ -42,6 +42,8 @@ import AnnouncementModal from './components/AnnouncementModal';
 
 import { auth } from './lib/auth';
 import GoogleAdSense from './components/monetization/GoogleAdSense';
+import { LanguageProvider } from './LanguageContext';
+import LanguageRegionModal from './components/LanguageRegionModal';
 
 export default async function RootLayout({
     children,
@@ -55,17 +57,19 @@ export default async function RootLayout({
         <html lang="es">
             <body className={`${fredoka.variable} font-fredoka`}>
                 <OfflineAlert />
-                <Providers session={serializableSession}>
-                    <GoogleAdSense pId="ca-pub-9787254836039496" />
-                    <main className="main-content">
-                        {children}
-                    </main>
-                    <AnnouncementModal />
-                    <PWAInstallPrompt />
-                    <NotificationPrompt />
-                    <Analytics />
-                    <Toaster position="top-center" />
-                </Providers>
+                <LanguageProvider>
+                    <Providers session={serializableSession}>
+                        <GoogleAdSense pId="ca-pub-9787254836039496" />
+                        <LanguageRegionModal />
+                        <main className="main-content">
+                            {children}
+                        </main>
+                        <AnnouncementModal />
+                        <PWAInstallPrompt />
+                        <NotificationPrompt />
+                        <Analytics />
+                        <Toaster position="top-center" />
+                    </Providers>
             </body>
         </html>
     );
