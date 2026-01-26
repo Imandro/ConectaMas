@@ -74,7 +74,7 @@ export default function ChallengePage() {
 
     if (challenges.length === 0) return null;
 
-    if (completed) {
+    if (isCompleted) {
         return (
             <div className="container py-5 text-center animate-fade-in">
                 <div className="card shadow-lg border-0 rounded-5 p-5 bg-white position-relative overflow-hidden">
