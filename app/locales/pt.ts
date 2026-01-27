@@ -566,7 +566,7 @@ export const pt = {
         rename_placeholder: "Nome...",
         level_label: "NÍVEL",
         flame_label: "FOGO",
-        next_level: "Progresso para Nível {level}",
+        next_level: "Progreso para Nível {level}",
         feed_button: "Avivar o Fogo (-5 pontos)",
         feed_hint: "Ganhe mais pontos lendo a Bíblia ou completando devocionais.",
         trivia_button: "Desafio de Trivia Diário",
@@ -585,6 +585,56 @@ export const pt = {
         toast_rename_error: "Erro ao atualizar",
         error_load: "Não foi possível carregar Llami. Por favor, recarregue a página.",
         reload_button: "Recarregar",
+        milestones: {
+            7: "7 dias! Sua primeira semana completa! 🎊",
+            30: "UM MÊS! Você é incrível! 🏆",
+            50: "50 dias de vitória! Imparável! 💪",
+            100: "100 DIAS! VOCÊ É UMA LENDA! 👑",
+            365: "UM ANO COMPLETO! CAMPEÃO ABSOLUTO! 🌟"
+        },
+        streak: {
+            spark: [
+                "Cada grande fogo começa com uma faísca!",
+                "Você está indo muito bem! Continue assim",
+                "Um dia de cada vez, campeão",
+                "A constância é a chave! 💪"
+            ],
+            flame: [
+                "Veja como você cresce! Estou orgulhoso de você",
+                "Sua chama está crescendo! 🔥",
+                "Progresso incrível! Não pare",
+                "Você é imparável! Continue assim"
+            ],
+            torch: [
+                "Você é uma tocha brilhante! ✨",
+                "Sua luz inspira outros!",
+                "Que disciplina! Deus está contente",
+                "Você é um guerreiro espiritual! ⚔️"
+            ],
+            sun: [
+                "Você brilha como o sol! ☀️",
+                "Você é um exemplo para muitos!",
+                "Sua constância é admirável!",
+                "Deus está fazendo algo grande em você!"
+            ],
+            star: [
+                "Você é uma estrela! ⭐",
+                "Um ano completo! Você é um campeão!",
+                "Seu testemunho é poderoso!",
+                "Lenda espiritual! 👑"
+            ]
+        },
+        random: [
+            "Olá! 👋",
+            "Precisa de ânimo? Estou aqui!",
+            "Continue brilhando! ✨",
+            "Você é amado! ❤️",
+            "Deus tem um plano para você!",
+            "Não desista!",
+            "Você é mais forte do que pensa!",
+            "Hoje é um bom dia para crescer!",
+            "Confie no processo! 🙏"
+        ]
     },
     settings: {
         language_region: "Idioma e Região",
