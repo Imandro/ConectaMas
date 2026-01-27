@@ -71,5 +71,6 @@ export default function DedicatedTriviaPage() {
                 }
             `}</style>
             </div>
-            );
+        </div>
+    );
 }
