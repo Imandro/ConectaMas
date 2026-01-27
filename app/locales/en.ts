@@ -733,18 +733,18 @@ export const en = {
 
         // Language/Region Modal
         language_region_modal: {
-            welcome: "Bem-vindo",
-            select_prompt: "Selecione seu idioma e região.",
-            language_label: "Idioma",
-            region_label: "Região",
-            confirm: "Confirmar",
-            spanish: "Espanhol",
-            english: "Inglês",
-            portuguese: "Português",
-            latin_america: "América Latina",
-            spain: "Espanha",
-            usa: "Estados Unidos (EUA)",
-            brazil: "Brasil"
+            welcome: "Welcome",
+            select_prompt: "Select your language and region to continue.",
+            language_label: "Language",
+            region_label: "Region",
+            confirm: "Confirm",
+            spanish: "Spanish",
+            english: "English",
+            portuguese: "Portuguese",
+            latin_america: "Latin America",
+            spain: "Spain",
+            usa: "United States (USA)",
+            brazil: "Brazil"
         },
 
         // Ad Unit

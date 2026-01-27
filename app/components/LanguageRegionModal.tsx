@@ -5,7 +5,7 @@ import { useLanguage } from '../LanguageContext';
 import { Globe } from 'lucide-react';
 
 export default function LanguageRegionModal() {
-    const { language, region, setLanguage, setRegion } = useLanguage();
+    const { language, region, setLanguage, setRegion, t } = useLanguage();
     const [isOpen, setIsOpen] = useState(false);
 
     useEffect(() => {
