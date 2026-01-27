@@ -1,4 +1,3 @@
-```typescript
 "use client";
 
 import { useState, useEffect } from "react";
@@ -124,17 +123,17 @@ export default function PWAInstallPrompt() {
             </div>
 
             <style>{`
-@keyframes slideUp {
-                    from { transform: translateY(100 %); }
+                @keyframes slideUp {
+                    from { transform: translateY(100%); }
                     to { transform: translateY(0); }
-}
-                .animate - slide - up {
-    animation: slideUp 0.4s ease - out;
-}
-                .x - small {
-    font - size: 0.75rem;
-}
-`}</style>
+                }
+                .animate-slide-up {
+                    animation: slideUp 0.4s ease-out;
+                }
+                .x-small {
+                    font-size: 0.75rem;
+                }
+            `}</style>
         </div>
     );
 }
