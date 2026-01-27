@@ -173,6 +173,7 @@ export const en = {
         feeding_spirit: "Alimente seu espírito hoje!",
         challenge_completed: "Desafio de hoje concluído!",
         come_back_tomorrow: "Volte amanhã para mais.",
+        age_verify: "Uso Conecta+ de forma responsável e tenho a maturidade necessária.",
         level: "Nível",
         my_tracking: "Meu Acompanhamento",
         tracking_desc: "Gerencie seus planos de transformação",
