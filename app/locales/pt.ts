@@ -182,6 +182,7 @@ export const pt = {
         daily_verse_title: "Versículo do Dia",
         download_image: "Baixar imagem",
         verses_and_truths: "Versículos & Verdades",
+        daily_prayer: "Oração Diária",
     },
     challenge: {
         title_verse: "Complete o versículo",
