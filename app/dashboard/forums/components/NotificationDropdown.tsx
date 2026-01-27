@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { Bell, MessageCircle, X } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useLanguage } from '../../LanguageContext';
+import { useLanguage } from '@/app/LanguageContext';
 
 interface Notification {
     id: string;

@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Users, Heart, MessageCircle, Shield, ArrowRight, X, Sparkles } from "lucide-react";
 import LlamiMascot from "@/app/components/LlamiMascot";
-import { useLanguage } from "../../LanguageContext";
+import { useLanguage } from "@/app/LanguageContext";
 
 interface LlamiCommunityTutorialProps {
     onComplete: () => void;
