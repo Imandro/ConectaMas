@@ -9,10 +9,10 @@ import { useLanguage } from "@/app/LanguageContext";
 interface MusicUploadModalProps {
     isOpen: boolean;
     onClose: () => void;
-    onUploadSuccess: () => void;
+    onSuccess: () => void;
 }
 
-export default function MusicUploadModal({ isOpen, onClose, onUploadSuccess }: MusicUploadModalProps) {
+export default function MusicUploadModal({ isOpen, onClose, onSuccess }: MusicUploadModalProps) {
     const { t } = useLanguage();
     const [file, setFile] = useState<File | null>(null);
     const [title, setTitle] = useState("");
@@ -63,7 +63,7 @@ export default function MusicUploadModal({ isOpen, onClose, onUploadSuccess }: M
                 throw new Error(data.error || t.music_upload.error_upload);
             }
 
-            onUploadSuccess();
+            onSuccess();
             onClose();
             toast.success(t.music_upload.success_message);
             // Reset form
