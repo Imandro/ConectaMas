@@ -130,6 +130,7 @@ export const pt = {
         register_title: "Junte-se ao Conecta+",
         register_subtitle: "Sua jornada para a liberdade começa hoje.",
         full_name: "Nome Completo",
+        name_label: "Nome",
         full_name_placeholder: "Seu nome real",
         username: "Nome de Usuário",
         username_placeholder: "@usuario",
