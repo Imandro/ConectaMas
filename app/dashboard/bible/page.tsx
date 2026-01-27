@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { Book, ChevronLeft, ChevronRight, Heart } from 'lucide-react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
-import { useLanguage } from '../../LanguageContext';
+import { useLanguage } from "@/app/LanguageContext";
 import { BIBLE_BOOKS, getBibleBookName } from '@/app/lib/bibleData';
 
 interface BibleVerse {

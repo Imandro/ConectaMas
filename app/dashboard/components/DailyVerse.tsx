@@ -17,7 +17,7 @@ const BACKGROUND_IMAGES = [
     "https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&q=80&w=1600", // Stars
 ];
 
-import { useLanguage } from '../../LanguageContext';
+import { useLanguage } from '@/app/LanguageContext';
 
 export default function DailyVerse() {
     const { t, language } = useLanguage();

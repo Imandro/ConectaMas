@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { ArrowLeft, Send } from 'lucide-react';
-import { useLanguage } from '../../../LanguageContext';
+import { useLanguage } from "@/app/LanguageContext";
 
 interface Category {
     id: string;

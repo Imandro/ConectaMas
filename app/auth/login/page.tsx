@@ -7,7 +7,7 @@ import { signIn } from 'next-auth/react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Eye, EyeOff, Loader2 } from 'lucide-react';
 
-import { useLanguage } from '../../LanguageContext';
+import { useLanguage } from "@/app/LanguageContext";
 
 export default function LoginPage() {
     const router = useRouter();

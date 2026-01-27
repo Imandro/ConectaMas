@@ -7,7 +7,7 @@ import Link from 'next/link';
 import { getChallenges, Challenge } from '@/app/lib/challengeData';
 import LlamiMascot from '@/app/components/LlamiMascot';
 
-import { useLanguage } from '../../LanguageContext';
+import { useLanguage } from "@/app/LanguageContext";
 
 export default function ChallengePage() {
     const router = useRouter();

@@ -1,5 +1,5 @@
 import { Instagram } from "lucide-react";
-import { useLanguage } from "../LanguageContext";
+import { useLanguage } from "@/app/LanguageContext";
 
 export default function InstagramCard() {
     const { t } = useLanguage();

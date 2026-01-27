@@ -3,7 +3,7 @@
 import { CheckCircle2, Trophy, ArrowRight } from 'lucide-react';
 import Link from 'next/link';
 
-import { useLanguage } from '../../LanguageContext';
+import { useLanguage } from '@/app/LanguageContext';
 
 interface ChallengeCardProps {
     isCompleted?: boolean;

@@ -3,7 +3,7 @@
 import { Gift, Heart, Crown, ShieldCheck } from "lucide-react";
 import Image from "next/image";
 import { useSession } from "next-auth/react";
-import { useLanguage } from "../../LanguageContext";
+import { useLanguage } from "@/app/LanguageContext";
 
 export default function SupportFundingAd() {
     const { t } = useLanguage();

@@ -5,7 +5,7 @@ import { Globe, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { updateUserCountry } from "@/app/dashboard/actions/country";
 import { toast } from "react-hot-toast";
-import { useLanguage } from "../LanguageContext";
+import { useLanguage } from "@/app/LanguageContext";
 
 interface CountryModalProps {
     hasSelectedCountry: boolean;

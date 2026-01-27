@@ -6,7 +6,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { signIn } from 'next-auth/react';
 import { Eye, EyeOff, Loader2 } from 'lucide-react';
-import { useLanguage } from '../../LanguageContext';
+import { useLanguage } from "@/app/LanguageContext";
 
 export default function RegisterPage() {
     const router = useRouter();

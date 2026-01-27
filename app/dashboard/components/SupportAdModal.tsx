@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import SupportFundingAd from "./SupportFundingAd";
-import { useLanguage } from "../../LanguageContext";
+import { useLanguage } from "@/app/LanguageContext";
 
 export default function SupportAdModal() {
     const { t } = useLanguage();

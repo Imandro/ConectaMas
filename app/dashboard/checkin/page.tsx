@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { Calendar as CalendarIcon, Smile, Frown, Meh, Save, X } from 'lucide-react';
-import { useLanguage } from '../../LanguageContext';
+import { useLanguage } from "@/app/LanguageContext";
 
 interface Checkin {
     id: string;

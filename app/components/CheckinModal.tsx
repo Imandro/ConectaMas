@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { X, Heart } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import { useLanguage } from "../LanguageContext";
+import { useLanguage } from "@/app/LanguageContext";
 
 interface CheckinModalProps {
     hasCheckedIn: boolean;

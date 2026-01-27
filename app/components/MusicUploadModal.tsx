@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { X, Music, Upload, Check, AlertCircle } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { toast } from "react-hot-toast";
-import { useLanguage } from "../LanguageContext";
+import { useLanguage } from "@/app/LanguageContext";
 
 interface MusicUploadModalProps {
     isOpen: boolean;

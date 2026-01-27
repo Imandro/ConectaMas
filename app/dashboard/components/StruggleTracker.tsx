@@ -5,7 +5,7 @@ import { Plus, ShieldAlert, Trophy, X, ChevronRight } from "lucide-react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { createStruggle } from "../actions";
-import { useLanguage } from "../../LanguageContext";
+import { useLanguage } from "@/app/LanguageContext";
 
 // Define the Struggle interface based on our usage
 interface Struggle {

@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Play, Pause, SkipForward, SkipBack, Volume2, Music, Loader2 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import { useLanguage } from "../LanguageContext";
+import { useLanguage } from "@/app/LanguageContext";
 
 interface Song {
     id: string;

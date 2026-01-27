@@ -6,7 +6,7 @@ import { useState, useEffect } from 'react';
 import { seedSongsAction } from './seed-action';
 import EnhancedMusicPlayer from '@/app/components/EnhancedMusicPlayer';
 import MusicUploadModal from '@/app/components/MusicUploadModal';
-import { useLanguage } from '../../LanguageContext';
+import { useLanguage } from '@/app/LanguageContext';
 import { getSOSContent } from '@/app/lib/sosData';
 
 interface SOSClientProps {

@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Bell, Rocket, Heart, PartyPopper } from "lucide-react";
 import Link from "next/link";
-import { useLanguage } from "../LanguageContext";
+import { useLanguage } from "@/app/LanguageContext";
 
 export default function AnnouncementModal() {
     const { t } = useLanguage();

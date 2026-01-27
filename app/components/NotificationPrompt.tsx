@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { X, Bell, Sparkles, CheckCircle2 } from "lucide-react";
-import { useLanguage } from '../LanguageContext';
+import { useLanguage } from '@/app/LanguageContext';
 
 export default function NotificationPrompt() {
     const [showPrompt, setShowPrompt] = useState(false);

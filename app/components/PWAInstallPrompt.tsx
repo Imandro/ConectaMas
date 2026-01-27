@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { Share, PlusSquare, MoreVertical, Download, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useLanguage } from '../LanguageContext';
+import { useLanguage } from '@/app/LanguageContext';
 
 export default function PWAInstallPrompt() {
     const { t } = useLanguage();

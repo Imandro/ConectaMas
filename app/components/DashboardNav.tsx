@@ -10,7 +10,7 @@ import { usePathname } from 'next/navigation';
 // Since user hasn't installed node_modules, imports might partial fail in IDE but let's write code assuming they will install.
 import { Home, BookOpen, HeartPulse, User, Menu, Book, MessageCircle, Zap } from 'lucide-react';
 import { signOut } from "next-auth/react";
-import { useLanguage } from '../LanguageContext';
+import { useLanguage } from '@/app/LanguageContext';
 
 export default function DashboardNav() {
     const { t } = useLanguage();

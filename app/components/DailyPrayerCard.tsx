@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { BookHeart } from 'lucide-react';
 
-import { useLanguage } from '../LanguageContext';
+import { useLanguage } from '@/app/LanguageContext';
 
 interface DailyPrayer {
     id: string;

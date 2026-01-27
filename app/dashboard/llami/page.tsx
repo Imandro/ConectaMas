@@ -11,7 +11,7 @@ import TriviaGame from "@/app/components/TriviaGame";
 import { Gamepad2, HelpCircle } from "lucide-react";
 import LlamiTutorial from "@/app/components/LlamiTutorial";
 import { completeLlamiTutorial } from "./actions";
-import { useLanguage } from "../../LanguageContext";
+import { useLanguage } from "@/app/LanguageContext";
 
 export const dynamic = 'force-dynamic';
 

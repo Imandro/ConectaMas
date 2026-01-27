@@ -42,7 +42,7 @@ import AnnouncementModal from './components/AnnouncementModal';
 
 import { auth } from './lib/auth';
 import GoogleAdSense from './components/monetization/GoogleAdSense';
-import { LanguageProvider } from './LanguageContext';
+import { LanguageProvider } from '@/app/LanguageContext';
 import LanguageRegionModal from './components/LanguageRegionModal';
 
 export default async function RootLayout({

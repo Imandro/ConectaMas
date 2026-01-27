@@ -6,7 +6,7 @@ import { MessageCircle, Users, Plus } from 'lucide-react';
 import LlamiCommunityTutorial from './components/LlamiCommunityTutorial';
 import NotificationDropdown from './components/NotificationDropdown';
 import { getCommunityTutorialStatus, markCommunityTutorialSeen } from './actions';
-import { useLanguage } from '../../LanguageContext';
+import { useLanguage } from "@/app/LanguageContext";
 
 interface ForumCategory {
     id: string;

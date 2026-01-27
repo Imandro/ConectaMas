@@ -6,7 +6,7 @@ import { Check, ArrowRight, Shield, Heart, User, Sparkles, RefreshCw, Zap, X, Us
 import { useRouter } from "next/navigation";
 import LlamiMascot from "@/app/components/LlamiMascot";
 
-import { useLanguage } from "../LanguageContext";
+import { useLanguage } from '@/app/LanguageContext';
 
 const getSpiritualStatusOptions = (t: any) => [
     {

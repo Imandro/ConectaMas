@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { Users, X, TrendingUp, ChevronRight, Share2 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { getUserCount } from "../actions";
-import { useLanguage } from "../../LanguageContext";
+import { useLanguage } from "@/app/LanguageContext";
 
 export default function GrowthMilestoneModal() {
     const { t } = useLanguage();

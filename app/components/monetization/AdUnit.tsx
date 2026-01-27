@@ -3,7 +3,7 @@
 import { useEffect } from "react";
 import { usePathname } from "next/navigation";
 import { useSession } from "next-auth/react";
-import { useLanguage } from '../LanguageContext';
+import { useLanguage } from '@/app/LanguageContext';
 
 interface AdUnitProps {
     slot: string;

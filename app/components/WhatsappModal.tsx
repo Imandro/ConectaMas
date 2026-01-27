@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { MessageCircle, X } from "lucide-react";
 import { confirmWhatsappJoin } from "@/app/dashboard/actions/whatsapp";
-import { useLanguage } from "../LanguageContext";
+import { useLanguage } from "@/app/LanguageContext";
 
 const SHOW_INTERVAL_DAYS = 2;
 

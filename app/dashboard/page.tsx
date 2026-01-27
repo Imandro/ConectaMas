@@ -35,7 +35,7 @@ interface DashboardStats {
     lastChallengeCompleted?: string;
 }
 
-import { useLanguage } from '../LanguageContext';
+import { useLanguage } from '@/app/LanguageContext';
 
 export default function DashboardHome() {
     const { t, language } = useLanguage();

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Instagram, X } from "lucide-react";
 import { confirmInstagramFollow } from "@/app/dashboard/actions/instagram";
-import { useLanguage } from "../LanguageContext";
+import { useLanguage } from "@/app/LanguageContext";
 
 const SHOW_INTERVAL_DAYS = 2; // Show every 2 days
 

@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { useState } from 'react';
 import { ArrowLeft, Loader2, CheckCircle, Shield, Lock, Eye, EyeOff } from 'lucide-react';
 import { checkUserStatus, resetPasswordWithSecurityAnswer } from './actions';
-import { useLanguage } from '../../LanguageContext';
+import { useLanguage } from "@/app/LanguageContext";
 
 export default function ForgotPasswordPage() {
     const { t } = useLanguage();

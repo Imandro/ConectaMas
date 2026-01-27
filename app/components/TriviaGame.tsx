@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { CheckCircle2, XCircle, Info, ArrowRight, Trophy, Zap, Loader2, Sparkles } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import { useLanguage } from "../LanguageContext";
+import { useLanguage } from "@/app/LanguageContext";
 
 interface Question {
     id: string;
