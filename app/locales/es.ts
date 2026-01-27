@@ -730,26 +730,26 @@ export const es = {
             verse: "\"Tu palabra es una lámpara que guía mis pies y una luz para mi camino.\"",
             citation: "- Salmos 119:105"
         },
+    },
 
-        // Language/Region Modal
-        language_region_modal: {
-            welcome: "Bienvenido",
-            select_prompt: "Selecciona tu idioma y región para continuar.",
-            language_label: "Idioma",
-            region_label: "Región",
-            confirm: "Confirmar",
-            spanish: "Español",
-            english: "Inglés",
-            portuguese: "Portugués",
-            latin_america: "Latinoamérica",
-            spain: "España",
-            usa: "Estados Unidos (USA)",
-            brazil: "Brasil"
-        },
+    // Language/Region Modal
+    language_region_modal: {
+        welcome: "Bienvenido",
+        select_prompt: "Selecciona tu idioma y región para continuar.",
+        language_label: "Idioma",
+        region_label: "Región",
+        confirm: "Confirmar",
+        spanish: "Español",
+        english: "Inglés",
+        portuguese: "Portugués",
+        latin_america: "Latinoamérica",
+        spain: "España",
+        usa: "Estados Unidos (USA)",
+        brazil: "Brasil"
+    },
 
-        // Ad Unit
-        ad_unit: {
-            sustainable_ad: "Publicidad sustentable"
-        }
+    // Ad Unit
+    ad_unit: {
+        sustainable_ad: "Publicidad sustentable"
     }
 };

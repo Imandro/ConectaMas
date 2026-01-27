@@ -726,31 +726,31 @@ export const en = {
         },
         step6: {
             title: "¿Você está pronto?",
-            desc: "Seu caminho espiritual acabou de se tornar mais brilhante. ¡Vamos crescer juntos!",
+            desc: "Seu camino espiritual acabou de se tornar mais brilhante. ¡Vamos crescer juntos!",
             verse: "\"A tua palavra é lâmpada que guia os meus pés e luz que ilumina o meu caminho.\"",
             citation: "- Salmo 119:105"
         },
+    },
 
-        // Language/Region Modal
-        language_region_modal: {
-            welcome: "Welcome",
-            select_prompt: "Select your language and region to continue.",
-            language_label: "Language",
-            region_label: "Region",
-            confirm: "Confirm",
-            spanish: "Spanish",
-            english: "English",
-            portuguese: "Portuguese",
-            latin_america: "Latin America",
-            spain: "Spain",
-            usa: "United States (USA)",
-            brazil: "Brazil"
-        },
+    // Language/Region Modal
+    language_region_modal: {
+        welcome: "Welcome",
+        select_prompt: "Select your language and region to continue.",
+        language_label: "Language",
+        region_label: "Region",
+        confirm: "Confirm",
+        spanish: "Spanish",
+        english: "English",
+        portuguese: "Portuguese",
+        latin_america: "Latin America",
+        spain: "Spain",
+        usa: "United States (USA)",
+        brazil: "Brazil"
+    },
 
-        // Ad Unit
-        ad_unit: {
-            sustainable_ad: "Publicidade sustentável"
-        }
+    // Ad Unit
+    ad_unit: {
+        sustainable_ad: "Publicidade sustentável"
     }
 };
 
