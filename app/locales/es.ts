@@ -621,6 +621,7 @@ export const es = {
     notifications_prompt: {
         title: "Recordatorios Espirituales",
         welcome: "¡No te pierdas de nada!",
+        heading: "Mantente Conectado",
         description: "Recibe alientos diarios, oraciones y recordatorios para tu tiempo con Dios directamente en tu teléfono.",
         button_enable: "Activar Notificaciones",
         button_enabling: "Activando...",
