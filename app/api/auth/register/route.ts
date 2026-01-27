@@ -46,7 +46,7 @@ export async function POST(req: Request) {
             data: {
                 name,
                 email,
-                username,
+                username: username.toLowerCase(),
                 passwordHash: hashedPassword,
                 securityAnswer: normalizedAnswer,
                 role: 'USER',

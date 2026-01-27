@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Instagram, X } from "lucide-react";
 import { confirmInstagramFollow } from "@/app/dashboard/actions/instagram";
+import { useLanguage } from "../LanguageContext";
 
 const SHOW_INTERVAL_DAYS = 2; // Show every 2 days
 
@@ -9,6 +10,7 @@ interface InstagramModalProps {
 }
 
 export default function InstagramModal({ hasFollowed }: InstagramModalProps) {
+    const { t } = useLanguage();
     const [isOpen, setIsOpen] = useState(false);
 
     useEffect(() => {
@@ -63,14 +65,14 @@ export default function InstagramModal({ hasFollowed }: InstagramModalProps) {
                         <Instagram size={48} className="text-danger" />
                         <div className="position-absolute top-0 end-0 bg-danger rounded-circle border border-2 border-white" style={{ width: '16px', height: '16px' }}></div>
                     </div>
-                    <h3 className="fw-bold text-white mb-1">Síguenos en Instagram</h3>
-                    <p className="text-white-50 small mb-0">@_conectamass</p>
+                    <h3 className="fw-bold text-white mb-1">{t.instagram.modal_title}</h3>
+                    <p className="text-white-50 small mb-0">{t.instagram.modal_subtitle}</p>
                 </div>
 
                 {/* Content */}
                 <div className="p-4 pt-3">
                     <p className="text-center text-secondary mb-4 small lh-sm">
-                        Únete a nuestra comunidad en Instagram. Contenido diario, testimonios reales y motivación que transforma vidas.
+                        {t.instagram.modal_body}
                     </p>
 
                     <div className="d-grid gap-2">
@@ -80,14 +82,14 @@ export default function InstagramModal({ hasFollowed }: InstagramModalProps) {
                             style={{ background: 'linear-gradient(45deg, #f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%)', border: 'none' }}
                         >
                             <Instagram size={20} fill="white" />
-                            Seguir Ahora
+                            {t.instagram.follow_now}
                         </button>
 
                         <button
                             onClick={handleDismissLater}
                             className="btn btn-link text-muted text-decoration-none small fw-medium"
                         >
-                            Quizás más tarde
+                            {t.instagram.later}
                         </button>
                     </div>
                 </div>

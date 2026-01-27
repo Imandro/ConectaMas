@@ -1,16 +1,19 @@
 "use client";
 
 import React, { useState } from "react";
-import { X, Upload, Music, Loader2, Save } from "lucide-react";
+import { X, Music, Upload, Check, AlertCircle } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { toast } from "react-hot-toast";
+import { useLanguage } from "../LanguageContext";
 
 interface MusicUploadModalProps {
     isOpen: boolean;
     onClose: () => void;
-    onSuccess: () => void;
+    onUploadSuccess: () => void;
 }
 
-export default function MusicUploadModal({ isOpen, onClose, onSuccess }: MusicUploadModalProps) {
+export default function MusicUploadModal({ isOpen, onClose, onUploadSuccess }: MusicUploadModalProps) {
+    const { t } = useLanguage();
     const [file, setFile] = useState<File | null>(null);
     const [title, setTitle] = useState("");
     const [artist, setArtist] = useState("");
@@ -18,10 +21,11 @@ export default function MusicUploadModal({ isOpen, onClose, onSuccess }: MusicUp
     const [error, setError] = useState("");
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        if (e.target.files && e.target.files[0]) {
-            const selectedFile = e.target.files[0];
+        const selectedFile = e.target.files?.[0];
+        if (selectedFile) {
             if (selectedFile.type !== "audio/mpeg") {
-                setError("Por favor selecciona un archivo MP3.");
+                toast.error(t.music_upload.error_mp3);
+                setFile(null); // Clear file if invalid
                 return;
             }
             setFile(selectedFile);
@@ -33,9 +37,10 @@ export default function MusicUploadModal({ isOpen, onClose, onSuccess }: MusicUp
         }
     };
 
-    const handleUpload = async () => {
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
         if (!file || !title || !artist) {
-            setError("Todos los campos son obligatorios.");
+            toast.error(t.music_upload.error_fields);
             return;
         }
 
@@ -55,17 +60,19 @@ export default function MusicUploadModal({ isOpen, onClose, onSuccess }: MusicUp
 
             if (!response.ok) {
                 const data = await response.json();
-                throw new Error(data.error || "Error al subir la canción");
+                throw new Error(data.error || t.music_upload.error_upload);
             }
 
-            onSuccess();
+            onUploadSuccess();
             onClose();
+            toast.success(t.music_upload.success_message);
             // Reset form
             setFile(null);
             setTitle("");
             setArtist("");
         } catch (err: any) {
             setError(err.message);
+            toast.error(err.message);
         } finally {
             setIsUploading(false);
         }
@@ -91,90 +98,91 @@ export default function MusicUploadModal({ isOpen, onClose, onSuccess }: MusicUp
                 >
                     {/* Header */}
                     <div className="bg-primary text-white p-4 d-flex justify-content-between align-items-center">
-                        <h4 className="fw-bold m-0 d-flex align-items-center gap-2">
-                            <Music size={24} className="text-warning" /> Subir Música
-                        </h4>
+                        <div className="text-start">
+                            <h5 className="fw-bold m-0">{t.music_upload.title}</h5>
+                            <p className="text-white-50 small m-0 uppercase letter-spacing-1">{t.music_upload.subtitle}</p>
+                        </div>
                         <button onClick={onClose} className="btn btn-link text-white p-0">
                             <X size={24} />
                         </button>
                     </div>
 
                     {/* Body */}
-                    <div className="p-4 text-primary">
+                    <form onSubmit={handleSubmit} className="p-4 text-primary">
                         {error && (
-                            <div className="alert alert-danger mb-4 small py-2">
+                            <div className="alert alert-danger mb-4 small py-2 d-flex align-items-center gap-2">
+                                <AlertCircle size={18} />
                                 {error}
                             </div>
                         )}
 
                         <div className="mb-4">
-                            <label className="small fw-bold mb-2 d-block">ARCHIVO MP3</label>
-                            <div
-                                className={`border-2 border-dashed rounded-4 p-4 text-center cursor-pointer transition-all ${file ? 'border-success bg-success bg-opacity-5' : 'border-light-subtle hover-bg-light'
-                                    }`}
-                                onClick={() => document.getElementById('music-file')?.click()}
-                            >
+                            <label className="small fw-bold mb-2 d-block">{t.music_upload.file_label}</label>
+                            <div className="position-relative">
                                 <input
                                     type="file"
-                                    id="music-file"
-                                    className="d-none"
-                                    accept="audio/mpeg"
+                                    accept=".mp3"
                                     onChange={handleFileChange}
+                                    className="position-absolute top-0 start-0 w-100 h-100 opacity-0 cursor-pointer"
+                                    style={{ zIndex: 2 }}
                                 />
-                                {file ? (
-                                    <div className="text-success">
-                                        <Save size={32} className="mb-2" />
-                                        <div className="small fw-bold">{file.name}</div>
-                                    </div>
-                                ) : (
-                                    <div className="text-muted">
-                                        <Upload size={32} className="mb-2 opacity-50" />
-                                        <div className="small">Haz click para seleccionar archivo</div>
-                                    </div>
-                                )}
+                                <div className={`p-4 rounded-3 border-2 border-dashed text-center transition-all ${file ? 'border-success bg-success bg-opacity-10' : 'border-light-subtle bg-light bg-opacity-50'}`}>
+                                    {file ? (
+                                        <>
+                                            <Check size={24} className="text-success mb-2" />
+                                            <p className="small fw-bold m-0">{t.music_upload.file_selected}</p>
+                                            <p className="extra-small text-muted text-truncate m-0">{file.name}</p>
+                                        </>
+                                    ) : (
+                                        <>
+                                            <Upload size={24} className="text-primary mb-2" />
+                                            <p className="small text-muted m-0">{t.music_upload.file_placeholder}</p>
+                                        </>
+                                    )}
+                                </div>
                             </div>
                         </div>
 
                         <div className="mb-3">
-                            <label className="small fw-bold mb-2 d-block">TÍTULO</label>
+                            <label className="small fw-bold mb-2 d-block">{t.music_upload.title_label}</label>
                             <input
                                 type="text"
                                 className="form-control rounded-3 border-light-subtle"
                                 value={title}
                                 onChange={(e) => setTitle(e.target.value)}
-                                placeholder="Nombre de la canción"
+                                placeholder={t.music_upload.title_placeholder}
                             />
                         </div>
 
                         <div className="mb-4">
-                            <label className="small fw-bold mb-2 d-block">ARTISTA</label>
+                            <label className="small fw-bold mb-2 d-block">{t.music_upload.artist_label}</label>
                             <input
                                 type="text"
                                 className="form-control rounded-3 border-light-subtle"
                                 value={artist}
                                 onChange={(e) => setArtist(e.target.value)}
-                                placeholder="Nombre del artista o ministerio"
+                                placeholder={t.music_upload.artist_placeholder}
                             />
                         </div>
 
                         <button
-                            onClick={handleUpload}
+                            type="submit"
                             disabled={isUploading || !file}
                             className="btn btn-primary w-100 py-3 rounded-pill fw-bold d-flex align-items-center justify-content-center gap-2"
                         >
                             {isUploading ? (
                                 <>
-                                    <Loader2 size={20} className="animate-spin" />
-                                    Subiendo...
+                                    <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                    {t.music_upload.button_uploading}
                                 </>
                             ) : (
                                 <>
                                     <Upload size={20} />
-                                    Publicar Canción
+                                    {t.music_upload.button_publish}
                                 </>
                             )}
                         </button>
-                    </div>
+                    </form>
                 </motion.div>
             </motion.div>
         </AnimatePresence>

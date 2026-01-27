@@ -5,8 +5,10 @@ import Image from 'next/image';
 import { useState } from 'react';
 import { ArrowLeft, Loader2, CheckCircle, Shield, Lock, Eye, EyeOff } from 'lucide-react';
 import { checkUserStatus, resetPasswordWithSecurityAnswer } from './actions';
+import { useLanguage } from '../../LanguageContext';
 
 export default function ForgotPasswordPage() {
+    const { t } = useLanguage();
     const [step, setStep] = useState<'EMAIL' | 'SECURITY' | 'NEW_PASSWORD' | 'SUCCESS'>('EMAIL');
     const [email, setEmail] = useState('');
     const [answer, setAnswer] = useState('');
@@ -22,14 +24,14 @@ export default function ForgotPasswordPage() {
         try {
             const status = await checkUserStatus(email);
             if (!status.exists) {
-                setError('No encontramos ninguna cuenta con este correo.');
+                setError(t.auth.email_not_found);
             } else if (!status.hasSecurityAnswer) {
-                setError('Esta cuenta no tiene configurada una pregunta de seguridad. Contacta a soporte.');
+                setError(t.auth.no_security_answer);
             } else {
                 setStep('SECURITY');
             }
         } catch (err) {
-            setError('Error al verificar el correo.');
+            setError(t.auth.check_email_error);
         } finally {
             setLoading(false);
         }
@@ -49,7 +51,7 @@ export default function ForgotPasswordPage() {
             await resetPasswordWithSecurityAnswer(email, answer, newPassword);
             setStep('SUCCESS');
         } catch (err: any) {
-            setError(err.message || 'Error al restablecer la contraseña.');
+            setError(err.message || t.auth.error_reset);
         } finally {
             setLoading(false);
         }
@@ -59,7 +61,7 @@ export default function ForgotPasswordPage() {
         <div className="card shadow-sm border-0 p-4 animate-fade-in-up">
             <div className="text-center mb-4">
                 <Link href="/auth/login" className="d-inline-block small text-muted text-decoration-none mb-3">
-                    <ArrowLeft size={16} className="me-1" /> Volver
+                    <ArrowLeft size={16} className="me-1" /> {t.common.back}
                 </Link>
                 <div className="position-relative" style={{ width: '100px', height: '40px', margin: '0 auto 1rem' }}>
                     <Image
@@ -69,28 +71,28 @@ export default function ForgotPasswordPage() {
                         style={{ objectFit: 'contain' }}
                     />
                 </div>
-                <h3 className="fw-bold text-secondary">Recuperar Cuenta</h3>
+                <h3 className="fw-bold text-secondary">{t.auth.forgot_password_title}</h3>
             </div>
 
             {step === 'EMAIL' && (
                 <form onSubmit={handleEmailSubmit}>
                     <p className="text-muted small text-center mb-4">
-                        Ingresa tu correo para buscar tu cuenta.
+                        {t.auth.forgot_password_subtitle}
                     </p>
                     {error && <div className="alert alert-danger small p-2 text-center">{error}</div>}
                     <div className="mb-4">
-                        <label className="form-label small fw-bold text-primary ps-2">Email</label>
+                        <label className="form-label small fw-bold text-primary ps-2">{t.auth.email_user}</label>
                         <input
                             type="email"
                             className="form-control form-control-lg bg-light border-0"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                             required
-                            placeholder="nombre@ejemplo.com"
+                            placeholder={t.auth.placeholder_email}
                         />
                     </div>
                     <button type="submit" className="btn btn-primary w-100 rounded-pill fw-bold py-2 pb-2" disabled={loading}>
-                        {loading ? <Loader2 className="animate-spin" /> : 'Continuar'}
+                        {loading ? <Loader2 className="animate-spin" /> : t.common.continue}
                     </button>
                 </form>
             )}
@@ -101,10 +103,10 @@ export default function ForgotPasswordPage() {
                         <div className="mx-auto bg-warning bg-opacity-25 rounded-circle d-flex align-items-center justify-content-center mb-3" style={{ width: '60px', height: '60px' }}>
                             <Shield className="text-warning" size={30} />
                         </div>
-                        <h5 className="fw-bold">Pregunta de Seguridad</h5>
-                        <p className="text-muted small">Para verificar que eres tú, responde:</p>
+                        <h5 className="fw-bold">{t.auth.security_question}</h5>
+                        <p className="text-muted small">{t.auth.new_password_subtitle}</p>
                         <p className="fw-bold text-primary p-3 bg-light rounded-3 border">
-                            "¿Cómo se llamaba tu primera mascota?"
+                            "{t.auth.security_question_text}"
                         </p>
                     </div>
 
@@ -112,14 +114,14 @@ export default function ForgotPasswordPage() {
                         <input
                             type="text"
                             className="form-control form-control-lg bg-light border-0 text-center fw-bold"
-                            placeholder="Tu respuesta aquí"
+                            placeholder={t.auth.security_answer_placeholder}
                             value={answer}
                             onChange={(e) => setAnswer(e.target.value)}
                             required
                         />
                     </div>
                     <button type="submit" className="btn btn-primary w-100 rounded-pill fw-bold" disabled={!answer}>
-                        Verificar Respuesta
+                        {t.auth.verify_answer}
                     </button>
                 </form>
             )}
@@ -127,8 +129,8 @@ export default function ForgotPasswordPage() {
             {step === 'NEW_PASSWORD' && (
                 <form onSubmit={handleFinalSubmit}>
                     <div className="text-center mb-4">
-                        <h5 className="fw-bold">Crear Nueva Contraseña</h5>
-                        <p className="text-muted small">Ingresa la respuesta y tu nueva clave.</p>
+                        <h5 className="fw-bold">{t.auth.new_password_title}</h5>
+                        <p className="text-muted small">{t.auth.new_password_subtitle}</p>
                     </div>
                     {error && <div className="alert alert-danger small p-2 text-center">{error}</div>}
 
@@ -137,12 +139,12 @@ export default function ForgotPasswordPage() {
                     */}
 
                     <div className="mb-4">
-                        <label className="form-label small fw-bold text-primary ps-2">Respuesta de Seguridad</label>
+                        <label className="form-label small fw-bold text-primary ps-2">{t.auth.security_answer}</label>
                         <input type="text" className="form-control bg-light border-0" value={answer} disabled />
                     </div>
 
                     <div className="mb-4">
-                        <label className="form-label small fw-bold text-primary ps-2">Nueva Contraseña</label>
+                        <label className="form-label small fw-bold text-primary ps-2">{t.auth.password}</label>
                         <div className="position-relative">
                             <input
                                 type={showPassword ? "text" : "password"}
@@ -151,7 +153,7 @@ export default function ForgotPasswordPage() {
                                 onChange={(e) => setNewPassword(e.target.value)}
                                 required
                                 minLength={6}
-                                placeholder="Mínimo 6 caracteres"
+                                placeholder={t.auth.password_hint}
                             />
                             <button
                                 type="button"
@@ -164,7 +166,7 @@ export default function ForgotPasswordPage() {
                     </div>
 
                     <button type="submit" className="btn btn-primary w-100 rounded-pill fw-bold" disabled={loading}>
-                        {loading ? <Loader2 className="animate-spin" /> : 'Restablecer Contraseña'}
+                        {loading ? <Loader2 className="animate-spin" /> : t.auth.reset_password_button}
                     </button>
                 </form>
             )}
@@ -174,12 +176,12 @@ export default function ForgotPasswordPage() {
                     <div className="mb-3 text-success">
                         <CheckCircle size={48} />
                     </div>
-                    <h5 className="fw-bold mb-3">¡Contraseña Actualizada!</h5>
+                    <h5 className="fw-bold mb-3">{t.auth.password_reset_success_title}</h5>
                     <p className="text-muted small mb-4">
-                        Tu contraseña ha sido restablecida exitosamente. Ya puedes acceder a tu cuenta.
+                        {t.auth.password_reset_success_msg}
                     </p>
                     <Link href="/auth/login" className="btn btn-primary w-100 rounded-pill">
-                        Iniciar Sesión
+                        {t.auth.login_button}
                     </Link>
                 </div>
             )}

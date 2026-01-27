@@ -3,8 +3,10 @@
 import { Gift, Heart, Crown, ShieldCheck } from "lucide-react";
 import Image from "next/image";
 import { useSession } from "next-auth/react";
+import { useLanguage } from "../../LanguageContext";
 
 export default function SupportFundingAd() {
+    const { t } = useLanguage();
     const sessionContext = useSession();
     const session = sessionContext?.data;
     const isPremium = (session?.user as any)?.isPremium;
@@ -35,22 +37,21 @@ export default function SupportFundingAd() {
                         </div>
                     </div>
                     <div>
-                        <h5 className="fw-bold m-0 text-white">Sustenta Conecta+ BETA Premium</h5>
-                        <p className="small text-white-50 m-0">Aporta tu granito de arena por solo $1 al mes</p>
+                        <h5 className="fw-bold m-0 text-white">{t.premium.title}</h5>
+                        <p className="small text-white-50 m-0">{t.premium.subtitle}</p>
                     </div>
                 </div>
 
                 <div className="mb-4">
                     <p className="small text-white-50 lh-base mb-3">
-                        Tu apoyo me ayuda a mantener los servidores y llevar la palabra de Dios a más jóvenes.
-                        Al ser <strong>Premium</strong>, tendrás una experiencia 100% libre de anuncios y me ayudarás a alcanzar la meta de la Google Play Store.
+                        {t.premium.body}
                     </p>
 
                     <div className="row g-2 mb-3">
                         <div className="col-12">
                             <div className="bg-white bg-opacity-10 p-2 rounded-3 border border-white-10 d-flex align-items-center gap-2">
                                 <ShieldCheck size={18} className="text-warning" />
-                                <span className="small">Sin anuncios de Google en toda la app</span>
+                                <span className="small">{t.premium.feature_no_ads}</span>
                             </div>
                         </div>
                     </div>
@@ -64,10 +65,10 @@ export default function SupportFundingAd() {
                     style={{ backgroundColor: '#f3b33e', border: 'none' }}
                 >
                     <Crown size={20} />
-                    ¡Ser Premium por $1 USD!
+                    {t.premium.button}
                 </a>
                 <p className="text-center extra-small text-white-50 mt-3 mb-0">
-                    *Al donar, mándame tu email por PayPal para activar tu insignia.
+                    {t.premium.footer}
                 </p>
             </div>
         </div>

@@ -4,8 +4,10 @@ import { useState } from "react";
 import { updateAge } from "@/app/dashboard/actions";
 import { toast } from "react-hot-toast";
 import { User } from "lucide-react";
+import { useLanguage } from "@/app/LanguageContext";
 
 export default function AgePrompt({ missingAge }: { missingAge: boolean }) {
+    const { t } = useLanguage();
     const [isOpen, setIsOpen] = useState(missingAge);
     const [age, setAge] = useState("");
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -18,10 +20,10 @@ export default function AgePrompt({ missingAge }: { missingAge: boolean }) {
         setIsSubmitting(true);
         try {
             await updateAge(Number(age));
-            toast.success("Edad guardada");
+            toast.success(t.onboarding.age_save_success);
             setIsOpen(false);
         } catch (error) {
-            toast.error("Error al guardar");
+            toast.error(t.onboarding.age_save_error);
         } finally {
             setIsSubmitting(false);
         }
@@ -34,15 +36,15 @@ export default function AgePrompt({ missingAge }: { missingAge: boolean }) {
                     <div className="bg-primary-subtle text-primary rounded-circle d-inline-flex p-3 mb-3">
                         <User size={32} />
                     </div>
-                    <h4 className="fw-bold">¡Un detalle más!</h4>
-                    <p className="text-muted mb-0">Para personalizar tu experiencia, necesitamos saber tu edad.</p>
+                    <h4 className="fw-bold">{t.onboarding.age_prompt_title}</h4>
+                    <p className="text-muted mb-0">{t.onboarding.age_prompt_subtitle}</p>
                 </div>
 
                 <input
                     type="number"
                     value={age}
                     onChange={(e) => setAge(e.target.value)}
-                    placeholder="Tu edad (ej. 18)"
+                    placeholder={t.onboarding.age_placeholder}
                     className="form-control form-control-lg text-center fw-bold mb-4"
                     autoFocus
                 />
@@ -52,7 +54,7 @@ export default function AgePrompt({ missingAge }: { missingAge: boolean }) {
                     disabled={!age || isSubmitting}
                     className="btn btn-primary w-100 rounded-pill py-3 fw-bold"
                 >
-                    {isSubmitting ? "Guardando..." : "Guardar y Continuar"}
+                    {isSubmitting ? t.onboarding.saving : `${t.common.save} ${t.common.and} ${t.common.continue}`}
                 </button>
             </div>
         </div>

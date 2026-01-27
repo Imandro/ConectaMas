@@ -11,6 +11,7 @@ class CommunityScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final communityState = ref.watch(communityProvider);
+    final l10n = AppLocalizations.of(context);
 
     return Scaffold(
       backgroundColor: const Color(0xFFF8FAFC),
@@ -20,8 +21,13 @@ class CommunityScreen extends ConsumerWidget {
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Comunidad', style: GoogleFonts.inter(fontWeight: FontWeight.bold, color: AppTheme.primary, fontSize: 24)),
-            const Text('Comparte, aprende y crece junto a otros', style: TextStyle(color: Colors.grey, fontSize: 13)),
+            Text(l10n.communityTitle,
+                style: GoogleFonts.inter(
+                    fontWeight: FontWeight.bold,
+                    color: AppTheme.primary,
+                    fontSize: 24)),
+            Text(l10n.communitySubtitle,
+                style: const TextStyle(color: Colors.grey, fontSize: 13)),
           ],
         ),
         actions: [
@@ -58,7 +64,41 @@ class CommunityScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildCategoryCard(BuildContext context, {required CommunityCategory category}) {
+  Widget _buildCategoryCard(BuildContext context,
+      {required CommunityCategory category}) {
+    final l10n = AppLocalizations.of(context);
+
+    // Map category ID to localized name and description
+    String name = category.name;
+    String description = category.description;
+
+    switch (category.id) {
+      case 'peticiones-oracion':
+        name = l10n.catPrayer;
+        description = l10n.descPrayer;
+        break;
+      case 'estudio-biblico':
+        name = l10n.catBible;
+        description = l10n.descBible;
+        break;
+      case 'testimonios':
+        name = l10n.catTestimony;
+        description = l10n.descTestimony;
+        break;
+      case 'preguntas-dudas':
+        name = l10n.catQuestions;
+        description = l10n.descQuestions;
+        break;
+      case 'consejos-vida':
+        name = l10n.catAdvice;
+        description = l10n.descAdvice;
+        break;
+      case 'alabanza-adoracion':
+        name = l10n.catPraise;
+        description = l10n.descPraise;
+        break;
+    }
+
     return GestureDetector(
       onTap: () => context.push('/comunidad/${category.id}'),
       child: Container(
@@ -66,13 +106,18 @@ class CommunityScreen extends ConsumerWidget {
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(24),
-          boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.05), blurRadius: 10)],
+          boxShadow: [
+            BoxShadow(
+                color: Colors.black.withValues(alpha: 0.05), blurRadius: 10)
+          ],
         ),
         child: Row(
           children: [
             Container(
               padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(color: category.color, borderRadius: BorderRadius.circular(16)),
+              decoration: BoxDecoration(
+                  color: category.color,
+                  borderRadius: BorderRadius.circular(16)),
               child: Text(category.icon, style: const TextStyle(fontSize: 32)),
             ),
             const SizedBox(width: 20),
@@ -81,14 +126,24 @@ class CommunityScreen extends ConsumerWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(category.name, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18, color: AppTheme.primary)),
-                  Text(category.description, style: const TextStyle(color: Colors.grey, fontSize: 12), maxLines: 1, overflow: TextOverflow.ellipsis),
+                  Text(name,
+                      style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18,
+                          color: AppTheme.primary)),
+                  Text(description,
+                      style: const TextStyle(color: Colors.grey, fontSize: 12),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis),
                   const SizedBox(height: 8),
                   Row(
                     children: [
-                      const Icon(Icons.chat_bubble_outline, size: 14, color: Colors.grey),
+                      const Icon(Icons.chat_bubble_outline,
+                          size: 14, color: Colors.grey),
                       const SizedBox(width: 4),
-                      Text('${category.postCount} publicaciones', style: const TextStyle(color: Colors.grey, fontSize: 11)),
+                      Text(l10n.postsCount(category.postCount),
+                          style: const TextStyle(
+                              color: Colors.grey, fontSize: 11)),
                     ],
                   ),
                 ],

@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { ArrowLeft, Send } from 'lucide-react';
+import { useLanguage } from '../../../LanguageContext';
 
 interface Category {
     id: string;
@@ -12,6 +13,7 @@ interface Category {
 }
 
 export default function NewPostPage() {
+    const { t } = useLanguage();
     const router = useRouter();
     const searchParams = useSearchParams();
     const preselectedCategory = searchParams.get('category');
@@ -34,7 +36,7 @@ export default function NewPostPage() {
         e.preventDefault();
 
         if (!title.trim() || !content.trim() || !categoryId) {
-            alert('Por favor completa todos los campos');
+            alert(t.forums.form_validation);
             return;
         }
 
@@ -56,11 +58,11 @@ export default function NewPostPage() {
                 const post = await res.json();
                 router.push(`/dashboard/forums/post/${post.id}`);
             } else {
-                alert('Error al crear la publicación');
+                alert(t.forums.post_error);
             }
         } catch (error) {
             console.error('Error:', error);
-            alert('Error al crear la publicación');
+            alert(t.forums.post_error);
         } finally {
             setLoading(false);
         }
@@ -70,23 +72,23 @@ export default function NewPostPage() {
         <div className="container-fluid py-4 animate-fade-in">
             <Link href="/dashboard/forums" className="btn btn-light mb-4">
                 <ArrowLeft size={20} className="me-2" />
-                Volver a Comunidad
+                {t.forums.back_to_community}
             </Link>
 
             <div className="card border-0 shadow-sm">
                 <div className="card-body p-4">
-                    <h2 className="fw-bold text-secondary mb-4">Nueva Publicación</h2>
+                    <h2 className="fw-bold text-secondary mb-4">{t.forums.new_post}</h2>
 
                     <form onSubmit={handleSubmit}>
                         <div className="mb-3">
-                            <label className="form-label fw-bold">Categoría</label>
+                            <label className="form-label fw-bold">{t.forums.form_category}</label>
                             <select
                                 className="form-select"
                                 value={categoryId}
                                 onChange={(e) => setCategoryId(e.target.value)}
                                 required
                             >
-                                <option value="">Selecciona una categoría</option>
+                                <option value="">{t.forums.form_category_select}</option>
                                 {categories.map(cat => (
                                     <option key={cat.id} value={cat.id}>
                                         {cat.icon} {cat.name}
@@ -96,30 +98,30 @@ export default function NewPostPage() {
                         </div>
 
                         <div className="mb-3">
-                            <label className="form-label fw-bold">Título</label>
+                            <label className="form-label fw-bold">{t.forums.form_title}</label>
                             <input
                                 type="text"
                                 className="form-control"
                                 value={title}
                                 onChange={(e) => setTitle(e.target.value)}
-                                placeholder="¿De qué quieres hablar?"
+                                placeholder={t.forums.form_title_placeholder}
                                 maxLength={200}
                                 required
                             />
                         </div>
 
                         <div className="mb-3">
-                            <label className="form-label fw-bold">Contenido</label>
+                            <label className="form-label fw-bold">{t.forums.form_content}</label>
                             <textarea
                                 className="form-control"
                                 rows={8}
                                 value={content}
                                 onChange={(e) => setContent(e.target.value)}
-                                placeholder="Comparte tu historia, pregunta o consejo..."
+                                placeholder={t.forums.form_content_placeholder}
                                 required
                             />
                             <small className="text-muted">
-                                Puedes incluir links para compartir recursos útiles
+                                {t.forums.form_helper}
                             </small>
                         </div>
 
@@ -133,11 +135,11 @@ export default function NewPostPage() {
                                     onChange={(e) => setIsAnonymous(e.target.checked)}
                                 />
                                 <label className="form-check-label" htmlFor="anonymousCheck">
-                                    Publicar de forma anónima
+                                    {t.forums.form_anonymous}
                                 </label>
                             </div>
                             <small className="text-muted">
-                                Tu identidad permanecerá oculta para otros usuarios
+                                {t.forums.form_anonymous_helper}
                             </small>
                         </div>
 
@@ -150,17 +152,17 @@ export default function NewPostPage() {
                                 {loading ? (
                                     <>
                                         <span className="spinner-border spinner-border-sm me-2" />
-                                        Publicando...
+                                        {t.forums.form_publishing}
                                     </>
                                 ) : (
                                     <>
                                         <Send size={20} className="me-2" />
-                                        Publicar
+                                        {t.forums.form_publish}
                                     </>
                                 )}
                             </button>
-                            <Link href="/dashboard/forums" className="btn btn-outline-secondary">
-                                Cancelar
+                            <Link href="/dashboard/forums" className="btn btn-outline-secondary text-decoration-none">
+                                {t.forums.form_cancel}
                             </Link>
                         </div>
                     </form>

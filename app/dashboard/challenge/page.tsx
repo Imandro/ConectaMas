@@ -87,7 +87,7 @@ export default function ChallengePage() {
                     <div className="position-relative" style={{ zIndex: 1 }}>
                         <img
                             src="/assets/images/trophy_3d.png"
-                            alt="Trofeo"
+                            alt={t.challenge.alt_trophy}
                             className="img-fluid mb-4 animate-bounce-slow"
                             style={{ maxHeight: '250px', filter: 'drop-shadow(0 10px 20px rgba(0,0,0,0.15))' }}
                         />

@@ -5,6 +5,7 @@ import { Globe, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { updateUserCountry } from "@/app/dashboard/actions/country";
 import { toast } from "react-hot-toast";
+import { useLanguage } from "../LanguageContext";
 
 interface CountryModalProps {
     hasSelectedCountry: boolean;
@@ -32,10 +33,11 @@ const LATIN_AMERICAN_COUNTRIES = [
     { code: "PR", name: "Puerto Rico", flag: "🇵🇷" },
     { code: "US", name: "Estados Unidos", flag: "🇺🇸" },
     { code: "ES", name: "España", flag: "🇪🇸" },
-    { code: "OTHER", name: "Otro país", flag: "🌎" }
+    { code: "OTHER", name: "Other", flag: "🌎" }
 ];
 
 export default function CountryModal({ hasSelectedCountry }: CountryModalProps) {
+    const { t } = useLanguage();
     const [isOpen, setIsOpen] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [searchTerm, setSearchTerm] = useState("");
@@ -53,20 +55,21 @@ export default function CountryModal({ hasSelectedCountry }: CountryModalProps) 
         const result = await updateUserCountry(countryCode);
 
         if (result.success) {
-            toast.success(`¡Bienvenido desde ${countryName}!`, {
+            toast.success(t.country_modal.welcome.replace('{countryName}', countryName === "Other" ? t.country_modal.other_country : countryName), {
                 icon: '🌎',
                 style: { borderRadius: '15px', background: '#333', color: '#fff' }
             });
             setIsOpen(false);
         } else {
-            toast.error('Error al guardar país');
+            toast.error(t.country_modal.error_save);
         }
         setIsLoading(false);
     };
 
-    const filteredCountries = LATIN_AMERICAN_COUNTRIES.filter(country =>
-        country.name.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    const filteredCountries = LATIN_AMERICAN_COUNTRIES.filter(country => {
+        const localizedName = country.code === "OTHER" ? t.country_modal.other_country : country.name;
+        return localizedName.toLowerCase().includes(searchTerm.toLowerCase());
+    });
 
     if (!isOpen) return null;
 
@@ -85,15 +88,15 @@ export default function CountryModal({ hasSelectedCountry }: CountryModalProps) 
                         <div className="bg-white p-3 rounded-circle d-inline-block shadow-sm mb-2">
                             <Globe size={40} className="text-primary" />
                         </div>
-                        <h3 className="fw-bold text-white mb-1">¿Desde dónde nos conectas?</h3>
-                        <p className="text-white-50 small mb-0">Ayúdanos a conocer nuestra comunidad</p>
+                        <h3 className="fw-bold text-white mb-1">{t.country_modal.title}</h3>
+                        <p className="text-white-50 small mb-0">{t.country_modal.subtitle}</p>
                     </div>
 
                     {/* Search */}
                     <div className="p-4 pb-2">
                         <input
                             type="text"
-                            placeholder="Buscar país..."
+                            placeholder={t.country_modal.search_placeholder}
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
                             className="form-control rounded-pill border-2"
@@ -113,7 +116,7 @@ export default function CountryModal({ hasSelectedCountry }: CountryModalProps) 
                                     style={{ transition: 'all 0.2s' }}
                                 >
                                     <span style={{ fontSize: '1.5rem' }}>{country.flag}</span>
-                                    <span className="fw-medium">{country.name}</span>
+                                    <span className="fw-medium">{country.code === "OTHER" ? t.country_modal.other_country : country.name}</span>
                                 </button>
                             ))}
                         </div>
@@ -121,7 +124,7 @@ export default function CountryModal({ hasSelectedCountry }: CountryModalProps) 
 
                     {filteredCountries.length === 0 && (
                         <div className="text-center text-muted p-4">
-                            No se encontraron países
+                            {t.country_modal.no_results}
                         </div>
                     )}
                 </motion.div>

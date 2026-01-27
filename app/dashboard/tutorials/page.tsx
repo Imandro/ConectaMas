@@ -13,72 +13,65 @@ import {
     Info
 } from 'lucide-react';
 import Link from 'next/link';
-
-interface TutorialItem {
-    id: string;
-    title: string;
-    description: string;
-    icon: React.ReactNode;
-    color: string;
-    category: string;
-    href: string;
-}
-
-const tutorials: TutorialItem[] = [
-    {
-        id: 'install',
-        title: 'Instalación PWA',
-        description: 'Cómo instalar Conecta+ en tu pantalla de inicio como una App real.',
-        icon: <Download size={24} />,
-        color: 'bg-primary',
-        category: 'Esencial',
-        href: '/dashboard/tutorials/install'
-    },
-    {
-        id: 'llami',
-        title: 'Llami: Espíritu de Fuego',
-        description: 'Aprende a cuidar tu llama interior y subir de nivel.',
-        icon: <Flame size={24} />,
-        color: 'bg-warning',
-        category: 'Crecimiento',
-        href: '/dashboard/tutorials/llami'
-    },
-    {
-        id: 'spiritual',
-        title: 'Lectura Diaria',
-        description: 'Saca el máximo provecho a tus devocionales y lectura bíblica.',
-        icon: <BookOpen size={24} />,
-        color: 'bg-success',
-        category: 'Espiritual',
-        href: '/dashboard/tutorials/spiritual'
-    },
-    {
-        id: 'sos',
-        title: 'Zona de Auxilio (SOS)',
-        description: 'Qué hacer en momentos de crisis y cómo contactar ayuda.',
-        icon: <AlertTriangle size={24} />,
-        color: 'bg-danger',
-        category: 'Soporte',
-        href: '/dashboard/tutorials/sos'
-    },
-    {
-        id: 'community',
-        title: 'Comunidad y Foro',
-        description: 'Cómo interactuar, pedir oración y apoyar a otros.',
-        icon: <Users size={24} />,
-        color: 'bg-info',
-        category: 'Comunidad',
-        href: '/dashboard/tutorials/community'
-    }
-];
+import { useLanguage } from '@/app/LanguageContext';
 
 export default function TutorialHub() {
+    const { t } = useLanguage();
+
+    const tutorials = [
+        {
+            id: 'install',
+            title: t.tutorials.install_title,
+            description: t.tutorials.install_desc,
+            icon: <Download size={24} />,
+            color: 'bg-primary',
+            category: t.tutorials.cat_essential,
+            href: '/dashboard/tutorials/install'
+        },
+        {
+            id: 'llami',
+            title: t.tutorials.llami_title,
+            description: t.tutorials.llami_desc,
+            icon: <Flame size={24} />,
+            color: 'bg-warning',
+            category: t.tutorials.cat_growth,
+            href: '/dashboard/tutorials/llami'
+        },
+        {
+            id: 'spiritual',
+            title: t.tutorials.spiritual_title,
+            description: t.tutorials.spiritual_desc,
+            icon: <BookOpen size={24} />,
+            color: 'bg-success',
+            category: t.tutorials.cat_spiritual,
+            href: '/dashboard/tutorials/spiritual'
+        },
+        {
+            id: 'sos',
+            title: t.tutorials.sos_title,
+            description: t.tutorials.sos_desc,
+            icon: <AlertTriangle size={24} />,
+            color: 'bg-danger',
+            category: t.tutorials.cat_support,
+            href: '/dashboard/tutorials/sos'
+        },
+        {
+            id: 'community',
+            title: t.tutorials.community_title,
+            description: t.tutorials.community_desc,
+            icon: <Users size={24} />,
+            color: 'bg-info',
+            category: t.tutorials.cat_community,
+            href: '/dashboard/tutorials/community'
+        }
+    ];
+
     return (
         <div className="container-fluid py-4 min-vh-100 bg-light">
             {/* Header */}
             <header className="mb-5">
-                <h1 className="display-6 fw-bold text-secondary mb-2">Guías Conecta+ BETA</h1>
-                <p className="text-muted">Todo lo que necesitas saber para dominar Conecta+ BETA y crecer en tu fe.</p>
+                <h1 className="display-6 fw-bold text-secondary mb-2">{t.tutorials.hub_title}</h1>
+                <p className="text-muted">{t.tutorials.hub_subtitle}</p>
             </header>
 
             {/* Featured Tutorial */}
@@ -90,15 +83,14 @@ export default function TutorialHub() {
                     >
                         <div className="card-body p-4 p-lg-5 d-flex flex-column flex-lg-row align-items-center justify-content-between gap-4">
                             <div className="text-center text-lg-start">
-                                <span className="badge bg-white text-primary mb-3">RECOMENDADO</span>
-                                <h2 className="fw-bold mb-3">Guía de Instalación</h2>
+                                <span className="badge bg-white text-primary mb-3">{t.tutorials.recommended}</span>
+                                <h2 className="fw-bold mb-3">{t.tutorials.install_guide}</h2>
                                 <p className="opacity-75 mb-4">
-                                    Conecta+ funciona mejor como una aplicación instalada.
-                                    Aprende a activarla en segundos paso a paso.
+                                    {t.tutorials.install_promo}
                                 </p>
                                 <button className="btn btn-light rounded-pill px-4 fw-bold d-inline-flex align-items-center gap-2">
                                     <PlayCircle size={20} />
-                                    Comenzar Guía
+                                    {t.tutorials.start_guide}
                                 </button>
                             </div>
                             <div className="bg-white bg-opacity-20 p-4 rounded-circle">
@@ -131,7 +123,7 @@ export default function TutorialHub() {
                                     <div className="d-flex align-items-center justify-content-between mt-auto">
                                         <span className="badge bg-light text-muted fw-normal">{item.category}</span>
                                         <div className="text-primary d-flex align-items-center gap-1 fw-bold small">
-                                            Leer mas
+                                            {t.tutorials.read_more}
                                             <ChevronRight size={16} />
                                         </div>
                                     </div>
@@ -146,10 +138,10 @@ export default function TutorialHub() {
             <section className="mt-5 pt-5 border-top text-center">
                 <div className="bg-white p-5 rounded-5 shadow-sm border">
                     <Info size={40} className="text-primary mb-3" />
-                    <h3 className="fw-bold text-secondary mb-3">¿Aún tienes dudas?</h3>
-                    <p className="text-muted mb-4">Nuestro equipo de líderes está listo para apoyarte en cualquier momento.</p>
+                    <h3 className="fw-bold text-secondary mb-3">{t.tutorials.need_help}</h3>
+                    <p className="text-muted mb-4">{t.tutorials.help_p}</p>
                     <Link href="/dashboard/sos" className="btn btn-outline-primary rounded-pill px-5 fw-bold">
-                        Contactar Soporte
+                        {t.tutorials.contact_support}
                     </Link>
                 </div>
             </section>

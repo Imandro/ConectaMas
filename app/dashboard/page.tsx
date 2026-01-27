@@ -38,6 +38,7 @@ interface DashboardStats {
 import { useLanguage } from '../LanguageContext';
 
 export default function DashboardHome() {
+    const { t, language } = useLanguage();
     const [stats, setStats] = useState<DashboardStats | null>(null);
     const [loading, setLoading] = useState(true);
     const [checkinLoading, setCheckinLoading] = useState(false);
@@ -45,9 +46,10 @@ export default function DashboardHome() {
     const [currentDate, setCurrentDate] = useState("");
 
     useEffect(() => {
-        setCurrentDate(new Date().toLocaleDateString('es-ES', { day: 'numeric', month: 'long' }));
+        const localeMap: Record<string, string> = { es: 'es-ES', en: 'en-US', pt: 'pt-BR' };
+        setCurrentDate(new Date().toLocaleDateString(localeMap[language] || 'es-ES', { day: 'numeric', month: 'long' }));
         fetchStats();
-    }, []);
+    }, [language]);
 
     const fetchStats = async () => {
         // Cargar desde caché primero para rapidez u offline
@@ -118,8 +120,6 @@ export default function DashboardHome() {
     };
 
 
-    const { t } = useLanguage();
-
     if (loading) {
         return (
             <div className="d-flex justify-content-center align-items-center min-vh-100">
@@ -137,10 +137,10 @@ export default function DashboardHome() {
                     <h1 className="fw-extrabold text-warning m-0" style={{ fontSize: '2.5rem' }}>{t.dashboard.greeting}, {stats?.name || 'Mario'}</h1>
                 </div>
                 <div className="bg-white rounded-pill shadow-sm p-1 d-flex align-items-center gap-1 border">
-                    <Link href="/dashboard/tutorials" className="btn btn-light bg-transparent border-0 rounded-circle p-1 text-dark hover-scale" title="Tutoriales">
+                    <Link href="/dashboard/tutorials" className="btn btn-light bg-transparent border-0 rounded-circle p-1 text-dark hover-scale" title={t.nav.tutorials}>
                         <HelpCircle size={32} />
                     </Link>
-                    <Link href="/dashboard/friends" className="btn btn-light bg-transparent border-0 rounded-circle p-1 text-dark hover-scale" title="Amigos">
+                    <Link href="/dashboard/friends" className="btn btn-light bg-transparent border-0 rounded-circle p-1 text-dark hover-scale" title={t.nav.friends}>
                         <Users size={32} />
                     </Link>
                     <Link href="/dashboard/profile">
@@ -204,7 +204,7 @@ export default function DashboardHome() {
                                         </div>
                                     </Link>
                                     <div className="mt-1">
-                                        <span className="badge bg-secondary-subtle text-dark rounded-pill px-3 py-1 fw-bold">Nivel {stats?.mascot?.level || 2}</span>
+                                        <span className="badge bg-secondary-subtle text-dark rounded-pill px-3 py-1 fw-bold">{t.dashboard.level} {stats?.mascot?.level || 2}</span>
                                     </div>
                                 </div>
                             </div>
@@ -234,8 +234,8 @@ export default function DashboardHome() {
                                         <Shield size={28} />
                                     </div>
                                     <div>
-                                        <h5 className="fw-extrabold text-secondary m-0">Mi Seguimiento</h5>
-                                        <p className="text-muted small m-0">Gestiona tus planes de transformación</p>
+                                        <h5 className="fw-extrabold text-secondary m-0">{t.dashboard.my_tracking}</h5>
+                                        <p className="text-muted small m-0">{t.dashboard.tracking_desc}</p>
                                     </div>
                                 </div>
                                 <div className="text-primary bg-light p-2 rounded-circle">
@@ -249,7 +249,7 @@ export default function DashboardHome() {
                                         <span className="d-block fw-bold text-primary fs-4">
                                             {stats?.struggles?.filter((s: any) => s.status === "ACTIVE" && s.isStarted)?.length || 0}
                                         </span>
-                                        <small className="text-muted fw-bold text-uppercase" style={{ fontSize: '0.65rem' }}>En Progreso</small>
+                                        <small className="text-muted fw-bold text-uppercase" style={{ fontSize: '0.65rem' }}>{t.dashboard.in_progress}</small>
                                     </div>
                                 </div>
                                 <div className="col-6">
@@ -257,7 +257,7 @@ export default function DashboardHome() {
                                         <span className="d-block fw-bold text-warning fs-4">
                                             {stats?.struggles?.filter((s: any) => s.status === "ACTIVE" && !s.isStarted)?.length || 0}
                                         </span>
-                                        <small className="text-muted fw-bold text-uppercase" style={{ fontSize: '0.65rem' }}>Próximos</small>
+                                        <small className="text-muted fw-bold text-uppercase" style={{ fontSize: '0.65rem' }}>{t.dashboard.upcoming}</small>
                                     </div>
                                 </div>
                             </div>

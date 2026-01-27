@@ -38,7 +38,7 @@ export default function LoginPage() {
 
         try {
             const res = await signIn('credentials', {
-                email: formData.identifier,
+                identifier: formData.identifier,
                 password: formData.password,
                 redirect: false,
             });
@@ -63,7 +63,7 @@ export default function LoginPage() {
                     <div className="position-relative" style={{ width: '120px', height: '50px', margin: '0 auto' }}>
                         <Image
                             src="/logo.png"
-                            alt="Conecta+ Logo"
+                            alt={t.auth.logo_alt}
                             fill
                             style={{ objectFit: 'contain' }}
                         />

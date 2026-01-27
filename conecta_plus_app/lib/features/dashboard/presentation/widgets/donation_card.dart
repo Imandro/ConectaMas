@@ -8,6 +8,7 @@ class DonationCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     Future<void> openPaypal() async {
       final url = Uri.parse('https://www.paypal.me/Imandrox/1');
       if (await canLaunchUrl(url)) {
@@ -63,10 +64,12 @@ class DonationCard extends StatelessWidget {
                             height: 60,
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
-                              border: Border.all(color: AppTheme.accent, width: 2),
+                              border:
+                                  Border.all(color: AppTheme.accent, width: 2),
                               color: const Color(0xFF1E293B),
                             ),
-                            child: const Icon(Icons.person, color: Colors.white, size: 34),
+                            child: const Icon(Icons.person,
+                                color: Colors.white, size: 34),
                           ),
                           Positioned(
                             bottom: 2,
@@ -76,9 +79,11 @@ class DonationCard extends StatelessWidget {
                               decoration: BoxDecoration(
                                 color: AppTheme.accent,
                                 shape: BoxShape.circle,
-                                border: Border.all(color: const Color(0xFF0F172A), width: 1.5),
+                                border: Border.all(
+                                    color: const Color(0xFF0F172A), width: 1.5),
                               ),
-                              child: const Icon(Icons.favorite, size: 12, color: Color(0xFF0F172A)),
+                              child: const Icon(Icons.favorite,
+                                  size: 12, color: Color(0xFF0F172A)),
                             ),
                           ),
                         ],
@@ -89,7 +94,7 @@ class DonationCard extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'Sustenta Conecta+ BETA Premium',
+                              l10n.supportConecta,
                               style: GoogleFonts.fredoka(
                                 fontSize: 20,
                                 fontWeight: FontWeight.bold,
@@ -98,7 +103,7 @@ class DonationCard extends StatelessWidget {
                             ),
                             const SizedBox(height: 4),
                             Text(
-                              'Aporta tu granito de arena por solo \$1 al mes',
+                              l10n.supportMessage,
                               style: GoogleFonts.fredoka(
                                 color: Colors.white.withValues(alpha: 0.5),
                                 fontSize: 12,
@@ -112,7 +117,7 @@ class DonationCard extends StatelessWidget {
                   ),
                   const SizedBox(height: 20),
                   Text(
-                    'Tu apoyo me ayuda a mantener los servidores y llevar la palabra de Dios a más jóvenes. Al ser Premium, tendrás una experiencia 100% libre de anuncios y me ayudarás a alcanzar la meta de la Google Play Store.',
+                    l10n.donationDesc,
                     style: GoogleFonts.fredoka(
                       color: Colors.white.withValues(alpha: 0.5),
                       fontSize: 13,
@@ -122,19 +127,22 @@ class DonationCard extends StatelessWidget {
                   ),
                   const SizedBox(height: 20),
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 12, vertical: 10),
                     decoration: BoxDecoration(
                       color: Colors.white.withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(12),
-                      border: Border.all(color: Colors.white.withValues(alpha: 0.1)),
+                      border: Border.all(
+                          color: Colors.white.withValues(alpha: 0.1)),
                     ),
                     child: Row(
                       children: [
-                        const Icon(Icons.verified_user_outlined, color: AppTheme.accent, size: 18),
+                        const Icon(Icons.verified_user_outlined,
+                            color: AppTheme.accent, size: 18),
                         const SizedBox(width: 12),
                         Expanded(
                           child: Text(
-                            'Sin anuncios de Google en toda la app',
+                            l10n.noAds,
                             style: GoogleFonts.fredoka(
                               color: Colors.white,
                               fontSize: 12,
@@ -160,10 +168,11 @@ class DonationCard extends StatelessWidget {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const Icon(Icons.workspace_premium_rounded, color: Color(0xFF0F172A), size: 20),
+                          const Icon(Icons.workspace_premium_rounded,
+                              color: Color(0xFF0F172A), size: 20),
                           const SizedBox(width: 10),
                           Text(
-                            '¡Ser Premium por \$1 USD!',
+                            l10n.premiumButton,
                             style: GoogleFonts.fredoka(
                               color: const Color(0xFF0F172A),
                               fontSize: 16,
@@ -177,7 +186,7 @@ class DonationCard extends StatelessWidget {
                   const SizedBox(height: 12),
                   Center(
                     child: Text(
-                      '*Al donar, mándame tu email por PayPal para activar tu insignia.',
+                      l10n.paypalNote,
                       textAlign: TextAlign.center,
                       style: GoogleFonts.fredoka(
                         color: Colors.white.withValues(alpha: 0.5),

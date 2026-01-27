@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { Calendar as CalendarIcon, Smile, Frown, Meh, Save, X } from 'lucide-react';
+import { useLanguage } from '../../LanguageContext';
 
 interface Checkin {
     id: string;
@@ -10,14 +11,8 @@ interface Checkin {
     createdAt: string;
 }
 
-// CheckinPage is client side, so it doesn't use 'auth()' but it relies on API calls that might fail if session is invalid.
-// However, the error report says "no entra al perfil" (server component) and "no aparece el registro de salud" (checkin page).
-// For CheckinPage, let's verify if the API calls are being made correctly.
-// There is no useSession here, but let's check if fetchHistory handles 401s properly or if the page crashes.
-// The user says "exception", so it might be crashing.
-// Wait, client profile actions is used inside Profile page? No, ProfilePage is server component.
-// Let's check ProfilePage again.
 export default function CheckinPage() {
+    const { t, language } = useLanguage();
     const [mood, setMood] = useState<string | null>(null);
     const [note, setNote] = useState('');
     const [isSaving, setIsSaving] = useState(false);
@@ -57,11 +52,11 @@ export default function CheckinPage() {
                 setMood(null);
                 setNote('');
                 fetchHistory(); // Refresh calendar
-                alert('¡Check-in guardado!');
+                alert(t.checkin.saved_alert);
             }
         } catch (e) {
             console.error(e);
-            alert('Error al guardar');
+            alert(t.checkin.error_alert);
         } finally {
             setIsSaving(false);
         }
@@ -92,16 +87,16 @@ export default function CheckinPage() {
         return 'bg-success-subtle text-success';
     };
 
-    const monthNames = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+    const monthNames = t.checkin.months;
 
     return (
         <div className="animate-fade-in">
-            <h2 className="fw-bold text-secondary mb-4">Salud Espiritual</h2>
+            <h2 className="fw-bold text-secondary mb-4">{t.checkin.title}</h2>
 
             {/* Today's Input */}
             <div className="card border-0 shadow-sm bg-white mb-4">
                 <div className="card-body p-4 text-center">
-                    <h5 className="fw-bold mb-3">¿Cómo te sientes hoy?</h5>
+                    <h5 className="fw-bold mb-3">{t.checkin.how_feeling}</h5>
                     <div className="d-flex justify-content-center gap-2 mb-4">
                         {/* Mood Selectors */}
                         <button onClick={() => setMood('😔')} className={`btn ${mood === '😔' ? 'btn-danger text-white' : 'btn-light text-secondary'} rounded-circle p-3 transition-all`}>
@@ -120,7 +115,7 @@ export default function CheckinPage() {
                         onChange={(e) => setNote(e.target.value)}
                         className="form-control bg-light border-0 mb-3"
                         rows={3}
-                        placeholder="Escribe una breve nota... (Opcional)"
+                        placeholder={t.checkin.placeholder}
                         style={{ borderRadius: '12px', resize: 'none' }}
                     ></textarea>
 
@@ -130,14 +125,14 @@ export default function CheckinPage() {
                         className="btn btn-primary w-100 rounded-pill py-2 shadow-sm"
                     >
                         <Save size={18} className="me-2" />
-                        {isSaving ? 'Guardando...' : 'Guardar Check-in'}
+                        {isSaving ? t.checkin.saving : t.checkin.save}
                     </button>
                 </div>
             </div>
 
             {/* History / Calendar */}
             <div className="d-flex justify-content-between align-items-center mb-3">
-                <h5 className="fw-bold text-secondary m-0">Tu Mes</h5>
+                <h5 className="fw-bold text-secondary m-0">{t.checkin.month_history}</h5>
                 <button className="btn btn-sm btn-light text-muted d-flex align-items-center gap-1">
                     <CalendarIcon size={14} /> {monthNames[month]}
                 </button>
@@ -163,7 +158,7 @@ export default function CheckinPage() {
                                     onClick={() => checkin && setSelectedCheckin(checkin)}
                                     className={`rounded-circle d-flex align-items-center justify-content-center fw-bold small ${statusClass} ${checkin ? 'cursor-pointer hover-scale' : ''}`}
                                     style={{ width: '32px', height: '32px', fontSize: '10px', cursor: checkin ? 'pointer' : 'default' }}
-                                    title={checkin ? 'Click para ver detalles' : ''}
+                                    title={checkin ? t.checkin.click_details : ''}
                                 >
                                     {day}
                                 </div>
@@ -179,19 +174,19 @@ export default function CheckinPage() {
                     <div className="card border-0 shadow-lg p-4 bg-white rounded-4" style={{ maxWidth: '400px', width: '90%' }} onClick={(e) => e.stopPropagation()}>
                         <div className="d-flex justify-content-between align-items-center mb-3">
                             <h5 className="fw-bold m-0">
-                                {new Date(selectedCheckin.createdAt).toLocaleDateString('es-ES', { day: 'numeric', month: 'long' })}
+                                {new Date(selectedCheckin.createdAt).toLocaleDateString(language === 'es' ? 'es-ES' : language === 'en' ? 'en-US' : 'pt-BR', { day: 'numeric', month: 'long' })}
                             </h5>
                             <button onClick={() => setSelectedCheckin(null)} className="btn btn-sm btn-light rounded-circle p-2">
                                 <X size={16} />
                             </button>
                         </div>
                         <div className="mb-3">
-                            <span className="text-muted small d-block mb-1">Cómo te sentiste:</span>
+                            <span className="text-muted small d-block mb-1">{t.checkin.mood_label}</span>
                             <span className="fs-2">{selectedCheckin.mood}</span>
                         </div>
                         {selectedCheckin.note && (
                             <div>
-                                <span className="text-muted small d-block mb-1">Nota:</span>
+                                <span className="text-muted small d-block mb-1">{t.checkin.note_label}</span>
                                 <p className="text-dark mb-0">{selectedCheckin.note}</p>
                             </div>
                         )}

@@ -4,25 +4,21 @@ import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Flame, Sparkles, Heart, Zap, ArrowRight, X, Trophy, BookOpen } from "lucide-react";
 import LlamiMascot from "./LlamiMascot";
+import { useLanguage } from "../LanguageContext";
 
 interface LlamiTutorialProps {
     onComplete: () => void;
 }
 
 export default function LlamiTutorial({ onComplete }: LlamiTutorialProps) {
+    const { t } = useLanguage();
     const [step, setStep] = useState(1);
     const [previewStage, setPreviewStage] = useState<"spark" | "flame" | "torch" | "sun" | "star">("spark");
 
     const totalSteps = 6;
 
     const stages: ("spark" | "flame" | "torch" | "sun" | "star")[] = ["spark", "flame", "torch", "sun", "star"];
-    const stageNames = {
-        spark: "Chispa (Día 1)",
-        flame: "Flama (Día 3)",
-        torch: "Antorcha (Día 15)",
-        sun: "Sol (Día 60)",
-        star: "Estrella Celeste (Día 180+)"
-    };
+    const stageNames = t.llami_tutorial.stages;
 
     // Cycle stages in step 2
     useEffect(() => {
@@ -55,9 +51,9 @@ export default function LlamiTutorial({ onComplete }: LlamiTutorialProps) {
                                 <LlamiMascot streak={1} />
                             </div>
                         </div>
-                        <h2 className="fw-bold text-white mb-3">¡Bienvenido al Refugio!</h2>
+                        <h2 className="fw-bold text-white mb-3">{t.llami_tutorial.step1.title}</h2>
                         <p className="text-white-50 lead">
-                            Aquí es donde vive tu mascota espiritual. Yo soy Llami, y reflejaré tu constancia en el camino con Dios.
+                            {t.llami_tutorial.step1.desc}
                         </p>
                     </motion.div>
                 );
@@ -71,11 +67,11 @@ export default function LlamiTutorial({ onComplete }: LlamiTutorialProps) {
                                 </div>
                             </div>
                         </div>
-                        <h4 className="fw-bold text-warning mb-2">{stageNames[previewStage]}</h4>
-                        <h2 className="fw-bold text-white mb-3">¡Evoluciono contigo!</h2>
+                        <h4 className="fw-bold text-warning mb-2">{stageNames[previewStage as keyof typeof stageNames]}</h4>
+                        <h2 className="fw-bold text-white mb-3">{t.llami_tutorial.step2.title}</h2>
                         <p className="text-white-50">
-                            A medida que mantengas tu racha diaria, mi forma cambiará. <br />
-                            <strong className="text-warning">¡Mi primera evolución ocurre al 3er día!</strong>
+                            {t.llami_tutorial.step2.desc} <br />
+                            <strong className="text-warning">{t.llami_tutorial.step2.evolution}</strong>
                         </p>
                     </motion.div>
                 );
@@ -86,21 +82,21 @@ export default function LlamiTutorial({ onComplete }: LlamiTutorialProps) {
                             <div className="col-6">
                                 <div className="p-3 rounded-4 border border-white border-opacity-10" style={{ backgroundColor: 'rgba(255, 255, 255, 0.08)' }}>
                                     <Zap className="text-warning mb-2" size={32} />
-                                    <h6 className="fw-bold text-white mb-1">Nivel</h6>
-                                    <p className="tiny text-white-50 mb-0">Sube de nivel con XP</p>
+                                    <h6 className="fw-bold text-white mb-1">{t.llami_tutorial.step3.level_label}</h6>
+                                    <p className="tiny text-white-50 mb-0">{t.llami_tutorial.step3.level_desc}</p>
                                 </div>
                             </div>
                             <div className="col-6">
                                 <div className="p-3 rounded-4 border border-white border-opacity-10" style={{ backgroundColor: 'rgba(255, 255, 255, 0.08)' }}>
                                     <Trophy className="text-warning mb-2" size={32} />
-                                    <h6 className="fw-bold text-white mb-1">XP</h6>
-                                    <p className="tiny text-white-50 mb-0">Gana XP en misiones</p>
+                                    <h6 className="fw-bold text-white mb-1">{t.llami_tutorial.step3.xp_label}</h6>
+                                    <p className="tiny text-white-50 mb-0">{t.llami_tutorial.step3.xp_desc}</p>
                                 </div>
                             </div>
                         </div>
-                        <h2 className="fw-bold text-white mb-3">Niveles y Experiencia</h2>
+                        <h2 className="fw-bold text-white mb-3">{t.llami_tutorial.step3.title}</h2>
                         <p className="text-white-50">
-                            Completa devocionales, lee la Biblia y responde las trivias diarias para ganar XP y ayudarme a subir de nivel.
+                            {t.llami_tutorial.step3.desc}
                         </p>
                     </motion.div>
                 );
@@ -110,9 +106,9 @@ export default function LlamiTutorial({ onComplete }: LlamiTutorialProps) {
                         <div className="mx-auto bg-warning bg-opacity-20 rounded-circle d-flex align-items-center justify-content-center mb-4" style={{ width: '80px', height: '80px' }}>
                             <Flame className="text-warning" size={48} />
                         </div>
-                        <h2 className="fw-bold text-white mb-3">Puntos de Llama</h2>
+                        <h2 className="fw-bold text-white mb-3">{t.llami_tutorial.step4.title}</h2>
                         <p className="text-white-50">
-                            Los <span className="text-warning fw-bold">Puntos de Llama</span> son la energía vital de tu espíritu. Los obtienes leyendo la Biblia en la app.
+                            {t.llami_tutorial.step4.desc_part1}<span className="text-warning fw-bold">{t.llami_tutorial.step4.desc_part2}</span>{t.llami_tutorial.step4.desc_part3}
                         </p>
                     </motion.div>
                 );
@@ -121,12 +117,12 @@ export default function LlamiTutorial({ onComplete }: LlamiTutorialProps) {
                     <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center">
                         <div className="p-4 bg-white rounded-5 shadow-lg mb-4 text-primary">
                             <button className="btn btn-warning w-100 rounded-pill py-3 fw-bold d-flex align-items-center justify-content-center gap-2">
-                                <Flame size={24} /> Avivar el Fuego
+                                <Flame size={24} /> {t.llami_tutorial.step5.button}
                             </button>
                         </div>
-                        <h2 className="fw-bold text-white mb-3">¡Cuidame!</h2>
+                        <h2 className="fw-bold text-white mb-3">{t.llami_tutorial.step5.title}</h2>
                         <p className="text-white-50">
-                            Usa tus puntos para "Avivar el Fuego". Esto me da XP directamente y me mantiene motivado para seguir creciendo contigo.
+                            {t.llami_tutorial.step5.desc}
                         </p>
                     </motion.div>
                 );
@@ -136,14 +132,14 @@ export default function LlamiTutorial({ onComplete }: LlamiTutorialProps) {
                         <div className="mx-auto rounded-circle d-flex align-items-center justify-content-center mb-4" style={{ width: '80px', height: '80px' }}>
                             <Sparkles className="text-warning animate-pulse" size={64} />
                         </div>
-                        <h2 className="fw-bold text-white mb-3">¿Estás listo?</h2>
+                        <h2 className="fw-bold text-white mb-3">{t.llami_tutorial.step6.title}</h2>
                         <p className="text-white-50 mb-4">
-                            Tu camino espiritual acaba de volverse más brillante. ¡Vamos a crecer juntos!
+                            {t.llami_tutorial.step6.desc}
                         </p>
                         <div className="p-3 rounded-4 border border-white border-opacity-10 text-start" style={{ backgroundColor: 'rgba(255, 255, 255, 0.08)' }}>
                             <p className="small text-white-50 mb-0 italic">
-                                "Tu palabra es una lámpara que guía mis pies y una luz para mi camino."
-                                <br /><span className="text-warning fw-bold">- Salmos 119:105</span>
+                                {t.llami_tutorial.step6.verse}
+                                <br /><span className="text-warning fw-bold">{t.llami_tutorial.step6.citation}</span>
                             </p>
                         </div>
                     </motion.div>
@@ -158,7 +154,7 @@ export default function LlamiTutorial({ onComplete }: LlamiTutorialProps) {
             <div className="container" style={{ maxWidth: '500px' }}>
                 <div className="d-flex justify-content-end mb-4">
                     <button onClick={onComplete} className="btn btn-link text-white-50 p-0 text-decoration-none">
-                        Omitir tutorial
+                        {t.llami_tutorial.skip}
                     </button>
                 </div>
 
@@ -172,7 +168,7 @@ export default function LlamiTutorial({ onComplete }: LlamiTutorialProps) {
                         className="btn btn-warning btn-lg rounded-pill fw-bold py-3 shadow-lg d-flex align-items-center justify-content-center gap-2"
                         style={{ backgroundColor: '#f3b33e', border: 'none', color: '#0B1B32' }}
                     >
-                        {step === totalSteps ? "¡Comenzar!" : "Siguiente"} <ArrowRight size={20} />
+                        {step === totalSteps ? t.llami_tutorial.start : t.llami_tutorial.next} <ArrowRight size={20} />
                     </button>
 
                     <div className="d-flex justify-content-center gap-2">

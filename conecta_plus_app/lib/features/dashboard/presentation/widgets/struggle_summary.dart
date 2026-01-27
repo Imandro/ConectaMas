@@ -13,6 +13,7 @@ class StruggleSummary extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final struggleState = ref.watch(struggleProvider);
+    final l10n = AppLocalizations.of(context);
     final activeCount = struggleState.struggles
         .where((s) => s.status == StruggleStatus.active && s.isStarted)
         .length;
@@ -63,7 +64,7 @@ class StruggleSummary extends ConsumerWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  'Mi Seguimiento',
+                                  l10n.myProgress,
                                   style: GoogleFonts.fredoka(
                                     fontSize: 20,
                                     fontWeight: FontWeight.w800,
@@ -71,7 +72,7 @@ class StruggleSummary extends ConsumerWidget {
                                   ),
                                 ),
                                 Text(
-                                  'Gestiona tus planes de transformación',
+                                  l10n.manageTransformation,
                                   style: GoogleFonts.fredoka(
                                     fontSize: 12,
                                     color: const Color(0xFF64748B),
@@ -101,7 +102,7 @@ class StruggleSummary extends ConsumerWidget {
                         Expanded(
                           child: _StatBox(
                             value: '$activeCount',
-                            label: 'EN PROGRESO',
+                            label: l10n.inProgress.toUpperCase(),
                             valueColor: AppTheme.primary,
                             bgColor: const Color(0xFFF1F5F9),
                           ).animate().fadeIn(delay: 200.ms).slideX(begin: -0.2),
@@ -110,7 +111,7 @@ class StruggleSummary extends ConsumerWidget {
                         Expanded(
                           child: _StatBox(
                             value: '$availableCount',
-                            label: 'DISPONIBLES',
+                            label: l10n.available.toUpperCase(),
                             valueColor: AppTheme.accent,
                             bgColor: const Color(0xFFF1F5F9),
                           ).animate().fadeIn(delay: 400.ms).slideX(begin: 0.2),
@@ -127,7 +128,7 @@ class StruggleSummary extends ConsumerWidget {
                 color: const Color(0xFFF8FAFC),
                 child: Center(
                   child: Text(
-                    'Ver todos mis planes',
+                    l10n.viewAllPlans,
                     style: GoogleFonts.fredoka(
                       color: AppTheme.primary,
                       fontWeight: FontWeight.w700,

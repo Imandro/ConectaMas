@@ -4,8 +4,10 @@ import { useEffect, useState } from "react";
 import { X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import SupportFundingAd from "./SupportFundingAd";
+import { useLanguage } from "../../LanguageContext";
 
 export default function SupportAdModal() {
+    const { t } = useLanguage();
     const [isOpen, setIsOpen] = useState(false);
 
     useEffect(() => {
@@ -67,7 +69,7 @@ export default function SupportAdModal() {
                             <SupportFundingAd />
                             <div className="px-4 pb-4 text-center">
                                 <button onClick={handleClose} className="btn btn-link text-muted text-decoration-none small">
-                                    Quizás más tarde
+                                    {t.premium.maybe_later}
                                 </button>
                             </div>
                         </div>

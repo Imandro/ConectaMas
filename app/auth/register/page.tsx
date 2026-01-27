@@ -6,9 +6,11 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { signIn } from 'next-auth/react';
 import { Eye, EyeOff, Loader2 } from 'lucide-react';
+import { useLanguage } from '../../LanguageContext';
 
 export default function RegisterPage() {
     const router = useRouter();
+    const { t } = useLanguage();
     const [loading, setLoading] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
     const [error, setError] = useState('');
@@ -74,14 +76,14 @@ export default function RegisterPage() {
                     <div className="position-relative" style={{ width: '120px', height: '50px', margin: '0 auto' }}>
                         <Image
                             src="/logo.png"
-                            alt="Conecta+ BETA Logo"
+                            alt={t.auth.logo_alt}
                             fill
                             style={{ objectFit: 'contain' }}
                         />
                     </div>
                 </Link>
-                <h3 className="fw-bold text-secondary">Únete a Conecta+ BETA</h3>
-                <p className="text-muted small">Tu viaje hacia la libertad comienza hoy.</p>
+                <h3 className="fw-bold text-secondary">{t.auth.register_title}</h3>
+                <p className="text-muted small">{t.auth.register_subtitle}</p>
             </div>
 
             {error && (
@@ -92,12 +94,12 @@ export default function RegisterPage() {
 
             <form onSubmit={handleSubmit}>
                 <div className="mb-3">
-                    <label htmlFor="name" className="form-label small fw-bold text-primary ps-2">Nombre Completo</label>
+                    <label htmlFor="name" className="form-label small fw-bold text-primary ps-2">{t.auth.full_name}</label>
                     <input
                         type="text"
                         className="form-control form-control-lg bg-light border-0"
                         id="name"
-                        placeholder="Tu nombre real"
+                        placeholder={t.auth.full_name_placeholder}
                         value={formData.name}
                         onChange={handleChange}
                         required
@@ -105,12 +107,12 @@ export default function RegisterPage() {
                 </div>
 
                 <div className="mb-3">
-                    <label htmlFor="username" className="form-label small fw-bold text-primary ps-2">Nombre de Usuario</label>
+                    <label htmlFor="username" className="form-label small fw-bold text-primary ps-2">{t.auth.username}</label>
                     <input
                         type="text"
                         className="form-control form-control-lg bg-light border-0"
                         id="username"
-                        placeholder="@usuario"
+                        placeholder={t.auth.username_placeholder}
                         value={formData.username}
                         onChange={handleChange}
                         required
@@ -118,12 +120,12 @@ export default function RegisterPage() {
                 </div>
 
                 <div className="mb-3">
-                    <label htmlFor="email" className="form-label small fw-bold text-primary ps-2">Email</label>
+                    <label htmlFor="email" className="form-label small fw-bold text-primary ps-2">{t.auth.email_user}</label>
                     <input
                         type="email"
                         className="form-control form-control-lg bg-light border-0"
                         id="email"
-                        placeholder="nombre@ejemplo.com"
+                        placeholder={t.auth.placeholder_email}
                         value={formData.email}
                         onChange={handleChange}
                         required
@@ -131,13 +133,13 @@ export default function RegisterPage() {
                 </div>
 
                 <div className="mb-4">
-                    <label htmlFor="password" className="form-label small fw-bold text-primary ps-2">Contraseña</label>
+                    <label htmlFor="password" className="form-label small fw-bold text-primary ps-2">{t.auth.password}</label>
                     <div className="position-relative">
                         <input
                             type={showPassword ? "text" : "password"}
                             className="form-control form-control-lg bg-light border-0 pe-5"
                             id="password"
-                            placeholder="Mínimo 6 caracteres"
+                            placeholder={t.auth.password_hint}
                             value={formData.password}
                             onChange={handleChange}
                             required
@@ -155,20 +157,20 @@ export default function RegisterPage() {
                 </div>
 
                 <div className="mb-4">
-                    <label htmlFor="securityAnswer" className="form-label small fw-bold text-primary ps-2">Pregunta de Seguridad</label>
-                    <p className="small text-muted mb-1">¿Cómo se llamaba tu primera mascota?</p>
+                    <label htmlFor="securityAnswer" className="form-label small fw-bold text-primary ps-2">{t.auth.security_question}</label>
+                    <p className="small text-muted mb-1">{t.auth.security_question_text}</p>
                     <input
                         type="text"
                         className="form-control form-control-lg bg-light border-0"
                         id="securityAnswer"
-                        placeholder="Escribe la respuesta aquí"
+                        placeholder={t.auth.security_answer_placeholder}
                         value={(formData as any).securityAnswer || ''}
                         onChange={handleChange}
                         required
                     />
 
                     <small className="text-muted" style={{ fontSize: '0.75rem' }}>
-                        *Usarás esta respuesta para recuperar tu contraseña si la olvidas.
+                        {t.auth.security_answer_hint}
                     </small>
                 </div>
 
@@ -182,7 +184,7 @@ export default function RegisterPage() {
                         required
                     />
                     <label className="form-check-label small text-muted" htmlFor="termsAccepted">
-                        He leído y acepto los <Link href="/legal/terms" target="_blank" className="text-primary fw-bold text-decoration-none">Términos y Condiciones</Link> y la <Link href="/legal/privacy" target="_blank" className="text-primary fw-bold text-decoration-none">Política de Privacidad</Link>.
+                        {t.auth.terms_text} <Link href="/legal/terms" target="_blank" className="text-primary fw-bold text-decoration-none">{t.auth.terms_link}</Link> y la <Link href="/legal/privacy" target="_blank" className="text-primary fw-bold text-decoration-none">{t.auth.privacy_link}</Link>.
                     </label>
                 </div>
 
@@ -195,19 +197,19 @@ export default function RegisterPage() {
                         {loading ? (
                             <>
                                 <Loader2 className="animate-spin me-2" size={20} />
-                                Creando cuenta...
+                                {t.auth.creating_account}
                             </>
-                        ) : 'Crear mi cuenta'}
+                        ) : t.auth.create_account}
                     </button>
                 </div>
 
                 <p className="small text-muted text-center mb-3 text-balance">
-                    Al registrarte, aceptas que este es un espacio seguro y de respeto.
+                    {t.auth.respect_disclaimer}
                 </p>
 
                 <div className="text-center border-top pt-3">
                     <p className="small text-muted mb-0">
-                        ¿Ya tienes cuenta? <Link href="/auth/login" className="text-primary fw-bold text-decoration-none">Inicia sesión</Link>
+                        {t.auth.already_have_account} <Link href="/auth/login" className="text-primary fw-bold text-decoration-none">{t.auth.login_link_text}</Link>
                     </p>
                 </div>
             </form >

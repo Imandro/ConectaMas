@@ -49,57 +49,23 @@ class PrayerCard extends StatelessWidget {
           ),
           
           // Decorative Outline Circle bottom-left
-          Positioned(
-            bottom: -16,
-            left: -16,
-            child: Container(
-              width: 80,
-              height: 80,
-              decoration: BoxDecoration(
-                border: Border.all(color: const Color(0xFF3B82F6).withValues(alpha: 0.10), width: 1.5),
-                shape: BoxShape.circle,
-              ),
+          Container(
+            padding: const EdgeInsets.all(16),
+            decoration: const BoxDecoration(
+              color: Colors.white,
+              shape: BoxShape.circle,
             ),
+            child: const Icon(Icons.auto_awesome_rounded, color: Color(0xFF6366F1), size: 32),
           ),
-
-          Padding(
-            padding: const EdgeInsets.all(24),
+          const SizedBox(width: 20),
+          Expanded(
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(Icons.menu_book_rounded, color: AppTheme.primary.withValues(alpha: 0.75), size: 20),
-                    const SizedBox(width: 6),
-                    Text(
-                      'ORACIÓN DEL DÍA',
-                      style: GoogleFonts.fredoka(
-                        color: AppTheme.primary,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 13,
-                        letterSpacing: 2,
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 16),
                 Text(
-                  '"$prayerContent"',
-                  textAlign: TextAlign.center,
+                  l10n.intercessionPrayer,
                   style: GoogleFonts.fredoka(
-                    color: const Color(0xFF64748B),
                     fontSize: 18,
-                    fontWeight: FontWeight.w600,
-                    fontStyle: FontStyle.italic,
-                    height: 1.3,
-                  ),
-                ),
-                const SizedBox(height: 16),
-                Align(
-                  alignment: Alignment.bottomRight,
-                  child: Text(
-                    '— Enfoque: $prayerTheme',
-                    style: GoogleFonts.fredoka(
                       color: AppTheme.primary.withValues(alpha: 0.75),
                       fontWeight: FontWeight.bold,
                       fontSize: 14,

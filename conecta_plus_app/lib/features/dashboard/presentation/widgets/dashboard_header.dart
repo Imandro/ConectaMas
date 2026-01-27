@@ -10,10 +10,12 @@ class DashboardHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Dynamic date in Spanish
+    final l10n = AppLocalizations.of(context);
+    final locale = Localizations.localeOf(context);
+
+    // Dynamic date localized
     final now = DateTime.now();
-    final formatter = DateFormat("d 'De' MMMM", 'es');
-    final dateStr = formatter.format(now);
+    final dateStr = DateFormat.MMMMd(locale.languageCode).format(now);
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -32,7 +34,7 @@ class DashboardHeader extends StatelessWidget {
             ),
             const SizedBox(height: 2),
             Text(
-              'Hola, Mario',
+              l10n.hello('Mario'),
               style: GoogleFonts.fredoka(
                 fontSize: 32,
                 fontWeight: FontWeight.bold,

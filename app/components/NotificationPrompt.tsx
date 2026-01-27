@@ -2,10 +2,12 @@
 
 import React, { useState, useEffect } from "react";
 import { X, Bell, Sparkles, CheckCircle2 } from "lucide-react";
+import { useLanguage } from '../LanguageContext';
 
 export default function NotificationPrompt() {
     const [showPrompt, setShowPrompt] = useState(false);
     const [loading, setLoading] = useState(false);
+    const { t } = useLanguage();
 
     useEffect(() => {
         // Register Service Worker for Push Notifications
@@ -43,12 +45,12 @@ export default function NotificationPrompt() {
                     const sub = await registration.pushManager.getSubscription();
 
                     if (!sub) {
-                        const vapidPublicKey = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY || "BGBZ1Q1LwyPolkAPnshPKwQ6NNijzuu8_lqDziuABVb6z60pX1uwKsw1jgO-rCabt5QIf_90OSNqNRgXKti9zyI";
+                        const VAPID_PUBLIC_KEY = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY || "BGBZ1Q1LwyPolkAPnshPKwQ6NNijzuu8_lqDziuABVb6z60pX1uwKsw1jgO-rCabt5QIf_90OSNqNRgXKti9zyI";
 
                         try {
                             const newSub = await registration.pushManager.subscribe({
                                 userVisibleOnly: true,
-                                applicationServerKey: urlBase64ToUint8Array(vapidPublicKey),
+                                applicationServerKey: urlBase64ToUint8Array(VAPID_PUBLIC_KEY),
                             });
 
                             const res = await fetch('/api/notifications/subscribe', {
@@ -106,7 +108,10 @@ export default function NotificationPrompt() {
                             <div className="bg-secondary rounded-circle p-1">
                                 <Bell size={18} className="text-primary" />
                             </div>
-                            <h6 className="mb-0 fw-bold">Recordatorios Espirituales</h6>
+                            <div className="text-start">
+                                <h6 className="mb-0 fw-bold">{t.notifications_prompt.title}</h6>
+                                <small className="text-muted">{t.notifications_prompt.welcome}</small>
+                            </div>
                         </div>
                         <button onClick={handleDismiss} className="btn btn-link p-0 text-white opacity-75">
                             <X size={20} />
@@ -119,9 +124,9 @@ export default function NotificationPrompt() {
                             <Sparkles className="text-secondary" size={24} />
                             <CheckCircle2 className="text-success" size={24} />
                         </div>
-                        <h5 className="fw-bold mb-2" style={{ color: 'var(--text-color)' }}>¡No te pierdas de nada!</h5>
+                        <h5 className="fw-bold mb-2" style={{ color: 'var(--text-color)' }}>{t.notifications_prompt.heading}</h5>
                         <p className="small text-muted mb-4">
-                            Recibe alientos diarios, oraciones y recordatorios para tu tiempo con Dios directamente en tu teléfono.
+                            {t.notifications_prompt.description}
                         </p>
 
                         <div className="d-grid gap-2">
@@ -131,13 +136,13 @@ export default function NotificationPrompt() {
                                 disabled={loading}
                             >
                                 {loading && <span className="spinner-border spinner-border-sm" role="status"></span>}
-                                {loading ? 'Activando...' : 'Activar Notificaciones'}
+                                {loading ? t.notifications_prompt.button_enabling : t.notifications_prompt.button_enable}
                             </button>
                             <button
                                 onClick={handleDismiss}
                                 className="btn btn-link btn-sm text-muted text-decoration-none"
                             >
-                                Quizás más tarde
+                                {t.notifications_prompt.button_later}
                             </button>
                         </div>
                     </div>

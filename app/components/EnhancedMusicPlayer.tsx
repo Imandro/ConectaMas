@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Play, Pause, SkipForward, SkipBack, Volume2, Music, Loader2 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useLanguage } from "../LanguageContext";
 
 interface Song {
     id: string;
@@ -16,6 +17,7 @@ interface EnhancedMusicPlayerProps {
 }
 
 export default function EnhancedMusicPlayer({ songs }: EnhancedMusicPlayerProps) {
+    const { t } = useLanguage();
     const [currentSongIndex, setCurrentSongIndex] = useState(0);
     const [isPlaying, setIsPlaying] = useState(false);
     const [progress, setProgress] = useState(0);
@@ -220,8 +222,8 @@ export default function EnhancedMusicPlayer({ songs }: EnhancedMusicPlayerProps)
             {/* Playlist Section - ALWAYS VISIBLE */}
             <div className="playlist-container mt-2 pt-3 border-top border-white border-opacity-10">
                 <div className="d-flex justify-content-between align-items-baseline mb-3 px-1">
-                    <h6 className="tiny-text fw-bold text-white-50 m-0" style={{ letterSpacing: '1px' }}>REPRODUCIENDO AHORA</h6>
-                    <span className="tiny-text text-warning opacity-50 fw-bold">{currentSongIndex + 1} de {songs.length}</span>
+                    <h6 className="tiny-text fw-bold text-white-50 m-0" style={{ letterSpacing: '1px' }}>{t.music_player.now_playing}</h6>
+                    <span className="tiny-text text-warning opacity-50 fw-bold">{currentSongIndex + 1} {t.common.of} {songs.length}</span>
                 </div>
                 <div className="d-flex flex-column gap-2 overflow-auto pe-1" style={{ maxHeight: '140px' }}>
                     {songs.map((song, index) => (

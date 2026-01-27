@@ -100,7 +100,7 @@ class DailyVerse extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    'VERSÍCULO DEL DÍA',
+                    l10n.dailyVerse.toUpperCase(),
                     style: GoogleFonts.fredoka(
                       color: Colors.white.withValues(alpha: 0.5),
                       fontWeight: FontWeight.bold,

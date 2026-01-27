@@ -75,15 +75,15 @@ export async function completeTutorialTour() {
 
 export async function updateUsername(newUsername: string) {
     const session = await auth();
-    if (!session?.user?.id) return { success: false, error: "No autorizado" };
+    if (!session?.user?.id) return { success: false, errorKey: "unauthorized" };
 
     if (!newUsername || newUsername.trim().length < 3 || newUsername.trim().length > 20) {
-        return { success: false, error: "El nombre de usuario debe tener entre 3 y 20 caracteres." };
+        return { success: false, errorKey: "username_length_error" };
     }
 
     // Simple format check (alphanumeric)
     if (!/^[a-zA-Z0-9_]+$/.test(newUsername)) {
-        return { success: false, error: "Solo letras, números y guiones bajos." };
+        return { success: false, errorKey: "username_format_error" };
     }
 
     const userId = (session.user as any).id;
@@ -100,7 +100,7 @@ export async function updateUsername(newUsername: string) {
 
         if (lastChange > threeDaysAgo) {
             const daysLeft = 3 - Math.floor((new Date().getTime() - lastChange.getTime()) / (1000 * 60 * 60 * 24));
-            return { success: false, error: `Debes esperar ${daysLeft} días más para cambiar tu nombre de usuario.` };
+            return { success: false, errorKey: "username_cooldown", errorParams: [daysLeft] };
         }
     }
 
@@ -109,7 +109,7 @@ export async function updateUsername(newUsername: string) {
         where: { username: newUsername }
     });
     if (existing && existing.id !== userId) {
-        return { success: false, error: "Este nombre de usuario ya está en uso." };
+        return { success: false, errorKey: "username_taken" };
     }
 
     await (prisma as any).user.update({
@@ -126,10 +126,10 @@ export async function updateUsername(newUsername: string) {
 
 export async function updateName(newName: string) {
     const session = await auth();
-    if (!session?.user?.id) return { success: false, error: "No autorizado" };
+    if (!session?.user?.id) return { success: false, errorKey: "unauthorized" };
 
     if (!newName || newName.trim().length < 2 || newName.trim().length > 50) {
-        return { success: false, error: "El nombre debe tener entre 2 y 50 caracteres." };
+        return { success: false, errorKey: "name_length_error" };
     }
 
     await prisma.user.update({

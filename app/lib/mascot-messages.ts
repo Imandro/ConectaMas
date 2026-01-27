@@ -96,30 +96,32 @@ export const llamiMessages = {
 };
 
 export function getLlamiMessage(
+    t: any,
     streak: number,
-    mood?: string,
     isClick: boolean = false
 ): string {
+    const messages = t.llami;
+
     // Mensajes de hitos tienen prioridad
-    if (llamiMessages.milestones[streak as keyof typeof llamiMessages.milestones]) {
-        return llamiMessages.milestones[streak as keyof typeof llamiMessages.milestones];
+    if (messages.milestones[streak as keyof typeof messages.milestones]) {
+        return messages.milestones[streak as keyof typeof messages.milestones];
     }
 
     // Si es un click aleatorio
     if (isClick) {
-        return llamiMessages.randomClicks[
-            Math.floor(Math.random() * llamiMessages.randomClicks.length)
+        return messages.random[
+            Math.floor(Math.random() * messages.random.length)
         ];
     }
 
     // Determinar etapa según racha
-    let stage: keyof typeof llamiMessages.streakMessages;
+    let stage: keyof typeof messages.streak;
     if (streak <= 7) stage = 'spark';
     else if (streak <= 30) stage = 'flame';
     else if (streak <= 90) stage = 'torch';
     else if (streak <= 365) stage = 'sun';
     else stage = 'star';
 
-    const messages = llamiMessages.streakMessages[stage];
-    return messages[Math.floor(Math.random() * messages.length)];
+    const streakMessages = messages.streak[stage];
+    return streakMessages[Math.floor(Math.random() * streakMessages.length)];
 }

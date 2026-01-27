@@ -1,11 +1,29 @@
 export interface Verse {
     text: string;
     reference: string;
+    text_en?: string;
+    text_pt?: string;
+    reference_en?: string;
+    reference_pt?: string;
 }
 
 export const verses: Verse[] = [
-    { text: "Aunque ande en valle de sombra de muerte, no temeré mal alguno, porque tú estarás conmigo.", reference: "Salmos 23:4" },
-    { text: "Entonces no sería yo avergonzado.", reference: "Salmos 119:6" },
+    {
+        text: "Aunque ande en valle de sombra de muerte, no temeré mal alguno, porque tú estarás conmigo.",
+        reference: "Salmos 23:4",
+        text_en: "Even though I walk through the darkest valley, I will fear no evil, for you are with me.",
+        reference_en: "Psalm 23:4",
+        text_pt: "Ainda que eu ande pelo vale da sombra da morte, não temerei mal algum, porque tu estás comigo.",
+        reference_pt: "Salmos 23:4"
+    },
+    {
+        text: "Entonces no sería yo avergonzado.",
+        reference: "Salmos 119:6",
+        text_en: "Then I would not be put to shame.",
+        reference_en: "Psalm 119:6",
+        text_pt: "Então não seria eu envergonhado.",
+        reference_pt: "Salmos 119:6"
+    },
     { text: "Mi alto refugio.", reference: "Salmos 18:2" },
     { text: "Porque para mí el vivir es Cristo, y el morir es ganancia.", reference: "Filipenses 1:21" },
     { text: "La blanda respuesta quita la ira.", reference: "Proverbios 15:1" },

@@ -4,6 +4,8 @@ import { useState, useEffect } from 'react';
 import { Book, ChevronLeft, ChevronRight, Heart } from 'lucide-react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
+import { useLanguage } from '../../LanguageContext';
+import { BIBLE_BOOKS, getBibleBookName } from '@/app/lib/bibleData';
 
 interface BibleVerse {
     id: string;
@@ -12,82 +14,19 @@ interface BibleVerse {
     tags: string;
 }
 
-const BIBLE_BOOKS = [
-    // Old Testament
-    { name: "Génesis", chapters: 50 },
-    { name: "Éxodo", chapters: 40 },
-    { name: "Levítico", chapters: 27 },
-    { name: "Números", chapters: 36 },
-    { name: "Deuteronomio", chapters: 34 },
-    { name: "Josué", chapters: 24 },
-    { name: "Jueces", chapters: 21 },
-    { name: "Rut", chapters: 4 },
-    { name: "1 Samuel", chapters: 31 },
-    { name: "2 Samuel", chapters: 24 },
-    { name: "1 Reyes", chapters: 22 },
-    { name: "2 Reyes", chapters: 25 },
-    { name: "1 Crónicas", chapters: 29 },
-    { name: "2 Crónicas", chapters: 36 },
-    { name: "Esdras", chapters: 10 },
-    { name: "Nehemías", chapters: 13 },
-    { name: "Ester", chapters: 10 },
-    { name: "Job", chapters: 42 },
-    { name: "Salmos", chapters: 150 },
-    { name: "Proverbios", chapters: 31 },
-    { name: "Eclesiastés", chapters: 12 },
-    { name: "Cantares", chapters: 8 },
-    { name: "Isaías", chapters: 66 },
-    { name: "Jeremías", chapters: 52 },
-    { name: "Lamentaciones", chapters: 5 },
-    { name: "Ezequiel", chapters: 48 },
-    { name: "Daniel", chapters: 12 },
-    { name: "Oseas", chapters: 14 },
-    { name: "Joel", chapters: 3 },
-    { name: "Amós", chapters: 9 },
-    { name: "Abdías", chapters: 1 },
-    { name: "Jonás", chapters: 4 },
-    { name: "Miqueas", chapters: 7 },
-    { name: "Nahúm", chapters: 3 },
-    { name: "Habacuc", chapters: 3 },
-    { name: "Sofonías", chapters: 3 },
-    { name: "Hageo", chapters: 2 },
-    { name: "Zacarías", chapters: 14 },
-    { name: "Malaquías", chapters: 4 },
-    // New Testament
-    { name: "Mateo", chapters: 28 },
-    { name: "Marcos", chapters: 16 },
-    { name: "Lucas", chapters: 24 },
-    { name: "Juan", chapters: 21 },
-    { name: "Hechos", chapters: 28 },
-    { name: "Romanos", chapters: 16 },
-    { name: "1 Corintios", chapters: 16 },
-    { name: "2 Corintios", chapters: 13 },
-    { name: "Gálatas", chapters: 6 },
-    { name: "Efesios", chapters: 6 },
-    { name: "Filipenses", chapters: 4 },
-    { name: "Colosenses", chapters: 4 },
-    { name: "1 Tesalonicenses", chapters: 5 },
-    { name: "2 Tesalonicenses", chapters: 3 },
-    { name: "1 Timoteo", chapters: 6 },
-    { name: "2 Timoteo", chapters: 4 },
-    { name: "Tito", chapters: 3 },
-    { name: "Filemón", chapters: 1 },
-    { name: "Hebreos", chapters: 13 },
-    { name: "Santiago", chapters: 5 },
-    { name: "1 Pedro", chapters: 5 },
-    { name: "2 Pedro", chapters: 3 },
-    { name: "1 Juan", chapters: 5 },
-    { name: "2 Juan", chapters: 1 },
-    { name: "3 Juan", chapters: 1 },
-    { name: "Judas", chapters: 1 },
-    { name: "Apocalipsis", chapters: 22 },
-];
-
 export default function BiblePage() {
+    const { t, language } = useLanguage();
     const searchParams = useSearchParams();
     const initialBookName = searchParams.get('book');
     const initialChapter = searchParams.get('chapter');
 
+    // Find book by matching any language name ideally, but for now exact match on Spanish name works as default,
+    // or we should logic to find book by ID/Name across languages.
+    // For simplicity, we assume the URL might have Spanish name OR we default to first book.
+    // Ideally URLs should use a stable ID (e.g. genesis), but the app uses names.
+    // Only "Display Name" needs to change unless we want to break URLs. 
+    // We will keep internal "value" as Spanish name for API compatibility if backend expects Spanish.
+    // Assuming backend/API expects Spanish names for folders/data.
     const initialBook = BIBLE_BOOKS.find(b => b.name === initialBookName) || BIBLE_BOOKS[0];
     const initialChapterNum = initialChapter ? parseInt(initialChapter) : 1;
 
@@ -124,6 +63,10 @@ export default function BiblePage() {
         if (!selectedBook || !selectedChapter) return;
 
         setLoading(true);
+        // Note: We might need to pass language to API if text needs to be translated.
+        // Assuming API might only have Spanish text for now unless we update it.
+        // If we want EN/PT text, the backend needs to support it. 
+        // For now, we localize the UI.
         fetch(`/api/bible?book=${encodeURIComponent(selectedBook.name)}&chapter=${selectedChapter}`)
             .then(res => res.json())
             .then(data => {
@@ -166,16 +109,16 @@ export default function BiblePage() {
                             <div className="d-flex justify-content-between align-items-center mb-4">
                                 <h1 className="h3 mb-0 fw-bold d-flex align-items-center gap-2">
                                     <Book className="text-primary" size={28} />
-                                    La Biblia
+                                    {t.bible.title}
                                 </h1>
                                 <Link href="/dashboard" className="btn btn-outline-secondary btn-sm">
-                                    Volver
+                                    {t.bible.back}
                                 </Link>
                             </div>
 
                             {/* Book Selector */}
                             <div className="mb-3">
-                                <label className="form-label fw-bold">Libro</label>
+                                <label className="form-label fw-bold">{t.bible.book}</label>
                                 <select
                                     className="form-select"
                                     value={selectedBook.name}
@@ -189,7 +132,7 @@ export default function BiblePage() {
                                 >
                                     {BIBLE_BOOKS.map(book => (
                                         <option key={book.name} value={book.name}>
-                                            {book.name}
+                                            {getBibleBookName(book, language)}
                                         </option>
                                     ))}
                                 </select>
@@ -205,7 +148,7 @@ export default function BiblePage() {
                                     <ChevronLeft size={20} />
                                 </button>
                                 <div className="flex-grow-1">
-                                    <label className="form-label fw-bold mb-1">Capítulo</label>
+                                    <label className="form-label fw-bold mb-1">{t.bible.chapter}</label>
                                     <select
                                         className="form-select"
                                         value={selectedChapter}
@@ -228,12 +171,12 @@ export default function BiblePage() {
                             {/* Chapter Text */}
                             <div className="border-top pt-4">
                                 <h4 className="fw-bold mb-3 text-primary">
-                                    {selectedBook.name} {selectedChapter}
+                                    {getBibleBookName(selectedBook, language)} {selectedChapter}
                                 </h4>
                                 {loading ? (
                                     <div className="text-center py-5">
                                         <div className="spinner-border text-primary" role="status">
-                                            <span className="visually-hidden">Cargando...</span>
+                                            <span className="visually-hidden">{t.bible.loading}</span>
                                         </div>
                                     </div>
                                 ) : chapterText ? (
@@ -245,12 +188,12 @@ export default function BiblePage() {
                                             </p>
                                         )) || (
                                                 <p className="text-muted">
-                                                    {chapterText.text || "No se pudo cargar el texto."}
+                                                    {chapterText.text || t.bible.error_loading}
                                                 </p>
                                             )}
                                     </div>
                                 ) : (
-                                    <p className="text-muted">Selecciona un libro y capítulo.</p>
+                                    <p className="text-muted">{t.bible.select_chapter}</p>
                                 )}
                             </div>
                         </div>
@@ -263,14 +206,14 @@ export default function BiblePage() {
                         <div className="card-body p-4">
                             <h5 className="fw-bold mb-3 d-flex align-items-center gap-2">
                                 <Heart className="text-danger" size={20} />
-                                Versículos de Ayuda (NTV)
+                                {t.bible.helpful_verses}
                             </h5>
                             <p className="small text-muted mb-3">
-                                Versículos específicos para tus luchas
+                                {t.bible.helpful_desc}
                             </p>
                             <div className="d-flex flex-column gap-3">
                                 {helpfulVerses.length === 0 ? (
-                                    <p className="text-muted small">Cargando versículos...</p>
+                                    <p className="text-muted small">{t.bible.loading_verses}</p>
                                 ) : (
                                     helpfulVerses.map(verse => (
                                         <div key={verse.id} className="border-start border-primary border-3 ps-3">

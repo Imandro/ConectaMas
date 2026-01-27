@@ -1,7 +1,9 @@
 import { MessageCircle } from "lucide-react";
-import Link from "next/link";
+import { useLanguage } from "../LanguageContext";
 
 export default function WhatsappCard() {
+    const { t } = useLanguage();
+
     return (
         <a
             href="https://chat.whatsapp.com/BymmU4EoImgFxLVbUfCzBX"
@@ -15,8 +17,8 @@ export default function WhatsappCard() {
                         <MessageCircle size={32} fill="#25D366" color="white" />
                     </div>
                     <div>
-                        <h5 className="fw-bold text-dark mb-1">Grupo de WhatsApp</h5>
-                        <p className="text-secondary small mb-0 lh-sm">Únete a la comunidad oficial y recibe apoyo diario.</p>
+                        <h5 className="fw-bold text-dark mb-1">{t.whatsapp.card_title}</h5>
+                        <p className="text-secondary small mb-0 lh-sm">{t.whatsapp.card_desc}</p>
                     </div>
                 </div>
             </div>

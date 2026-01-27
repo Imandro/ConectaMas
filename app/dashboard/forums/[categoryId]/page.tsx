@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { ArrowLeft, MessageCircle, Clock, Shield, User as UserIcon } from 'lucide-react';
+import { useLanguage } from '../../LanguageContext';
 
 interface Post {
     id: string;
@@ -27,6 +28,7 @@ interface Category {
 }
 
 export default function CategoryPostsPage() {
+    const { t, language } = useLanguage();
     const params = useParams();
     const router = useRouter();
     const categoryId = params.categoryId as string;
@@ -60,10 +62,16 @@ export default function CategoryPostsPage() {
         const diffHours = Math.floor(diffMs / 3600000);
         const diffDays = Math.floor(diffMs / 86400000);
 
-        if (diffMins < 60) return `Hace ${diffMins} min`;
-        if (diffHours < 24) return `Hace ${diffHours}h`;
-        if (diffDays < 7) return `Hace ${diffDays}d`;
-        return date.toLocaleDateString('es-ES');
+        if (diffMins < 60) return t.forums.time_ago_mins.replace('{num}', diffMins.toString());
+        if (diffHours < 24) return t.forums.time_ago_hours.replace('{num}', diffHours.toString());
+        if (diffDays < 7) return t.forums.time_ago_days.replace('{num}', diffDays.toString());
+
+        const localeMap: Record<string, string> = {
+            'es': 'es-ES',
+            'en': 'en-US',
+            'pt': 'pt-BR'
+        };
+        return date.toLocaleDateString(localeMap[language] || 'es-ES');
     };
 
     if (loading) {
@@ -71,7 +79,7 @@ export default function CategoryPostsPage() {
             <div className="container-fluid py-4">
                 <div className="d-flex justify-content-center align-items-center" style={{ minHeight: '50vh' }}>
                     <div className="spinner-border text-primary" role="status">
-                        <span className="visually-hidden">Cargando...</span>
+                        <span className="visually-hidden">{t.forums.loading}</span>
                     </div>
                 </div>
             </div>
@@ -82,7 +90,7 @@ export default function CategoryPostsPage() {
         <div className="container-fluid py-4 animate-fade-in">
             <Link href="/dashboard/forums" className="btn btn-light mb-3">
                 <ArrowLeft size={20} className="me-2" />
-                Volver a Comunidad
+                {t.forums.back_to_community}
             </Link>
 
             {category && (
@@ -100,9 +108,9 @@ export default function CategoryPostsPage() {
             )}
 
             <div className="d-flex justify-content-between align-items-center mb-4">
-                <h4 className="fw-bold text-secondary mb-0">Publicaciones</h4>
+                <h4 className="fw-bold text-secondary mb-0">{t.forums.posts_title}</h4>
                 <Link href={`/dashboard/forums/new?category=${categoryId}`} className="btn btn-primary rounded-pill">
-                    Nueva Publicación
+                    {t.forums.new_post}
                 </Link>
             </div>
 
@@ -129,16 +137,16 @@ export default function CategoryPostsPage() {
                                     {post.isAnonymous ? (
                                         <>
                                             <UserIcon size={16} />
-                                            <span>Anónimo</span>
+                                            <span>{t.forums.anonymous}</span>
                                         </>
                                     ) : (
                                         <>
                                             <UserIcon size={16} />
-                                            <span>{post.user?.name || 'Usuario'}</span>
+                                            <span>{post.user?.name || t.forums.user_fallback}</span>
                                             {post.user?.isCounselor && (
                                                 <span className="badge bg-success-subtle text-success ms-1">
                                                     <Shield size={12} className="me-1" />
-                                                    Consejero
+                                                    {t.forums.counselor_badge}
                                                 </span>
                                             )}
                                         </>
@@ -150,7 +158,7 @@ export default function CategoryPostsPage() {
                                 </div>
                                 <div className="d-flex align-items-center gap-1">
                                     <MessageCircle size={16} />
-                                    <span>{post._count.replies} respuestas</span>
+                                    <span>{t.forums.replies_count.replace('{count}', post._count.replies.toString())}</span>
                                 </div>
                             </div>
                         </div>
@@ -160,9 +168,9 @@ export default function CategoryPostsPage() {
                 {posts.length === 0 && (
                     <div className="text-center py-5">
                         <MessageCircle size={48} className="text-muted mb-3" />
-                        <p className="text-muted mb-3">No hay publicaciones en esta categoría aún.</p>
+                        <p className="text-muted mb-3">{t.forums.no_posts}</p>
                         <Link href={`/dashboard/forums/new?category=${categoryId}`} className="btn btn-primary rounded-pill">
-                            Sé el primero en publicar
+                            {t.forums.be_first}
                         </Link>
                     </div>
                 )}

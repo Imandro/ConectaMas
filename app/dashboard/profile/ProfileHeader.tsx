@@ -1,10 +1,11 @@
 "use client";
 
 import { useState, useRef } from "react";
-import { Camera, Edit2, User } from "lucide-react";
+import { Camera, Edit2 } from "lucide-react";
 import { updateProfileImage, updateUsername } from "./actions";
 import { toast } from "react-hot-toast";
 import { Check, X } from "lucide-react";
+import { useLanguage } from "@/app/LanguageContext";
 
 interface ProfileHeaderProps {
     user: {
@@ -19,12 +20,26 @@ interface ProfileHeaderProps {
 }
 
 export default function ProfileHeader({ user }: ProfileHeaderProps) {
+    const { t } = useLanguage();
     const [image, setImage] = useState(user.image);
     const [isUploading, setIsUploading] = useState(false);
     const [isEditingUsername, setIsEditingUsername] = useState(false);
     const [username, setUsername] = useState(user.username || "");
     const [pendingUsername, setPendingUsername] = useState("");
     const fileInputRef = useRef<HTMLInputElement>(null);
+
+    const getErrorMessage = (res: any) => {
+        if (res.errorKey) {
+            let msg = t.profile[res.errorKey as keyof typeof t.profile] as string;
+            if (res.errorParams) {
+                res.errorParams.forEach((p: any) => {
+                    msg = msg.replace('%d', p.toString());
+                });
+            }
+            return msg;
+        }
+        return res.error || t.profile.error_updating;
+    };
 
     const handleImageClick = () => {
         fileInputRef.current?.click();
@@ -36,7 +51,7 @@ export default function ProfileHeader({ user }: ProfileHeaderProps) {
 
         // Validation (Max 2MB)
         if (file.size > 2 * 1024 * 1024) {
-            toast.error("La imagen es demasiado grande. Máximo 2MB.");
+            toast.error(t.profile.image_too_large);
             return;
         }
 
@@ -51,10 +66,10 @@ export default function ProfileHeader({ user }: ProfileHeaderProps) {
                 // Optimistic update
                 setImage(base64String);
                 await updateProfileImage(base64String);
-                toast.success("Foto actualizada");
+                toast.success(t.profile.image_updated);
             } catch (error) {
                 console.error("Error upload:", error);
-                toast.error("Error al subir la imagen.");
+                toast.error(t.profile.image_error);
                 setImage(user.image); // Revert
             } finally {
                 setIsUploading(false);
@@ -69,10 +84,21 @@ export default function ProfileHeader({ user }: ProfileHeaderProps) {
         if (result.success) {
             setUsername(pendingUsername);
             setIsEditingUsername(false);
-            toast.success("Nombre de usuario actualizado");
+            toast.success(t.profile.username_updated);
         } else {
-            toast.error(result.error || "Error al actualizar");
+            toast.error(getErrorMessage(result));
         }
+    };
+
+    const getSpiritualLevel = (level: string) => {
+        if (!level) return t.spiritual_levels.exploring;
+        const l = level.toLowerCase();
+        if (l === 'explorador' || l === 'exploring') return t.spiritual_levels.exploring;
+        if (l === 'principiante' || l === 'beginner') return t.spiritual_levels.beginner;
+        if (l === 'creciendo' || l === 'growing') return t.spiritual_levels.growing;
+        if (l === 'comprometido' || l === 'committed') return t.spiritual_levels.committed;
+        if (l === 'líder' || l === 'leader') return t.spiritual_levels.leader;
+        return level;
     };
 
     return (
@@ -106,10 +132,10 @@ export default function ProfileHeader({ user }: ProfileHeaderProps) {
                 </div>
 
                 <div>
-                    <h4 className="fw-bold mb-1">{user.name || 'Usuario'}</h4>
+                    <h4 className="fw-bold mb-1">{user.name || t.auth.name_label}</h4>
                     <p className="text-muted mb-0">{user.email}</p>
                     <span className="badge bg-light text-secondary mt-2 rounded-pill border">
-                        {user.spiritualLevel || "Explorador"}
+                        {getSpiritualLevel(user.spiritualLevel)}
                     </span>
 
                     <div className="mt-3">
@@ -123,7 +149,7 @@ export default function ProfileHeader({ user }: ProfileHeaderProps) {
                                     style={{ maxWidth: '150px' }}
                                     value={pendingUsername}
                                     onChange={(e) => setPendingUsername(e.target.value)}
-                                    placeholder="usuario"
+                                    placeholder={t.auth.username_placeholder || "usuario"}
                                 />
                                 <button onClick={handleUpdateUsername} className="btn btn-sm btn-success rounded-circle p-1 d-flex align-items-center justify-content-center" style={{ width: 28, height: 28 }}>
                                     <Check size={14} />
@@ -141,13 +167,13 @@ export default function ProfileHeader({ user }: ProfileHeaderProps) {
                                         setIsEditingUsername(true);
                                     }}
                                     className="btn btn-link text-muted p-0"
-                                    title="Editar usuario"
+                                    title={t.profile.edit_username}
                                 >
                                     <Edit2 size={12} />
                                 </button>
                             </div>
                         )}
-                        {user.age && <small className="text-muted d-block mt-1">{user.age} años</small>}
+                        {user.age && <small className="text-muted d-block mt-1">{user.age} {t.onboarding.years}</small>}
                     </div>
                 </div>
             </div>

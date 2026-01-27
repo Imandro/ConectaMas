@@ -1,17 +1,24 @@
 import { auth } from "@/app/lib/auth";
 import { prisma } from "@/app/lib/prisma";
 import { redirect } from "next/navigation";
-import { ShieldAlert, ArrowLeft, Plus } from "lucide-react";
+import { ShieldAlert, ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import StruggleTracker from "../components/StruggleTracker";
+import { getTranslations, Language } from "@/app/lib/getTranslations";
 
 export default async function LuchasPage() {
     const session = await auth();
-    if (!session?.user) {
+    if (!session?.user?.id) {
         redirect("/auth/login");
     }
 
-    const userId = (session.user as any).id;
+    const user = await prisma.user.findUnique({
+        where: { id: session.user.id },
+        select: { preferredLanguage: true }
+    });
+
+    const t = getTranslations((user?.preferredLanguage as Language) || 'es');
+    const userId = session.user.id;
 
     const prismaAny = prisma as any;
     const struggles = await prismaAny.userStruggle.findMany({
@@ -43,8 +50,8 @@ export default async function LuchasPage() {
                     <ArrowLeft size={24} className="text-secondary" />
                 </Link>
                 <div>
-                    <h2 className="fw-bold text-secondary m-0">Mi Seguimiento 🛡️</h2>
-                    <p className="text-muted m-0">Gestiona tus planes de transformación y victorias.</p>
+                    <h2 className="fw-bold text-secondary m-0">{t.struggles.title}</h2>
+                    <p className="text-muted m-0">{t.struggles.subtitle}</p>
                 </div>
             </header>
 

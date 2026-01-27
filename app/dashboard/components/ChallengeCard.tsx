@@ -52,7 +52,7 @@ export default function ChallengeCard({ isCompleted = false }: ChallengeCardProp
 
                     <div className="d-flex justify-content-between align-items-center">
                         <p className="m-0 small text-white text-opacity-80">
-                            {isCompleted ? t.dashboard.come_back_tomorrow : "Versículos & Verdades"}
+                            {isCompleted ? t.dashboard.come_back_tomorrow : t.dashboard.verses_and_truths}
                         </p>
                         <div className="bg-white text-primary rounded-circle p-1">
                             {isCompleted ? <CheckCircle2 size={18} className="text-success" /> : <ArrowRight size={18} />}

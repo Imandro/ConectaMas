@@ -1,12 +1,13 @@
 "use client";
 
 import { signOut } from "next-auth/react";
-import { LogOut, RefreshCcw, Sun, Moon, Phone, HelpCircle, Users, Edit2, User, UserCircle } from "lucide-react";
+import { LogOut, RefreshCcw, Phone, HelpCircle, Users, UserCircle, Globe } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import { resetAccount, updateLeaderPhone, updateName, updateUsername } from "./actions";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { useLanguage } from "@/app/LanguageContext";
 
 export default function ClientProfileActions({
     userRole,
@@ -19,6 +20,7 @@ export default function ClientProfileActions({
     initialName?: string | null,
     initialUsername?: string | null
 }) {
+    const { t, language, region, setLanguage, setRegion } = useLanguage();
     const [isResetting, setIsResetting] = useState(false);
     const [leaderPhone, setLeaderPhone] = useState(initialLeaderPhone || "");
     const [name, setName] = useState(initialName || "");
@@ -29,15 +31,28 @@ export default function ClientProfileActions({
     const update = sessionContext?.update;
     const router = useRouter();
 
+    const getErrorMessage = (res: any) => {
+        if (res.errorKey) {
+            let msg = t.profile[res.errorKey as keyof typeof t.profile] as string;
+            if (res.errorParams) {
+                res.errorParams.forEach((p: any) => {
+                    msg = msg.replace('%d', p.toString());
+                });
+            }
+            return msg;
+        }
+        return res.error || t.profile.error_updating;
+    };
+
     const handleReset = async () => {
-        if (confirm("¿Estás seguro? Esto reiniciará tu progreso de onboarding (pero no borrará tu cuenta).")) {
+        if (confirm(t.profile.reset_confirm)) {
             setIsResetting(true);
             try {
                 await resetAccount();
                 window.location.href = "/onboarding";
             } catch (error) {
                 console.error(error);
-                alert("Error al reiniciar.");
+                alert(t.profile.reset_error);
             } finally {
                 setIsResetting(false);
             }
@@ -51,7 +66,7 @@ export default function ClientProfileActions({
             if (name !== initialName) {
                 const res = await updateName(name);
                 if (!res.success) {
-                    alert("Error nombre: " + res.error);
+                    alert(`${t.profile.name_label}: ${getErrorMessage(res)}`);
                     return;
                 }
             }
@@ -60,19 +75,21 @@ export default function ClientProfileActions({
             if (username !== initialUsername) {
                 const res = await updateUsername(username);
                 if (!res.success) {
-                    alert("Error usuario: " + res.error);
+                    alert(`${t.profile.username_label}: ${getErrorMessage(res)}`);
                     return;
                 }
             }
 
             // Refresh Session
-            await update({ name: name }); // Only name updates in session immediately usually
-            alert("Perfil actualizado correctamente.");
+            if (update) {
+                await update({ name: name });
+            }
+            alert(t.profile.update_success);
             router.refresh();
 
         } catch (error) {
             console.error(error);
-            alert("Error al actualizar perfil.");
+            alert(t.profile.update_error);
         } finally {
             setIsUpdatingProfile(false);
         }
@@ -86,13 +103,13 @@ export default function ClientProfileActions({
                 <div className="d-flex align-items-center gap-3 mb-3">
                     <UserCircle size={20} className="text-secondary" />
                     <div>
-                        <span className="d-block fw-bold">Datos Personales</span>
-                        <small className="text-muted fw-normal">Edita tu nombre y usuario.</small>
+                        <span className="d-block fw-bold">{t.profile.personal_data}</span>
+                        <small className="text-muted fw-normal">{t.profile.personal_data_subtitle}</small>
                     </div>
                 </div>
 
                 <div className="mb-3">
-                    <label className="form-label small text-muted">Nombre</label>
+                    <label className="form-label small text-muted">{t.profile.name_label}</label>
                     <input
                         type="text"
                         className="form-control"
@@ -102,7 +119,7 @@ export default function ClientProfileActions({
                 </div>
 
                 <div className="mb-3">
-                    <label className="form-label small text-muted">Usuario (@)</label>
+                    <label className="form-label small text-muted">{t.profile.username_label}</label>
                     <div className="input-group">
                         <span className="input-group-text bg-white text-muted">@</span>
                         <input
@@ -112,7 +129,7 @@ export default function ClientProfileActions({
                             onChange={(e) => setUsername(e.target.value)}
                         />
                     </div>
-                    <small className="text-muted" style={{ fontSize: '0.75rem' }}>Solo letras, números y guiones bajos.</small>
+                    <small className="text-muted" style={{ fontSize: '0.75rem' }}>{t.profile.username_hint}</small>
                 </div>
 
                 <button
@@ -120,8 +137,47 @@ export default function ClientProfileActions({
                     onClick={handleUpdateProfile}
                     disabled={isUpdatingProfile || (name === initialName && username === initialUsername)}
                 >
-                    {isUpdatingProfile ? 'Guardando...' : 'Guardar Cambios'}
+                    {isUpdatingProfile ? t.onboarding.saving : t.profile.save_changes}
                 </button>
+            </div>
+
+            {/* Language & Region Section */}
+            <div className="card shadow-none border rounded-3 p-3 bg-light bg-opacity-50">
+                <div className="d-flex align-items-center gap-3 mb-3">
+                    <Globe size={20} className="text-secondary" />
+                    <div>
+                        <span className="d-block fw-bold">{t.profile.language_region}</span>
+                        <small className="text-muted fw-normal">{t.profile.language_region_subtitle}</small>
+                    </div>
+                </div>
+
+                <div className="row g-2">
+                    <div className="col-6">
+                        <label className="form-label small text-muted">{t.profile.language_label}</label>
+                        <select
+                            className="form-select select-sm"
+                            value={language}
+                            onChange={(e) => setLanguage(e.target.value as any)}
+                        >
+                            <option value="es">Español</option>
+                            <option value="en">English</option>
+                            <option value="pt">Português</option>
+                        </select>
+                    </div>
+                    <div className="col-6">
+                        <label className="form-label small text-muted">{t.profile.region_label}</label>
+                        <select
+                            className="form-select select-sm"
+                            value={region}
+                            onChange={(e) => setRegion(e.target.value as any)}
+                        >
+                            <option value="LATAM">{t.profile.regions.LATAM}</option>
+                            <option value="ES">{t.profile.regions.ES}</option>
+                            <option value="US">{t.profile.regions.US}</option>
+                            <option value="BR">{t.profile.regions.BR}</option>
+                        </select>
+                    </div>
+                </div>
             </div>
 
 
@@ -130,8 +186,8 @@ export default function ClientProfileActions({
                 <div className="d-flex align-items-center gap-3 mb-3">
                     <Phone size={20} className="text-secondary" />
                     <div>
-                        <span className="d-block fw-bold">Contacto de Liderazgo (SOS)</span>
-                        <small className="text-muted fw-normal">Número telefónico para emergencias.</small>
+                        <span className="d-block fw-bold">{t.profile.leader_contact}</span>
+                        <small className="text-muted fw-normal">{t.profile.leader_contact_subtitle}</small>
                     </div>
                 </div>
 
@@ -139,7 +195,7 @@ export default function ClientProfileActions({
                     <input
                         type="tel"
                         className="form-control"
-                        placeholder="+1234567890"
+                        placeholder={t.onboarding.leader_placeholder}
                         value={leaderPhone}
                         onChange={(e) => setLeaderPhone(e.target.value)}
                     />
@@ -150,18 +206,17 @@ export default function ClientProfileActions({
                             setIsUpdatingPhone(true);
                             try {
                                 await updateLeaderPhone(leaderPhone);
-                                await update({ leaderPhone }); // Note: this field is removed from session but we keep call for now just in case
-                                alert("Número de líder actualizado.");
+                                alert(t.profile.update_success);
                             } catch (error) {
                                 console.error(error);
-                                alert("Error al actualizar el número.");
+                                alert(t.profile.update_error);
                             } finally {
                                 setIsUpdatingPhone(false);
                             }
                         }}
                         disabled={isUpdatingPhone}
                     >
-                        {isUpdatingPhone ? '...' : 'Guardar'}
+                        {isUpdatingPhone ? '...' : t.common.save}
                     </button>
                 </div>
             </div>
@@ -175,8 +230,8 @@ export default function ClientProfileActions({
                     <Users size={20} className="text-success" />
                 </div>
                 <div className="text-start">
-                    <span className="d-block">Mis Amigos</span>
-                    <small className="text-muted fw-normal">Gestionar conexiones.</small>
+                    <span className="d-block">{t.profile.friends_manager}</span>
+                    <small className="text-muted fw-normal">{t.profile.friends_manager_subtitle}</small>
                 </div>
             </Link>
 
@@ -189,8 +244,8 @@ export default function ClientProfileActions({
                 >
                     <RefreshCcw size={20} />
                     <div className="text-start">
-                        <span className="d-block">Reiniciar Datos de Onboarding</span>
-                        <small className="text-muted fw-normal">Vuelve a empezar el proceso de bienvenida.</small>
+                        <span className="d-block">{t.profile.reset_onboarding}</span>
+                        <small className="text-muted fw-normal">{t.profile.reset_onboarding_subtitle}</small>
                     </div>
                 </button>
             )}
@@ -202,8 +257,8 @@ export default function ClientProfileActions({
             >
                 <HelpCircle size={20} className="text-primary" />
                 <div className="text-start">
-                    <span className="d-block">Centro de Aprendizaje</span>
-                    <small className="text-muted fw-normal">Tutoriales y guías de uso.</small>
+                    <span className="d-block">{t.profile.learning_center}</span>
+                    <small className="text-muted fw-normal">{t.profile.learning_center_subtitle}</small>
                 </div>
             </Link>
 
@@ -215,19 +270,19 @@ export default function ClientProfileActions({
                 className="btn btn-outline-danger fw-bold d-flex align-items-center justify-content-start gap-3 p-3 rounded-3"
             >
                 <LogOut size={20} />
-                <span>Cerrar Sesión</span>
+                <span>{t.profile.logout}</span>
             </button>
 
             <button
                 onClick={async () => {
-                    if (confirm("¿ESTÁS SEGURO? Esta acción es irreversible y borrará todos tus datos.")) {
+                    if (confirm(t.profile.delete_confirm)) {
                         try {
                             const { deleteAccount } = await import("./actions");
                             await deleteAccount();
                             await signOut({ redirect: false });
                             window.location.href = "/";
                         } catch (e) {
-                            alert("Error al borrar cuenta");
+                            alert(t.profile.delete_error);
                         }
                     }
                 }}
@@ -235,8 +290,8 @@ export default function ClientProfileActions({
             >
                 <LogOut size={20} />
                 <div className="text-start">
-                    <span className="d-block">Eliminar Cuenta</span>
-                    <small className="fw-normal text-white-50">Acción irreversible</small>
+                    <span className="d-block">{t.profile.delete_account}</span>
+                    <small className="fw-normal text-white-50">{t.profile.delete_account_subtitle}</small>
                 </div>
             </button>
         </div>

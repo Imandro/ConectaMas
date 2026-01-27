@@ -1,6 +1,9 @@
 import { Instagram } from "lucide-react";
+import { useLanguage } from "../LanguageContext";
 
 export default function InstagramCard() {
+    const { t } = useLanguage();
+
     return (
         <a
             href="https://www.instagram.com/_conectamass?igsh=MTBrMnJtYjI1Z3FlOA=="
@@ -14,8 +17,8 @@ export default function InstagramCard() {
                         <Instagram size={32} className="text-danger" />
                     </div>
                     <div className="text-white">
-                        <h5 className="fw-bold mb-1">Síguenos en Instagram</h5>
-                        <p className="small mb-0 lh-sm opacity-90">@_conectamass - Contenido diario de transformación</p>
+                        <h5 className="fw-bold mb-1">{t.instagram.card_title}</h5>
+                        <p className="small mb-0 lh-sm opacity-90">{t.instagram.card_desc}</p>
                     </div>
                 </div>
             </div>

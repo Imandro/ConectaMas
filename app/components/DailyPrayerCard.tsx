@@ -3,6 +3,8 @@
 import { useEffect, useState } from 'react';
 import { BookHeart } from 'lucide-react';
 
+import { useLanguage } from '../LanguageContext';
+
 interface DailyPrayer {
     id: string;
     dayOfYear: number;
@@ -12,6 +14,7 @@ interface DailyPrayer {
 }
 
 export default function DailyPrayerCard() {
+    const { t } = useLanguage();
     const [prayer, setPrayer] = useState<DailyPrayer | null>(null);
     const [loading, setLoading] = useState(true);
 
@@ -45,7 +48,7 @@ export default function DailyPrayerCard() {
             <div className="card shadow-sm border-0 bg-gradient-primary text-white">
                 <div className="card-body p-4">
                     <div className="spinner-border spinner-border-sm" role="status">
-                        <span className="visually-hidden">Cargando...</span>
+                        <span className="visually-hidden">{t.bible.loading}</span>
                     </div>
                 </div>
             </div>
@@ -70,7 +73,7 @@ export default function DailyPrayerCard() {
             <div className="position-relative z-1 text-center py-2">
                 <div className="d-flex align-items-center justify-content-center gap-2 mb-3">
                     <BookHeart size={20} className="text-primary opacity-75" />
-                    <h6 className="text-primary fw-bold text-uppercase small mb-0 letter-spacing-2">Oración del Día</h6>
+                    <h6 className="text-primary fw-bold text-uppercase small mb-0 letter-spacing-2">{t.dashboard.daily_prayer}</h6>
                 </div>
 
                 <figure className="text-center mb-0">
@@ -81,7 +84,7 @@ export default function DailyPrayerCard() {
                     </blockquote>
                     {prayer.theme && (
                         <figcaption className="blockquote-footer text-primary opacity-75 fw-bold mt-2 mb-0">
-                            Enfoque: {prayer.theme}
+                            {t.dashboard.focus}: {prayer.theme}
                         </figcaption>
                     )}
                 </figure>

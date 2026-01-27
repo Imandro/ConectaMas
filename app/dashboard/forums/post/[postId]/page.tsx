@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import { ArrowLeft, Clock, Shield, User as UserIcon, Send, Trash2 } from 'lucide-react';
+import { useLanguage } from '../../../LanguageContext';
 
 interface Reply {
     id: string;
@@ -34,6 +35,7 @@ interface Post {
 }
 
 export default function PostPage() {
+    const { t, language } = useLanguage();
     const params = useParams();
     const postId = params.postId as string;
 
@@ -64,7 +66,7 @@ export default function PostPage() {
         e.preventDefault();
 
         if (!replyContent.trim()) {
-            alert('Por favor escribe una respuesta');
+            alert(t.forums.form_reply_validation);
             return;
         }
 
@@ -85,11 +87,11 @@ export default function PostPage() {
                 setIsAnonymousReply(false);
                 fetchPost(); // Refresh to show new reply
             } else {
-                alert('Error al enviar respuesta');
+                alert(t.forums.post_error);
             }
         } catch (error) {
             console.error('Error:', error);
-            alert('Error al enviar respuesta');
+            alert(t.forums.post_error);
         } finally {
             setSubmitting(false);
         }
@@ -97,7 +99,12 @@ export default function PostPage() {
 
     const formatDate = (dateString: string) => {
         const date = new Date(dateString);
-        return date.toLocaleString('es-ES', {
+        const localeMap: Record<string, string> = {
+            'es': 'es-ES',
+            'en': 'en-US',
+            'pt': 'pt-BR'
+        };
+        return date.toLocaleString(localeMap[language] || 'es-ES', {
             day: 'numeric',
             month: 'long',
             year: 'numeric',
@@ -111,7 +118,7 @@ export default function PostPage() {
             <div className="container-fluid py-4">
                 <div className="d-flex justify-content-center align-items-center" style={{ minHeight: '50vh' }}>
                     <div className="spinner-border text-primary" role="status">
-                        <span className="visually-hidden">Cargando...</span>
+                        <span className="visually-hidden">{t.forums.loading}</span>
                     </div>
                 </div>
             </div>
@@ -121,9 +128,9 @@ export default function PostPage() {
     if (!post) {
         return (
             <div className="container-fluid py-4">
-                <p className="text-muted">Publicación no encontrada</p>
+                <p className="text-muted">{t.forums.not_found}</p>
                 <Link href="/dashboard/forums" className="btn btn-primary">
-                    Volver a Comunidad
+                    {t.forums.back_to_community}
                 </Link>
             </div>
         );
@@ -131,9 +138,9 @@ export default function PostPage() {
 
     return (
         <div className="container-fluid py-4 animate-fade-in">
-            <Link href={`/dashboard/forums/${(post as any).categoryId}`} className="btn btn-light mb-4">
+            <Link href={`/dashboard/forums/${(post as any).categoryId}`} className="btn btn-light mb-4 text-decoration-none">
                 <ArrowLeft size={20} className="me-2" />
-                Volver a {post.category.icon} {post.category.name}
+                {t.forums.back_to_community} | {post.category.icon} {post.category.name}
             </Link>
 
             {/* Original Post */}
@@ -144,23 +151,23 @@ export default function PostPage() {
                         {(post as any).isOwner && (
                             <button
                                 onClick={async () => {
-                                    if (!confirm("¿Estás seguro de eliminar esta publicación?")) return;
+                                    if (!confirm(t.forums.delete_post_confirm)) return;
                                     try {
                                         const res = await fetch(`/api/forums/posts/${post.id}`, { method: 'DELETE' });
                                         if (res.ok) {
-                                            alert("Publicación eliminada");
+                                            alert(t.forums.delete_success);
                                             window.location.href = '/dashboard/forums';
                                         } else {
-                                            alert("Error al eliminar");
+                                            alert(t.forums.delete_error);
                                         }
                                     } catch (e) {
-                                        alert("Error al eliminar");
+                                        alert(t.forums.delete_error);
                                     }
                                 }}
                                 className="btn btn-outline-danger btn-sm rounded-pill"
                             >
                                 <Trash2 size={16} className="me-2" />
-                                Eliminar
+                                {t.forums.delete_button}
                             </button>
                         )}
                     </div>
@@ -170,16 +177,16 @@ export default function PostPage() {
                             {post.isAnonymous ? (
                                 <>
                                     <UserIcon size={16} />
-                                    <span>Anónimo</span>
+                                    <span>{t.forums.anonymous}</span>
                                 </>
                             ) : (
                                 <>
                                     <UserIcon size={16} />
-                                    <span>{post.user?.name || 'Usuario'}</span>
+                                    <span>{post.user?.name || t.forums.user_fallback}</span>
                                     {post.user?.isCounselor && (
                                         <span className="badge bg-success-subtle text-success ms-1">
                                             <Shield size={12} className="me-1" />
-                                            Consejero
+                                            {t.forums.counselor_badge}
                                         </span>
                                     )}
                                 </>
@@ -202,7 +209,7 @@ export default function PostPage() {
             {/* Replies Section */}
             <div className="card border-0 shadow-sm mb-4">
                 <div className="card-body p-4">
-                    <h5 className="fw-bold mb-4">Respuestas ({post.replies.length})</h5>
+                    <h5 className="fw-bold mb-4">{t.forums.replies_count.replace('{count}', post.replies.length.toString())}</h5>
 
                     {post.replies.map(reply => (
                         <div key={reply.id} className="border-start border-primary border-3 ps-3 mb-4">
@@ -212,16 +219,16 @@ export default function PostPage() {
                                         {reply.isAnonymous ? (
                                             <>
                                                 <UserIcon size={14} />
-                                                <span>Anónimo</span>
+                                                <span>{t.forums.anonymous}</span>
                                             </>
                                         ) : (
                                             <>
                                                 <UserIcon size={14} />
-                                                <span>{reply.user?.name || 'Usuario'}</span>
+                                                <span>{reply.user?.name || t.forums.user_fallback}</span>
                                                 {reply.user?.isCounselor && (
                                                     <span className="badge bg-success-subtle text-success ms-1">
                                                         <Shield size={10} className="me-1" />
-                                                        Consejero
+                                                        {t.forums.counselor_badge}
                                                     </span>
                                                 )}
                                             </>
@@ -235,20 +242,20 @@ export default function PostPage() {
                                 {(reply as any).isOwner && (
                                     <button
                                         onClick={async () => {
-                                            if (!confirm("¿Eliminar esta respuesta?")) return;
+                                            if (!confirm(t.forums.delete_reply_confirm)) return;
                                             try {
                                                 const res = await fetch(`/api/forums/replies/${reply.id}`, { method: 'DELETE' });
                                                 if (res.ok) {
                                                     fetchPost(); // Refresh
                                                 } else {
-                                                    alert("Error al eliminar");
+                                                    alert(t.forums.delete_error);
                                                 }
                                             } catch (e) {
-                                                alert("Error al eliminar");
+                                                alert(t.forums.delete_error);
                                             }
                                         }}
                                         className="btn btn-link text-danger p-0 border-0"
-                                        title="Eliminar respuesta"
+                                        title={t.forums.delete_button}
                                     >
                                         <Trash2 size={16} />
                                     </button>
@@ -262,7 +269,7 @@ export default function PostPage() {
 
                     {post.replies.length === 0 && (
                         <p className="text-muted text-center py-3">
-                            No hay respuestas aún. ¡Sé el primero en responder!
+                            {t.forums.no_posts}
                         </p>
                     )}
                 </div>
@@ -271,7 +278,7 @@ export default function PostPage() {
             {/* Reply Form */}
             <div className="card border-0 shadow-sm">
                 <div className="card-body p-4">
-                    <h5 className="fw-bold mb-3">Tu Respuesta</h5>
+                    <h5 className="fw-bold mb-3">{t.forums.your_reply}</h5>
                     <form onSubmit={handleReplySubmit}>
                         <div className="mb-3">
                             <textarea
@@ -279,7 +286,7 @@ export default function PostPage() {
                                 rows={4}
                                 value={replyContent}
                                 onChange={(e) => setReplyContent(e.target.value)}
-                                placeholder="Comparte tu consejo, experiencia o apoyo..."
+                                placeholder={t.forums.reply_placeholder}
                                 required
                             />
                         </div>
@@ -294,7 +301,7 @@ export default function PostPage() {
                                     onChange={(e) => setIsAnonymousReply(e.target.checked)}
                                 />
                                 <label className="form-check-label" htmlFor="anonymousReplyCheck">
-                                    Responder de forma anónima
+                                    {t.forums.reply_anonymous}
                                 </label>
                             </div>
                         </div>
@@ -307,12 +314,12 @@ export default function PostPage() {
                             {submitting ? (
                                 <>
                                     <span className="spinner-border spinner-border-sm me-2" />
-                                    Enviando...
+                                    {t.forums.sending}
                                 </>
                             ) : (
                                 <>
                                     <Send size={20} className="me-2" />
-                                    Enviar Respuesta
+                                    {t.forums.send_reply}
                                 </>
                             )}
                         </button>

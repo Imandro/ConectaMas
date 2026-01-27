@@ -1,9 +1,13 @@
+```typescript
 "use client";
 
 import { useState, useEffect } from "react";
-import { X, Share, PlusSquare, MoreVertical, Download } from "lucide-react";
+import { Share, PlusSquare, MoreVertical, Download, X } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { useLanguage } from '../LanguageContext';
 
 export default function PWAInstallPrompt() {
+    const { t } = useLanguage();
     const [showPrompt, setShowPrompt] = useState(false);
     const [platform, setPlatform] = useState<"ios" | "android" | "other" | null>(null);
 
@@ -29,7 +33,7 @@ export default function PWAInstallPrompt() {
         }
     }, []);
 
-    const handleDismiss = () => {
+    const handleClose = () => {
         setShowPrompt(false);
         // We'll show it again after some time or just never again? 
         // Let's hide it for this session/browsing
@@ -46,9 +50,12 @@ export default function PWAInstallPrompt() {
                     <div className="d-flex align-items-center justify-content-between p-3 border-bottom bg-primary text-white">
                         <div className="d-flex align-items-center gap-2">
                             <img src="/logo.png" alt="Logo" width="32" height="32" className="rounded" />
-                            <h6 className="mb-0 fw-bold">Instalar Conecta+ BETA</h6>
+                            <div className="text-start">
+                                <h6 className="mb-0 fw-bold">{t.pwa_prompt.title}</h6>
+                                <small className="text-muted">{t.nav.safe_space}</small>
+                            </div>
                         </div>
-                        <button onClick={handleDismiss} className="btn btn-link p-0 text-white">
+                        <button onClick={handleClose} className="btn btn-link p-0 text-white">
                             <X size={20} />
                         </button>
                     </div>
@@ -56,7 +63,7 @@ export default function PWAInstallPrompt() {
                     {/* Content */}
                     <div className="p-4">
                         <p className="small text-muted mb-4">
-                            Usa Conecta+ BETA como una aplicación real en tu teléfono: sin barras de navegación y con acceso rápido.
+                            {t.pwa_prompt.description}
                         </p>
 
                         {platform === "ios" ? (
@@ -65,18 +72,18 @@ export default function PWAInstallPrompt() {
                                     <div className="bg-light p-2 rounded">
                                         <Share size={20} className="text-primary" />
                                     </div>
-                                    <div>
-                                        <p className="mb-1 small fw-bold">1. Toca el botón compartir</p>
-                                        <p className="mb-0 x-small text-muted">Ubicado en la parte inferior de Safari.</p>
+                                    <div className="flex-grow-1">
+                                        <h6 className="small fw-bold mb-1">{t.pwa_prompt.ios_step1}</h6>
+                                        <p className="extra-small text-muted mb-0">{t.pwa_prompt.ios_step1_desc}</p>
                                     </div>
                                 </div>
                                 <div className="d-flex align-items-start gap-3">
                                     <div className="bg-light p-2 rounded">
                                         <PlusSquare size={20} className="text-primary" />
                                     </div>
-                                    <div>
-                                        <p className="mb-1 small fw-bold">2. Agregar al inicio</p>
-                                        <p className="mb-0 x-small text-muted">Presiona &quot;Agregar a la pantalla de inicio&quot;.</p>
+                                    <div className="flex-grow-1">
+                                        <h6 className="small fw-bold mb-1">{t.pwa_prompt.ios_step2}</h6>
+                                        <p className="extra-small text-muted mb-0">{t.pwa_prompt.ios_step2_desc}</p>
                                     </div>
                                 </div>
                             </div>
@@ -86,18 +93,18 @@ export default function PWAInstallPrompt() {
                                     <div className="bg-light p-2 rounded">
                                         <MoreVertical size={20} className="text-primary" />
                                     </div>
-                                    <div>
-                                        <p className="mb-1 small fw-bold">1. Toca el menú</p>
-                                        <p className="mb-0 x-small text-muted">Los tres puntos en la esquina superior derecha.</p>
+                                    <div className="flex-grow-1">
+                                        <h6 className="small fw-bold mb-1">{t.pwa_prompt.android_step1}</h6>
+                                        <p className="extra-small text-muted mb-0">{t.pwa_prompt.android_step1_desc}</p>
                                     </div>
                                 </div>
                                 <div className="d-flex align-items-start gap-3">
                                     <div className="bg-light p-2 rounded">
                                         <Download size={20} className="text-primary" />
                                     </div>
-                                    <div>
-                                        <p className="mb-1 small fw-bold">2. Instalar aplicación</p>
-                                        <p className="mb-0 x-small text-muted">Selecciona &quot;Instalar aplicación&quot; o &quot;Agregar a pantalla de inicio&quot;.</p>
+                                    <div className="flex-grow-1">
+                                        <h6 className="small fw-bold mb-1">{t.pwa_prompt.android_step2}</h6>
+                                        <p className="extra-small text-muted mb-0">{t.pwa_prompt.android_step2_desc}</p>
                                     </div>
                                 </div>
                             </div>
@@ -107,27 +114,27 @@ export default function PWAInstallPrompt() {
                     {/* Button */}
                     <div className="p-3 bg-light text-center border-top">
                         <button
-                            onClick={handleDismiss}
-                            className="btn btn-primary rounded-pill px-4 btn-sm"
+                            onClick={handleClose}
+                            className="btn btn-primary w-100 rounded-pill py-2 fw-bold"
                         >
-                            Entendido
+                            {t.pwa_prompt.button}
                         </button>
                     </div>
                 </div>
             </div>
 
             <style>{`
-                @keyframes slideUp {
-                    from { transform: translateY(100%); }
+@keyframes slideUp {
+                    from { transform: translateY(100 %); }
                     to { transform: translateY(0); }
-                }
-                .animate-slide-up {
-                    animation: slideUp 0.4s ease-out;
-                }
-                .x-small {
-                    font-size: 0.75rem;
-                }
-            `}</style>
+}
+                .animate - slide - up {
+    animation: slideUp 0.4s ease - out;
+}
+                .x - small {
+    font - size: 0.75rem;
+}
+`}</style>
         </div>
     );
 }

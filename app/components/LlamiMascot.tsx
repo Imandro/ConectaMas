@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Sparkles } from "lucide-react";
 import { getLlamiMessage } from "@/app/lib/mascot-messages";
+import { useLanguage } from "../LanguageContext";
 
 interface LlamiMascotProps {
     streak: number;
@@ -15,6 +16,7 @@ interface LlamiMascotProps {
 }
 
 export default function LlamiMascot({ streak, lastMood, level = 1, forceStage, name, outfit = "none" }: LlamiMascotProps) {
+    const { t } = useLanguage();
     const [message, setMessage] = useState<string>("");
     const [showMessage, setShowMessage] = useState(false);
     const [clickCount, setClickCount] = useState(0);
@@ -31,7 +33,7 @@ export default function LlamiMascot({ streak, lastMood, level = 1, forceStage, n
     const stage = getStage();
 
     useEffect(() => {
-        const welcomeMsg = getLlamiMessage(streak, lastMood, false);
+        const welcomeMsg = getLlamiMessage(t, streak, false);
         setMessage(welcomeMsg);
         const timer = setTimeout(() => setShowMessage(true), 1500);
         const hideTimer = setTimeout(() => setShowMessage(false), 6500);
@@ -43,7 +45,7 @@ export default function LlamiMascot({ streak, lastMood, level = 1, forceStage, n
 
     const handleClick = () => {
         setClickCount((prev) => prev + 1);
-        const clickMsg = getLlamiMessage(streak, lastMood, true);
+        const clickMsg = getLlamiMessage(t, streak, true);
         setMessage(clickMsg);
         setShowMessage(true);
         setTimeout(() => setShowMessage(false), 4000);

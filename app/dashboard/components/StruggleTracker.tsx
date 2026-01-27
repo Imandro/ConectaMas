@@ -5,6 +5,7 @@ import { Plus, ShieldAlert, Trophy, X, ChevronRight } from "lucide-react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { createStruggle } from "../actions";
+import { useLanguage } from "../../LanguageContext";
 
 // Define the Struggle interface based on our usage
 interface Struggle {
@@ -23,6 +24,7 @@ export default function StruggleTracker({
 }: {
     initialStruggles: Struggle[]
 }) {
+    const { t } = useLanguage();
     const [struggles, setStruggles] = useState<Struggle[]>(initialStruggles);
     const [isAdding, setIsAdding] = useState(false);
     const [newStruggleTitle, setNewStruggleTitle] = useState("");
@@ -58,11 +60,11 @@ export default function StruggleTracker({
                         <span className="fw-bold d-block text-dark fs-5">{struggle.title}</span>
                         <div className="d-flex align-items-center gap-2">
                             {isAvailable ? (
-                                <div className="badge bg-warning-subtle text-warning rounded-pill">Plan por iniciar</div>
+                                <div className="badge bg-warning-subtle text-warning rounded-pill">{t.struggles.plan_pending}</div>
                             ) : (
-                                <div className="badge bg-primary rounded-pill">Día {struggle.currentDay} / {totalDays}</div>
+                                <div className="badge bg-primary rounded-pill">{t.struggles.day_label} {struggle.currentDay} / {totalDays}</div>
                             )}
-                            <span className="text-muted small">Ver apartado</span>
+                            <span className="text-muted small">{t.struggles.view_details}</span>
                         </div>
                     </div>
                     <div className="text-primary">
@@ -91,7 +93,7 @@ export default function StruggleTracker({
             <div className="d-flex align-items-center justify-content-between mb-4">
                 <h5 className="fw-bold d-flex align-items-center gap-2 m-0 text-secondary">
                     <ShieldAlert className="text-primary" size={24} />
-                    Resumen de Vida
+                    {t.struggles.summary_title}
                 </h5>
                 <button
                     onClick={() => setIsAdding(!isAdding)}
@@ -107,14 +109,14 @@ export default function StruggleTracker({
                         type="text"
                         value={newStruggleTitle}
                         onChange={(e) => setNewStruggleTitle(e.target.value)}
-                        placeholder="Nueva área a trabajar..."
+                        placeholder={t.struggles.add_placeholder}
                         className="form-control rounded-pill border-0 bg-light px-4 shadow-none"
                     />
                     <button
                         onClick={handleAddStruggle}
                         className="btn btn-primary fw-bold rounded-pill px-4 shadow-sm"
                     >
-                        Agregar
+                        {t.struggles.add_button}
                     </button>
                 </div>
             )}
@@ -123,11 +125,11 @@ export default function StruggleTracker({
                 {/* Planes Disponibles */}
                 <div className="col-12 col-md-6">
                     <div className="d-flex align-items-center justify-content-between mb-3 px-1">
-                        <h6 className="fw-bold text-muted text-uppercase small m-0">Planes Disponibles ({availableStruggles.length})</h6>
+                        <h6 className="fw-bold text-muted text-uppercase small m-0">{t.struggles.available_title} ({availableStruggles.length})</h6>
                     </div>
                     {availableStruggles.length === 0 && (
                         <div className="p-4 text-center bg-white rounded-4 border border-dashed border-2 opacity-75">
-                            <p className="text-muted small fst-italic m-0">No hay planes nuevos disponibles.</p>
+                            <p className="text-muted small fst-italic m-0">{t.struggles.available_empty}</p>
                         </div>
                     )}
                     {availableStruggles.map(s => renderStruggleCard(s, true))}
@@ -136,11 +138,11 @@ export default function StruggleTracker({
                 {/* En Progreso */}
                 <div className="col-12 col-md-6">
                     <div className="d-flex align-items-center justify-content-between mb-3 px-1">
-                        <h6 className="fw-bold text-muted text-uppercase small m-0">En Progreso ({activeStruggles.length})</h6>
+                        <h6 className="fw-bold text-muted text-uppercase small m-0">{t.struggles.progress_title} ({activeStruggles.length})</h6>
                     </div>
                     {activeStruggles.length === 0 && (
                         <div className="p-4 text-center bg-white rounded-4 border border-dashed border-2 opacity-75">
-                            <p className="text-muted small fst-italic m-0">No tienes planes activos aún.</p>
+                            <p className="text-muted small fst-italic m-0">{t.struggles.progress_empty}</p>
                         </div>
                     )}
                     {activeStruggles.map(s => renderStruggleCard(s))}
@@ -151,7 +153,7 @@ export default function StruggleTracker({
             {overcomeStruggles.length > 0 && (
                 <div className="mt-5 pt-4 border-top">
                     <h6 className="small fw-bold text-muted text-uppercase mb-4 d-flex align-items-center gap-2">
-                        <Trophy size={18} className="text-warning" /> Salón de Victorias
+                        <Trophy size={18} className="text-warning" /> {t.struggles.victory_title}
                     </h6>
                     <div className="row g-3">
                         {overcomeStruggles.map((struggle) => (
@@ -165,7 +167,7 @@ export default function StruggleTracker({
                                     </div>
                                     <div className="overflow-hidden">
                                         <span className="fw-bold d-block text-success text-truncate">{struggle.title}</span>
-                                        <small className="text-success-emphasis opacity-75 d-block">Vencido con éxito</small>
+                                        <small className="text-success-emphasis opacity-75 d-block">{t.struggles.victory_subtitle}</small>
                                     </div>
                                 </Link>
                             </div>

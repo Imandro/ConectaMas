@@ -17,7 +17,10 @@ const BACKGROUND_IMAGES = [
     "https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&q=80&w=1600", // Stars
 ];
 
+import { useLanguage } from '../../LanguageContext';
+
 export default function DailyVerse() {
+    const { t, language } = useLanguage();
     const [verse, setVerse] = useState(VERSES[0]);
     const [bgImage, setBgImage] = useState(BACKGROUND_IMAGES[0]);
     const cardRef = useRef<HTMLDivElement>(null);
@@ -51,10 +54,22 @@ export default function DailyVerse() {
         }
     };
 
+    const getVerseContent = () => {
+        if (language === 'en' && verse.text_en) {
+            return { text: verse.text_en, reference: verse.reference_en || verse.reference };
+        }
+        if (language === 'pt' && verse.text_pt) {
+            return { text: verse.text_pt, reference: verse.reference_pt || verse.reference };
+        }
+        return { text: verse.text, reference: verse.reference };
+    };
+
+    const { text: verseText, reference: verseReference } = getVerseContent();
+
     const getBibleLink = () => {
         try {
             // Parses "Juan 3:16" or "1 Juan 1:9"
-            const parts = verse.reference.split(" ");
+            const parts = verseReference.split(" ");
             let book = parts[0];
             let chapterAndVerse = parts[1];
 
@@ -87,7 +102,7 @@ export default function DailyVerse() {
                 <button
                     onClick={handleDownload}
                     className="no-export position-absolute top-0 end-0 m-3 btn btn-sm btn-light rounded-circle p-2 shadow-sm z-3 opacity-75 hover-opacity-100"
-                    title="Descargar imagen"
+                    title={t.dashboard.download_image}
                 >
                     <Download size={16} className="text-dark" />
                 </button>
@@ -97,15 +112,15 @@ export default function DailyVerse() {
                     style={{ width: '100px', height: '100px', transform: 'translate(-30%, -30%)' }}></div>
 
                 <div className="position-relative z-1 text-center py-4 d-flex flex-column justify-content-center h-100">
-                    <h6 className="text-white-50 fw-bold text-uppercase small mb-3 letter-spacing-2">Versículo del Día</h6>
+                    <h6 className="text-white-50 fw-bold text-uppercase small mb-3 letter-spacing-2">{t.dashboard.daily_verse_title}</h6>
                     <figure className="text-center mb-0">
                         <blockquote className="blockquote mb-3">
                             <p className="fs-4 fw-bold fst-italic text-white mb-0 lh-base text-shadow">
-                                "{verse.text}"
+                                "{verseText}"
                             </p>
                         </blockquote>
                         <figcaption className="blockquote-footer text-white fw-medium mt-2 mb-0 fs-6">
-                            {verse.reference}
+                            {verseReference}
                         </figcaption>
                     </figure>
                 </div>

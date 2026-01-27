@@ -6,22 +6,32 @@ import { devotionalsData } from '@/app/lib/devotionalsData';
 import { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
 
+import { useLanguage } from '@/app/LanguageContext';
+
 const categories = ['Para ti', 'Ansiedad', 'Identidad', 'Integridad', 'Fe', 'Relaciones', 'Oración', 'Soledad', 'Culpa', 'Ira', 'Envidia', 'Comunidad'];
 
+const categoryKeys: Record<string, string> = {
+    'Para ti': 'for_you',
+    'Ansiedad': 'anxiety',
+    'Identidad': 'identity',
+    'Integridad': 'integrity',
+    'Fe': 'faith',
+    'Relaciones': 'relationships',
+    'Oración': 'prayer',
+    'Soledad': 'loneliness',
+    'Culpa': 'guilt',
+    'Ira': 'anger',
+    'Envidia': 'envy',
+    'Comunidad': 'community',
+};
+
 export default function DevotionalsPage() {
+    const { t } = useLanguage();
+    const { data: session } = useSession();
     const [selectedCategory, setSelectedCategory] = useState('Para ti');
     const [recommendedDevotionals, setRecommendedDevotionals] = useState<any[]>([]);
     const [selectedGroup, setSelectedGroup] = useState<any | null>(null);
 
-    // Safe session hook - may be undefined during build
-    let session;
-    try {
-        const sessionData = useSession();
-        session = sessionData?.data;
-    } catch (e) {
-        // Session provider not available during build
-        session = null;
-    }
 
     // Calculate recommended devotionals based on user struggles
     useEffect(() => {
@@ -86,14 +96,14 @@ export default function DevotionalsPage() {
 
     return (
         <div className="animate-fade-in">
-            <h2 className="fw-bold text-secondary mb-4">Devocionales</h2>
+            <h2 className="fw-bold text-secondary mb-4">{t.devotionals.title}</h2>
 
             {/* Recommended Section */}
             {recommendedDevotionals.length > 0 && (
                 <div className="mb-5">
                     <h5 className="fw-bold text-primary mb-3 d-flex align-items-center gap-2">
                         <Sparkles size={20} />
-                        Recomendados para ti
+                        {t.devotionals.recommended_title}
                     </h5>
                     <div className="row g-3 mb-4">
                         {recommendedDevotionals.map((dev) => (
@@ -111,7 +121,7 @@ export default function DevotionalsPage() {
                                             <h6 className="fw-bold text-dark mb-1">{dev.title}</h6>
                                             <div className="d-flex align-items-center text-muted small mt-auto">
                                                 <Clock size={14} className="me-1" />
-                                                {dev.time} lectura
+                                                {dev.time} {t.devotionals.read_time}
                                             </div>
                                         </div>
                                     </div>
@@ -130,7 +140,7 @@ export default function DevotionalsPage() {
                         onClick={() => setSelectedCategory(cat)}
                         className={`btn btn-sm rounded-pill px-3 flex-shrink-0 transition-all ${selectedCategory === cat ? 'btn-primary text-white shadow-sm' : 'btn-light text-secondary border-0'}`}
                     >
-                        {cat}
+                        {t.devotionals.categories[categoryKeys[cat] as keyof typeof t.devotionals.categories] || cat}
                     </button>
                 ))}
             </div>
@@ -149,7 +159,7 @@ export default function DevotionalsPage() {
                                             </div>
                                             <div className="card-body py-3 d-flex flex-column justify-content-center">
                                                 <h6 className="fw-bold text-dark mb-1">{item.name}</h6>
-                                                <p className="text-muted small m-0">{item.devotionals.length} días de contenido</p>
+                                                <p className="text-muted small m-0">{item.devotionals.length} {t.devotionals.days_content}</p>
                                             </div>
                                             <div className="d-flex align-items-center px-3 text-muted">
                                                 <ChevronRight size={20} />
@@ -176,7 +186,7 @@ export default function DevotionalsPage() {
                                             <h6 className="fw-bold text-dark mb-1">{dev.title}</h6>
                                             <div className="d-flex align-items-center text-muted small mt-auto">
                                                 <Clock size={14} className="me-1" />
-                                                {dev.time} lectura
+                                                {dev.time} {t.devotionals.read_time}
                                             </div>
                                         </div>
                                     </div>
@@ -186,9 +196,9 @@ export default function DevotionalsPage() {
                     })
                 ) : (
                     <div className="col-12 text-center py-5">
-                        <p className="text-muted">No hay devocionales en esta categoría aún.</p>
+                        <p className="text-muted">{t.devotionals.no_content}</p>
                         <button onClick={() => setSelectedCategory('Para ti')} className="btn btn-sm btn-outline-secondary rounded-pill">
-                            Ver todos
+                            {t.devotionals.view_all}
                         </button>
                     </div>
                 )}
@@ -203,7 +213,7 @@ export default function DevotionalsPage() {
                             <button onClick={() => setSelectedGroup(null)} className="btn-close"></button>
                         </div>
                         <div className="p-4" style={{ maxHeight: '70vh', overflowY: 'auto' }}>
-                            <p className="text-muted small mb-3">Selecciona un día para continuar:</p>
+                            <p className="text-muted small mb-3">{t.devotionals.select_day}</p>
                             <div className="list-group gap-2">
                                 {selectedGroup.devotionals.map((dev: any, dIdx: number) => (
                                     <Link
@@ -222,7 +232,7 @@ export default function DevotionalsPage() {
                             </div>
                         </div>
                         <div className="p-3 text-center bg-light">
-                            <button onClick={() => setSelectedGroup(null)} className="btn btn-primary rounded-pill px-4">Cerrar</button>
+                            <button onClick={() => setSelectedGroup(null)} className="btn btn-primary rounded-pill px-4">{t.devotionals.close}</button>
                         </div>
                     </div>
                 </div>

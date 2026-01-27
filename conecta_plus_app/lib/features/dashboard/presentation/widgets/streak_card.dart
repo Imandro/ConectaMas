@@ -47,12 +47,13 @@ class _StreakCardState extends ConsumerState<StreakCard> {
   }
 
   void _showClickMessage() {
+    final l10n = AppLocalizations.of(context);
     final messages = <String>[
-      '¡Mira cómo creces!',
-      'Estoy orgulloso de ti',
-      'Dios sigue contigo',
-      'Un día a la vez',
-      'Sigue firme, tú puedes',
+      l10n.mascotMsg1,
+      l10n.mascotMsg2,
+      l10n.mascotMsg3,
+      l10n.mascotMsg4,
+      l10n.mascotMsg5,
     ];
     final next = messages[_rng.nextInt(messages.length)];
 
@@ -70,6 +71,7 @@ class _StreakCardState extends ConsumerState<StreakCard> {
   @override
   Widget build(BuildContext context) {
     final mascot = ref.watch(mascotProvider);
+    final l10n = AppLocalizations.of(context);
 
     return GestureDetector(
       onTap: () => context.push('/dashboard/llami'),
@@ -95,7 +97,7 @@ class _StreakCardState extends ConsumerState<StreakCard> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    'Días en victoria',
+                    l10n.daysVictory,
                     style: GoogleFonts.fredoka(
                       fontSize: 14,
                       color: const Color(0xFF94A3B8),
@@ -132,9 +134,10 @@ class _StreakCardState extends ConsumerState<StreakCard> {
                   ),
                   const SizedBox(height: 4),
                   Padding(
-                    padding: const EdgeInsets.only(left: 48), // Align with number
+                    padding:
+                        const EdgeInsets.only(left: 48), // Align with number
                     child: Text(
-                      'Días',
+                      l10n.daysLabel,
                       style: GoogleFonts.fredoka(
                         fontSize: 22,
                         fontWeight: FontWeight.bold,
@@ -176,10 +179,12 @@ class _StreakCardState extends ConsumerState<StreakCard> {
                                     color: Colors.white,
                                     borderRadius: BorderRadius.circular(16),
                                     border: Border.all(
-                                        color: const Color(0xFFFFD166), width: 2),
+                                        color: const Color(0xFFFFD166),
+                                        width: 2),
                                     boxShadow: [
                                       BoxShadow(
-                                        color: Colors.black.withValues(alpha: 0.08),
+                                        color: Colors.black
+                                            .withValues(alpha: 0.08),
                                         blurRadius: 18,
                                         offset: const Offset(0, 10),
                                       ),
@@ -217,7 +222,7 @@ class _StreakCardState extends ConsumerState<StreakCard> {
                     ],
                   ),
                   const SizedBox(height: 8),
-                  _LevelPill(label: 'Nivel ${mascot.level}'),
+                  _LevelPill(label: l10n.levelLabel(mascot.level)),
                 ],
               ),
             ),

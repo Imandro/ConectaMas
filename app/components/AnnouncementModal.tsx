@@ -4,8 +4,10 @@ import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Bell, Rocket, Heart, PartyPopper } from "lucide-react";
 import Link from "next/link";
+import { useLanguage } from "../LanguageContext";
 
 export default function AnnouncementModal() {
+    const { t } = useLanguage();
     const [isOpen, setIsOpen] = useState(false);
 
     useEffect(() => {
@@ -59,38 +61,38 @@ export default function AnnouncementModal() {
                             <PartyPopper size={32} className="text-primary" />
                         </div>
                         <h2 className="fw-bold mt-3 mb-1" style={{ letterSpacing: '-0.5px' }}>
-                            ¡Algo Increíble Sucedió!
+                            {t.announcement.title}
                         </h2>
-                        <p className="text-warning small fw-bold mb-0">NOTICIA IMPORTANTE PARA LA COMUNIDAD</p>
+                        <p className="text-warning small fw-bold mb-0">{t.announcement.subtitle}</p>
                     </div>
 
                     {/* Content */}
                     <div className="p-4 p-md-5 text-center">
                         <div className="mb-4">
                             <p className="text-primary lead fw-medium mb-3">
-                                Estamos impactados por su apoyo. En solo 3 días:
+                                {t.announcement.description}
                             </p>
 
                             <div className="d-flex justify-content-center gap-4 mb-4">
                                 <div className="text-center">
                                     <div className="h2 fw-bold text-primary mb-0">+20,000</div>
-                                    <div className="small text-muted text-uppercase">Visitas</div>
+                                    <div className="small text-muted text-uppercase">{t.announcement.visits}</div>
                                 </div>
                                 <div className="vr opacity-20"></div>
                                 <div className="text-center">
                                     <div className="h2 fw-bold text-primary mb-0">+700</div>
-                                    <div className="small text-muted text-uppercase">Registros</div>
+                                    <div className="small text-muted text-uppercase">{t.announcement.registrations}</div>
                                 </div>
                             </div>
 
                             <p className="text-muted small mb-4 px-md-3">
-                                Esta "cosa loca e increíble" superó todas nuestras expectativas. Los recursos que pensamos durarían un mes se agotaron en solo 72 horas, lo que causó una interrupción técnica.
+                                {t.announcement.explanation}
                             </p>
 
                             <div className="bg-light rounded-3 p-3 mb-4 text-start border-start border-4 border-warning">
                                 <p className="small text-primary mb-0">
                                     <Heart size={16} className="text-danger me-2 d-inline" fill="currentColor" />
-                                    <strong>Sentimos mucho las molestias:</strong> Para asegurar la estabilidad total, hemos migrado a una infraestructura mucho más potente. Necesitamos que <strong>vuelvas a crear tu cuenta</strong> para empezar juntos esta nueva etapa.
+                                    <strong>{t.announcement.sorry}</strong> {t.announcement.migration_text}
                                 </p>
                             </div>
                         </div>
@@ -101,13 +103,13 @@ export default function AnnouncementModal() {
                                 onClick={handleClose}
                                 className="btn btn-primary py-3 rounded-pill fw-bold shadow-lg transform-hover"
                             >
-                                ¡VAMOS! CREAR MI CUENTA NUEVA
+                                {t.announcement.create_account_btn}
                             </Link>
                             <button
                                 onClick={handleClose}
                                 className="btn btn-link text-muted small text-decoration-none"
                             >
-                                Entendido, cerrar aviso
+                                {t.announcement.close_btn}
                             </button>
                         </div>
                     </div>

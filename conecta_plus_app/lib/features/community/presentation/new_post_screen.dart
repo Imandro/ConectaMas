@@ -15,6 +15,8 @@ class _NewPostScreenState extends State<NewPostScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -24,14 +26,21 @@ class _NewPostScreenState extends State<NewPostScreen> {
           icon: const Icon(Icons.close, color: AppTheme.primary),
           onPressed: () => context.pop(),
         ),
-        title: const Text('Nueva Publicación', style: TextStyle(color: AppTheme.primary, fontWeight: FontWeight.bold)),
+        title: Text(l10n.newPost,
+            style: const TextStyle(
+                color: AppTheme.primary, fontWeight: FontWeight.bold)),
         actions: [
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
             child: ElevatedButton(
               onPressed: () => context.pop(),
-              style: ElevatedButton.styleFrom(backgroundColor: AppTheme.primary, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20))),
-              child: const Text('Publicar', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+              style: ElevatedButton.styleFrom(
+                  backgroundColor: AppTheme.primary,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20))),
+              child: Text(l10n.publish,
+                  style: const TextStyle(
+                      color: Colors.white, fontWeight: FontWeight.bold)),
             ),
           ),
         ],
@@ -42,21 +51,33 @@ class _NewPostScreenState extends State<NewPostScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Category Selector
-            const Text('¿En qué categoría quieres publicar?', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+            Text(l10n.whichCategory,
+                style:
+                    const TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
             const SizedBox(height: 12),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 16),
-              decoration: BoxDecoration(color: Colors.grey.shade100, borderRadius: BorderRadius.circular(16)),
+              decoration: BoxDecoration(
+                  color: Colors.grey.shade100,
+                  borderRadius: BorderRadius.circular(16)),
               child: DropdownButtonHideUnderline(
                 child: DropdownButton<String>(
-                  hint: const Text('Selecciona una categoría'),
+                  hint: Text(l10n.selectCategory),
                   isExpanded: true,
                   value: _selectedCategoryId,
-                  items: const [
-                    DropdownMenuItem(value: '1', child: Text('🙏 Peticiones de Oración')),
-                    DropdownMenuItem(value: '2', child: Text('📖 Estudio Bíblico')),
-                    DropdownMenuItem(value: '3', child: Text('✨ Testimonios')),
-                    DropdownMenuItem(value: '4', child: Text('💡 Preguntas y Dudas')),
+                  items: [
+                    DropdownMenuItem(
+                        value: 'peticiones-oracion',
+                        child: Text('🙏 ${l10n.catPrayer}')),
+                    DropdownMenuItem(
+                        value: 'estudio-biblico',
+                        child: Text('📖 ${l10n.catBible}')),
+                    DropdownMenuItem(
+                        value: 'testimonios',
+                        child: Text('✨ ${l10n.catTestimony}')),
+                    DropdownMenuItem(
+                        value: 'preguntas-dudas',
+                        child: Text('💡 ${l10n.catQuestions}')),
                   ],
                   onChanged: (v) => setState(() => _selectedCategoryId = v),
                 ),
@@ -65,21 +86,29 @@ class _NewPostScreenState extends State<NewPostScreen> {
             const SizedBox(height: 32),
 
             // Title
-            const Text('Título', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14, color: AppTheme.textMuted)),
-            const TextField(
+            Text(l10n.titleLabel,
+                style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 14,
+                    color: AppTheme.textMuted)),
+            TextField(
               decoration: InputDecoration(
-                hintText: 'Ej: Oración por fortaleza',
-                border: UnderlineInputBorder(),
+                hintText: l10n.hintTitle,
+                border: const UnderlineInputBorder(),
               ),
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 32),
 
             // Content
-            const Text('Contenido', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14, color: AppTheme.textMuted)),
-            const TextField(
+            Text(l10n.contentLabel,
+                style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 14,
+                    color: AppTheme.textMuted)),
+            TextField(
               decoration: InputDecoration(
-                hintText: 'Cuéntanos lo que tienes en el corazón...',
+                hintText: l10n.hintContent,
                 border: InputBorder.none,
               ),
               maxLines: 8,
@@ -89,17 +118,23 @@ class _NewPostScreenState extends State<NewPostScreen> {
             // Anonymous Switch
             Container(
               padding: const EdgeInsets.all(20),
-              decoration: BoxDecoration(color: const Color(0xFFF1F5F9), borderRadius: BorderRadius.circular(24)),
+              decoration: BoxDecoration(
+                  color: const Color(0xFFF1F5F9),
+                  borderRadius: BorderRadius.circular(24)),
               child: Row(
                 children: [
                   const Icon(Icons.visibility_off, color: AppTheme.primary),
                   const SizedBox(width: 16),
-                  const Expanded(
+                  Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('Publicar de forma anónima', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
-                        Text('Tu nombre no será visible para los demás.', style: TextStyle(color: Colors.grey, fontSize: 11)),
+                        Text(l10n.publishAnonymous,
+                            style: const TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 14)),
+                        Text(l10n.identityHidden,
+                            style: const TextStyle(
+                                color: Colors.grey, fontSize: 11)),
                       ],
                     ),
                   ),

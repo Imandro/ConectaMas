@@ -3,6 +3,7 @@
 import { useEffect } from "react";
 import { usePathname } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useLanguage } from '../LanguageContext';
 
 interface AdUnitProps {
     slot: string;
@@ -15,6 +16,7 @@ export default function AdUnit({ slot, format = "auto", responsive = "true", cla
     const pathname = usePathname();
     const sessionContext = useSession();
     const session = sessionContext?.data;
+    const { t } = useLanguage();
 
     const sensitiveRoutes = [
         "/dashboard/sos",
@@ -51,7 +53,7 @@ export default function AdUnit({ slot, format = "auto", responsive = "true", cla
                 data-ad-format={format}
                 data-full-width-responsive={responsive}
             ></ins>
-            <div className="text-muted small mt-1" style={{ fontSize: '10px' }}>Publicidad sustentable</div>
+            <div className="text-muted small mt-1" style={{ fontSize: '10px' }}>{t.ad_unit.sustainable_ad}</div>
         </div>
     );
 }

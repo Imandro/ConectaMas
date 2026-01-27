@@ -10,19 +10,21 @@ import { usePathname } from 'next/navigation';
 // Since user hasn't installed node_modules, imports might partial fail in IDE but let's write code assuming they will install.
 import { Home, BookOpen, HeartPulse, User, Menu, Book, MessageCircle, Zap } from 'lucide-react';
 import { signOut } from "next-auth/react";
-
-const navItems = [
-    { name: 'Inicio', href: '/dashboard', icon: Home },
-    { name: 'Devocionales', href: '/dashboard/devotionals', icon: BookOpen },
-    { name: 'Biblia', href: '/dashboard/bible', icon: Book },
-    { name: 'Trivia', href: '/dashboard/trivia', icon: Zap },
-    { name: 'Comunidad', href: '/dashboard/forums', icon: MessageCircle },
-    { name: 'Perfil', href: '/dashboard/profile', icon: User },
-];
+import { useLanguage } from '../LanguageContext';
 
 export default function DashboardNav() {
+    const { t } = useLanguage();
     const pathname = usePathname();
     const [notificationCount, setNotificationCount] = useState(0);
+
+    const navItems = [
+        { name: t.nav.home, href: '/dashboard', icon: Home },
+        { name: t.nav.devotionals, href: '/dashboard/devotionals', icon: BookOpen },
+        { name: t.nav.bible, href: '/dashboard/bible', icon: Book },
+        { name: t.nav.trivia, href: '/dashboard/trivia', icon: Zap },
+        { name: t.nav.community, href: '/dashboard/forums', icon: MessageCircle },
+        { name: t.nav.profile, href: '/dashboard/profile', icon: User },
+    ];
 
     useEffect(() => {
         // Fetch notification count
@@ -62,7 +64,7 @@ export default function DashboardNav() {
                             >
                                 <div className="position-relative">
                                     <Icon size={24} strokeWidth={isActive ? 2.5 : 2} />
-                                    {item.name === 'Comunidad' && notificationCount > 0 && (
+                                    {item.name === t.nav.community && notificationCount > 0 && (
                                         <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style={{ fontSize: '0.6rem', padding: '0.25em 0.4em' }}>
                                             {notificationCount > 9 ? '9+' : notificationCount}
                                         </span>
@@ -79,7 +81,7 @@ export default function DashboardNav() {
             <div className="d-none d-md-flex flex-column bg-primary border-end h-100 p-3 position-fixed top-0 start-0 text-white" style={{ width: '240px' }}>
                 <div className="mb-5 px-2 mt-2">
                     <h4 className="fw-bold text-white mb-0">Conecta<span className="text-secondary">+</span></h4>
-                    <small className="text-white-50 small">Tu espacio seguro</small>
+                    <small className="text-white-50 small">{t.nav.safe_space}</small>
                 </div>
 
                 <nav className="nav flex-column gap-2">
@@ -94,7 +96,7 @@ export default function DashboardNav() {
                             >
                                 <div className="position-relative d-flex align-items-center">
                                     <Icon size={20} />
-                                    {item.name === 'Comunidad' && notificationCount > 0 && (
+                                    {item.name === t.nav.community && notificationCount > 0 && (
                                         <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style={{ fontSize: '0.55rem', marginLeft: '-5px' }}>
                                             {notificationCount > 9 ? '9+' : notificationCount}
                                         </span>
@@ -114,7 +116,7 @@ export default function DashboardNav() {
                         }}
                         className="btn btn-danger w-100 rounded-pill btn-sm fw-bold text-white shadow-sm"
                     >
-                        Cerrar Sesión
+                        {t.nav.logout}
                     </button>
                 </div>
             </div>

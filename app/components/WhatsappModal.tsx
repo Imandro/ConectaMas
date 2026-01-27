@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { MessageCircle, X } from "lucide-react";
 import { confirmWhatsappJoin } from "@/app/dashboard/actions/whatsapp";
+import { useLanguage } from "../LanguageContext";
 
 const SHOW_INTERVAL_DAYS = 2;
 
@@ -11,6 +12,7 @@ interface WhatsappModalProps {
 }
 
 export default function WhatsappModal({ hasJoined }: WhatsappModalProps) {
+    const { t } = useLanguage();
     const [isOpen, setIsOpen] = useState(false);
 
     useEffect(() => {
@@ -48,14 +50,14 @@ export default function WhatsappModal({ hasJoined }: WhatsappModalProps) {
                         <MessageCircle size={48} className="text-success" fill="#25D366" color="white" />
                         <div className="position-absolute top-0 end-0 bg-danger rounded-circle border border-2 border-white" style={{ width: '16px', height: '16px' }}></div>
                     </div>
-                    <h3 className="fw-bold text-dark mb-1">Únete a la Tribu</h3>
-                    <p className="text-muted small mb-0">¡No camines solo! Conecta con otros.</p>
+                    <h3 className="fw-bold text-dark mb-1">{t.whatsapp.modal_title}</h3>
+                    <p className="text-muted small mb-0">{t.whatsapp.modal_subtitle}</p>
                 </div>
 
                 {/* Content */}
                 <div className="p-4 pt-3">
                     <p className="text-center text-secondary mb-4 small lh-sm">
-                        Sé parte de nuestro grupo exclusivo de WhatsApp. Recibe apoyo diario, noticias y motivación directamente en tu celular.
+                        {t.whatsapp.modal_body}
                     </p>
 
                     <div className="d-grid gap-2">
@@ -65,14 +67,14 @@ export default function WhatsappModal({ hasJoined }: WhatsappModalProps) {
                             style={{ backgroundColor: '#25D366', borderColor: '#25D366' }}
                         >
                             <MessageCircle size={20} fill="white" />
-                            Unirme Ahora
+                            {t.whatsapp.join_now}
                         </button>
 
                         <button
                             onClick={handleDismissLater}
                             className="btn btn-link text-muted text-decoration-none small fw-medium"
                         >
-                            Quizás más tarde
+                            {t.whatsapp.later}
                         </button>
                     </div>
                 </div>

@@ -8,6 +8,46 @@ class CommunityPostsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+
+    // Map categoryId to localized data
+    String name = '';
+    String description = '';
+    String icon = '';
+
+    switch (categoryId) {
+      case 'peticiones-oracion':
+        name = l10n.catPrayer;
+        description = l10n.descPrayer;
+        icon = '🙏';
+        break;
+      case 'estudio-biblico':
+        name = l10n.catBible;
+        description = l10n.descBible;
+        icon = '📖';
+        break;
+      case 'testimonios':
+        name = l10n.catTestimony;
+        description = l10n.descTestimony;
+        icon = '✨';
+        break;
+      case 'preguntas-dudas':
+        name = l10n.catQuestions;
+        description = l10n.descQuestions;
+        icon = '💡';
+        break;
+      case 'consejos-vida':
+        name = l10n.catAdvice;
+        description = l10n.descAdvice;
+        icon = '🌱';
+        break;
+      case 'alabanza-adoracion':
+        name = l10n.catPraise;
+        description = l10n.descPraise;
+        icon = '🎸';
+        break;
+    }
+
     return Scaffold(
       backgroundColor: const Color(0xFFF8FAFC),
       appBar: AppBar(
@@ -23,7 +63,9 @@ class CommunityPostsScreen extends StatelessWidget {
             ),
           ),
         ),
-        title: const Text('Peticiones de Oración', style: TextStyle(color: AppTheme.primary, fontWeight: FontWeight.bold)),
+        title: Text(name,
+            style: const TextStyle(
+                color: AppTheme.primary, fontWeight: FontWeight.bold)),
       ),
       body: ListView(
         padding: const EdgeInsets.all(24),
@@ -32,16 +74,22 @@ class CommunityPostsScreen extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(32),
             decoration: BoxDecoration(
-              gradient: const LinearGradient(colors: [AppTheme.primary, Color(0xFF1E293B)]),
+              gradient: const LinearGradient(
+                  colors: [AppTheme.primary, Color(0xFF1E293B)]),
               borderRadius: BorderRadius.circular(32),
             ),
-            child: const Column(
+            child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('🙏', style: TextStyle(fontSize: 40)),
-                SizedBox(height: 16),
-                Text('Peticiones de Oración', style: TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold)),
-                Text('Apoyémonos los unos a los otros en oración.', style: TextStyle(color: Colors.white70, fontSize: 13)),
+                Text(icon, style: const TextStyle(fontSize: 40)),
+                const SizedBox(height: 16),
+                Text(name,
+                    style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold)),
+                Text(description,
+                    style: const TextStyle(color: Colors.white70, fontSize: 13)),
               ],
             ),
           ),
@@ -50,11 +98,20 @@ class CommunityPostsScreen extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text('Publicaciones', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18, color: AppTheme.primary)),
+              Text(l10n.titleLabel,
+                  style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                      color: AppTheme.primary)),
               ElevatedButton(
-                onPressed: () => context.go('/comunidad/new?categoryId=$categoryId'),
-                style: ElevatedButton.styleFrom(backgroundColor: AppTheme.primary, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20))),
-                child: const Text('Nueva', style: TextStyle(color: Colors.white)),
+                onPressed: () =>
+                    context.go('/comunidad/new?categoryId=$categoryId'),
+                style: ElevatedButton.styleFrom(
+                    backgroundColor: AppTheme.primary,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20))),
+                child: Text(l10n.newPost,
+                    style: const TextStyle(color: Colors.white)),
               ),
             ],
           ),

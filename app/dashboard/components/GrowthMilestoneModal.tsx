@@ -4,8 +4,10 @@ import { useEffect, useState } from "react";
 import { Users, X, TrendingUp, ChevronRight, Share2 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { getUserCount } from "../actions";
+import { useLanguage } from "../../LanguageContext";
 
 export default function GrowthMilestoneModal() {
+    const { t } = useLanguage();
     const [isOpen, setIsOpen] = useState(false);
     const [userCount, setUserCount] = useState(0);
 
@@ -48,8 +50,8 @@ export default function GrowthMilestoneModal() {
 
     const handleShare = async () => {
         const shareData = {
-            title: 'Conecta+ BETA - Tu espacio seguro',
-            text: '¡Únete a Conecta+ BETA! Una comunidad de jóvenes creciendo en la fe juntos. 🙏✨',
+            title: t.growth_modal.share_title,
+            text: t.growth_modal.share_text,
             url: window.location.origin
         };
 
@@ -59,7 +61,7 @@ export default function GrowthMilestoneModal() {
             } else {
                 // Fallback: copy to clipboard
                 await navigator.clipboard.writeText(shareData.url);
-                alert('¡Link copiado al portapapeles!');
+                alert(t.growth_modal.link_copied);
             }
         } catch (error) {
             console.error('Error sharing:', error);
@@ -128,8 +130,8 @@ export default function GrowthMilestoneModal() {
                                         <TrendingUp size={24} className="text-warning" />
                                     </div>
                                     <div className="text-start">
-                                        <h4 className="fw-bold m-0 lh-1">¡Vamos Creciendo!</h4>
-                                        <small className="opacity-90 extra-small">Familia Conecta+</small>
+                                        <h4 className="fw-bold m-0 lh-1">{t.growth_modal.title}</h4>
+                                        <small className="opacity-90 extra-small">{t.growth_modal.subtitle}</small>
                                     </div>
                                 </div>
                                 <div className="position-absolute top-0 end-0 p-1 opacity-10">
@@ -148,14 +150,14 @@ export default function GrowthMilestoneModal() {
                                         <span className="display-6 fw-extrabold text-dark d-block text-gradient-primary">
                                             {userCount > 0 ? userCount : '...'}
                                         </span>
-                                        <span className="text-muted small fw-bold text-uppercase tracking-wider">Usuarios Reales</span>
+                                        <span className="text-muted small fw-bold text-uppercase tracking-wider">{t.growth_modal.real_users}</span>
                                     </motion.div>
                                 </div>
 
                                 {/* Mission Progress */}
                                 <div className="bg-light rounded-3 p-3 mb-3 border border-light-subtle">
                                     <div className="d-flex justify-content-between align-items-end mb-1">
-                                        <span className="fw-bold text-primary extra-small text-uppercase">Meta Misional</span>
+                                        <span className="fw-bold text-primary extra-small text-uppercase">{t.growth_modal.mission_goal}</span>
                                         <span className="fw-bold text-dark small">1,000</span>
                                     </div>
                                     <div className="progress rounded-pill bg-white shadow-inner" style={{ height: '12px' }}>
@@ -169,8 +171,8 @@ export default function GrowthMilestoneModal() {
                                         />
                                     </div>
                                     <div className="d-flex justify-content-between mt-1">
-                                        <small className="extra-small text-muted">{progress.toFixed(1)}% completado</small>
-                                        <small className="extra-small text-success fw-bold">¡Falta poco!</small>
+                                        <small className="extra-small text-muted">{t.growth_modal.completed.replace('{progress}', progress.toFixed(1))}</small>
+                                        <small className="extra-small text-success fw-bold">{t.growth_modal.almost_there}</small>
                                     </div>
                                 </div>
 
@@ -178,7 +180,7 @@ export default function GrowthMilestoneModal() {
                                     onClick={handleClose}
                                     className="btn btn-primary w-100 rounded-pill py-2 fw-bold d-flex align-items-center justify-content-center gap-2 hover-scale shadow-sm small"
                                 >
-                                    ¡Genial! <ChevronRight size={16} />
+                                    {t.growth_modal.button} <ChevronRight size={16} />
                                 </button>
                             </div>
                         </div>

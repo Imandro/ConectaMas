@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { Bell, MessageCircle, X } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useLanguage } from '../../LanguageContext';
 
 interface Notification {
     id: string;
@@ -21,6 +22,7 @@ interface Notification {
 }
 
 export default function NotificationDropdown() {
+    const { t, language } = useLanguage();
     const [isOpen, setIsOpen] = useState(false);
     const [notifications, setNotifications] = useState<Notification[]>([]);
     const [loading, setLoading] = useState(false);
@@ -112,7 +114,7 @@ export default function NotificationDropdown() {
                             style={{ width: '320px', maxHeight: '400px', zIndex: 1050 }}
                         >
                             <div className="d-flex justify-content-between align-items-center p-3 border-bottom">
-                                <h6 className="fw-bold m-0">Notificaciones</h6>
+                                <h6 className="fw-bold m-0">{t.forums.notifications.title}</h6>
                                 <button onClick={() => setIsOpen(false)} className="btn btn-sm btn-light rounded-circle p-1">
                                     <X size={16} />
                                 </button>
@@ -122,13 +124,13 @@ export default function NotificationDropdown() {
                                 {loading ? (
                                     <div className="text-center py-4">
                                         <div className="spinner-border spinner-border-sm text-primary" role="status">
-                                            <span className="visually-hidden">Cargando...</span>
+                                            <span className="visually-hidden">{t.forums.notifications.loading}</span>
                                         </div>
                                     </div>
                                 ) : notifications.length === 0 ? (
                                     <div className="text-center py-4 text-muted">
                                         <Bell size={32} className="mb-2 opacity-50" />
-                                        <p className="small m-0">No hay notificaciones</p>
+                                        <p className="small m-0">{t.forums.notifications.empty}</p>
                                     </div>
                                 ) : (
                                     notifications.map((notif) => (
@@ -142,13 +144,13 @@ export default function NotificationDropdown() {
                                                 <div className="fs-4">{notif.post.category.icon}</div>
                                                 <div className="flex-grow-1">
                                                     <p className="small fw-bold m-0 text-dark">
-                                                        Alguien respondió en {notif.post.category.name}
+                                                        {t.forums.notifications.new_reply.replace('{category}', notif.post.category.name)}
                                                     </p>
                                                     <p className="extra-small text-muted m-0 text-truncate">
                                                         {notif.post.title}
                                                     </p>
                                                     <small className="extra-small text-muted">
-                                                        {new Date(notif.createdAt).toLocaleDateString('es-ES', {
+                                                        {new Date(notif.createdAt).toLocaleDateString(language === 'es' ? 'es-ES' : language === 'pt' ? 'pt-BR' : 'en-US', {
                                                             month: 'short',
                                                             day: 'numeric',
                                                             hour: '2-digit',
@@ -171,7 +173,7 @@ export default function NotificationDropdown() {
                                         onClick={markAllAsRead}
                                         className="btn btn-sm btn-link text-primary w-100 text-decoration-none"
                                     >
-                                        Marcar todas como leídas
+                                        {t.forums.notifications.mark_all_read}
                                     </button>
                                 </div>
                             )}

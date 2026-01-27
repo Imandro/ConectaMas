@@ -16,26 +16,26 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
                 password: { label: "Password", type: "password" }
             },
             async authorize(credentials) {
-                if (!credentials?.identifier || !credentials?.password) {
-                    return null;
-                }
-
-                const identifier = credentials.identifier as string;
+                const identifier = (credentials.identifier || (credentials as any).email) as string;
                 const password = credentials.password as string;
 
-                console.log("[Auth] Attempting authorize for:", identifier);
+                if (!identifier || !password) return null;
 
-                // Find user by email OR username
+                const normalizedIdentifier = identifier.trim().toLowerCase();
+                console.log("[Auth] Attempting authorize for:", normalizedIdentifier);
+
+                // Find user by email OR username (both lowercase)
                 const user = await prisma.user.findFirst({
                     where: {
                         OR: [
-                            { email: identifier.toLowerCase() },
-                            { username: identifier } // Username comparison (case sensitive or not? usually case insensitive but lets keep simple first)
+                            { email: normalizedIdentifier },
+                            { username: normalizedIdentifier }
                         ]
                     },
                 });
 
                 if (!user || !user.passwordHash) {
+                    console.log("[Auth] User not found or no password hash for:", normalizedIdentifier);
                     return null;
                 }
 

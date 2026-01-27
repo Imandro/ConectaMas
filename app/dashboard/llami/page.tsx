@@ -11,10 +11,12 @@ import TriviaGame from "@/app/components/TriviaGame";
 import { Gamepad2, HelpCircle } from "lucide-react";
 import LlamiTutorial from "@/app/components/LlamiTutorial";
 import { completeLlamiTutorial } from "./actions";
+import { useLanguage } from "../../LanguageContext";
 
 export const dynamic = 'force-dynamic';
 
 export default function LlamiPage() {
+    const { t } = useLanguage();
     const [mascot, setMascot] = useState<any>(null);
     const [loading, setLoading] = useState(true);
     const [isFeeding, setIsFeeding] = useState(false);
@@ -54,13 +56,13 @@ export default function LlamiPage() {
         const result = await feedMascot();
 
         if (result.success) {
-            toast.success("¡Llami está feliz! +20 XP", {
+            toast.success(t.llami.toast_happy, {
                 icon: '🔥',
                 style: { borderRadius: '15px', background: '#333', color: '#fff' }
             });
             await loadMascot();
         } else {
-            toast.error(result.error || "Algo salió mal");
+            toast.error(result.error || t.llami.toast_error);
         }
 
         setTimeout(() => setIsFeeding(false), 2000);
@@ -76,11 +78,11 @@ export default function LlamiPage() {
         if (!newName.trim()) return;
         const result = await updateMascotName(newName);
         if (result.success) {
-            toast.success("¡Nombre actualizado!");
+            toast.success(t.llami.toast_rename_success);
             setIsEditingName(false);
             loadMascot();
         } else {
-            toast.error(result.error || "Error al actualizar");
+            toast.error(result.error || t.llami.toast_rename_error);
         }
     };
 
@@ -102,9 +104,9 @@ export default function LlamiPage() {
         return (
             <div className="container py-5 text-center">
                 <div className="alert alert-warning">
-                    No se pudo cargar a Llami. Por favor recarga la página.
+                    {t.llami.error_load}
                 </div>
-                <button className="btn btn-primary" onClick={() => window.location.reload()}>Recargar</button>
+                <button className="btn btn-primary" onClick={() => window.location.reload()}>{t.llami.reload_button}</button>
             </div>
         );
     }
@@ -117,14 +119,14 @@ export default function LlamiPage() {
                     <Link href="/dashboard" className="btn btn-white bg-white text-primary rounded-circle p-2 shadow-sm border-0">
                         <ChevronLeft size={24} />
                     </Link>
-                    <h1 className="h2 mb-0 fw-bold">El Refugio de Llami</h1>
+                    <h1 className="h2 mb-0 fw-bold">{t.llami.title}</h1>
                 </div>
                 <button
                     onClick={() => setShowTutorial(true)}
                     className="btn btn-white bg-white text-warning rounded-pill px-3 py-2 shadow-sm border-0 d-flex align-items-center gap-2 fw-bold"
                 >
                     <HelpCircle size={20} />
-                    <span className="d-none d-md-inline">Ayuda</span>
+                    <span className="d-none d-md-inline">{t.llami.help}</span>
                 </button>
             </div>
 
@@ -296,7 +298,7 @@ export default function LlamiPage() {
                                             onChange={(e) => setNewName(e.target.value)}
                                             className="form-control form-control-sm border-0 bg-transparent text-primary fw-bold text-center"
                                             style={{ width: '120px', boxShadow: 'none' }}
-                                            placeholder="Nombre..."
+                                            placeholder={t.llami.rename_placeholder}
                                         />
                                         <button onClick={handleUpdateName} className="btn btn-sm btn-success rounded-circle d-flex align-items-center justify-content-center p-0" style={{ width: 30, height: 30 }}>
                                             <Check size={16} />
@@ -313,7 +315,7 @@ export default function LlamiPage() {
                                         }}
                                         className="btn btn-link text-muted text-decoration-none d-flex align-items-center gap-2 small opacity-75 hover-opacity-100"
                                     >
-                                        <span className="small">Cambiar nombre</span>
+                                        <span className="small">{t.llami.rename}</span>
                                         <Edit2 size={14} />
                                     </button>
                                 )}
@@ -327,7 +329,7 @@ export default function LlamiPage() {
                                     <div className="p-3">
                                         <div className="d-flex align-items-center justify-content-center gap-2 mb-1">
                                             <Zap size={18} className="text-warning" />
-                                            <span className="small fw-bold text-muted">NIVEL</span>
+                                            <span className="small fw-bold text-muted">{t.llami.level_label}</span>
                                         </div>
                                         <div className="h1 mb-0 fw-bold">{mascot.level}</div>
                                     </div>
@@ -337,7 +339,7 @@ export default function LlamiPage() {
                                     <div className="p-3">
                                         <div className="d-flex align-items-center justify-content-center gap-2 mb-1">
                                             <Flame size={18} className="text-warning" />
-                                            <span className="small fw-bold text-muted">FUEGO</span>
+                                            <span className="small fw-bold text-muted">{t.llami.flame_label}</span>
                                         </div>
                                         <div className="h1 mb-0 fw-bold text-warning">{mascot.flamePoints}</div>
                                     </div>
@@ -347,7 +349,7 @@ export default function LlamiPage() {
                             {/* XP Progress Bar */}
                             <div className="mt-4 text-start px-2">
                                 <div className="d-flex justify-content-between mb-3">
-                                    <span className="small fw-bold text-muted">Progreso para Nivel {mascot.level + 1}</span>
+                                    <span className="small fw-bold text-muted">{t.llami.next_level.replace('{level}', (mascot.level + 1).toString())}</span>
                                     <span className="small fw-bold text-warning">{mascot.experience}/100 XP</span>
                                 </div>
                                 <div className="progress bg-light rounded-pill" style={{ height: '10px' }}>
@@ -374,11 +376,11 @@ export default function LlamiPage() {
                                 }}
                             >
                                 <Flame size={24} />
-                                Avivar el Fuego (-5 puntos)
+                                {t.llami.feed_button}
                             </button>
 
                             <div className="small text-muted mb-4">
-                                Gana más puntos leyendo la Biblia o completando devocionales.
+                                {t.llami.feed_hint}
                             </div>
 
                             <button
@@ -386,7 +388,7 @@ export default function LlamiPage() {
                                 className="btn btn-outline-primary btn-lg rounded-pill py-3 fw-bold d-flex align-items-center justify-content-center gap-2 border-2"
                             >
                                 <Gamepad2 size={24} />
-                                Desafío Trivia Diario
+                                {t.llami.trivia_button}
                             </button>
                         </div>
                     </div>
@@ -396,7 +398,7 @@ export default function LlamiPage() {
                         <div className="card bg-white border-0 shadow-sm rounded-5 p-4 h-100">
                             <h4 className="fw-bold mb-4 d-flex align-items-center gap-2 text-warning">
                                 <Sparkles size={24} />
-                                Guía del Cuidador
+                                {t.llami.guide_title}
                             </h4>
 
                             <div className="d-flex flex-column gap-4 text-start">
@@ -405,8 +407,8 @@ export default function LlamiPage() {
                                         <Book className="text-warning" size={24} />
                                     </div>
                                     <div className="pt-1">
-                                        <h6 className="fw-bold mb-1">Lectura de la Biblia</h6>
-                                        <p className="small mb-0 text-muted">Gana 1 punto de fuego por cada minuto de lectura activa.</p>
+                                        <h6 className="fw-bold mb-1">{t.llami.guide_bible_title}</h6>
+                                        <p className="small mb-0 text-muted">{t.llami.guide_bible_desc}</p>
                                     </div>
                                 </div>
 
@@ -415,8 +417,8 @@ export default function LlamiPage() {
                                         <Sparkles className="text-warning" size={24} />
                                     </div>
                                     <div className="pt-1">
-                                        <h6 className="fw-bold mb-1">Devocionales</h6>
-                                        <p className="small mb-0 text-muted">Cada devocional completo otorga 25 XP directos.</p>
+                                        <h6 className="fw-bold mb-1">{t.llami.guide_devotionals_title}</h6>
+                                        <p className="small mb-0 text-muted">{t.llami.guide_devotionals_desc}</p>
                                     </div>
                                 </div>
 
@@ -425,8 +427,8 @@ export default function LlamiPage() {
                                         <Flame className="text-warning" size={24} />
                                     </div>
                                     <div className="pt-1">
-                                        <h6 className="fw-bold mb-1">Evolución</h6>
-                                        <p className="small mb-0 text-muted">Al subir de nivel, el espíritu de Llami brilla con más fuerza.</p>
+                                        <h6 className="fw-bold mb-1">{t.llami.guide_evolution_title}</h6>
+                                        <p className="small mb-0 text-muted">{t.llami.guide_evolution_desc}</p>
                                     </div>
                                 </div>
 
@@ -435,8 +437,8 @@ export default function LlamiPage() {
                                         <Gamepad2 className="text-warning" size={24} />
                                     </div>
                                     <div className="pt-1">
-                                        <h6 className="fw-bold mb-1">Trivia Diaria</h6>
-                                        <p className="small mb-0 text-muted">5 preguntas rápidas. Repite las que fallaste ayer para ganar XP.</p>
+                                        <h6 className="fw-bold mb-1">{t.llami.guide_trivia_title}</h6>
+                                        <p className="small mb-0 text-muted">{t.llami.guide_trivia_desc}</p>
                                     </div>
                                 </div>
                             </div>

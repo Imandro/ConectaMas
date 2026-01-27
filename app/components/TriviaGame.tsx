@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { CheckCircle2, XCircle, Info, ArrowRight, Trophy, Zap, Loader2, Sparkles } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useLanguage } from "../LanguageContext";
 
 interface Question {
     id: string;
@@ -23,6 +24,7 @@ interface TriviaGameProps {
 // LlamiPage uses useSession potentially via other components or hooks.
 // Let's check LlamiPage again.
 export default function TriviaGame({ onComplete }: TriviaGameProps) {
+    const { t } = useLanguage();
     const [questions, setQuestions] = useState<Question[]>([]);
     const [currentIndex, setCurrentIndex] = useState(0);
     const [selectedOption, setSelectedOption] = useState<number | null>(null);
@@ -96,7 +98,7 @@ export default function TriviaGame({ onComplete }: TriviaGameProps) {
         return (
             <div className="text-center py-5">
                 <Loader2 className="animate-spin mb-3 mx-auto text-warning" size={48} />
-                <h4 className="text-white opacity-75">Preparando tus preguntas diarias...</h4>
+                <h4 className="text-white opacity-75">{t.trivia_game.loading}</h4>
             </div>
         );
     }
@@ -105,9 +107,9 @@ export default function TriviaGame({ onComplete }: TriviaGameProps) {
         return (
             <div className="text-center py-5 rounded-4" style={{ backgroundColor: 'rgba(255, 255, 255, 0.05)', border: '1px solid rgba(255, 255, 255, 0.1)' }}>
                 <Info size={48} className="text-warning mb-3 mx-auto" />
-                <h4 className="text-white mb-2">¡Todo al día!</h4>
-                <p className="text-white-50">Has completado todas las preguntas disponibles por ahora.</p>
-                <button onClick={onComplete} className="btn btn-warning rounded-pill px-4 mt-3 fw-bold">Volver</button>
+                <h4 className="text-white mb-2">{t.trivia_game.empty_title}</h4>
+                <p className="text-white-50">{t.trivia_game.empty_desc}</p>
+                <button onClick={onComplete} className="btn btn-warning rounded-pill px-4 mt-3 fw-bold">{t.common.back}</button>
             </div>
         );
     }
@@ -121,28 +123,28 @@ export default function TriviaGame({ onComplete }: TriviaGameProps) {
                 style={{ backgroundColor: '#0B1B32', border: '1px solid rgba(243, 179, 62, 0.3)' }}
             >
                 <Trophy size={80} className="text-warning mb-4 mx-auto" />
-                <h2 className="display-5 fw-bold text-white mb-2">¡Desafío Diario Completo!</h2>
+                <h2 className="display-5 fw-bold text-white mb-2">{t.trivia_game.results_title}</h2>
                 <div className="display-3 fw-bold text-warning mb-4">{score} / {questions.length}</div>
 
                 <p className="lead text-white-50 mb-5">
                     {score === questions.length
-                        ? "¡Increíble! Eres un experto en la Palabra."
-                        : score >= 3 ? "¡Buen trabajo! Sigue creciendo cada día."
-                            : "¡Sigue practicando! Cada error es una oportunidad de aprender."}
+                        ? t.trivia_game.results_perfect
+                        : score >= 3 ? t.trivia_game.results_good
+                            : t.trivia_game.results_keep_trying}
                 </p>
 
                 <div className="bg-warning bg-opacity-10 p-4 rounded-4 mb-5 border border-warning border-opacity-20">
                     <h5 className="fw-bold text-warning mb-2 d-flex align-items-center justify-content-center gap-2">
-                        <Sparkles size={20} /> Recompensa para Llami
+                        <Sparkles size={20} /> {t.trivia_game.reward_title}
                     </h5>
                     <div className="d-flex justify-content-center gap-4 mt-3">
                         <div className="text-center">
                             <div className="fw-bold text-white fs-4">+{score * 5}</div>
-                            <div className="tiny text-white-50">EXP</div>
+                            <div className="tiny text-white-50">{t.trivia_game.exp}</div>
                         </div>
                         <div className="text-center border-start border-white border-opacity-10 ps-4">
                             <div className="fw-bold text-white fs-4">+{score * 2}</div>
-                            <div className="tiny text-white-50">LLAMAS</div>
+                            <div className="tiny text-white-50">{t.trivia_game.llamas}</div>
                         </div>
                     </div>
                 </div>
@@ -152,7 +154,7 @@ export default function TriviaGame({ onComplete }: TriviaGameProps) {
                     className="btn btn-warning btn-lg rounded-pill w-100 fw-bold py-3 shadow-lg transform-scale-up"
                     style={{ backgroundColor: '#f3b33e', border: 'none', color: '#0B1B32' }}
                 >
-                    Alimentar a Llami y Guardar
+                    {t.trivia_game.button_save}
                 </button>
             </motion.div>
         );
@@ -167,9 +169,9 @@ export default function TriviaGame({ onComplete }: TriviaGameProps) {
         return (
             <div className="text-center py-5">
                 <Info size={48} className="text-warning mb-3 mx-auto opacity-50" />
-                <h4 className="text-muted mb-2">Momento de descanso</h4>
-                <p className="text-muted small">No hay preguntas disponibles en este momento.</p>
-                <button onClick={onComplete} className="btn btn-outline-secondary rounded-pill px-4 mt-3">Volver</button>
+                <h4 className="text-muted mb-2">{t.trivia_game.rest_title}</h4>
+                <p className="text-muted small">{t.trivia_game.rest_desc}</p>
+                <button onClick={onComplete} className="btn btn-outline-secondary rounded-pill px-4 mt-3">{t.common.back}</button>
             </div>
         );
     }
@@ -179,7 +181,7 @@ export default function TriviaGame({ onComplete }: TriviaGameProps) {
             {/* Progress bar */}
             <div className="mb-4">
                 <div className="d-flex justify-content-between text-muted small mb-2 fw-bold">
-                    <span>PREGUNTA {currentIndex + 1} DE {questions.length}</span>
+                    <span>{t.trivia_game.question_count.replace('{current}', (currentIndex + 1).toString()).replace('{total}', questions.length.toString())}</span>
                     <span>{questions.length > 0 ? Math.round(((currentIndex) / questions.length) * 100) : 0}%</span>
                 </div>
                 <div className="progress rounded-pill shadow-sm" style={{ height: '8px', backgroundColor: 'rgba(11, 27, 50, 0.1)' }}>
@@ -202,7 +204,7 @@ export default function TriviaGame({ onComplete }: TriviaGameProps) {
                     style={{ backgroundColor: '#fff', border: '1px solid #e2e8f0' }}
                 >
                     <h3 className="fw-bold text-dark mb-4 lh-base" style={{ fontSize: '1.4rem' }}>
-                        {currentQ.question || "Pregunta no disponible"}
+                        {currentQ.question || t.trivia_game.question_unavailable}
                     </h3>
 
                     <div className="d-grid gap-3 mb-4">
@@ -267,7 +269,7 @@ export default function TriviaGame({ onComplete }: TriviaGameProps) {
                                         {isCorrect ? <Zap size={20} /> : <Info size={20} />}
                                     </div>
                                     <div>
-                                        <h5 className={`fw-bold mb-1 ${isCorrect ? 'text-success' : 'text-danger'}`}>{isCorrect ? "¡Correcto!" : "No exactamente"}</h5>
+                                        <h5 className={`fw-bold mb-1 ${isCorrect ? 'text-success' : 'text-danger'}`}>{isCorrect ? t.trivia_game.feedback_correct : t.trivia_game.feedback_incorrect}</h5>
                                         <p className="text-dark opacity-75 small mb-2">{currentQ.explanation}</p>
                                         <div className="badge bg-primary bg-opacity-10 text-primary border border-primary border-opacity-20 rounded-pill px-3 py-2">{currentQ.reference}</div>
                                     </div>
@@ -282,7 +284,7 @@ export default function TriviaGame({ onComplete }: TriviaGameProps) {
                             className="btn btn-warning w-100 py-3 rounded-pill fw-bold fs-5 d-flex align-items-center justify-content-center gap-2 shadow-lg"
                             style={{ backgroundColor: '#f3b33e', border: 'none', color: '#0B1B32' }}
                         >
-                            {currentIndex === questions.length - 1 ? "Ver Resultados" : "Siguiente Pregunta"} <ArrowRight size={20} />
+                            {currentIndex === questions.length - 1 ? t.trivia_game.button_results : t.trivia_game.button_next} <ArrowRight size={20} />
                         </button>
                     )}
                 </motion.div>
