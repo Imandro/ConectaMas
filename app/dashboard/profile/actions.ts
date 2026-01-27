@@ -3,6 +3,7 @@
 import { auth } from "@/app/lib/auth";
 import { prisma } from "@/app/lib/prisma";
 import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 
 export async function resetAccount() {
     const session = await auth();
@@ -27,6 +28,10 @@ export async function deleteAccount() {
     await prisma.user.delete({
         where: { email: session.user.email }
     });
+
+    revalidatePath("/");
+    revalidatePath("/dashboard");
+    redirect("/auth/login");
 }
 
 export async function updateProfileImage(base64Image: string) {
@@ -45,6 +50,7 @@ export async function updateProfileImage(base64Image: string) {
         data: { image: base64Image }
     });
 
+    revalidatePath('/dashboard');
     revalidatePath('/dashboard/profile');
 }
 
@@ -54,9 +60,10 @@ export async function updateLeaderPhone(phone: string) {
 
     await prisma.user.update({
         where: { email: session.user.email },
-        data: { leaderPhone: phone } as any
+        data: { leaderPhone: phone }
     });
 
+    revalidatePath("/dashboard");
     revalidatePath("/dashboard/profile");
     revalidatePath("/dashboard/sos");
 }
@@ -67,7 +74,7 @@ export async function completeTutorialTour() {
 
     await prisma.user.update({
         where: { email: session.user.email },
-        data: { hasSeenTutorialTour: true } as any
+        data: { hasSeenTutorialTour: true }
     });
 
     revalidatePath("/dashboard");
@@ -86,8 +93,8 @@ export async function updateUsername(newUsername: string) {
         return { success: false, errorKey: "username_format_error" };
     }
 
-    const userId = (session.user as any).id;
-    const user = await (prisma as any).user.findUnique({
+    const userId = session.user.id;
+    const user = await prisma.user.findUnique({
         where: { id: userId },
         select: { lastUsernameChange: true }
     });
@@ -112,7 +119,7 @@ export async function updateUsername(newUsername: string) {
         return { success: false, errorKey: "username_taken" };
     }
 
-    await (prisma as any).user.update({
+    await prisma.user.update({
         where: { id: userId },
         data: {
             username: newUsername,

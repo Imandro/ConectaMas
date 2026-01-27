@@ -36,8 +36,11 @@ export default function PushNotificationManager() {
 
             // Generate VAPID public key
             const VAPID_PUBLIC_KEY = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY || "BGBZ1Q1LwyPolkAPnshPKwQ6NNijzuu8_lqDziuABVb6z60pX1uwKsw1jgO-rCabt5QIf_90OSNqNRgXKti9zyI";
-            if (!VAPID_PUBLIC_KEY) {
-                throw new Error('VAPID public key not found');
+            if (!VAPID_PUBLIC_KEY || VAPID_PUBLIC_KEY === "undefined") {
+                console.error('VAPID public key is missing or invalid');
+                alert('Error de configuración: VAPID public key no encontrada.');
+                setLoading(false);
+                return;
             }
 
             const sub = await registration.pushManager.subscribe({

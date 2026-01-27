@@ -247,7 +247,7 @@ export default function DashboardHome() {
                                 <div className="col-6">
                                     <div className="bg-light p-3 rounded-4 text-center">
                                         <span className="d-block fw-bold text-primary fs-4">
-                                            {stats?.struggles?.filter((s: any) => s.status === "ACTIVE" && s.isStarted)?.length || 0}
+                                            {stats?.struggles?.filter((s: { status: string, isStarted: boolean }) => s.status === "ACTIVE" && s.isStarted)?.length || 0}
                                         </span>
                                         <small className="text-muted fw-bold text-uppercase" style={{ fontSize: '0.65rem' }}>{t.dashboard.in_progress}</small>
                                     </div>
@@ -255,7 +255,7 @@ export default function DashboardHome() {
                                 <div className="col-6">
                                     <div className="bg-light p-3 rounded-4 text-center">
                                         <span className="d-block fw-bold text-warning fs-4">
-                                            {stats?.struggles?.filter((s: any) => s.status === "ACTIVE" && !s.isStarted)?.length || 0}
+                                            {stats?.struggles?.filter((s: { status: string, isStarted: boolean }) => s.status === "ACTIVE" && !s.isStarted)?.length || 0}
                                         </span>
                                         <small className="text-muted fw-bold text-uppercase" style={{ fontSize: '0.65rem' }}>{t.dashboard.upcoming}</small>
                                     </div>
@@ -287,7 +287,7 @@ export default function DashboardHome() {
 
             {/* Feature Tour (Proactive Tutorial) */}
             {stats && !stats.hasSeenTutorialTour && (
-                <FeatureTour onComplete={() => setStats({ ...stats, hasSeenTutorialTour: true })} />
+                <FeatureTour onComplete={() => setStats((prev: DashboardStats | null) => prev ? { ...prev, hasSeenTutorialTour: true } : null)} />
             )}
 
             {/* Support Ad - Moved to bottom */}
