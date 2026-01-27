@@ -440,11 +440,13 @@ export const es = {
         committed: "Comprometido",
         leader: "Líder",
     },
-    checkin_history: {
+    checkin: {
         title: "Salud Espiritual",
         how_feeling: "¿Cómo te sientes hoy?",
         placeholder: "Escribe una breve nota... (Opcional)",
         saving: "Guardando...",
+        save: "Guardar",
+        saved_alert: "¡Check-in guardado!",
         error_alert: "Error al guardar",
         month_history: "Tu Mes",
         click_details: "Click para ver detalles",
