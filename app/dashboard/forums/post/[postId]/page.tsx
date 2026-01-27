@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import { ArrowLeft, Clock, Shield, User as UserIcon, Send, Trash2 } from 'lucide-react';
-import { useLanguage } from '../../../LanguageContext';
+import { useLanguage } from '@/app/LanguageContext';
 
 interface Reply {
     id: string;

@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { ArrowLeft, MessageCircle, Clock, Shield, User as UserIcon } from 'lucide-react';
-import { useLanguage } from '../../LanguageContext';
+import { useLanguage } from '@/app/LanguageContext';
 
 interface Post {
     id: string;
