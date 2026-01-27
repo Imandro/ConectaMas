@@ -40,7 +40,7 @@ export default function LanguageRegionModal() {
                     <select
                         className="form-select mb-2"
                         value={language}
-                        onChange={(e) => setLanguage(e.target.value as any)}
+                        onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setLanguage(e.target.value as any)}
                     >
                         <option value="es">{t.language_region_modal.spanish} (Spanish)</option>
                         <option value="en">{t.language_region_modal.english} (English)</option>
@@ -53,7 +53,7 @@ export default function LanguageRegionModal() {
                     <select
                         className="form-select"
                         value={region}
-                        onChange={(e) => setRegion(e.target.value as any)}
+                        onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setRegion(e.target.value as any)}
                     >
                         <option value="LATAM">{t.language_region_modal.latin_america}</option>
                         <option value="ES">{t.language_region_modal.spain}</option>
