@@ -313,6 +313,7 @@ export const en = {
         paypal_title: "Donate via PayPal:",
         collaborators_title: "Featured Collaborators:",
         collaborator_marvin: "Marvin Cruz Alvarado (Donated!)",
+        others_count: "+24 other collaborators",
         button_support: "Support the Project",
         button_close: "Close",
     },
