@@ -77,90 +77,75 @@ export default function DonationMissionsModal() {
                     />
 
                     <motion.div
-                        initial={{ opacity: 0, scale: 0.8, y: 50 }}
+                        initial={{ opacity: 0, scale: 0.9, y: 50 }}
                         animate={{ opacity: 1, scale: 1, y: 0 }}
-                        exit={{ opacity: 0, scale: 0.8, y: 50 }}
-                        transition={{ type: "spring", stiffness: 300, damping: 25 }}
+                        exit={{ opacity: 0, scale: 0.9, y: 50 }}
+                        transition={{ type: "spring", stiffness: 350, damping: 25 }}
                         className="position-relative mx-3 w-100"
-                        style={{ maxWidth: '400px' }}
+                        style={{ maxWidth: '380px' }}
                     >
-                        <button
-                            onClick={handleClose}
-                            className="btn btn-dark rounded-circle position-absolute top-0 end-0 m-2 shadow-sm z-50 p-1"
-                            style={{ width: '30px', height: '30px', transform: 'translate(30%, -30%)' }}
-                        >
-                            <X size={18} />
-                        </button>
-
-                        <div className="bg-white rounded-5 overflow-hidden shadow-2xl border border-warning border-opacity-25">
-                            {/* Header */}
-                            <div className="bg-dark text-white p-4 text-center position-relative overflow-hidden">
-                                <div className="position-absolute top-0 start-0 w-100 h-100 bg-gradient-to-br from-gray-900 to-black opacity-90"></div>
-                                <div className="position-relative z-10">
-                                    <div className="bg-warning text-dark p-2 rounded-circle d-inline-flex mb-3 shadow-lg">
-                                        <Globe size={32} />
+                        <div className="bg-white rounded-5 overflow-hidden shadow-2xl border border-warning border-opacity-25 pb-3">
+                            {/* Header Image / Gradient */}
+                            <div className="bg-warning text-dark p-4 text-center position-relative overflow-hidden" style={{ background: 'linear-gradient(135deg, #FFC107 0%, #FF9800 100%)' }}>
+                                <div className="position-relative z-10 pt-2">
+                                    <div className="bg-white p-3 rounded-circle d-inline-flex mb-2 shadow-lg animate-bounce-custom">
+                                        <Globe size={40} className="text-warning" />
                                     </div>
-                                    <h3 className="fw-black m-0 text-warning">{t.donation_modal.title}</h3>
-                                    <p className="text-white-50 extra-small fw-bold tracking-widest mt-1 text-uppercase">{t.donation_modal.subtitle}</p>
+                                    <h3 className="fw-black m-0 text-dark" style={{ letterSpacing: '-0.5px' }}>{t.donation_modal.title}</h3>
+                                    <p className="text-dark opacity-75 extra-small fw-bold tracking-widest mt-1 text-uppercase">{t.donation_modal.subtitle}</p>
                                 </div>
+                                {/* Decorative Circles */}
+                                <div className="position-absolute top-0 start-0 bg-white opacity-25 rounded-circle" style={{ width: '100px', height: '100px', transform: 'translate(-30%, -30%)' }}></div>
+                                <div className="position-absolute bottom-0 end-0 bg-white opacity-25 rounded-circle" style={{ width: '80px', height: '80px', transform: 'translate(30%, 30%)' }}></div>
                             </div>
 
-                            <div className="p-4">
-                                <p className="text-secondary small lh-lg mb-4 text-center">
+                            <div className="px-4 py-3">
+                                <p className="text-secondary small lh-base mb-3 text-center fw-medium">
                                     {t.donation_modal.description}
                                 </p>
 
-                                {/* Missions Section */}
-                                <div className="bg-light rounded-4 p-3 mb-4 border border-light-subtle">
-                                    <h6 className="fw-bold text-primary mb-3 d-flex align-items-center gap-2">
-                                        <ChevronRight size={18} /> {t.donation_modal.missions_title}
-                                    </h6>
-                                    <div className="d-flex flex-column gap-2">
-                                        <div className="bg-white p-2 rounded-3 shadow-sm d-flex align-items-center justify-content-between">
-                                            <span className="fw-bold small">{t.donation_modal.mission_brasil}</span>
-                                            <span className="badge bg-info-subtle text-info rounded-pill px-2">En proceso</span>
-                                        </div>
-                                        <div className="bg-white p-2 rounded-3 shadow-sm d-flex align-items-center justify-content-between">
-                                            <span className="fw-bold small">{t.donation_modal.mission_nicaragua}</span>
-                                            <span className="badge bg-info-subtle text-info rounded-pill px-2">En proceso</span>
-                                        </div>
+                                {/* Missions Flags */}
+                                <div className="d-flex justify-content-center gap-3 mb-4">
+                                    <div className="text-center">
+                                        <span className="fs-1 d-block mb-1 shadow-sm rounded-circle bg-light p-1">🇧🇷</span>
+                                        <span className="extra-small fw-bold text-muted text-uppercase">Brasil</span>
+                                    </div>
+                                    <div className="text-center">
+                                        <span className="fs-1 d-block mb-1 shadow-sm rounded-circle bg-light p-1">🇳🇮</span>
+                                        <span className="extra-small fw-bold text-muted text-uppercase">Nica</span>
+                                    </div>
+                                    <div className="text-center align-self-center">
+                                        <span className="badge bg-primary-subtle text-primary rounded-pill px-2 py-1 extra-small fw-bold">+ Naciones</span>
                                     </div>
                                 </div>
 
-                                {/* Payment Details */}
-                                <div className="space-y-3 mb-4">
-                                    {/* Changed background to white with shadow for better visibility on all devices */}
-                                    <div className="bg-white p-3 rounded-4 border shadow-sm mb-2">
-                                        <h6 className="fw-bold text-dark small mb-2 d-flex align-items-center gap-2">
-                                            <CreditCard size={18} className="text-primary" /> {t.donation_modal.bank_details}
-                                        </h6>
-                                        <div className="ps-4">
-                                            <p className="m-0 fw-bold text-secondary small">{t.donation_modal.bank_name}</p>
-                                            <p className="m-0 fw-extrabold fs-5 tracking-tighter text-dark">{t.donation_modal.bank_account}</p>
-                                        </div>
+                                {/* Bank Details Compact */}
+                                <div className="bg-light p-3 rounded-4 border border-light-subtle mb-3 position-relative overflow-hidden">
+                                    <div className="d-flex align-items-center justify-content-between mb-1">
+                                        <span className="extra-small fw-bold text-muted text-uppercase d-flex align-items-center gap-1"><CreditCard size={12} /> {t.donation_modal.bank_details}</span>
+                                        <span className="badge bg-dark text-white rounded-pill px-2">Bancolombia</span>
                                     </div>
+                                    <div className="d-flex align-items-center justify-content-between">
+                                        <p className="m-0 fw-black fs-5 tracking-tighter text-dark font-monospace">{t.donation_modal.bank_account}</p>
+                                        <button className="btn btn-sm btn-link text-primary p-0" onClick={() => { navigator.clipboard.writeText(t.donation_modal.bank_account); alert('Copiado!') }}>Copiar</button>
+                                    </div>
+                                </div>
 
+                                <div className="d-grid gap-2">
                                     <a
                                         href="https://www.paypal.me/Imandrox/1"
                                         target="_blank"
                                         rel="noopener noreferrer"
-                                        className="btn btn-warning w-100 rounded-pill py-3 fw-black d-flex align-items-center justify-content-center gap-2 hover-scale shadow-sm"
-                                        style={{ backgroundColor: '#f3b33e', border: 'none' }}
+                                        className="btn btn-warning w-100 rounded-pill py-3 fw-black d-flex align-items-center justify-content-center gap-2 hover-scale shadow-sm text-dark"
                                     >
-                                        <Heart size={20} fill="currentColor" /> {t.donation_modal.button_support}
+                                        <Heart size={20} fill="currentColor" className="text-danger" /> {t.donation_modal.button_support}
                                     </a>
-                                </div>
-
-                                {/* Collaborators */}
-                                <div className="pt-2 border-top">
-                                    <p className="text-center extra-small text-muted mb-2 fw-bold text-uppercase">{t.donation_modal.collaborators_title}</p>
-                                    <div className="d-flex flex-column gap-2 align-items-center">
-                                        <div className="bg-success bg-opacity-10 px-3 py-1 rounded-pill d-flex align-items-center gap-2 border border-success border-opacity-20">
-                                            <div className="bg-success rounded-circle" style={{ width: '8px', height: '8px' }}></div>
-                                            <span className="extra-small fw-bold text-success">{t.donation_modal.collaborator_marvin}</span>
-                                        </div>
-                                        {/* Removed collaborator count as requested */}
-                                    </div>
+                                    <button
+                                        onClick={handleClose}
+                                        className="btn btn-light w-100 rounded-pill py-2 fw-bold text-muted small"
+                                    >
+                                        Quizás más tarde
+                                    </button>
                                 </div>
                             </div>
                         </div>

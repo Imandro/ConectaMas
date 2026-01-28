@@ -11,7 +11,11 @@ import {
     Book,
     AlertTriangle,
     Heart,
-    Sparkles
+    Heart,
+    Sparkles,
+    Gamepad2,
+    Trophy,
+    BookOpen
 } from 'lucide-react';
 import { completeTutorialTour } from '../profile/actions';
 import Link from 'next/link';
@@ -65,6 +69,24 @@ const tourSteps: TourStep[] = [
         title: 'Tu Corazón Hoy',
         content: 'Comparte cómo te sientes. El app ajustará los devocionales para recomendarte lo que más necesitas.',
         icon: <Sparkles className="text-info" size={24} />
+    },
+    {
+        targetId: 'tour-games',
+        title: 'Zona de Juegos',
+        content: '¡Diviértete aprendiendo! Compite en Trivia Bíblica o juega Papa Caliente con otros usuarios en vivo.',
+        icon: <Gamepad2 className="text-primary" size={24} />
+    },
+    {
+        targetId: 'tour-leagues',
+        title: 'Ranking Semanal',
+        content: 'Gana puntos completando actividades y sube de liga. ¡Compite sanamente por un lugar en el podio!',
+        icon: <Trophy className="text-warning" size={24} />
+    },
+    {
+        targetId: 'tour-study',
+        title: 'Estudio Bíblico',
+        content: 'Únete a salas de estudio, discute temas profundos y crece junto a otros miembros de la comunidad.',
+        icon: <BookOpen className="text-success" size={24} />
     }
 ];
 

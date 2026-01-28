@@ -1,129 +1,206 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { getGameRooms, createGameRoom, joinGameRoom } from "./actions";
+import { Loader2, Plus, Users, Lock, Globe, Zap, PlayCircle, RefreshCw } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { createGameRoom, joinGameRoom } from "./actions";
-import { Zap, Play, Plus, Search } from "lucide-react";
-import { useLanguage } from "@/app/LanguageContext";
 import toast from "react-hot-toast";
+import Image from "next/image";
 
-export default function GamesLobbyPage() {
-    const { t } = useLanguage();
+export default function GamesDashboard() {
+    const [rooms, setRooms] = useState<any[]>([]);
+    const [loading, setLoading] = useState(true);
+    const [creating, setCreating] = useState(false);
+    const [refreshing, setRefreshing] = useState(false);
+
+    // Create Room Form
+    const [showCreateModal, setShowCreateModal] = useState(false);
+    const [newRoomName, setNewRoomName] = useState("");
+    const [isPrivate, setIsPrivate] = useState(false);
+
     const router = useRouter();
-    const [code, setCode] = useState("");
-    const [loading, setLoading] = useState(false);
 
-    const handleCreate = async () => {
-        setLoading(true);
-        const res = await createGameRoom();
-        if (res.success && res.room) {
-            router.push(`/dashboard/games/${res.room.id}`);
-        } else {
-            toast.error(res.error || "Error");
+    const fetchRooms = async () => {
+        setRefreshing(true);
+        const res = await getGameRooms();
+        if (res.success) {
+            setRooms(res.rooms || []);
         }
         setLoading(false);
+        setRefreshing(false);
     };
 
-    const handleJoin = async (e: React.FormEvent) => {
+    useEffect(() => {
+        fetchRooms();
+        const interval = setInterval(fetchRooms, 10000); // Poll every 10s
+        return () => clearInterval(interval);
+    }, []);
+
+    const handleCreateRoom = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (!code) return;
-        setLoading(true);
-        const res = await joinGameRoom(code.toUpperCase());
+        setCreating(true);
+
+        const res = await createGameRoom(newRoomName, isPrivate);
         if (res.success && res.roomId) {
-            router.push(`/dashboard/games/${res.roomId}`);
+            toast.success("Sala creada!");
+            router.push(`/dashboard/games/hot-potato/${res.roomId}`);
         } else {
-            toast.error(res.error || "Room not found");
+            toast.error("Error al crear sala");
         }
-        setLoading(false);
+        setCreating(false);
+        setShowCreateModal(false);
+    };
+
+    const handleJoinRoom = async (roomId: string) => {
+        const res = await joinGameRoom(roomId);
+        if (res.success) {
+            router.push(`/dashboard/games/hot-potato/${roomId}`);
+        } else {
+            toast.error("No se pudo entrar a la sala");
+        }
     };
 
     return (
-        <div className="container py-5 animate-fade-in">
-            <div className="text-center mb-5">
-                <div className="bg-primary-subtle d-inline-flex p-4 rounded-circle mb-3 shadow-sm">
-                    <Zap size={48} className="text-primary" />
+        <div className="container py-4 animate-fade-in">
+            {/* Header */}
+            <header className="mb-4 d-flex justify-content-between align-items-center">
+                <div>
+                    <h2 className="fw-black text-dark mb-1 d-flex align-items-center gap-2">
+                        <span className="bg-primary text-white p-2 rounded-3 d-flex"><PlayCircle size={28} /></span>
+                        Juegos
+                    </h2>
+                    <p className="text-secondary small m-0 fw-bold">Diviértete y aprende con la comunidad</p>
                 </div>
-                <h1 className="fw-bold">Juegos Conecta+</h1>
-                <p className="text-muted">Diviértete y gana XP con otros usuarios</p>
-            </div>
+                <button onClick={fetchRooms} disabled={refreshing} className="btn btn-light rounded-circle shadow-sm p-2">
+                    <RefreshCw size={20} className={refreshing ? "animate-spin" : ""} />
+                </button>
+            </header>
 
-            <div className="row g-4 justify-content-center">
-                {/* Hot Potato Card */}
-                <div className="col-md-5">
-                    <div className="card border-0 shadow-sm rounded-4 h-100 overflow-hidden transform-hover">
-                        <div className="bg-danger p-4 text-center text-white">
-                            <Zap size={40} />
-                            <h3 className="mt-2 fw-bold">Papa Caliente</h3>
-                        </div>
-                        <div className="card-body p-4 text-center">
-                            <p className="text-muted small mb-4">
-                                Responde rápido y pasa la bomba antes de que explote. ¡El último en pie gana!
-                            </p>
-
-                            <div className="d-grid gap-3">
-                                <button
-                                    onClick={handleCreate}
-                                    className="btn btn-danger btn-lg rounded-pill shadow-sm py-3 fw-bold d-flex align-items-center justify-content-center gap-2"
-                                    disabled={loading}
-                                >
-                                    <Plus size={20} /> Crear Partida
-                                </button>
-
-                                <form onSubmit={handleJoin} className="mt-3">
-                                    <div className="input-group input-group-lg shadow-sm rounded-pill overflow-hidden border">
-                                        <input
-                                            type="text"
-                                            placeholder="Código de Sala"
-                                            className="form-control border-0 px-4 fw-bold"
-                                            value={code}
-                                            onChange={(e) => setCode(e.target.value.toUpperCase())}
-                                        />
-                                        <button
-                                            className="btn btn-outline-danger border-0 px-4"
-                                            type="submit"
-                                            disabled={loading}
-                                        >
-                                            <Play size={20} />
-                                        </button>
-                                    </div>
-                                </form>
+            {/* Games Selection */}
+            <div className="row g-3 mb-5">
+                {/* Trivia Card */}
+                <div className="col-12 col-md-6">
+                    <div className="card border-0 shadow-sm bg-info bg-opacity-10 overflow-hidden hover-scale h-100" onClick={() => router.push('/dashboard/trivia')} style={{ cursor: 'pointer', borderRadius: '24px' }}>
+                        <div className="card-body p-4 position-relative">
+                            <div className="position-absolute top-0 end-0 p-3 opacity-25">
+                                <Zap size={80} className="text-info" />
+                            </div>
+                            <div className="position-relative z-10">
+                                <div className="bg-white p-2 rounded-3 d-inline-flex mb-3 shadow-sm text-info">
+                                    <Zap size={24} />
+                                </div>
+                                <h4 className="fw-bold text-dark mb-1">Trivia Bíblica</h4>
+                                <p className="text-muted small mb-0 fw-medium">Pon a prueba tu conocimiento diario.</p>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                {/* Coming Soon Card */}
-                <div className="col-md-5">
-                    <div className="card border-0 shadow-sm rounded-4 h-100 bg-light border-dashed">
-                        <div className="card-body d-flex flex-column align-items-center justify-content-center text-center p-5">
-                            <Plus size={48} className="text-muted mb-3 opacity-50" />
-                            <h4 className="text-muted fw-bold">Próximamente</h4>
-                            <p className="text-muted small">
-                                Trivia en tiempo real, Ahorcado Cristiano y más desafíos grupales.
-                            </p>
+                {/* Hot Potato Banner */}
+                <div className="col-12 col-md-6">
+                    <div className="card border-0 shadow-sm bg-danger bg-opacity-10 overflow-hidden hover-scale h-100" onClick={() => setShowCreateModal(true)} style={{ cursor: 'pointer', borderRadius: '24px' }}>
+                        <div className="card-body p-4 position-relative">
+                            {/* Decorative Emoji background */}
+                            <div className="position-absolute top-50 end-0 translate-middle-y me-3 opacity-25" style={{ fontSize: '5rem' }}>🥔</div>
+
+                            <div className="position-relative z-10">
+                                <div className="bg-white p-2 rounded-3 d-inline-flex mb-3 shadow-sm text-danger">
+                                    <PlayCircle size={24} />
+                                </div>
+                                <h4 className="fw-bold text-dark mb-1">Papa Caliente</h4>
+                                <p className="text-muted small mb-0 fw-medium">¡No dejes que explote en tu turno!</p>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <style jsx>{`
-                .transform-hover {
-                    transition: transform 0.3s ease;
-                }
-                .transform-hover:hover {
-                    transform: translateY(-5px);
-                }
-                .border-dashed {
-                    border: 2px dashed #dee2e6;
-                }
-                .animate-fade-in {
-                    animation: fadeIn 0.5s ease-out;
-                }
-                @keyframes fadeIn {
-                    from { opacity: 0; transform: translateY(20px); }
-                    to { opacity: 1; transform: translateY(0); }
-                }
-            `}</style>
+            {/* Active Rooms List */}
+            <div className="d-flex align-items-center justify-content-between mb-3 border-bottom pb-2">
+                <h5 className="fw-bold m-0 text-secondary"><Globe size={18} className="me-2 d-inline" />Salas en Vivo</h5>
+                <button className="btn btn-primary btn-sm rounded-pill px-3 fw-bold shadow-sm" onClick={() => setShowCreateModal(true)}>
+                    <Plus size={16} className="me-1" /> Crear Sala
+                </button>
+            </div>
+
+            {loading ? (
+                <div className="text-center py-5">
+                    <Loader2 size={32} className="animate-spin text-primary" />
+                </div>
+            ) : rooms.length === 0 ? (
+                <div className="text-center py-5 bg-light rounded-4 border border-dashed">
+                    <p className="text-muted fw-bold mb-2">No hay salas públicas activas</p>
+                    <button className="btn btn-outline-primary rounded-pill btn-sm" onClick={() => setShowCreateModal(true)}>
+                        ¡Sé el primero en crear una!
+                    </button>
+                </div>
+            ) : (
+                <div className="row g-3">
+                    {rooms.map((room) => (
+                        <div key={room.id} className="col-12 col-md-6">
+                            <div className="card border-0 shadow-sm h-100 position-relative overflow-hidden hover-scale" style={{ borderRadius: '20px', cursor: 'pointer' }} onClick={() => handleJoinRoom(room.id)}>
+                                <div className="card-body p-3 d-flex align-items-center justify-content-between">
+                                    <div>
+                                        <div className="d-flex align-items-center gap-2 mb-1">
+                                            <span className={`badge rounded-pill ${room.status === 'PLAYING' ? 'bg-danger' : 'bg-success'}`}>
+                                                {room.status === 'PLAYING' ? 'Jugando' : 'Esperando'}
+                                            </span>
+                                            {room.isPrivate && <Lock size={12} className="text-muted" />}
+                                        </div>
+                                        <h6 className="fw-bold mb-1 text-truncate" style={{ maxWidth: '180px' }}>{room.name || "Sala sin nombre"}</h6>
+                                        <div className="small text-muted d-flex align-items-center gap-1">
+                                            <Users size={14} /> {room._count.players} jugadores
+                                        </div>
+                                    </div>
+                                    <div className="bg-light rounded-circle p-2 text-primary">
+                                        <PlayCircle size={24} />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            )}
+
+            {/* Create Room Modal */}
+            {showCreateModal && (
+                <div className="position-fixed top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center" style={{ zIndex: 1080, backgroundColor: 'rgba(0,0,0,0.5)' }} onClick={() => setShowCreateModal(false)}>
+                    <div className="bg-white rounded-4 p-4 w-100 mx-3 shadow-lg animate-fade-in" style={{ maxWidth: '400px' }} onClick={e => e.stopPropagation()}>
+                        <h4 className="fw-bold mb-3">Crear Sala de Juego</h4>
+                        <form onSubmit={handleCreateRoom}>
+                            <div className="mb-3">
+                                <label className="form-label small fw-bold text-muted">Nombre de la Sala</label>
+                                <input
+                                    type="text"
+                                    className="form-control rounded-3 p-3 bg-light border-0 fw-bold"
+                                    placeholder="Ej. Los Vencedores"
+                                    value={newRoomName}
+                                    onChange={(e) => setNewRoomName(e.target.value)}
+                                    maxLength={20}
+                                />
+                            </div>
+                            <div className="form-check form-switch mb-4">
+                                <input
+                                    className="form-check-input"
+                                    type="checkbox"
+                                    id="privateSwitch"
+                                    checked={isPrivate}
+                                    onChange={(e) => setIsPrivate(e.target.checked)}
+                                />
+                                <label className="form-check-label fw-bold text-secondary" htmlFor="privateSwitch">Sala Privada</label>
+                            </div>
+                            <div className="d-grid gap-2">
+                                <button type="submit" className="btn btn-primary rounded-pill py-3 fw-bold shadow-sm" disabled={creating}>
+                                    {creating ? <Loader2 size={20} className="animate-spin mx-auto" /> : "Crear y Entrar"}
+                                </button>
+                                <button type="button" className="btn btn-light rounded-pill py-3 fw-bold text-muted" onClick={() => setShowCreateModal(false)}>
+                                    Cancelar
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }

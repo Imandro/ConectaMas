@@ -1,10 +1,10 @@
 "use client";
 
 import Link from 'next/link';
-import { Sun, AlertTriangle, Loader2, HelpCircle, ChevronRight, Shield, Users } from 'lucide-react';
+import { Sun, AlertTriangle, Loader2, HelpCircle, ChevronRight, Shield, Users, BookOpen, Trophy, Gamepad2 } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import DailyVerse from './components/DailyVerse';
-import DailyPrayerCard from '../components/DailyPrayerCard';
+// import DailyPrayerCard from '../components/DailyPrayerCard';
 import LlamiMascot from '../components/LlamiMascot';
 import FeatureTour from './components/FeatureTour';
 import AgePrompt from './components/AgePrompt';
@@ -35,6 +35,7 @@ interface DashboardStats {
     country?: string;
     age?: number;
     lastChallengeCompleted?: string;
+    league?: string;
 }
 
 import { useLanguage } from '@/app/LanguageContext';
@@ -305,9 +306,62 @@ export default function DashboardHome() {
                 </div>
             </section>
 
-            {/* Daily Prayer */}
-            <section className="mb-4" id="tour-prayer">
-                <DailyPrayerCard />
+            {/* Main Action Grid (New Navigation) */}
+            <section className="mb-4 animate-fade-in delay-100">
+                <div className="row g-3">
+                    {/* Games Card */}
+                    <div className="col-6">
+                        <Link href="/dashboard/games" className="text-decoration-none">
+                            <div id="tour-games" className="card border-0 shadow-sm h-100 bg-white hover-scale" style={{ borderRadius: '24px' }}>
+                                <div className="card-body p-3 d-flex flex-column align-items-center justify-content-center text-center" style={{ minHeight: '140px' }}>
+                                    <div className="bg-primary-subtle text-primary p-3 rounded-circle mb-3">
+                                        <Gamepad2 size={32} />
+                                    </div>
+                                    <h5 className="fw-extrabold text-dark m-0">Juegos</h5>
+                                    <small className="text-muted fw-bold">Trivia & Papa Caliente</small>
+                                </div>
+                            </div>
+                        </Link>
+                    </div>
+                    {/* Leagues Card */}
+                    <div className="col-6">
+                        <Link href="/dashboard/leagues" className="text-decoration-none">
+                            <div id="tour-leagues" className="card border-0 shadow-sm h-100 bg-white hover-scale" style={{ borderRadius: '24px' }}>
+                                <div className="card-body p-3 d-flex flex-column align-items-center justify-content-center text-center" style={{ minHeight: '140px' }}>
+                                    <div className="bg-warning-subtle text-warning p-3 rounded-circle mb-3">
+                                        <Trophy size={32} />
+                                    </div>
+                                    <h5 className="fw-extrabold text-dark m-0">{t.leagues.title}</h5>
+                                    <small className="text-muted fw-bold">{stats?.league || "Bronce"}</small>
+                                </div>
+                            </div>
+                        </Link>
+                    </div>
+                    {/* Bible Study Card (Full Width) */}
+                    <div className="col-12">
+                        <Link href="/dashboard/study" className="text-decoration-none">
+                            <div id="tour-study" className="card border-0 shadow-sm bg-white hover-scale overflow-hidden" style={{ borderRadius: '24px' }}>
+                                <div className="card-body p-4 d-flex align-items-center justify-content-between">
+                                    <div className="d-flex align-items-center gap-3">
+                                        <div className="bg-success-subtle text-success p-3 rounded-4">
+                                            <BookOpen size={28} />
+                                        </div>
+                                        <div>
+                                            <h5 className="fw-extrabold text-dark m-0">Estudio Bíblico</h5>
+                                            <p className="text-muted small m-0 fw-bold">Explora la palabra en grupo</p>
+                                        </div>
+                                    </div>
+                                    <div className="text-success bg-light p-2 rounded-circle">
+                                        <ChevronRight size={24} />
+                                    </div>
+                                </div>
+                                <div className="progress" style={{ height: '4px' }}>
+                                    <div className="progress-bar bg-success" role="progressbar" style={{ width: '35%' }} aria-valuenow={35} aria-valuemin={0} aria-valuemax={100}></div>
+                                </div>
+                            </div>
+                        </Link>
+                    </div>
+                </div>
             </section>
 
             {/* Spiritual Insights Value Add Section */}

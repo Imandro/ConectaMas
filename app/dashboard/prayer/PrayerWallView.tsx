@@ -68,6 +68,33 @@ export default function PrayerWallView({ initialPrayers, currentUserId }: Prayer
                 <p className="text-muted">No camines solo. Comparte tu carga y oremos unos por otros.</p>
             </div>
 
+            {/* Daily Prayer Section (Migrated from Home) */}
+            <div className="card border-0 shadow-sm rounded-4 mb-5 overflow-hidden animate-fade-in">
+                <div className="card-body p-0">
+                    <div className="row g-0">
+                        <div className="col-md-4 bg-primary text-white p-4 d-flex flex-column justify-content-center align-items-center text-center">
+                            <div className="bg-white bg-opacity-25 p-3 rounded-circle mb-3">
+                                <HeartHandshake size={40} />
+                            </div>
+                            <h4 className="fw-bold m-0">Oración Diaria</h4>
+                            <p className="small opacity-75 mt-2 mb-0">Unidos en un mismo espíritu</p>
+                        </div>
+                        <div className="col-md-8 p-4">
+                            <h5 className="fw-bold text-primary mb-3">Por la Paz y la Unidad</h5>
+                            <p className="text-muted fst-italic mb-4">
+                                "Señor, hoy te pedimos que tu paz, que sobrepasa todo entendimiento, guarde nuestros corazones y pensamientos. Ayúdanos a ser instrumentos de tu amor en medio de la discordia."
+                            </p>
+                            <div className="d-flex align-items-center justify-content-between">
+                                <span className="badge bg-primary-subtle text-primary rounded-pill px-3">Día 28</span>
+                                <button className="btn btn-sm btn-outline-primary rounded-pill fw-bold">
+                                    Amén (1.2k)
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             {/* Input Card */}
             <div className="card border-0 shadow-sm rounded-4 mb-5 overflow-hidden">
                 <div className="card-body p-4 bg-primary-subtle bg-opacity-10">

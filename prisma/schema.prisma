@@ -638,6 +638,9 @@ model Answer {
 model GameRoom {
   id          String   @id @default(cuid())
   code        String   @unique // 6 chars
+  name        String?  // [NEW] Room name
+  isPrivate   Boolean  @default(false) // [NEW] Public vs Private
+  type        String   @default("HOT_POTATO") // [NEW] Game type
   status      String   @default("WAITING") // WAITING, PLAYING, FINISHED
   
   currentTurnUserId String?

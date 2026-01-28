@@ -21,13 +21,8 @@ export default function DashboardNav() {
         { name: t.nav.home, href: '/dashboard', icon: Home },
         { name: t.nav.devotionals, href: '/dashboard/devotionals', icon: BookOpen },
         { name: t.nav.bible, href: '/dashboard/bible', icon: Book },
-        { name: t.nav.trivia, href: '/dashboard/trivia', icon: Zap },
-        { name: t.nav.community, href: '/dashboard/qa', icon: MessageCircle },
-        { name: t.nav.profile, href: '/dashboard/profile', icon: User },
-        { name: t.leagues.title, href: '/dashboard/leagues', icon: Trophy },
-        { name: "Juegos", href: '/dashboard/games', icon: Gamepad2 },
+        { name: "Pregunta", href: '/dashboard/qa', icon: MessageCircle }, // Was Community
         { name: "Oración", href: '/dashboard/prayer', icon: HeartHandshake },
-        { name: "Estudio Bíblico", href: '/dashboard/study', icon: BookOpen },
     ];
 
     useEffect(() => {
