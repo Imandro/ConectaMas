@@ -706,9 +706,6 @@ model PrayerUpdate {
   createdAt   DateTime @default(now())
 }
 
-  createdAt   DateTime @default(now())
-}
-
 model StudyRoom {
   id          String   @id @default(cuid())
   title       String
