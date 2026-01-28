@@ -17,6 +17,7 @@ interface StudyRoom {
     };
     _count: {
         messages: number;
+        participants: number;
     };
 }
 
@@ -105,15 +106,29 @@ export default function StudyLobbyView({ initialRooms }: StudyLobbyViewProps) {
                                     </div>
 
                                     <div className="d-flex justify-content-between align-items-center border-top pt-3 mt-auto">
-                                        <div className="text-muted small d-flex align-items-center gap-1">
-                                            <MessageCircle size={14} /> {room._count.messages} participaciones
+                                        <div className="text-muted small d-flex align-items-center gap-2">
+                                            <MessageCircle size={14} /> {room._count.messages} mensajes
+                                            <span className="mx-1">•</span>
+                                            <Users size={14} /> {room._count.participants}/20
                                         </div>
-                                        <button
-                                            onClick={() => router.push(`/dashboard/study/${room.id}`)}
-                                            className="btn btn-primary btn-sm rounded-pill px-4 fw-bold shadow-sm d-flex align-items-center gap-2"
-                                        >
-                                            <Play size={14} /> Unirse
-                                        </button>
+                                        <div className="d-flex gap-2">
+                                            <button
+                                                onClick={() => {
+                                                    const link = `${window.location.origin}/dashboard/study/${room.id}`;
+                                                    navigator.clipboard.writeText(link);
+                                                    toast.success("¡Link copiado!");
+                                                }}
+                                                className="btn btn-outline-primary btn-sm rounded-pill px-3"
+                                            >
+                                                Compartir
+                                            </button>
+                                            <button
+                                                onClick={() => router.push(`/dashboard/study/${room.id}`)}
+                                                className="btn btn-primary btn-sm rounded-pill px-4 fw-bold shadow-sm d-flex align-items-center gap-2"
+                                            >
+                                                <Play size={14} /> Unirse
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
