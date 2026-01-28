@@ -369,7 +369,19 @@ export const en = {
             ES: "Spain",
             US: "United States (USA)",
             BR: "Brazil"
-        }
+        },
+        // New Fields
+        edit_profile: "Edit Profile",
+        bio_label: "Bio",
+        bio_placeholder: "Tell us something about yourself...",
+        country_label: "Country",
+        type_label: "Account Type",
+        types: {
+            NORMAL: "User",
+            COOPERATOR: "Cooperator",
+            CHURCH: "Church",
+        },
+        banner_label: "Cover Image",
     },
     friends: {
         title: "Conecta+ Community",
