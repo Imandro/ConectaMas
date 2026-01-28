@@ -8,7 +8,8 @@ export default async function PrayerPage() {
     if (!session?.user?.id) redirect("/login");
 
     const res = await getGlobalPrayers();
-    const prayers = res.success ? res.prayers : [];
+    // TS might infer undefined if not narrowed correctly, so we force a fallback
+    const prayers = (res.success && res.prayers) ? res.prayers : [];
 
     return (
         <div className="container py-4">
