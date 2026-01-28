@@ -128,6 +128,19 @@ export default function DonationMissionsModal() {
                                     </div>
                                 </div>
 
+                                {/* PayPal Details Compact */}
+                                <div className="bg-light p-2 rounded-3 border border-light-subtle mb-3 position-relative overflow-hidden">
+                                    <div className="d-flex align-items-center justify-content-between mb-1">
+                                        <span className="extra-small fw-bold text-muted text-uppercase d-flex align-items-center gap-1" style={{ fontSize: '0.65rem' }}>
+                                            <Heart size={10} /> PayPal
+                                        </span>
+                                    </div>
+                                    <div className="d-flex align-items-center justify-content-between">
+                                        <p className="m-0 fw-black tracking-tighter text-dark font-monospace" style={{ fontSize: '0.9rem' }}>@Imandrox</p>
+                                        <a href="https://www.paypal.me/Imandrox/1" target="_blank" rel="noopener noreferrer" className="btn btn-sm btn-primary rounded-pill px-3 py-0 fw-bold" style={{ fontSize: '0.7rem' }}>Donar</a>
+                                    </div>
+                                </div>
+
                                 <div className="d-grid gap-2">
                                     <a
                                         href="https://www.paypal.me/Imandrox/1"
