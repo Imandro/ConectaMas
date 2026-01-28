@@ -43,7 +43,7 @@ export default function GamesDashboard() {
         const res = await createGameRoom(newRoomName, isPrivate);
         if (res.success && res.roomId) {
             toast.success("Sala creada!");
-            router.push(`/dashboard/games/hot-potato/${res.roomId}`);
+            router.push(`/dashboard/games/${res.roomId}`);
         } else {
             toast.error("Error al crear sala");
         }
@@ -54,7 +54,7 @@ export default function GamesDashboard() {
     const handleJoinRoom = async (roomId: string) => {
         const res = await joinGameRoom(roomId);
         if (res.success) {
-            router.push(`/dashboard/games/hot-potato/${roomId}`);
+            router.push(`/dashboard/games/${roomId}`);
         } else {
             toast.error("No se pudo entrar a la sala");
         }
