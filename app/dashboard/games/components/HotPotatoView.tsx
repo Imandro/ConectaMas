@@ -105,8 +105,37 @@ export default function HotPotatoView({ initialRoom, currentUserId, roomId }: Ho
                         </h4>
                         <p className="text-muted small mb-0">Sala: <span className="fw-bold text-primary">{room.code}</span></p>
                     </div>
-                    <div className="badge bg-light text-dark border p-2 d-flex align-items-center gap-2">
-                        <Users size={16} /> {room.players.length} Jugadores
+                    <div className="d-flex gap-2 align-items-center">
+                        <div className="badge bg-light text-dark border p-2 d-flex align-items-center gap-2">
+                            <Users size={16} /> {room.players.length} Jugadores
+                        </div>
+                        <button
+                            className="btn btn-sm btn-outline-primary rounded-pill"
+                            onClick={() => {
+                                const link = `${window.location.origin}/dashboard/games/${roomId}`;
+                                navigator.clipboard.writeText(link);
+                                toast.success("¡Link copiado! Compártelo con tus amigos.");
+                            }}
+                        >
+                            Compartir
+                        </button>
+                        <button
+                            className="btn btn-sm btn-outline-danger rounded-pill"
+                            onClick={async () => {
+                                if (confirm("¿Estás seguro que quieres abandonar la sala?")) {
+                                    const { leaveGameRoom } = await import("../actions");
+                                    const res = await leaveGameRoom(roomId);
+                                    if (res.success) {
+                                        toast.success("Has abandonado la sala");
+                                        window.location.href = "/dashboard/games";
+                                    } else {
+                                        toast.error("Error al salir");
+                                    }
+                                }
+                            }}
+                        >
+                            Abandonar
+                        </button>
                     </div>
                 </div>
 

@@ -106,6 +106,38 @@ export async function joinGameRoom(roomId: string) {
     }
 }
 
+export async function leaveGameRoom(roomId: string) {
+    const session = await auth();
+    if (!session?.user?.id) return { success: false, error: "Unauthorized" };
+
+    try {
+        // Remove player from room
+        await prisma.gamePlayer.deleteMany({
+            where: {
+                roomId,
+                userId: session.user.id
+            }
+        });
+
+        // Check if room is now empty and delete if so
+        const remainingPlayers = await prisma.gamePlayer.count({
+            where: { roomId }
+        });
+
+        if (remainingPlayers === 0) {
+            await prisma.gameRoom.delete({
+                where: { id: roomId }
+            });
+        }
+
+        revalidatePath("/dashboard/games");
+        return { success: true };
+    } catch (error) {
+        console.error("Error leaving room:", error);
+        return { success: false, error: "Failed to leave room" };
+    }
+}
+
 export async function getRoomStatus(roomId: string) {
     try {
         const room = await prisma.gameRoom.findUnique({

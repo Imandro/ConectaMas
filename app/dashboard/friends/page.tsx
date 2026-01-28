@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Search, UserPlus, MessageCircle, Heart, UserMinus, ArrowLeft, Loader2, Send, Check, Users } from "lucide-react";
+import { Search, UserPlus, MessageCircle, Heart, UserMinus, ArrowLeft, Loader2, Send, Check, Users, X } from "lucide-react";
 import Link from "next/link";
 import { searchUsers, addFriend, getFriends, removeFriend, sendSupportMessage, getSupportMessages, markSupportMessageRead } from "./actions";
 import { toast } from "react-hot-toast";
