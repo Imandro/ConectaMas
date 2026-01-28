@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { createPrayerRequest, prayForRequest } from "./actions";
-import { Heart, Send, Shield, User, MessageSquare, HandHelping } from "lucide-react";
+import { Heart, Send, Shield, User, MessageSquare, HeartHandshake } from "lucide-react";
 import Image from "next/image";
 import toast from "react-hot-toast";
 
@@ -63,7 +63,7 @@ export default function PrayerWallView({ initialPrayers, currentUserId }: Prayer
         <div className="max-w-3xl mx-auto py-4">
             <div className="text-center mb-5">
                 <h1 className="fw-bold d-flex align-items-center justify-content-center gap-2">
-                    <HandHelping className="text-primary" size={32} /> Muro de Oración Global
+                    <HeartHandshake className="text-primary" size={32} /> Muro de Oración Global
                 </h1>
                 <p className="text-muted">No camines solo. Comparte tu carga y oremos unos por otros.</p>
             </div>
@@ -146,7 +146,7 @@ export default function PrayerWallView({ initialPrayers, currentUserId }: Prayer
                                     onClick={() => handlePray(prayer.id)}
                                     className="btn btn-outline-danger btn-sm rounded-pill px-3 fw-bold d-flex align-items-center gap-2"
                                 >
-                                    <HandHelping size={16} /> ¡Me uno en oración!
+                                    <HeartHandshake size={16} /> ¡Me uno en oración!
                                 </button>
                             </div>
                         </div>
