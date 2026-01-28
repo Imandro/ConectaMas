@@ -52,11 +52,12 @@ export default function DashboardNav() {
     return (
         <>
             {/* Mobile Bottom Nav */}
+            {/* Mobile Bottom Nav */}
             <nav
                 className="navbar fixed-bottom navbar-light bg-white border-top d-md-none safe-area-bottom shadow-lg"
                 style={{ borderRadius: '20px 20px 0 0', borderTopColor: 'var(--border-color)' }}
             >
-                <div className="container-fluid d-flex justify-content-around">
+                <div className="container-fluid d-flex flex-nowrap overflow-x-auto gap-3 px-3 pb-2 justify-content-start no-scrollbar" style={{ scrollBehavior: 'smooth' }}>
                     {navItems.map((item) => {
                         const Icon = item.icon;
                         const isActive = pathname === item.href;
@@ -64,7 +65,8 @@ export default function DashboardNav() {
                             <Link
                                 key={item.href}
                                 href={item.href}
-                                className={`nav-link d-flex flex-column align-items-center small ${isActive ? 'text-primary' : 'text-muted'}`}
+                                className={`nav-link d-flex flex-column align-items-center small flex-shrink-0 ${isActive ? 'text-primary' : 'text-muted'}`}
+                                style={{ minWidth: '60px' }}
                             >
                                 <div className="position-relative">
                                     <Icon size={24} strokeWidth={isActive ? 2.5 : 2} />
@@ -74,11 +76,20 @@ export default function DashboardNav() {
                                         </span>
                                     )}
                                 </div>
-                                <span style={{ fontSize: '10px', marginTop: '4px', fontWeight: isActive ? 600 : 400 }}>{item.name}</span>
+                                <span className="text-truncate" style={{ fontSize: '10px', marginTop: '4px', fontWeight: isActive ? 600 : 400, maxWidth: '100%' }}>{item.name}</span>
                             </Link>
                         );
                     })}
                 </div>
+                <style jsx global>{`
+                    .no-scrollbar::-webkit-scrollbar {
+                        display: none;
+                    }
+                    .no-scrollbar {
+                        -ms-overflow-style: none;
+                        scrollbar-width: none;
+                    }
+                `}</style>
             </nav>
 
             {/* Desktop Sidebar (Hidden on Mobile) */}

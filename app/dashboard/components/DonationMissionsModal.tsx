@@ -129,13 +129,14 @@ export default function DonationMissionsModal() {
 
                                 {/* Payment Details */}
                                 <div className="space-y-3 mb-4">
-                                    <div className="bg-primary bg-opacity-5 p-3 rounded-4 border border-primary border-opacity-10 mb-2">
+                                    {/* Changed background to white with shadow for better visibility on all devices */}
+                                    <div className="bg-white p-3 rounded-4 border shadow-sm mb-2">
                                         <h6 className="fw-bold text-dark small mb-2 d-flex align-items-center gap-2">
                                             <CreditCard size={18} className="text-primary" /> {t.donation_modal.bank_details}
                                         </h6>
                                         <div className="ps-4">
-                                            <p className="m-0 fw-bold text-primary">{t.donation_modal.bank_name}</p>
-                                            <p className="m-0 fw-extrabold fs-5 tracking-tighter">{t.donation_modal.bank_account}</p>
+                                            <p className="m-0 fw-bold text-secondary small">{t.donation_modal.bank_name}</p>
+                                            <p className="m-0 fw-extrabold fs-5 tracking-tighter text-dark">{t.donation_modal.bank_account}</p>
                                         </div>
                                     </div>
 
@@ -158,7 +159,7 @@ export default function DonationMissionsModal() {
                                             <div className="bg-success rounded-circle" style={{ width: '8px', height: '8px' }}></div>
                                             <span className="extra-small fw-bold text-success">{t.donation_modal.collaborator_marvin}</span>
                                         </div>
-                                        <small className="text-muted opacity-50">{t.donation_modal.others_count || "+24 colaboradores más"}</small>
+                                        {/* Removed collaborator count as requested */}
                                     </div>
                                 </div>
                             </div>
