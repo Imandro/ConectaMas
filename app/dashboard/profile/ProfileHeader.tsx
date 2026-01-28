@@ -16,6 +16,7 @@ interface ProfileHeaderProps {
         username?: string | null;
         lastUsernameChange?: Date | string | null;
         age?: number | null;
+        bannerUrl?: string | null;
     };
 }
 
