@@ -109,6 +109,20 @@ export default function FriendsPage() {
                     <h2 className="fw-bold mb-0">{t.friends.title}</h2>
                     <p className="text-muted small mb-0">{t.friends.subtitle}</p>
                 </div>
+                <div className="ms-auto">
+                    <button
+                        className="btn btn-outline-primary rounded-pill d-flex align-items-center gap-2 btn-sm"
+                        onClick={() => {
+                            // Quick way to get link if we don't have username in state yet: Just prompt or use generic invite
+                            // Ideally, we fetch "me". For now, user knows their username.
+                            // Let's copy a generic message telling them to share their username.
+                            navigator.clipboard.writeText(`¡Únete a mi círculo en Conecta+! Mi usuario es: (ve a tu perfil para verlo)`);
+                            toast.success("¡Texto copiado! Agrega tu usuario y compártelo.");
+                        }}
+                    >
+                        <Heart size={16} /> <span className="d-none d-sm-inline">Invitar Amigos</span>
+                    </button>
+                </div>
             </div>
 
             <div className="row g-4">
@@ -279,6 +293,44 @@ export default function FriendsPage() {
                     </div >
                 </div >
             </div >
-        </div >
+            {/* Support Message Modal */}
+            {supportStatus.userId && (
+                <div className="position-fixed top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center bg-dark bg-opacity-75" style={{ zIndex: 1050 }}>
+                    <div className="card border-0 shadow-lg rounded-4 p-4" style={{ maxWidth: '400px', width: '90%' }}>
+                        <h5 className="fw-bold mb-2">{t.friends.support_modal_title}</h5>
+                        <p className="text-muted small mb-3">{t.friends.support_modal_p}</p>
+
+                        <input
+                            type="text"
+                            className="form-control mb-2"
+                            placeholder={t.friends.support_placeholder}
+                            maxLength={50}
+                            value={supportStatus.message}
+                            onChange={(e) => setSupportStatus(prev => ({ ...prev, message: e.target.value }))}
+                        />
+                        <div className="d-flex justify-content-between mb-3">
+                            <small className="text-muted">{supportStatus.message.length}/50</small>
+                        </div>
+
+                        <div className="d-flex gap-2">
+                            <button
+                                className="btn btn-primary flex-grow-1 rounded-pill fw-bold"
+                                onClick={handleSendSupport}
+                                disabled={!supportStatus.message.trim()}
+                            >
+                                <Send size={16} className="me-2" />
+                                {t.friends.support_send}
+                            </button>
+                            <button
+                                className="btn btn-light rounded-pill px-3"
+                                onClick={() => setSupportStatus({ userId: null, message: "" })}
+                            >
+                                <X size={20} />
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+        </div>
     );
 }

@@ -81,8 +81,8 @@ export async function sendSupportMessage(friendId: string, message: string) {
 
     if (!sender) throw new Error("User not found");
 
-    if (message.length > 100) {
-        return { error: "El mensaje es demasiado largo. Manténlo breve y de apoyo." };
+    if (message.length > 50) {
+        return { error: "El mensaje es demasiado largo (máx 50 caracteres). Manténlo breve." };
     }
 
     await prisma.supportMessage.create({
@@ -108,8 +108,13 @@ export async function getSupportMessages() {
 
     if (!user) return [];
 
+    const twentyFourHoursAgo = new Date(Date.now() - 24 * 60 * 60 * 1000);
+
     const messages = await prisma.supportMessage.findMany({
-        where: { receiverId: user.id },
+        where: {
+            receiverId: user.id,
+            createdAt: { gt: twentyFourHoursAgo }
+        },
         include: {
             sender: {
                 select: {

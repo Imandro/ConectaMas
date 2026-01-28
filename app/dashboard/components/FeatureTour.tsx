@@ -14,7 +14,8 @@ import {
     Sparkles,
     Gamepad2,
     Trophy,
-    BookOpen
+    BookOpen,
+    Users
 } from 'lucide-react';
 import { completeTutorialTour } from '../profile/actions';
 import Link from 'next/link';
@@ -86,6 +87,12 @@ const tourSteps: TourStep[] = [
         title: 'Estudio Bíblico',
         content: 'Únete a salas de estudio, discute temas profundos y crece junto a otros miembros de la comunidad.',
         icon: <BookOpen className="text-success" size={24} />
+    },
+    {
+        targetId: 'tour-friends',
+        title: 'Comunidad de Amigos',
+        content: 'Agrega amigos para orar unos por otros. Podrás enviar mensajes de apoyo que desaparecen en 24h.',
+        icon: <Users className="text-info" size={24} />
     }
 ];
 

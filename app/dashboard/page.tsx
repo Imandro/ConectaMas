@@ -166,7 +166,7 @@ export default function DashboardHome() {
                     <Link href="/dashboard/tutorials" className="btn btn-light bg-transparent border-0 rounded-circle p-1 text-dark hover-scale" title={t.nav.tutorials}>
                         <HelpCircle size={32} />
                     </Link>
-                    <Link href="/dashboard/friends" className="btn btn-light bg-transparent border-0 rounded-circle p-1 text-dark hover-scale" title={t.nav.friends}>
+                    <Link id="tour-friends" href="/dashboard/friends" className="btn btn-light bg-transparent border-0 rounded-circle p-1 text-dark hover-scale" title={t.nav.friends}>
                         <Users size={32} />
                     </Link>
                     <Link href="/dashboard/profile">

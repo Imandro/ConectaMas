@@ -110,6 +110,7 @@ model User {
   
   hostedStudies     StudyRoom[]    @relation("StudyHost")
   studyMessages     StudyMessage[]
+  roomParticipations StudyRoomParticipant[]
   
   gameParticipations GamePlayer[]
   leaderApplications LeaderApplication[]
@@ -705,6 +706,9 @@ model PrayerUpdate {
   createdAt   DateTime @default(now())
 }
 
+  createdAt   DateTime @default(now())
+}
+
 model StudyRoom {
   id          String   @id @default(cuid())
   title       String
@@ -717,9 +721,23 @@ model StudyRoom {
   status      String   @default("OPEN") // OPEN, CLOSED
   
   messages    StudyMessage[]
+  participants StudyRoomParticipant[]
   
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+}
+
+model StudyRoomParticipant {
+  id        String   @id @default(cuid())
+  roomId    String
+  room      StudyRoom @relation(fields: [roomId], references: [id], onDelete: Cascade)
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  role      String   @default("MEMBER")
+  joinedAt  DateTime @default(now())
+
+  @@unique([roomId, userId])
 }
 
 model StudyMessage {
