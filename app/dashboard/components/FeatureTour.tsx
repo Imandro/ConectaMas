@@ -11,7 +11,6 @@ import {
     Book,
     AlertTriangle,
     Heart,
-    Heart,
     Sparkles,
     Gamepad2,
     Trophy,
