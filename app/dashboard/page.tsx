@@ -410,18 +410,18 @@ export default function DashboardHome() {
                 }} />
             )}
 
-            {/* Support Ad - Moved to bottom */}
-            <section className="mb-5 pb-5 mt-5">
-                <SupportFundingAd />
-            </section>
-
-            <GrowthMilestoneModal />
-            <DonationMissionsModal />
-
-            <div className="pb-5"></div>
-
-            {stats && (
+            {/* Support Ad - Only show if not in tour */}
+            {stats && (stats.hasSeenTutorialTour && localStorage.getItem('tour_version') === '2026-01-new-dashboard') && (
                 <>
+                    <section className="mb-5 pb-5 mt-5">
+                        <SupportFundingAd />
+                    </section>
+
+                    <GrowthMilestoneModal />
+                    <DonationMissionsModal />
+
+                    <div className="pb-5"></div>
+
                     <AgePrompt missingAge={!stats.age} />
                     <WhatsappModal hasJoined={stats.hasJoinedWhatsapp} />
                     <InstagramModal hasFollowed={stats.hasFollowedInstagram} />
