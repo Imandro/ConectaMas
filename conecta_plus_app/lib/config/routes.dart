@@ -8,9 +8,9 @@ import '../features/dashboard/presentation/tutorials_screen.dart';
 import '../features/devotionals/presentation/devotionals_screen.dart';
 import '../features/devotionals/presentation/devotional_detail_screen.dart';
 import '../features/community/presentation/community_screen.dart';
-import '../features/community/presentation/community_posts_screen.dart';
-import '../features/community/presentation/community_post_detail_screen.dart';
-import '../features/community/presentation/new_post_screen.dart';
+import '../features/community/presentation/question_list_screen.dart';
+import '../features/community/presentation/ask_question_screen.dart';
+import '../features/community/presentation/question_detail_screen.dart';
 import '../features/friends/presentation/friends_screen.dart';
 import '../features/landing/presentation/landing_screen.dart';
 import '../features/auth/presentation/login_screen.dart';
@@ -21,6 +21,16 @@ import '../features/bible/presentation/bible_screen.dart';
 import '../features/trivia/presentation/trivia_screen.dart';
 import '../features/profile/presentation/profile_screen.dart';
 import '../features/challenges/presentation/challenge_screen.dart';
+import '../features/groups/presentation/groups_landing_screen.dart';
+import '../features/groups/presentation/create_group_screen.dart';
+import '../features/groups/presentation/join_group_screen.dart';
+import '../features/groups/presentation/group_detail_screen.dart';
+import '../features/gamification/presentation/league_ranking_screen.dart';
+import '../features/gamification/presentation/games_lobby_screen.dart';
+import '../features/gamification/presentation/potato_game_screen.dart';
+import '../features/prayer/presentation/prayer_wall_screen.dart';
+import '../features/study/presentation/study_lobby_screen.dart';
+import '../features/study/presentation/study_room_screen.dart';
 import '../shared/navigation/scaffold_with_navbar.dart';
 
 final router = GoRouter(
@@ -92,6 +102,66 @@ final router = GoRouter(
                   path: 'friends',
                   builder: (context, state) => const FriendsScreen(),
                 ),
+                GoRoute(
+                  path: 'groups',
+                  builder: (context, state) => const GroupsLandingScreen(),
+                  routes: [
+                    GoRoute(
+                      path: 'create',
+                      builder: (context, state) {
+                        // Pass simple boolean extra? Or just use default constructor param handling
+                        // Using query param for simplicity or state extra
+                        final extra = state.extra as bool? ?? false;
+                        return CreateGroupScreen(isLeader: extra);
+                      },
+                    ),
+                    GoRoute(
+                      path: 'join',
+                      builder: (context, state) => const JoinGroupScreen(),
+                    ),
+                    GoRoute(
+                      path: ':groupId',
+                      builder: (context, state) {
+                        final id = state.pathParameters['groupId']!;
+                        return GroupDetailScreen(groupId: id);
+                      },
+                    ),
+                  ],
+                ),
+                GoRoute(
+                  path: 'leagues',
+                  builder: (context, state) => const LeagueRankingScreen(),
+                ),
+                GoRoute(
+                  path: 'games',
+                  builder: (context, state) => const GamesLobbyScreen(),
+                  routes: [
+                    GoRoute(
+                      path: 'potato/:roomId',
+                      builder: (context, state) {
+                        final id = state.pathParameters['roomId']!;
+                        return PotatoGameScreen(roomId: id);
+                      },
+                    ),
+                  ],
+                ),
+                GoRoute(
+                  path: 'prayer',
+                  builder: (context, state) => const PrayerWallScreen(),
+                ),
+                GoRoute(
+                  path: 'study',
+                  builder: (context, state) => const StudyLobbyScreen(),
+                  routes: [
+                    GoRoute(
+                      path: ':roomId',
+                      builder: (context, state) {
+                        final id = state.pathParameters['roomId']!;
+                        return StudyRoomScreen(roomId: id);
+                      },
+                    ),
+                  ],
+                ),
               ],
             ),
           ],
@@ -132,7 +202,7 @@ final router = GoRouter(
             ),
           ],
         ),
-        // Tab 5: Community
+        // Tab 5: Community (Q&A)
         StatefulShellBranch(
           routes: [
             GoRoute(
@@ -141,20 +211,23 @@ final router = GoRouter(
               routes: [
                 GoRoute(
                   path: 'new',
-                  builder: (context, state) => const NewPostScreen(),
+                  builder: (context, state) => const AskQuestionScreen(),
                 ),
                 GoRoute(
                   path: ':categoryId',
                   builder: (context, state) {
                     final categoryId = state.pathParameters['categoryId']!;
-                    return CommunityPostsScreen(categoryId: categoryId);
+                    // If it's a UUID/ID format, it's likely a post detail.
+                    // But usually categories are strings like 'peticiones-oracion'.
+                    // For now, let's treat it as a list if it matches a category.
+                    return QuestionListScreen(categoryId: categoryId);
                   },
                   routes: [
                     GoRoute(
-                      path: 'post/:postId',
+                      path: 'post/:id',
                       builder: (context, state) {
-                        final postId = state.pathParameters['postId']!;
-                        return CommunityPostDetailScreen(postId: postId);
+                        final id = state.pathParameters['id']!;
+                        return QuestionDetailScreen(questionId: id);
                       },
                     ),
                   ],

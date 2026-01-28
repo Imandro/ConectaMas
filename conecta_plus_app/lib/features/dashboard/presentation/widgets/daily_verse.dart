@@ -3,11 +3,14 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 
+import '../../../../l10n/app_localizations.dart';
+
 class DailyVerse extends StatelessWidget {
   const DailyVerse({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     const backgroundImages = [
       "https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&q=80&w=1600",
       "https://images.unsplash.com/photo-1470252649378-9c29740c9fa8?auto=format&fit=crop&q=80&w=1600",
@@ -141,7 +144,7 @@ class DailyVerse extends StatelessWidget {
               bottom: 16,
               right: 20,
               child: Text(
-                'Conecta+ BETA',
+                'Conecta+',
                 style: GoogleFonts.fredoka(
                   color: Colors.white.withValues(alpha: 0.25),
                   fontSize: 14,

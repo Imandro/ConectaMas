@@ -72,6 +72,8 @@ export default function DailyVerse() {
             const parts = verseReference.split(" ");
             let book = parts[0];
             let chapterAndVerse = parts[1];
+            const shareText = `"${verse.text}" (${verse.reference})\n\nLeído en Conecta+ 🙏`;
+            const shareTitle = "Versículo del Día - Conecta+";
 
             // Handle books with numbers like "1 Juan"
             if (!isNaN(parseInt(parts[0])) && parts.length > 2) {
@@ -126,7 +128,7 @@ export default function DailyVerse() {
                 </div>
 
                 <div className="position-absolute bottom-0 end-0 p-3 opacity-50">
-                    <span className="small text-white-50">Conecta+ BETA</span>
+                    <span className="small text-white-50">Conecta+</span>
                 </div>
             </div>
         </Link>

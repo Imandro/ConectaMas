@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import '../../../../config/theme.dart';
+import '../../../../l10n/app_localizations.dart';
 
 class DashboardHeader extends StatelessWidget {
   const DashboardHeader({super.key});

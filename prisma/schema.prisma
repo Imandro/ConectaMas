@@ -41,7 +41,8 @@ model User {
   hasSeenCommunityTutorial Boolean @default(false)
   hasJoinedWhatsapp      Boolean @default(false)
   hasFollowedInstagram   Boolean @default(false)
-  country                String?
+  // country moved down to layout fields section
+
   leaderPhone            String?   // For SC kontakt
   age                    Int?
   lastUsernameChange     DateTime?
@@ -76,9 +77,42 @@ model User {
   forumNotifications ForumNotification[]
   isPremium     Boolean   @default(false)
 
-  // Support System
+  // receivedSupport moved down to relations section
+
+  
+  // New Layout Fields
+  bio           String?
+  profileType   String    @default("NORMAL") // NORMAL, COOPERATOR, CHURCH
+  bannerUrl     String?
+  country       String?   @default("AR") // Default to something standard or make optional
+  
+  // Gamification & Groups
+  league        String    @default("BRONZE")
+  weeklyXP      Int       @default(0)
+  totalXP       Int       @default(0)
+  
+  // Relations
   sentSupport     SupportMessage[] @relation("SentSupport")
   receivedSupport SupportMessage[] @relation("ReceivedSupport")
+
+  sentRequests      Friendship[] @relation("SentRequests")
+  receivedRequests  Friendship[] @relation("ReceivedRequests")
+  
+  ledGroups         Group[]      @relation("GroupLeader")
+  groupMemberships  GroupMember[]
+  groupTaskCompletions GroupTaskCompletion[]
+  
+  questions         Question[]
+  answers           Answer[]
+  
+  prayerRequests    PrayerRequest[]
+  prayerUpdates     PrayerUpdate[]
+  
+  hostedStudies     StudyRoom[]    @relation("StudyHost")
+  studyMessages     StudyMessage[]
+  
+  gameParticipations GamePlayer[]
+  leaderApplications LeaderApplication[]
 }
 
 model SupportMessage {
@@ -458,4 +492,240 @@ model Announcement {
   stats       String?  // JSON string e.g. '[{"label": "Visitas", "value": "20k"}]'
   publishedAt DateTime @default(now())
   expiresAt   DateTime?
+}
+// ... existing models ...
+
+// [NEW] Enhanced User Fields & Gamification
+// Add to User model:
+// bio String?
+// profileType String @default("NORMAL") // NORMAL, COOPERATOR, CHURCH
+// bannerUrl String?
+// league String @default("BRONZE") // BRONZE, SILVER, GOLD, DIAMOND, LEGEND
+// weeklyXP Int @default(0)
+// totalXP Int @default(0)
+
+// [NEW] Social System
+model Friendship {
+  id          String   @id @default(cuid())
+  requesterId String
+  requester   User     @relation("SentRequests", fields: [requesterId], references: [id], onDelete: Cascade)
+  addresseeId String
+  addressee   User     @relation("ReceivedRequests", fields: [addresseeId], references: [id], onDelete: Cascade)
+  status      String   @default("PENDING") // PENDING, ACCEPTED, IGNORED
+  createdAt   DateTime @default(now())
+
+  @@unique([requesterId, addresseeId])
+}
+
+// [NEW] Groups & Leadership
+model LeaderApplication {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  answers   String   // JSON string containing survey answers
+  status    String   @default("PENDING") // PENDING, APPROVED, REJECTED
+  createdAt DateTime @default(now())
+}
+
+model Group {
+  id          String   @id @default(cuid())
+  name        String
+  description String?
+  image       String?
+  motto       String?
+  
+  leaderId    String
+  leader      User     @relation("GroupLeader", fields: [leaderId], references: [id])
+  
+  accessCode  String   @unique // e.g. "GRUPO-8X2"
+  privacy     String   @default("PRIVATE") // PUBLIC, PRIVATE
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  members     GroupMember[]
+  tasks       GroupTask[]
+  resources   GroupResource[]
+  needs       GroupNeed[]
+}
+
+model GroupMember {
+  id        String   @id @default(cuid())
+  groupId   String
+  group     Group    @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  role      String   @default("MEMBER") // MEMBER, ADMIN
+  joinedAt  DateTime @default(now())
+
+  @@unique([groupId, userId])
+}
+
+model GroupResource {
+  id        String   @id @default(cuid())
+  groupId   String
+  group     Group    @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  title     String
+  content   String   // URL or Text
+  type      String   // LINK, PDF, TEXT
+  createdAt DateTime @default(now())
+}
+
+model GroupTask {
+  id          String   @id @default(cuid())
+  groupId     String
+  group       Group    @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  
+  title       String
+  description String?
+  type        String   // READING, ACTIVITY, ENCOURAGEMENT
+  date        DateTime // Target date
+  
+  createdAt   DateTime @default(now())
+  
+  completions GroupTaskCompletion[]
+}
+
+model GroupTaskCompletion {
+  id        String   @id @default(cuid())
+  taskId    String
+  task      GroupTask @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  userId    String
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  completedAt DateTime @default(now())
+  
+  @@unique([taskId, userId])
+}
+
+// [NEW] Q&A System (Replacing Forums / Community)
+model Question {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  title       String
+  content     String
+  
+  views       Int      @default(0)
+  likes       Int      @default(0)
+  isTrending  Boolean  @default(false)
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  answers     Answer[]
+  tags        String?  // JSON or comma separated
+}
+
+model Answer {
+  id          String   @id @default(cuid())
+  questionId  String
+  question    Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  content     String
+  likes       Int      @default(0)
+  isAccepted  Boolean  @default(false)
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+// [NEW] Games (Hot Potato / Trivia)
+model GameRoom {
+  id          String   @id @default(cuid())
+  code        String   @unique // 6 chars
+  status      String   @default("WAITING") // WAITING, PLAYING, FINISHED
+  
+  currentTurnUserId String?
+  bombExplodesAt    DateTime?
+  
+  activeQuestionId  String?
+  // We can link to TriviaQuestion here if needed, or store JSON
+  currentQuestion   String? // JSON snapshot of question
+  
+  createdAt   DateTime @default(now())
+  
+  players     GamePlayer[]
+}
+
+model GamePlayer {
+  id          String   @id @default(cuid())
+  roomId      String
+  room        GameRoom @relation(fields: [roomId], references: [id], onDelete: Cascade)
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  status      String   @default("ALIVE") // ALIVE, ELIMINATED, WINNER
+  score       Int      @default(0)
+  
+  joinedAt    DateTime @default(now())
+  
+  @@unique([roomId, userId])
+}
+model GroupNeed {
+  id        String   @id @default(cuid())
+  groupId   String
+  group     Group    @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  content   String
+  isAnonymous Boolean @default(true)
+  userId    String?  // Optional, if we want to track who sent it internally
+  createdAt DateTime @default(now())
+}
+
+model PrayerRequest {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  content     String
+  isAnonymous Boolean  @default(false)
+  isGlobal    Boolean  @default(false)
+  
+  prayCount   Int      @default(0)
+  prayers     PrayerUpdate[]
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model PrayerUpdate {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  requestId   String
+  request     PrayerRequest @relation(fields: [requestId], references: [id], onDelete: Cascade)
+  
+  createdAt   DateTime @default(now())
+}
+
+model StudyRoom {
+  id          String   @id @default(cuid())
+  title       String
+  description String?
+  theme       String?
+  
+  hostId      String
+  host        User     @relation("StudyHost", fields: [hostId], references: [id])
+  
+  status      String   @default("OPEN") // OPEN, CLOSED
+  
+  messages    StudyMessage[]
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model StudyMessage {
+  id        String   @id @default(cuid())
+  roomId    String
+  room      StudyRoom @relation(fields: [roomId], references: [id], onDelete: Cascade)
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  content   String
+  createdAt DateTime @default(now())
 }

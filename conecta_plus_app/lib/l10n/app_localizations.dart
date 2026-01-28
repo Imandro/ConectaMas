@@ -15,7 +15,7 @@ class AppLocalizations {
 
   static final Map<String, Map<String, String>> _localizedValues = {
     'es': {
-      'title': 'Conecta+ BETA',
+      'title': 'Conecta+',
       'welcome': 'Bienvenido',
       'challengeTitle': 'Reto Diario',
       'days': 'Días',
@@ -95,9 +95,31 @@ class AppLocalizations {
       'no_ads': 'Sin anuncios de Google en toda la app',
       'premium_button': '¡Ser Premium por \$1 USD!',
       'paypal_note': '*Al donar, mándame tu email por PayPal para activar tu insignia.',
+      'growth_milestone_title': '¡Vamos Creciendo!',
+      'growth_milestone_subtitle': 'Conectados por el mundo',
+      'growth_milestone_goal': 'Meta Misional',
+      'growth_milestone_completed': '{progress}% completado',
+      'growth_milestone_button': '¡Genial!',
+      'donation_missions_title': 'Apoya la Misión',
+      'donation_missions_subtitle': 'PROYECTO CONECTA+',
+      'donation_missions_desc': 'Tu apoyo nos permite seguir llevando esperanza a miles de jóvenes. Actualmente estamos trabajando en misiones especiales fuera de nuestras fronteras.',
+      'donation_mission_brasil': '🇧🇷 Pro-Brasil',
+      'donation_mission_nicaragua': '🇳🇮 Pro-Nicaragua',
+      'donation_bank_details': 'Depósito Bancario (Nicaragua):',
+      'donation_bank_name': 'Banco Lafise',
+      'donation_bank_account': 'Cuenta: 132247471',
+      'donation_collaborators': 'Colaboradores Destacados:',
+      'donation_collaborator_marvin': 'Marvin Cruz Alvarado (¡Donó!)',
+      'sos_title': 'Respira.',
+      'sos_subtitle': 'No has fallado todavía. Y aunque lo hicieras, Él te sigue amando. Pero hagamos una pausa de 1 minuto juntos.',
+      'sos_disclaimer': 'AVISO: Conecta+ es una herramienta espiritual. En caso de emergencia grave, llama al 911.',
+      'empty_struggles_title': '¡Todo en orden!',
+      'empty_struggles_desc': 'No tienes batallas activas. ¡Sigue así!',
+      'empty_community_title': '¡Sé el primero!',
+      'empty_community_desc': 'Aún no hay publicaciones en esta categoría. Comparte algo hoy.',
     },
     'en': {
-      'title': 'Conecta+ BETA',
+      'title': 'Conecta+',
       'welcome': 'Welcome',
       'challengeTitle': 'Daily Challenge',
       'days': 'Days',
@@ -177,9 +199,31 @@ class AppLocalizations {
       'no_ads': 'No Google ads in the whole app',
       'premium_button': 'Be Premium for \$1 USD!',
       'paypal_note': '*When donating, send me your email via PayPal to activate your badge.',
+      'growth_milestone_title': "We're Growing!",
+      'growth_milestone_subtitle': 'Connected around the world',
+      'growth_milestone_goal': 'Missional Goal',
+      'growth_milestone_completed': '{progress}% completed',
+      'growth_milestone_button': 'Great!',
+      'donation_missions_title': 'Support the Mission',
+      'donation_missions_subtitle': 'CONECTA+ PROJECT',
+      'donation_missions_desc': 'Your support allows us to continue bringing hope to thousands of young people. We are currently working on special missions outside our borders.',
+      'donation_mission_brasil': '🇧🇷 Pro-Brazil',
+      'donation_mission_nicaragua': '🇳🇮 Pro-Nicaragua',
+      'donation_bank_details': 'Bank Deposit (Nicaragua):',
+      'donation_bank_name': 'Lafise Bank',
+      'donation_bank_account': 'Account: 132247471',
+      'donation_collaborators': 'Featured Collaborators:',
+      'donation_collaborator_marvin': 'Marvin Cruz Alvarado (Donated!)',
+      'sos_title': 'Breathe.',
+      'sos_subtitle': 'You haven\'t failed yet. And even if you did, He still loves you. But let\'s take a 1-minute pause together.',
+      'sos_disclaimer': 'NOTICE: Conecta+ is a spiritual tool. In case of serious emergency, call 911.',
+      'empty_struggles_title': 'All in order!',
+      'empty_struggles_desc': 'You have no active struggles. Keep it up!',
+      'empty_community_title': 'Be the first!',
+      'empty_community_desc': 'There are no posts in this category yet. Share something today.',
     },
     'pt': {
-      'title': 'Conecta+ BETA',
+      'title': 'Conecta+',
       'welcome': 'Bem-vindo',
       'challengeTitle': 'Desafio Diário',
       'days': 'Dias',
@@ -259,6 +303,28 @@ class AppLocalizations {
       'no_ads': 'Sem anúncios do Google em todo o app',
       'premium_button': 'Ser Premium por \$1 USD!',
       'paypal_note': '*Ao doar, envie-me seu e-mail pelo PayPal para ativar seu selo.',
+      'growth_milestone_title': 'Estamos Crescendo!',
+      'growth_milestone_subtitle': 'Conectados pelo mundo',
+      'growth_milestone_goal': 'Meta Missional',
+      'growth_milestone_completed': '{progress}% concluído',
+      'growth_milestone_button': 'Legal!',
+      'donation_missions_title': 'Apoie a Missão',
+      'donation_missions_subtitle': 'PROJETO CONECTA+',
+      'donation_missions_desc': 'Seu apoio nos permite continuar levando esperança a milhares de jovens. Atualmente estamos trabalhando em missões especiais fora de nossas fronteiras.',
+      'donation_mission_brasil': '🇧🇷 Pro-Brasil',
+      'donation_mission_nicaragua': '🇳🇮 Pro-Nicaragua',
+      'donation_bank_details': 'Depósito Bancário (Nicarágua):',
+      'donation_bank_name': 'Banco Lafise',
+      'donation_bank_account': 'Conta: 132247471',
+      'donation_collaborators': 'Colaboradores de Destaque:',
+      'donation_collaborator_marvin': 'Marvin Cruz Alvarado (Doou!)',
+      'sos_title': 'Respire.',
+      'sos_subtitle': 'Você ainda não falhou. E mesmo que falhasse, Ele ainda te ama. Mas vamos fazer uma pausa de 1 minuto juntos.',
+      'sos_disclaimer': 'AVISO: Conecta+ é uma ferramenta espiritual. Em caso de emergência grave, ligue para 911.',
+      'empty_struggles_title': 'Tudo em ordem!',
+      'empty_struggles_desc': 'Você não tem batalhas ativas. Continue assim!',
+      'empty_community_title': 'Seja o primeiro!',
+      'empty_community_desc': 'Ainda não há publicações nesta categoria. Compartilhe algo hoje.',
     },
   };
 
@@ -347,6 +413,32 @@ class AppLocalizations {
   String get noAds => _localizedValues[locale.languageCode]!['no_ads']!;
   String get premiumButton => _localizedValues[locale.languageCode]!['premium_button']!;
   String get paypalNote => _localizedValues[locale.languageCode]!['paypal_note']!;
+  String get growthMilestoneTitle => _localizedValues[locale.languageCode]!['growth_milestone_title']!;
+  String get growthMilestoneSubtitle => _localizedValues[locale.languageCode]!['growth_milestone_subtitle']!;
+  String get growthMilestoneGoal => _localizedValues[locale.languageCode]!['growth_milestone_goal']!;
+  String growthMilestoneCompleted(String progress) => 
+      _localizedValues[locale.languageCode]!['growth_milestone_completed']!.replaceAll('{progress}', progress);
+  String get growthMilestoneButton => _localizedValues[locale.languageCode]!['growth_milestone_button']!;
+  
+  String get donationMissionsTitle => _localizedValues[locale.languageCode]!['donation_missions_title']!;
+  String get donationMissionsSubtitle => _localizedValues[locale.languageCode]!['donation_missions_subtitle']!;
+  String get donationMissionsDesc => _localizedValues[locale.languageCode]!['donation_missions_desc']!;
+  String get donationMissionBrasil => _localizedValues[locale.languageCode]!['donation_mission_brasil']!;
+  String get donationMissionNicaragua => _localizedValues[locale.languageCode]!['donation_mission_nicaragua']!;
+  String get donationBankDetails => _localizedValues[locale.languageCode]!['donation_bank_details']!;
+  String get donationBankName => _localizedValues[locale.languageCode]!['donation_bank_name']!;
+  String get donationBankAccount => _localizedValues[locale.languageCode]!['donation_bank_account']!;
+  String get donationCollaborators => _localizedValues[locale.languageCode]!['donation_collaborators']!;
+  String get donationCollaboratorMarvin => _localizedValues[locale.languageCode]!['donation_collaborator_marvin']!;
+  
+  String get sosTitle => _localizedValues[locale.languageCode]!['sos_title']!;
+  String get sosSubtitle => _localizedValues[locale.languageCode]!['sos_subtitle']!;
+  String get sosDisclaimer => _localizedValues[locale.languageCode]!['sos_disclaimer']!;
+  
+  String get emptyStrugglesTitle => _localizedValues[locale.languageCode]!['empty_struggles_title']!;
+  String get emptyStrugglesDesc => _localizedValues[locale.languageCode]!['empty_struggles_desc']!;
+  String get emptyCommunityTitle => _localizedValues[locale.languageCode]!['empty_community_title']!;
+  String get emptyCommunityDesc => _localizedValues[locale.languageCode]!['empty_community_desc']!;
 
   // Parameterized strings
   String repliesCount(int count) => _localizedValues[locale.languageCode]!['replies_count']!.replaceAll('{count}', count.toString());

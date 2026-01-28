@@ -8,7 +8,7 @@ import LlamiMascot from "@/app/components/LlamiMascot";
 
 import { useLanguage } from '@/app/LanguageContext';
 
-const getSpiritualStatusOptions = (t: any) => [
+const getSpiritualStatusOptions = (t: Record<string, any>) => [
     {
         id: "ACCEPT",
         title: t.onboarding.status_accept,
@@ -39,7 +39,7 @@ const getSpiritualStatusOptions = (t: any) => [
     }
 ];
 
-const getSinOptions = (t: any) => [
+const getSinOptions = (t: Record<string, any>) => [
     t.onboarding.sin_pride,
     t.onboarding.sin_anger,
     t.onboarding.sin_porn,
@@ -52,7 +52,7 @@ const getSinOptions = (t: any) => [
     t.onboarding.sin_other
 ];
 
-const getProblemOptions = (t: any) => [
+const getProblemOptions = (t: Record<string, any>) => [
     t.onboarding.prob_anxiety,
     t.onboarding.prob_depression,
     t.onboarding.prob_loneliness,
@@ -65,7 +65,7 @@ const getProblemOptions = (t: any) => [
     t.onboarding.prob_other
 ];
 
-const getConnectionOptions = (t: any) => [
+const getConnectionOptions = (t: Record<string, any>) => [
     t.onboarding.conn_pray,
     t.onboarding.conn_bible,
     t.onboarding.conn_fast,
@@ -663,7 +663,7 @@ export default function OnboardingSteps() {
 
                                 <div className="p-4 rounded-4 mb-4 text-start" style={{ backgroundColor: 'rgba(255, 255, 255, 0.05)', border: '1px solid rgba(255, 255, 255, 0.1)' }}>
                                     <p className="text-white mb-0 italic">
-                                        "{t.onboarding.final_verse}"
+                                        &quot;{t.onboarding.final_verse}&quot;
                                         <br /><span className="text-warning small">{t.onboarding.final_verse_cite}</span>
                                     </p>
                                 </div>

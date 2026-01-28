@@ -14,19 +14,41 @@ const fredoka = Fredoka({
 });
 
 export const metadata: Metadata = {
-    title: 'Conecta+ BETA | Acompañamiento Espiritual',
+    title: 'Conecta+ | Acompañamiento Espiritual',
     description: 'No estás solo. Dios sigue contigo. Una app para crecer y sanar.',
     manifest: '/manifest.json', // Para PWA
     appleWebApp: {
         capable: true,
         statusBarStyle: 'default',
-        title: 'Conecta+ BETA',
+        title: 'Conecta+',
     },
     formatDetection: {
         telephone: false,
     },
     other: {
         'google-adsense-account': 'ca-pub-9787254836039496',
+    },
+    openGraph: {
+        title: 'Conecta+ | Tu Espacio de Crecimiento Espiritual',
+        description: 'Encuentra paz, comunidad y herramientas para fortalecer tu fe diaria. No estás solo.',
+        url: 'https://conectamas.app',
+        siteName: 'Conecta+',
+        images: [
+            {
+                url: '/og-image.png',
+                width: 1200,
+                height: 630,
+                alt: 'Conecta+ Home',
+            },
+        ],
+        locale: 'es_ES',
+        type: 'website',
+    },
+    twitter: {
+        card: 'summary_large_image',
+        title: 'Conecta+ | Acompañamiento Espiritual',
+        description: 'Una app para crecer, sanar y conectar con Dios.',
+        images: ['/og-image.png'],
     },
 };
 

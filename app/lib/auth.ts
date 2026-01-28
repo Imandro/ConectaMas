@@ -2,6 +2,8 @@ import NextAuth from "next-auth";
 import { authConfig } from "./auth.config";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { prisma } from "@/app/lib/prisma";
+import { User, Session } from "next-auth";
+import { JWT } from "next-auth/jwt";
 import bcrypt from "bcryptjs";
 
 console.log("NextAuth initialized with AUTH_SECRET status:", !!(process.env.AUTH_SECRET || process.env.NEXTAUTH_SECRET));
@@ -16,7 +18,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
                 password: { label: "Password", type: "password" }
             },
             async authorize(credentials) {
-                const identifier = (credentials.identifier || (credentials as any).email) as string;
+                const identifier = (credentials.identifier as string || (credentials as { email?: string }).email) as string;
                 const password = credentials.password as string;
 
                 if (!identifier || !password) return null;
@@ -64,14 +66,14 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         newUser: '/auth/register',
     },
     callbacks: {
-        async jwt({ token, user, trigger, session }: { token: any, user: any, trigger?: string, session?: any }) {
+        async jwt({ token, user, trigger, session }: { token: JWT, user: User | null, trigger?: "signIn" | "signUp" | "update", session?: Session }) {
             // On sign in, populate token with minimal user data
             if (user) {
                 console.log("[Auth] JWT Callback: Initializing token for user:", user.email);
-                token.id = user.id;
+                token.id = user.id || '';
                 // Store only first name to save space
                 token.name = user.name ? user.name.split(' ')[0] : 'Usuario';
-                token.email = user.email;
+                token.email = user.email || '';
                 token.picture = user.image;
             }
 
@@ -96,7 +98,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 
             return token;
         },
-        async session({ session, token }: { session: any, token: any }) {
+        async session({ session, token }: { session: Session, token: JWT }) {
             if (token && session.user) {
                 session.user.id = token.sub || token.id;
                 session.user.name = token.name;

@@ -54,6 +54,28 @@ export async function updateProfileImage(base64Image: string) {
     revalidatePath('/dashboard/profile');
 }
 
+revalidatePath('/dashboard');
+revalidatePath('/dashboard/profile');
+}
+
+export async function updateBannerImage(base64Image: string) {
+    const session = await auth();
+    if (!session?.user?.email) throw new Error("Unauthorized");
+
+    // Limit to ~300KB
+    if (base64Image.length > 400000) {
+        throw new Error("Imagen demasiado pesada. Máximo 300KB aprox.");
+    }
+
+    await prisma.user.update({
+        where: { email: session.user.email },
+        data: { bannerUrl: base64Image }
+    });
+
+    revalidatePath('/dashboard');
+    revalidatePath('/dashboard/profile');
+}
+
 export async function updateLeaderPhone(phone: string) {
     const session = await auth();
     if (!session?.user?.email) throw new Error("Unauthorized");

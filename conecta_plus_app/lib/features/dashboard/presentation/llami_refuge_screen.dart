@@ -49,6 +49,37 @@ class _LlamiRefugeScreenState extends ConsumerState<LlamiRefugeScreen> {
     }
   }
 
+  void _showRenameDialog() {
+    final TextEditingController controller =
+        TextEditingController(text: ref.read(mascotProvider).name);
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text('Renombrar a Llami', style: GoogleFonts.fredoka()),
+        content: TextField(
+          controller: controller,
+          decoration: const InputDecoration(hintText: 'Nuevo nombre'),
+          autofocus: true,
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Cancelar'),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              if (controller.text.isNotEmpty) {
+                ref.read(mascotProvider.notifier).setName(controller.text);
+                Navigator.pop(context);
+              }
+            },
+            child: const Text('Guardar'),
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final mascot = ref.watch(mascotProvider);
@@ -76,11 +107,34 @@ class _LlamiRefugeScreenState extends ConsumerState<LlamiRefugeScreen> {
                     ),
                   ),
                   const SizedBox(width: 16),
-                  Text('El Refugio de Llami',
-                      style: GoogleFonts.fredoka(
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                          color: AppTheme.primary)),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('El Refugio de Llami',
+                          style: GoogleFonts.fredoka(
+                              fontSize: 24,
+                              fontWeight: FontWeight.bold,
+                              color: AppTheme.primary)),
+                      Row(
+                        children: [
+                          Text('Hablando con ',
+                              style: GoogleFonts.fredoka(
+                                  fontSize: 14, color: Colors.blueGrey)),
+                          Text(mascot.name,
+                              style: GoogleFonts.fredoka(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.blue)),
+                          IconButton(
+                            icon: const Icon(Icons.edit, size: 16),
+                            onPressed: _showRenameDialog,
+                            padding: EdgeInsets.zero,
+                            constraints: const BoxConstraints(),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                   const Spacer(),
                   Container(
                     padding: const EdgeInsets.all(8),

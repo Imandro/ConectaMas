@@ -1,17 +1,55 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../config/theme.dart';
+import '../../../l10n/app_localizations.dart';
+import '../data/community_provider.dart';
+import '../../auth/data/auth_provider.dart';
 
-class NewPostScreen extends StatefulWidget {
+class NewPostScreen extends ConsumerStatefulWidget {
   const NewPostScreen({super.key});
 
   @override
-  State<NewPostScreen> createState() => _NewPostScreenState();
+  ConsumerState<NewPostScreen> createState() => _NewPostScreenState();
 }
 
-class _NewPostScreenState extends State<NewPostScreen> {
+class _NewPostScreenState extends ConsumerState<NewPostScreen> {
+  final _titleController = TextEditingController();
+  final _contentController = TextEditingController();
   bool _isAnonymous = false;
   String? _selectedCategoryId;
+  bool _isLoading = false;
+
+  Future<void> _publish() async {
+    if (_titleController.text.isEmpty ||
+        _contentController.text.isEmpty ||
+        _selectedCategoryId == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Por favor, completa todos los campos')),
+      );
+      return;
+    }
+
+    setState(() => _isLoading = true);
+    final user = ref.read(authProvider).user;
+    if (user == null) return;
+
+    final success = await ref.read(qaProvider.notifier).createQuestion(
+          user.id,
+          _titleController.text,
+          _contentController.text,
+        );
+
+    setState(() => _isLoading = false);
+
+    if (success && mounted) {
+      context.pop();
+    } else if (mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Error al publicar')),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,16 +70,22 @@ class _NewPostScreenState extends State<NewPostScreen> {
         actions: [
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-            child: ElevatedButton(
-              onPressed: () => context.pop(),
-              style: ElevatedButton.styleFrom(
-                  backgroundColor: AppTheme.primary,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20))),
-              child: Text(l10n.publish,
-                  style: const TextStyle(
-                      color: Colors.white, fontWeight: FontWeight.bold)),
-            ),
+            child: _isLoading
+                ? const Center(
+                    child: SizedBox(
+                        width: 20,
+                        height: 20,
+                        child: CircularProgressIndicator(strokeWidth: 2)))
+                : ElevatedButton(
+                    onPressed: _publish,
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: AppTheme.primary,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20))),
+                    child: Text(l10n.publish,
+                        style: const TextStyle(
+                            color: Colors.white, fontWeight: FontWeight.bold)),
+                  ),
           ),
         ],
       ),
@@ -92,6 +136,7 @@ class _NewPostScreenState extends State<NewPostScreen> {
                     fontSize: 14,
                     color: AppTheme.textMuted)),
             TextField(
+              controller: _titleController,
               decoration: InputDecoration(
                 hintText: l10n.hintTitle,
                 border: const UnderlineInputBorder(),
@@ -107,6 +152,7 @@ class _NewPostScreenState extends State<NewPostScreen> {
                     fontSize: 14,
                     color: AppTheme.textMuted)),
             TextField(
+              controller: _contentController,
               decoration: InputDecoration(
                 hintText: l10n.hintContent,
                 border: InputBorder.none,

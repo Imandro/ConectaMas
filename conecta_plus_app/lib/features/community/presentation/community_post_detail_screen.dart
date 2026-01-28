@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../../config/theme.dart';
+import '../../../l10n/app_localizations.dart';
 
 class CommunityPostDetailScreen extends StatelessWidget {
   final String postId;
@@ -46,7 +47,8 @@ class CommunityPostDetailScreen extends StatelessWidget {
                       const CircleAvatar(
                           radius: 12,
                           backgroundColor: Colors.grey,
-                          child: Icon(Icons.person, size: 14, color: Colors.white)),
+                          child: Icon(Icons.person,
+                              size: 14, color: Colors.white)),
                       const SizedBox(width: 8),
                       Text(l10n.anonymous,
                           style: const TextStyle(
@@ -79,10 +81,16 @@ class CommunityPostDetailScreen extends StatelessWidget {
                       'Estaremos orando por ustedes. Dios es fiel y Él abrirá puertas donde parece que no las hay.',
                       'Hace 1h',
                       isCounselor: true),
-                  _buildComment(context, 'Carlos G.',
-                      '¡Ánimo! El Salmo 23 nos recuerda que nada nos faltará.', 'Hace 45m'),
-                  _buildComment(context, 'Leticia S.',
-                      'Me uno en oración por tu familia. ¡Dios proveerá!', 'Hace 10m'),
+                  _buildComment(
+                      context,
+                      'Carlos G.',
+                      '¡Ánimo! El Salmo 23 nos recuerda que nada nos faltará.',
+                      'Hace 45m'),
+                  _buildComment(
+                      context,
+                      'Leticia S.',
+                      'Me uno en oración por tu familia. ¡Dios proveerá!',
+                      'Hace 10m'),
                 ],
               ),
             ),
@@ -121,7 +129,8 @@ class CommunityPostDetailScreen extends StatelessWidget {
                 CircleAvatar(
                   backgroundColor: AppTheme.primary,
                   child: IconButton(
-                      icon: const Icon(Icons.send, color: Colors.white, size: 20),
+                      icon:
+                          const Icon(Icons.send, color: Colors.white, size: 20),
                       onPressed: () {}),
                 ),
               ],
@@ -132,8 +141,8 @@ class CommunityPostDetailScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildComment(BuildContext context, String author, String content,
-      String time,
+  Widget _buildComment(
+      BuildContext context, String author, String content, String time,
       {bool isCounselor = false}) {
     final l10n = AppLocalizations.of(context);
     return Padding(
@@ -144,11 +153,13 @@ class CommunityPostDetailScreen extends StatelessWidget {
           Row(
             children: [
               Text(author,
-                  style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
+                  style: const TextStyle(
+                      fontWeight: FontWeight.bold, fontSize: 14)),
               if (isCounselor) ...[
                 const SizedBox(width: 8),
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                   decoration: BoxDecoration(
                       color: Colors.green.withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(4)),
@@ -166,11 +177,14 @@ class CommunityPostDetailScreen extends StatelessWidget {
                 ),
               ],
               const Spacer(),
-              Text(time, style: const TextStyle(color: Colors.grey, fontSize: 11)),
+              Text(time,
+                  style: const TextStyle(color: Colors.grey, fontSize: 11)),
             ],
           ),
           const SizedBox(height: 8),
-          Text(content, style: const TextStyle(color: Colors.black87, fontSize: 14, height: 1.4)),
+          Text(content,
+              style: const TextStyle(
+                  color: Colors.black87, fontSize: 14, height: 1.4)),
         ],
       ),
     );

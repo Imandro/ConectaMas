@@ -11,7 +11,7 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await initializeDateFormatting('es');
   Intl.defaultLocale = 'es';
-  runApp(const ProviderScope(child: ConectaPlusBetaApp()));
+  runApp(const ProviderScope(child: ConectaPlusApp()));
 }
 
 class MyCustomScrollBehavior extends MaterialScrollBehavior {
@@ -22,13 +22,13 @@ class MyCustomScrollBehavior extends MaterialScrollBehavior {
   }
 }
 
-class ConectaPlusBetaApp extends StatelessWidget {
-  const ConectaPlusBetaApp({super.key});
+class ConectaPlusApp extends StatelessWidget {
+  const ConectaPlusApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
-      title: 'Conecta+ BETA',
+      title: 'Conecta+',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.lightTheme,
       routerConfig: router,

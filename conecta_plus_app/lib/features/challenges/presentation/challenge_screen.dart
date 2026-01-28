@@ -5,6 +5,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../config/theme.dart';
+import '../../../../l10n/app_localizations.dart';
 import '../data/challenge_data.dart';
 import '../data/challenge_provider.dart';
 import '../../dashboard/presentation/widgets/llami_mascot.dart';
@@ -33,7 +34,7 @@ class _ChallengeScreenState extends ConsumerState<ChallengeScreen> {
   void _checkAnswer() {
     final challengeState = ref.read(challengeProvider);
     final currentChallenge = challengeState.currentChallenges[_currentIndex];
-    
+
     bool correct = false;
     if (currentChallenge.type == ChallengeType.verse) {
       correct = _selectedOption == currentChallenge.missingWords[0];
@@ -55,7 +56,8 @@ class _ChallengeScreenState extends ConsumerState<ChallengeScreen> {
 
   void _nextChallenge() {
     final challengeState = ref.read(challengeProvider);
-    if (_currentIndex < 4 && _currentIndex < challengeState.currentChallenges.length - 1) {
+    if (_currentIndex < 4 &&
+        _currentIndex < challengeState.currentChallenges.length - 1) {
       setState(() {
         _currentIndex++;
         _selectedOption = null;
@@ -71,14 +73,15 @@ class _ChallengeScreenState extends ConsumerState<ChallengeScreen> {
     // 1. Save locally
     // ignore: unused_local_variable
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setString('last_challenge_completed', DateTime.now().toIso8601String());
+    await prefs.setString(
+        'last_challenge_completed', DateTime.now().toIso8601String());
 
     // 2. Try to sync if online (Best Effort)
     try {
       // Assuming Dio is available or we use http
       // final dio = Dio();
       // await dio.post('https://conectamas-app.com/api/challenge/complete', ...);
-      // Since we don't have the exact baseURL handy without digging, 
+      // Since we don't have the exact baseURL handy without digging,
       // we'll leave this as a TODO for the backend integration phase.
       // But the LOCAL persistence will make the UI feel responsive.
     } catch (e) {
@@ -128,9 +131,11 @@ class _ChallengeScreenState extends ConsumerState<ChallengeScreen> {
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppTheme.primary,
                   padding: const EdgeInsets.symmetric(vertical: 16),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16)),
                 ),
-                child: Text('CONTINUAR', style: GoogleFonts.fredoka(fontWeight: FontWeight.bold)),
+                child: Text('CONTINUAR',
+                    style: GoogleFonts.fredoka(fontWeight: FontWeight.bold)),
               ),
             ),
           ],
@@ -146,11 +151,6 @@ class _ChallengeScreenState extends ConsumerState<ChallengeScreen> {
     if (_selectedOption != null) return LlamiExpression.thinking;
     return LlamiExpression.happy;
   }
-
-import 'package:flutter/material.dart';
-import '../../../../l10n/app_localizations.dart';
-
-// ... other imports
 
   @override
   Widget build(BuildContext context) {
@@ -207,7 +207,7 @@ import '../../../../l10n/app_localizations.dart';
                           width: 80,
                           height: 80,
                           child: LlamiMascot(
-                            streak: 7, 
+                            streak: 7,
                             expression: _getMascotExpression(),
                           ),
                         ),
@@ -218,24 +218,29 @@ import '../../../../l10n/app_localizations.dart';
                             decoration: BoxDecoration(
                               color: Colors.white,
                               borderRadius: BorderRadius.circular(16),
-                              border: Border.all(color: Colors.grey.shade300, width: 2),
+                              border: Border.all(
+                                  color: Colors.grey.shade300, width: 2),
                             ),
                             child: Text(
-                              _showingFeedback 
-                                ? (_isCorrect! ? '¡Excelente trabajo!' : '¡Oops! Sigue intentándolo.')
-                                : '¿Cuál es la palabra correcta?',
+                              _showingFeedback
+                                  ? (_isCorrect!
+                                      ? '¡Excelente trabajo!'
+                                      : '¡Oops! Sigue intentándolo.')
+                                  : '¿Cuál es la palabra correcta?',
                               style: GoogleFonts.fredoka(fontSize: 14),
                             ),
-                          ).animate(target: _showingFeedback ? 1 : 0).scale(duration: 200.ms),
+                          )
+                              .animate(target: _showingFeedback ? 1 : 0)
+                              .scale(duration: 200.ms),
                         ),
                       ],
                     ),
                     const SizedBox(height: 32),
 
                     Text(
-                      currentChallenge.type == ChallengeType.verse 
-                        ? 'Completa el versículo:' 
-                        : '¿Es esto una verdad bíblica?',
+                      currentChallenge.type == ChallengeType.verse
+                          ? 'Completa el versículo:'
+                          : '¿Es esto una verdad bíblica?',
                       style: GoogleFonts.fredoka(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
@@ -243,7 +248,7 @@ import '../../../../l10n/app_localizations.dart';
                       ),
                     ),
                     const SizedBox(height: 16),
-                    
+
                     Container(
                       key: _cardKey,
                       width: double.infinity,
@@ -251,7 +256,8 @@ import '../../../../l10n/app_localizations.dart';
                       decoration: BoxDecoration(
                         color: AppTheme.accent.withValues(alpha: 0.1),
                         borderRadius: BorderRadius.circular(24),
-                        border: Border.all(color: AppTheme.accent.withValues(alpha: 0.3)),
+                        border: Border.all(
+                            color: AppTheme.accent.withValues(alpha: 0.3)),
                       ),
                       child: Column(
                         children: [
@@ -277,9 +283,11 @@ import '../../../../l10n/app_localizations.dart';
                           ],
                         ],
                       ),
-                    ).animate(target: (_showingFeedback && !_isCorrect!) ? 1 : 0)
-                     .shake(duration: 400.ms, hz: 6),
-                    
+                    )
+                        .animate(
+                            target: (_showingFeedback && !_isCorrect!) ? 1 : 0)
+                        .shake(duration: 400.ms, hz: 6),
+
                     const Spacer(),
 
                     // Options Grid - Word Bank Style
@@ -296,19 +304,26 @@ import '../../../../l10n/app_localizations.dart';
                           child: AnimatedContainer(
                             duration: 200.ms,
                             decoration: BoxDecoration(
-                              color: isSelected ? AppTheme.primary.withValues(alpha: 0.1) : Colors.white,
+                              color: isSelected
+                                  ? AppTheme.primary.withValues(alpha: 0.1)
+                                  : Colors.white,
                               borderRadius: BorderRadius.circular(16),
                               border: Border.all(
-                                color: isSelected ? AppTheme.primary : Colors.grey.shade300,
+                                color: isSelected
+                                    ? AppTheme.primary
+                                    : Colors.grey.shade300,
                                 width: 2,
                               ),
-                              boxShadow: isSelected ? [] : [
-                                BoxShadow(
-                                  color: Colors.black.withValues(alpha: 0.1),
-                                  offset: const Offset(0, 4),
-                                  blurRadius: 0,
-                                )
-                              ],
+                              boxShadow: isSelected
+                                  ? []
+                                  : [
+                                      BoxShadow(
+                                        color:
+                                            Colors.black.withValues(alpha: 0.1),
+                                        offset: const Offset(0, 4),
+                                        blurRadius: 0,
+                                      )
+                                    ],
                             ),
                             child: Center(
                               child: Text(
@@ -316,12 +331,16 @@ import '../../../../l10n/app_localizations.dart';
                                 style: GoogleFonts.fredoka(
                                   fontSize: 16,
                                   fontWeight: FontWeight.bold,
-                                  color: isSelected ? AppTheme.primary : Colors.black87,
+                                  color: isSelected
+                                      ? AppTheme.primary
+                                      : Colors.black87,
                                 ),
                               ),
                             ),
                           ),
-                        ).animate(target: isSelected ? 1 : 0).scale(begin: const Offset(1, 1), end: const Offset(0.95, 0.95));
+                        ).animate(target: isSelected ? 1 : 0).scale(
+                            begin: const Offset(1, 1),
+                            end: const Offset(0.95, 0.95));
                       }).toList(),
                     ),
                   ],
@@ -333,9 +352,9 @@ import '../../../../l10n/app_localizations.dart';
             Container(
               padding: const EdgeInsets.all(24),
               decoration: BoxDecoration(
-                color: _showingFeedback 
-                  ? (_isCorrect! ? Colors.green.shade50 : Colors.red.shade50)
-                  : Colors.white,
+                color: _showingFeedback
+                    ? (_isCorrect! ? Colors.green.shade50 : Colors.red.shade50)
+                    : Colors.white,
                 border: Border(top: BorderSide(color: Colors.grey.shade200)),
               ),
               child: Column(
@@ -366,20 +385,22 @@ import '../../../../l10n/app_localizations.dart';
                     width: double.infinity,
                     height: 56,
                     child: ElevatedButton(
-                      onPressed: _selectedOption == null 
-                        ? null 
-                        : (_showingFeedback ? _nextChallenge : _checkAnswer),
+                      onPressed: _selectedOption == null
+                          ? null
+                          : (_showingFeedback ? _nextChallenge : _checkAnswer),
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: _showingFeedback 
-                          ? (_isCorrect! ? Colors.green : Colors.red)
-                          : AppTheme.primary,
+                        backgroundColor: _showingFeedback
+                            ? (_isCorrect! ? Colors.green : Colors.red)
+                            : AppTheme.primary,
                         foregroundColor: Colors.white,
                         elevation: 0,
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(16)),
                       ),
                       child: Text(
                         _showingFeedback ? 'CONTINUAR' : 'COMPROBAR',
-                        style: GoogleFonts.fredoka(fontWeight: FontWeight.bold, fontSize: 16),
+                        style: GoogleFonts.fredoka(
+                            fontWeight: FontWeight.bold, fontSize: 16),
                       ),
                     ),
                   ),

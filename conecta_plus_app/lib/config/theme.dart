@@ -5,6 +5,7 @@ class AppTheme {
   // Brand Colors
   static const Color primary = Color(0xFF0B1B32);
   static const Color accent = Color(0xFFFBBF24); // Gold/Yellow
+  static const Color secondary = accent;
   static const Color background = Color(0xFFF8FAFC);
   static const Color surface = Color(0xFFFFFFFF);
   static const Color error = Color(0xFFEF4444);

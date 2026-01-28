@@ -13,20 +13,35 @@ export default function ClientProfileActions({
     userRole,
     initialLeaderPhone,
     initialName,
-    initialUsername
+    initialUsername,
+    initialBio,
+    initialCountry,
+    initialProfileType
 }: {
     userRole: string,
     initialLeaderPhone?: string | null,
     initialName?: string | null,
-    initialUsername?: string | null
+    initialUsername?: string | null,
+    initialBio?: string | null,
+    initialCountry?: string | null,
+    initialProfileType?: string | null
 }) {
     const { t, language, region, setLanguage, setRegion } = useLanguage();
     const [isResetting, setIsResetting] = useState(false);
     const [leaderPhone, setLeaderPhone] = useState(initialLeaderPhone || "");
     const [name, setName] = useState(initialName || "");
     const [username, setUsername] = useState(initialUsername || "");
+
+    // New States
+    const [bio, setBio] = useState(initialBio || "");
+    const [country, setCountry] = useState(initialCountry || "");
+    const [profileType, setProfileType] = useState(initialProfileType || "NORMAL");
+
     const [isUpdatingPhone, setIsUpdatingPhone] = useState(false);
     const [isUpdatingProfile, setIsUpdatingProfile] = useState(false);
+
+    // Import new actions
+    const { updateBio, updateCountry, updateProfileType } = require("./actions");
     const sessionContext = useSession();
     const update = sessionContext?.update;
     const router = useRouter();
@@ -76,6 +91,33 @@ export default function ClientProfileActions({
                 const res = await updateUsername(username);
                 if (!res.success) {
                     alert(`${t.profile.username_label}: ${getErrorMessage(res)}`);
+                    return;
+                }
+            }
+
+            // Update Bio
+            if (bio !== initialBio) {
+                const res = await updateBio(bio);
+                if (!res.success) {
+                    alert(`${t.profile.bio_label}: ${getErrorMessage(res)}`);
+                    return;
+                }
+            }
+
+            // Update Country
+            if (country !== initialCountry) {
+                const res = await updateCountry(country);
+                if (!res.success) {
+                    alert(`${t.profile.country_label}: ${getErrorMessage(res)}`);
+                    return;
+                }
+            }
+
+            // Update Profile Type
+            if (profileType !== initialProfileType) {
+                const res = await updateProfileType(profileType);
+                if (!res.success) {
+                    alert(`${t.profile.type_label}: ${getErrorMessage(res)}`);
                     return;
                 }
             }
@@ -130,6 +172,53 @@ export default function ClientProfileActions({
                         />
                     </div>
                     <small className="text-muted" style={{ fontSize: '0.75rem' }}>{t.profile.username_hint}</small>
+                </div>
+
+                {/* Bio Field */}
+                <div className="mb-3">
+                    <label className="form-label small text-muted">{t.profile.bio_label}</label>
+                    <textarea
+                        className="form-control"
+                        rows={3}
+                        placeholder={t.profile.bio_placeholder}
+                        value={bio}
+                        onChange={(e) => setBio(e.target.value)}
+                    />
+                </div>
+
+                {/* Country Field */}
+                <div className="mb-3">
+                    <label className="form-label small text-muted">{t.profile.country_label}</label>
+                    <select
+                        className="form-select"
+                        value={country}
+                        onChange={(e) => setCountry(e.target.value)}
+                    >
+                        <option value="">Seleccionar País...</option>
+                        <option value="AR">Argentina</option>
+                        <option value="MX">México</option>
+                        <option value="CO">Colombia</option>
+                        <option value="ES">España</option>
+                        <option value="US">Estados Unidos</option>
+                        <option value="CL">Chile</option>
+                        <option value="PE">Perú</option>
+                        <option value="VE">Venezuela</option>
+                        <option value="Other">Otro / Other</option>
+                    </select>
+                </div>
+
+                {/* Profile Type Field */}
+                <div className="mb-3">
+                    <label className="form-label small text-muted">{t.profile.type_label}</label>
+                    <select
+                        className="form-select"
+                        value={profileType}
+                        onChange={(e) => setProfileType(e.target.value)}
+                    >
+                        <option value="NORMAL">{t.profile.types.NORMAL}</option>
+                        <option value="COOPERATOR">{t.profile.types.COOPERATOR}</option>
+                        <option value="CHURCH">{t.profile.types.CHURCH}</option>
+                    </select>
                 </div>
 
                 <button

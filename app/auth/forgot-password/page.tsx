@@ -66,7 +66,7 @@ export default function ForgotPasswordPage() {
                 <div className="position-relative" style={{ width: '100px', height: '40px', margin: '0 auto 1rem' }}>
                     <Image
                         src="/logo.png"
-                        alt="Conecta+ BETA Logo"
+                        alt="Conecta+ Logo"
                         fill
                         style={{ objectFit: 'contain' }}
                     />

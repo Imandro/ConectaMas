@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import '../../../../config/theme.dart';
+import '../../../../l10n/app_localizations.dart';
 import '../../data/struggle_provider.dart';
 import '../../data/models/struggle_model.dart';
 

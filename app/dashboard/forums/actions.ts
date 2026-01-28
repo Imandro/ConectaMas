@@ -31,3 +31,20 @@ export async function getCommunityTutorialStatus() {
 
     return user?.hasSeenCommunityTutorial ?? false;
 }
+
+export async function getForumCategories() {
+    try {
+        const categories = await prisma.forumCategory.findMany({
+            include: {
+                _count: {
+                    select: { posts: true }
+                }
+            },
+            orderBy: { name: 'asc' }
+        });
+
+        return { success: true, categories };
+    } catch {
+        return { success: false, categories: [] };
+    }
+}

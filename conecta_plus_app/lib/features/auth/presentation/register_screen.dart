@@ -127,7 +127,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                                     size: 60)),
                             const SizedBox(height: 32),
                             Text(
-                              'Únete a Conecta+ BETA',
+                              'Únete a Conecta+',
                               style: GoogleFonts.fredoka(
                                   fontSize: 28,
                                   fontWeight: FontWeight.bold,
@@ -292,7 +292,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                 ),
                 const SizedBox(height: 40),
                 Text(
-                  '© 2025 Conecta+ BETA\nTu espacio seguro.',
+                  '© 2025 Conecta+\nTu espacio seguro.',
                   textAlign: TextAlign.center,
                   style: GoogleFonts.fredoka(
                       color: const Color(0xFF94A3B8), fontSize: 13),

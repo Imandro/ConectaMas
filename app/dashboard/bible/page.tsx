@@ -1,4 +1,9 @@
-"use client";
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+    title: 'Biblia Digital | Conecta+',
+    description: 'Explora las Sagradas Escrituras de forma fácil y accesible. Lee, estudia y medita en la Palabra de Dios diariamente.',
+};
 
 import { useState, useEffect } from 'react';
 import { Book, ChevronLeft, ChevronRight, Heart } from 'lucide-react';

@@ -5,11 +5,13 @@ enum LlamiExpression { happy, sad, thinking, surprised }
 
 class LlamiMascot extends StatefulWidget {
   final int streak;
-  final String? name;
+  final int? name;
+  final int level;
   final LlamiExpression expression;
   const LlamiMascot({
     super.key, 
     required this.streak, 
+    this.level = 1,
     this.name,
     this.expression = LlamiExpression.happy,
   });
@@ -48,6 +50,7 @@ class _LlamiMascotState extends State<LlamiMascot> with SingleTickerProviderStat
             painter: LlamiPainter(
               animationValue: _controller.value,
               streak: widget.streak,
+              level: widget.level,
               expression: widget.expression,
             ),
           ),
@@ -60,11 +63,13 @@ class _LlamiMascotState extends State<LlamiMascot> with SingleTickerProviderStat
 class LlamiPainter extends CustomPainter {
   final double animationValue;
   final int streak;
+  final int level;
   final LlamiExpression expression;
 
   LlamiPainter({
     required this.animationValue, 
     required this.streak,
+    required this.level,
     required this.expression,
   });
 
@@ -154,6 +159,23 @@ class LlamiPainter extends CustomPainter {
       mouthPath.quadraticBezierTo(size.width * 0.5, size.height * 0.6, size.width * 0.58, size.height * 0.55);
     }
     canvas.drawPath(mouthPath, mouthPaint);
+
+    // Level Badge (Small circle at bottom right)
+    final badgePaint = Paint()..color = Colors.white;
+    final badgeCenter = Offset(size.width * 0.8, size.height * 0.8);
+    canvas.drawCircle(badgeCenter, 8, badgePaint);
+    canvas.drawCircle(badgeCenter, 7, Paint()..color = Colors.blue);
+
+    final textSpan = TextSpan(
+      text: level.toString(),
+      style: const TextStyle(color: Colors.white, fontSize: 8, fontWeight: FontWeight.bold),
+    );
+    final textPainter = TextPainter(
+      text: textSpan,
+      textDirection: TextDirection.ltr,
+    );
+    textPainter.layout();
+    textPainter.paint(canvas, Offset(badgeCenter.dx - textPainter.width / 2, badgeCenter.dy - textPainter.height / 2));
   }
 
   @override

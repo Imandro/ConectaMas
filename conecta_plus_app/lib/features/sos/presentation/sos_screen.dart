@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:audioplayers/audioplayers.dart';
 import '../../../config/theme.dart';
+import '../../../l10n/app_localizations.dart';
 
 class SOSScreen extends StatefulWidget {
   const SOSScreen({super.key});
@@ -42,22 +43,26 @@ class _SOSScreenState extends State<SOSScreen> {
     {
       'title': '1000 Pedazos',
       'artist': 'Un Corazón',
-      'url': 'https://firebasestorage.googleapis.com/v0/b/conecta-plus.appspot.com/o/music%2F1000-pedazos.mp3?alt=media',
+      'url':
+          'https://firebasestorage.googleapis.com/v0/b/conecta-plus.appspot.com/o/music%2F1000-pedazos.mp3?alt=media',
     },
     {
       'title': 'Trust In God',
       'artist': 'Elevation Worship',
-      'url': 'https://firebasestorage.googleapis.com/v0/b/conecta-plus.appspot.com/o/music%2Ftrust-in-god.mp3?alt=media',
+      'url':
+          'https://firebasestorage.googleapis.com/v0/b/conecta-plus.appspot.com/o/music%2Ftrust-in-god.mp3?alt=media',
     },
     {
       'title': 'Solo Hay Uno',
       'artist': 'Joel Rocco ft. Enoc Parra',
-      'url': 'https://firebasestorage.googleapis.com/v0/b/conecta-plus.appspot.com/o/music%2Fsolo-hay-uno.mp3?alt=media',
+      'url':
+          'https://firebasestorage.googleapis.com/v0/b/conecta-plus.appspot.com/o/music%2Fsolo-hay-uno.mp3?alt=media',
     },
     {
       'title': 'Los Brazos de Papá',
       'artist': 'Grupo Grace ft. OASIS MINISTRY',
-      'url': 'https://firebasestorage.googleapis.com/v0/b/conecta-plus.appspot.com/o/music%2Fbrazos-de-papa.mp3?alt=media',
+      'url':
+          'https://firebasestorage.googleapis.com/v0/b/conecta-plus.appspot.com/o/music%2Fbrazos-de-papa.mp3?alt=media',
     }
   ];
   int _currentSongIndex = 0;
@@ -112,7 +117,8 @@ class _SOSScreenState extends State<SOSScreen> {
 
   Future<void> _prevSong() async {
     setState(() {
-      _currentSongIndex = (_currentSongIndex - 1 + _songs.length) % _songs.length;
+      _currentSongIndex =
+          (_currentSongIndex - 1 + _songs.length) % _songs.length;
     });
     if (_isPlaying) {
       await _audioPlayer.play(UrlSource(_songs[_currentSongIndex]['url']!));
@@ -121,6 +127,8 @@ class _SOSScreenState extends State<SOSScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+
     return Scaffold(
       backgroundColor: AppTheme.primary,
       body: SafeArea(
@@ -137,24 +145,32 @@ class _SOSScreenState extends State<SOSScreen> {
                 ),
               ),
               const SizedBox(height: 40),
-              const Text('Respira.', style: TextStyle(color: Colors.white, fontSize: 48, fontWeight: FontWeight.bold)),
+              Text(l10n.sosTitle,
+                  style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 48,
+                      fontWeight: FontWeight.bold)),
               const SizedBox(height: 16),
-              const Text(
-                'No has fallado todavía. Y aunque lo hicieras, Él te sigue amando. Pero hagamos una pausa de 1 minuto juntos.',
-                style: TextStyle(color: Colors.white70, fontSize: 18),
+              Text(
+                l10n.sosSubtitle,
+                style: const TextStyle(color: Colors.white70, fontSize: 18),
               ),
               const SizedBox(height: 48),
               Expanded(
-                child: _mode == null ? _buildMainActions() : _buildDetailView(),
+                child: _mode == null
+                    ? _buildMainActions(l10n)
+                    : _buildDetailView(),
               ),
               const SizedBox(height: 24),
               Container(
                 padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(color: Colors.white.withValues(alpha: 0.05), borderRadius: BorderRadius.circular(12)),
-                child: const Text(
-                  'AVISO: Conecta+ BETA es una herramienta espiritual. En caso de emergencia grave, llama al 911.',
+                decoration: BoxDecoration(
+                    color: Colors.white.withValues(alpha: 0.05),
+                    borderRadius: BorderRadius.circular(12)),
+                child: Text(
+                  l10n.sosDisclaimer,
                   textAlign: TextAlign.center,
-                  style: TextStyle(color: Colors.white30, fontSize: 10),
+                  style: const TextStyle(color: Colors.white30, fontSize: 10),
                 ),
               ),
             ],
@@ -164,16 +180,33 @@ class _SOSScreenState extends State<SOSScreen> {
     );
   }
 
-  Widget _buildMainActions() {
+  Widget _buildMainActions(AppLocalizations l10n) {
     return Column(
       children: [
-        _SOSActionCard(title: 'Leer una promesa', subtitle: 'Rompe la mentira con verdad', icon: Icons.auto_stories, onTap: _showTruths),
+        _SOSActionCard(
+            title: 'Leer una promesa',
+            subtitle: 'Rompe la mentira con verdad',
+            icon: Icons.auto_stories,
+            onTap: _showTruths),
         const SizedBox(height: 16),
-        _SOSActionCard(title: 'Oración de emergencia', subtitle: 'Habla con tu Padre', icon: Icons.volunteer_activism, onTap: _showPrayer),
+        _SOSActionCard(
+            title: 'Oración de emergencia',
+            subtitle: 'Habla con tu Padre',
+            icon: Icons.volunteer_activism,
+            onTap: _showPrayer),
         const SizedBox(height: 16),
-        _SOSActionCard(title: 'Escuchar música', subtitle: 'Cambia la atmósfera', icon: Icons.music_note, onTap: () => setState(() => _mode = 'music')),
+        _SOSActionCard(
+            title: 'Escuchar música',
+            subtitle: 'Cambia la atmósfera',
+            icon: Icons.music_note,
+            onTap: () => setState(() => _mode = 'music')),
         const SizedBox(height: 16),
-        _SOSActionCard(title: 'Llamar a un líder', subtitle: 'No pelees solo', icon: Icons.phone, isOutline: true, onTap: _handleCall),
+        _SOSActionCard(
+            title: 'Llamar a un líder',
+            subtitle: 'No pelees solo',
+            icon: Icons.phone,
+            isOutline: true,
+            onTap: _handleCall),
       ],
     );
   }
@@ -188,28 +221,67 @@ class _SOSScreenState extends State<SOSScreen> {
               itemBuilder: (c, i) => Container(
                 margin: const EdgeInsets.only(bottom: 12),
                 padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(color: Colors.white.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(16)),
+                decoration: BoxDecoration(
+                    color: Colors.white.withValues(alpha: 0.1),
+                    borderRadius: BorderRadius.circular(16)),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('${i + 1}. ', style: const TextStyle(color: AppTheme.accent, fontWeight: FontWeight.bold, fontSize: 18)),
-                    Expanded(child: Text(_currentTruths[i], style: const TextStyle(color: Colors.white, fontSize: 18))),
+                    Text('${i + 1}. ',
+                        style: const TextStyle(
+                            color: AppTheme.accent,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18)),
+                    Expanded(
+                        child: Text(_currentTruths[i],
+                            style: const TextStyle(
+                                color: Colors.white, fontSize: 18))),
                   ],
                 ),
               ),
             ),
           ),
           const SizedBox(height: 24),
-          SizedBox(width: double.infinity, height: 56, child: ElevatedButton(onPressed: () => setState(() => _mode = null), style: ElevatedButton.styleFrom(backgroundColor: Colors.white, foregroundColor: AppTheme.primary), child: const Text('Volver'))),
+          SizedBox(
+              width: double.infinity,
+              height: 56,
+              child: ElevatedButton(
+                  onPressed: () => setState(() => _mode = null),
+                  style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.white,
+                      foregroundColor: AppTheme.primary),
+                  child: const Text('Volver'))),
         ],
       );
     }
     if (_mode == 'prayer') {
       return Column(
         children: [
-          Expanded(child: Center(child: SingleChildScrollView(child: Container(padding: const EdgeInsets.all(24), decoration: BoxDecoration(color: Colors.white.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(24)), child: Text('"$_currentPrayer"', textAlign: TextAlign.center, style: const TextStyle(color: Colors.white, fontSize: 20, fontStyle: FontStyle.italic, height: 1.6)))))),
+          Expanded(
+              child: Center(
+                  child: SingleChildScrollView(
+                      child: Container(
+                          padding: const EdgeInsets.all(24),
+                          decoration: BoxDecoration(
+                              color: Colors.white.withValues(alpha: 0.1),
+                              borderRadius: BorderRadius.circular(24)),
+                          child: Text('"$_currentPrayer"',
+                              textAlign: TextAlign.center,
+                              style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 20,
+                                  fontStyle: FontStyle.italic,
+                                  height: 1.6)))))),
           const SizedBox(height: 24),
-          SizedBox(width: double.infinity, height: 56, child: ElevatedButton(onPressed: () => setState(() => _mode = null), style: ElevatedButton.styleFrom(backgroundColor: Colors.white, foregroundColor: AppTheme.primary), child: const Text('Volver'))),
+          SizedBox(
+              width: double.infinity,
+              height: 56,
+              child: ElevatedButton(
+                  onPressed: () => setState(() => _mode = null),
+                  style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.white,
+                      foregroundColor: AppTheme.primary),
+                  child: const Text('Volver'))),
         ],
       );
     }
@@ -220,15 +292,23 @@ class _SOSScreenState extends State<SOSScreen> {
         children: [
           const Icon(Icons.music_note, size: 80, color: Colors.white24),
           const SizedBox(height: 24),
-          Text(currentSong['title']!, style: const TextStyle(color: Colors.white, fontSize: 28, fontWeight: FontWeight.bold), textAlign: TextAlign.center),
+          Text(currentSong['title']!,
+              style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 28,
+                  fontWeight: FontWeight.bold),
+              textAlign: TextAlign.center),
           const SizedBox(height: 8),
-          Text(currentSong['artist']!, style: const TextStyle(color: Colors.white70, fontSize: 18), textAlign: TextAlign.center),
+          Text(currentSong['artist']!,
+              style: const TextStyle(color: Colors.white70, fontSize: 18),
+              textAlign: TextAlign.center),
           const SizedBox(height: 48),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               IconButton(
-                icon: const Icon(Icons.skip_previous, size: 48, color: Colors.white),
+                icon: const Icon(Icons.skip_previous,
+                    size: 48, color: Colors.white),
                 onPressed: _prevSong,
               ),
               const SizedBox(width: 32),
@@ -236,23 +316,38 @@ class _SOSScreenState extends State<SOSScreen> {
                 onTap: _toggleMusic,
                 child: Container(
                   padding: const EdgeInsets.all(20),
-                  decoration: const BoxDecoration(color: Colors.white, shape: BoxShape.circle),
-                  child: Icon(_isPlaying ? Icons.pause : Icons.play_arrow, size: 48, color: AppTheme.primary),
+                  decoration: const BoxDecoration(
+                      color: Colors.white, shape: BoxShape.circle),
+                  child: Icon(_isPlaying ? Icons.pause : Icons.play_arrow,
+                      size: 48, color: AppTheme.primary),
                 ),
               ),
               const SizedBox(width: 32),
               IconButton(
-                icon: const Icon(Icons.skip_next, size: 48, color: Colors.white),
+                icon:
+                    const Icon(Icons.skip_next, size: 48, color: Colors.white),
                 onPressed: _nextSong,
               ),
             ],
           ),
           const Spacer(),
-          SizedBox(width: double.infinity, height: 56, child: ElevatedButton(onPressed: () => setState(() => _mode = null), style: ElevatedButton.styleFrom(backgroundColor: Colors.white, foregroundColor: AppTheme.primary), child: const Text('Volver'))),
+          SizedBox(
+              width: double.infinity,
+              height: 56,
+              child: ElevatedButton(
+                  onPressed: () => setState(() => _mode = null),
+                  style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.white,
+                      foregroundColor: AppTheme.primary),
+                  child: const Text('Volver'))),
         ],
       );
     }
-    return Center(child: TextButton(onPressed: () => setState(() => _mode = null), child: const Text('Volver', style: TextStyle(color: Colors.white))));
+    return Center(
+        child: TextButton(
+            onPressed: () => setState(() => _mode = null),
+            child:
+                const Text('Volver', style: TextStyle(color: Colors.white))));
   }
 }
 
@@ -263,7 +358,12 @@ class _SOSActionCard extends StatelessWidget {
   final VoidCallback onTap;
   final bool isOutline;
 
-  const _SOSActionCard({required this.title, required this.subtitle, required this.icon, required this.onTap, this.isOutline = false});
+  const _SOSActionCard(
+      {required this.title,
+      required this.subtitle,
+      required this.icon,
+      required this.onTap,
+      this.isOutline = false});
 
   @override
   Widget build(BuildContext context) {
@@ -276,18 +376,34 @@ class _SOSActionCard extends StatelessWidget {
           color: isOutline ? Colors.transparent : Colors.white,
           border: isOutline ? Border.all(color: Colors.white, width: 2) : null,
           borderRadius: BorderRadius.circular(20),
-          boxShadow: isOutline ? null : [BoxShadow(color: Colors.black.withValues(alpha: 0.1), blurRadius: 10, offset: const Offset(0, 4))],
+          boxShadow: isOutline
+              ? null
+              : [
+                  BoxShadow(
+                      color: Colors.black.withValues(alpha: 0.1),
+                      blurRadius: 10,
+                      offset: const Offset(0, 4))
+                ],
         ),
         child: Row(
           children: [
-            Icon(icon, color: isOutline ? Colors.white : AppTheme.accent, size: 28),
+            Icon(icon,
+                color: isOutline ? Colors.white : AppTheme.accent, size: 28),
             const SizedBox(width: 20),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(title, style: TextStyle(color: isOutline ? Colors.white : AppTheme.primary, fontWeight: FontWeight.bold, fontSize: 16)),
-                  Text(subtitle, style: TextStyle(color: isOutline ? Colors.white70 : AppTheme.textMuted, fontSize: 12)),
+                  Text(title,
+                      style: TextStyle(
+                          color: isOutline ? Colors.white : AppTheme.primary,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16)),
+                  Text(subtitle,
+                      style: TextStyle(
+                          color:
+                              isOutline ? Colors.white70 : AppTheme.textMuted,
+                          fontSize: 12)),
                 ],
               ),
             ),

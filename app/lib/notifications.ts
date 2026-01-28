@@ -8,8 +8,10 @@ const { publicKey: vapidPublicKey, privateKey: vapidPrivateKey, subject: vapidSu
 if (vapidPublicKey && vapidPrivateKey) {
     try {
         webpush.setVapidDetails(vapidSubject, vapidPublicKey, vapidPrivateKey);
-    } catch (error: any) {
-        console.error("VAPID Configuration Error:", error.message);
+    } catch (error) {
+        if (error instanceof Error) {
+            console.error("VAPID Configuration Error:", error.message);
+        }
     }
 }
 
@@ -21,7 +23,7 @@ export const NOTIFICATION_CATEGORIES = {
     ],
     BIBLE: [
         { title: "La Palabra de Hoy 📖", body: "Tu Biblia tiene un mensaje para ti hoy. Ábrela y escucha Su voz." },
-        { title: "Lámpara a mis pies 🕯️", body: "Ilumina tu camino leyendo un versículo en Conecta+ BETA." },
+        { title: "Lámpara a mis pies 🕯️", body: "Ilumina tu camino leyendo un versículo en Conecta+." },
         { title: "Alimento para el alma 🍞", body: "Tu espíritu necesita el pan de vida hoy. ¡Vamos a la Biblia!" }
     ],
     DEVOTIONAL: [
@@ -36,6 +38,10 @@ export const NOTIFICATION_CATEGORIES = {
     CHECKIN: [
         { title: "¿Cómo va tu día? 😊", body: "Cuéntanos cómo te sientes hoy en tu diario espiritual." },
         { title: "Pausa de bienestar 🌿", body: "Haz un check-in rápido y registra tu estado de ánimo." }
+    ],
+    TUTORIAL: [
+        { title: "¡Hola! 👋", body: "Descubre cómo Conecta+ puede transformar tu día. ¡Empieza tu tutorial!" },
+        { title: "Tu guía te espera 🧭", body: "Aprende a usar todas las funciones de Conecta+ con nuestro tutorial." }
     ]
 };
 
@@ -66,12 +72,12 @@ export async function sendStoredNotifications() {
                 categoryKey = 'CHECKIN';
             }
 
-            // @ts-ignore
+            // @ts-expect-error - categoryKey is dynamic index
             const messages = NOTIFICATION_CATEGORIES[categoryKey] || NOTIFICATION_CATEGORIES.PRAYER;
             const message = messages[Math.floor(Math.random() * messages.length)];
 
             const payload = JSON.stringify({
-                title: message.title,
+                title: "Conecta+",
                 body: message.body,
                 url: '/dashboard'
             });

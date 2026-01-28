@@ -2,10 +2,9 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { MessageCircle, Users, Plus } from 'lucide-react';
+import { MessageCircle, Users, Plus, Hash, ChevronRight } from 'lucide-react';
 import LlamiCommunityTutorial from './components/LlamiCommunityTutorial';
-import NotificationDropdown from './components/NotificationDropdown';
-import { getCommunityTutorialStatus, markCommunityTutorialSeen } from './actions';
+import { getCommunityTutorialStatus, markCommunityTutorialSeen, getForumCategories } from './actions';
 import { useLanguage } from "@/app/LanguageContext";
 
 interface ForumCategory {
@@ -18,22 +17,6 @@ interface ForumCategory {
     };
 }
 
-const CATEGORY_MAPPING: Record<string, string> = {
-    'Conecta+': 'conecta',
-    'Testimonios': 'testimonies',
-    'Ansiedad y Estrés': 'anxiety',
-    'Depresión y Tristeza': 'depression',
-    'Lujuria y Tentación': 'lust',
-    'Adicciones': 'addictions',
-    'Relaciones y Familia': 'relationships',
-    'Mentira y Honestidad': 'lying',
-    'Orgullo y Humildad': 'pride',
-    'Enojo e Ira': 'anger',
-    'Soledad y Propósito': 'loneliness',
-    'Dudas de Fe': 'faith_doubts',
-    'Oración': 'prayer',
-};
-
 export default function ForumsPage() {
     const { t } = useLanguage();
     const [categories, setCategories] = useState<ForumCategory[]>([]);
@@ -41,46 +24,30 @@ export default function ForumsPage() {
     const [showTutorial, setShowTutorial] = useState(false);
 
     useEffect(() => {
-        // Mark as read
-        fetch('/api/forums/mark-read', { method: 'POST' });
+        const init = async () => {
+            setLoading(true);
+            const [status, res] = await Promise.all([
+                getCommunityTutorialStatus(),
+                getForumCategories()
+            ]);
 
-        // Check tutorial status
-        const localSeen = localStorage.getItem('conecta_hasSeenCommunityTutorial');
-        if (localSeen) {
-            setShowTutorial(false);
-        } else {
-            getCommunityTutorialStatus().then(hasSeen => {
-                if (!hasSeen) {
-                    setShowTutorial(true);
-                }
-            });
-        }
-
-        fetch('/api/forums/categories')
-            .then(res => res.json())
-            .then(data => {
-                setCategories(data);
-                setLoading(false);
-            })
-            .catch(err => {
-                console.error('Error loading categories:', err);
-                setLoading(false);
-            });
+            if (!status) setShowTutorial(true);
+            if (res.success) setCategories(res.categories as ForumCategory[]);
+            setLoading(false);
+        };
+        init();
     }, []);
 
     const handleTutorialComplete = async () => {
-        localStorage.setItem('conecta_hasSeenCommunityTutorial', 'true'); // Immediate client-side persistence
         setShowTutorial(false);
         await markCommunityTutorialSeen();
     };
 
     if (loading) {
         return (
-            <div className="container-fluid py-4">
-                <div className="d-flex justify-content-center align-items-center" style={{ minHeight: '50vh' }}>
-                    <div className="spinner-border text-primary" role="status">
-                        <span className="visually-hidden">{t.forums.loading}</span>
-                    </div>
+            <div className="container-fluid py-5 text-center">
+                <div className="spinner-border text-primary" role="status">
+                    <span className="visually-hidden">Loading...</span>
                 </div>
             </div>
         );
@@ -88,60 +55,63 @@ export default function ForumsPage() {
 
     return (
         <div className="container-fluid py-4 animate-fade-in">
-            {showTutorial && <LlamiCommunityTutorial onComplete={handleTutorialComplete} />}
-
-            <div className="d-flex justify-content-between align-items-center mb-4">
+            <div className="d-flex justify-content-between align-items-center mb-5">
                 <div>
-                    <h1 className="fw-bold text-secondary mb-2">{t.forums.title}</h1>
-                    <p className="text-muted mb-0">{t.forums.subtitle}</p>
+                    <h1 className="h2 fw-bold text-dark mb-1">Comunidad Conecta+</h1>
+                    <p className="text-muted mb-0">Un espacio seguro para compartir, preguntar y crecer en la fe.</p>
                 </div>
-                <div className="d-flex gap-2 align-items-center">
-                    <NotificationDropdown />
-                    <Link href="/dashboard/forums/new" className="btn btn-primary rounded-pill px-4">
-                        <Plus size={20} className="me-2" />
-                        {t.forums.new_post}
+                <div className="d-flex gap-2">
+                    <Link href="/dashboard/forums/new" className="btn btn-primary rounded-pill px-4 d-flex align-items-center gap-2 shadow-sm">
+                        <Plus size={20} /> <span className="d-none d-md-inline">Nuevo Post</span>
                     </Link>
                 </div>
             </div>
 
-            <div className="row g-4">
-                {categories.map(category => {
-                    const mappingKey = CATEGORY_MAPPING[category.name];
-                    const localizedCategory = mappingKey ? (t.forums.categories as any)[mappingKey] : null;
-                    const displayName = localizedCategory?.name || category.name;
-                    const displayDesc = localizedCategory?.desc || category.description;
+            {showTutorial && <LlamiCommunityTutorial onComplete={handleTutorialComplete} />}
 
-                    return (
-                        <div key={category.id} className="col-md-6 col-lg-4">
-                            <Link
-                                href={`/dashboard/forums/${category.id}`}
-                                className="card border-0 shadow-sm h-100 text-decoration-none hover-scale transition-all"
-                            >
+            <div className="row g-4">
+                {categories.map((cat) => (
+                    <div key={cat.id} className="col-md-6 col-lg-4">
+                        <Link href={`/dashboard/forums/${cat.id}`} className="text-decoration-none h-100">
+                            <div className="card h-100 border-0 shadow-sm rounded-4 transform-hover overflow-hidden">
                                 <div className="card-body p-4">
-                                    <div className="d-flex align-items-start gap-3 mb-3">
-                                        <div className="fs-1">{category.icon}</div>
-                                        <div className="flex-grow-1">
-                                            <h5 className="fw-bold text-dark mb-1">{displayName}</h5>
-                                            <p className="text-muted small mb-0">{displayDesc}</p>
+                                    <div className="d-flex align-items-center gap-3 mb-3">
+                                        <div className="bg-primary bg-opacity-10 p-3 rounded-4">
+                                            <Hash className="text-primary" size={24} />
+                                        </div>
+                                        <div>
+                                            <h5 className="fw-bold text-dark mb-0">{cat.name}</h5>
+                                            <span className="badge bg-light text-primary rounded-pill small border">
+                                                {cat._count.posts} participaciones
+                                            </span>
                                         </div>
                                     </div>
-                                    <div className="d-flex align-items-center gap-3 text-muted small">
-                                        <div className="d-flex align-items-center gap-1">
-                                            <MessageCircle size={16} />
-                                            <span>{t.forums.posts_count.replace('{count}', category._count.posts.toString())}</span>
-                                        </div>
+                                    <p className="text-muted small mb-0 line-clamp-2">
+                                        {cat.description}
+                                    </p>
+                                    <div className="mt-4 pt-3 border-top d-flex justify-content-between align-items-center">
+                                        <span className="small fw-bold text-primary">Explorar temas</span>
+                                        <ChevronRight size={16} className="text-primary" />
                                     </div>
                                 </div>
-                            </Link>
-                        </div>
-                    );
-                })}
+                            </div>
+                        </Link>
+                    </div>
+                ))}
             </div>
 
             {categories.length === 0 && (
-                <div className="text-center py-5">
-                    <Users size={48} className="text-muted mb-3" />
-                    <p className="text-muted">{t.forums.no_categories}</p>
+                <div className="text-center py-5 bg-white rounded-4 shadow-sm border mt-4">
+                    <div className="bg-primary bg-opacity-10 p-4 rounded-circle d-inline-block mb-3">
+                        <Users size={48} className="text-primary" />
+                    </div>
+                    <h4 className="fw-bold text-dark mb-2">Comunidad en Crecimiento</h4>
+                    <p className="text-muted mx-auto" style={{ maxWidth: '400px' }}>
+                        Aún no hay categorías públicas configuradas. Sé parte de los primeros en conectar.
+                    </p>
+                    <Link href="/dashboard" className="btn btn-outline-primary rounded-pill px-4 mt-2">
+                        Volver al Inicio
+                    </Link>
                 </div>
             )}
         </div>

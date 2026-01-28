@@ -28,7 +28,7 @@ export default function TermsAndConditions() {
                                 1. Aceptación de los Términos
                             </h4>
                             <p>
-                                Al crear una cuenta en <strong>Conecta+ BETA</strong>, aceptas cumplir con estos términos y condiciones. Si no estás de acuerdo con alguna parte, por favor no utilices la aplicación.
+                                Al crear una cuenta en <strong>Conecta+</strong>, aceptas cumplir con estos términos y condiciones. Si no estás de acuerdo con alguna parte, por favor no utilices la aplicación.
                             </p>
                         </section>
 
@@ -38,7 +38,7 @@ export default function TermsAndConditions() {
                                 2. Uso de la Aplicación
                             </h4>
                             <p>
-                                Conecta+ BETA es una plataforma de contenido espiritual cristiano. Te comprometes a utilizar la aplicación de manera respetuosa, especialmente en las secciones de comunidad (foros). Queda prohibido el lenguaje de odio, acoso o contenido inapropiado.
+                                Conecta+ es una plataforma de contenido espiritual cristiano. Te comprometes a utilizar la aplicación de manera respetuosa, especialmente en las secciones de comunidad (foros). Queda prohibido el lenguaje de odio, acoso o contenido inapropiado.
                             </p>
                         </section>
 
@@ -48,10 +48,10 @@ export default function TermsAndConditions() {
                                 3. Descargo de Responsabilidad Médico/Espiritual
                             </h4>
                             <p className="fw-bold">
-                                El contenido de Conecta+ BETA es meramente informativo y de apoyo espiritual. No constituye consejo médico, psiquiátrico ni psicológico profesional.
+                                El contenido de Conecta+ es meramente informativo y de apoyo espiritual. No constituye consejo médico, psiquiátrico ni psicológico profesional.
                             </p>
                             <p>
-                                El uso de la función SOS y los recursos de &quot;Salud Espiritual&quot; es bajo tu propio riesgo. Conecta+ BETA y sus desarrolladores no se hacen responsables de decisiones tomadas por el usuario basadas en el contenido de la app.
+                                El uso de la función SOS y los recursos de &quot;Salud Espiritual&quot; es bajo tu propio riesgo. Conecta+ y sus desarrolladores no se hacen responsables de decisiones tomadas por el usuario basadas en el contenido de la app.
                             </p>
                         </section>
 
@@ -61,7 +61,10 @@ export default function TermsAndConditions() {
                                 4. Suscripciones y Pagos
                             </h4>
                             <p>
-                                El <strong>Plan Premium</strong> se adquiere mediante una donación/pago de $1 USD mensual (u otra tarifa especificada). Este pago se realiza a través de terceros (PayPal) y no es reembolsable. La suscripción permite una experiencia sin anuncios de Google.
+                                El <strong>Plan Premium</strong> se adquiere mediante una donación de $1 USD mensual. Este pago se utiliza exclusivamente para el mantenimiento de infraestructura y desarrollo de nuevas funciones misionales.
+                            </p>
+                            <p>
+                                Los pagos son procesados de forma segura por <strong>PayPal</strong>. Al ser una donación de apoyo al proyecto, no se contemplan reembolsos automáticos, pero cualquier incidencia será atendida por nuestro equipo.
                             </p>
                         </section>
 
@@ -71,13 +74,23 @@ export default function TermsAndConditions() {
                                 5. Propiedad Intelectual
                             </h4>
                             <p>
-                                Todo el contenido (textos, logos, diseño, LLami la mascota) es propiedad de <strong>Mario Alvarez / Conecta+ BETA</strong>. Queda prohibida la reproducción total o parcial sin autorización expresa.
+                                Todo el contenido visual, algoritmos de seguimiento, y el personaje &quot;Llami&quot; son propiedad intelectual de <strong>Mario Alvarez / Conecta+</strong>. Queda prohibido el uso comercial de cualquier recurso sin consentimiento previo.
+                            </p>
+                        </section>
+
+                        <section className="mb-5">
+                            <h4 className="fw-bold d-flex align-items-center gap-2 mb-3">
+                                <Scale size={24} className="text-primary" />
+                                6. Limitación de Responsabilidad
+                            </h4>
+                            <p>
+                                Conecta+ no garantiza resultados espirituales específicos ni la resolución inmediata de conflictos personales. La aplicación es un facilitador y no un sustituto de la vida en comunidad eclesial y el acompañamiento pastoral presencial.
                             </p>
                         </section>
 
                         <div className="text-center mt-5 pt-4 border-top">
                             <p className="small text-muted mb-0">
-                                Estos términos pueden ser actualizados en cualquier momento. El uso continuado de la app implica la aceptación de los nuevos términos.
+                                Estos términos constituyen el acuerdo completo entre el usuario y Conecta+. Su última revisión fue realizada en diciembre de 2025.
                             </p>
                         </div>
                     </div>

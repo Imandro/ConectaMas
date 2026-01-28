@@ -85,6 +85,12 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  _buildInfoItem('Biografía', user.bio ?? 'Sin biografía'),
+                  const Divider(height: 32),
+                  _buildInfoItem('País', user.country ?? 'Sin especificar'),
+                  const Divider(height: 32),
+                  _buildInfoItem('Tipo de Perfil', user.profileType),
+                  const Divider(height: 32),
                   _buildInfoItem(
                       'Género',
                       user.gender != null
@@ -124,6 +130,14 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
               child: Column(
                 children: [
                   _buildSettingTile(
+                    icon: Icons.language,
+                    title: 'Cambiar Idioma',
+                    color: Colors.blue,
+                    onTap: () {
+                      _showLanguageDialog();
+                    },
+                  ),
+                  _buildSettingTile(
                     icon: Icons.logout,
                     title: 'Cerrar Sesión',
                     color: Colors.red,
@@ -136,6 +150,32 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
               ),
             ),
           ]),
+        ),
+      ),
+    );
+  }
+
+  void _showLanguageDialog() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Seleccionar Idioma'),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ListTile(
+              title: const Text('Español'),
+              onTap: () => Navigator.pop(context),
+            ),
+            ListTile(
+              title: const Text('English'),
+              onTap: () => Navigator.pop(context),
+            ),
+            ListTile(
+              title: const Text('Português'),
+              onTap: () => Navigator.pop(context),
+            ),
+          ],
         ),
       ),
     );

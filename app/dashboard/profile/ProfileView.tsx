@@ -53,6 +53,9 @@ export default function ProfileView({ user }: ProfileViewProps) {
                     initialLeaderPhone={user.leaderPhone}
                     initialName={user.name}
                     initialUsername={user.username}
+                    initialBio={user.bio}
+                    initialCountry={user.country}
+                    initialProfileType={user.profileType}
                 />
 
                 <div className="mt-4 pt-3 border-top">

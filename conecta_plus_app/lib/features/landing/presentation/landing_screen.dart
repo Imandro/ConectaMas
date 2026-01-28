@@ -76,7 +76,7 @@ class LandingScreen extends StatelessWidget {
                           height: 80,
                           fit: BoxFit.contain,
                           errorBuilder: (context, error, stackTrace) => Text(
-                            'Conecta+ BETA',
+                            'Conecta+',
                             style: GoogleFonts.fredoka(
                               fontSize: 40,
                               fontWeight: FontWeight.bold,
@@ -140,7 +140,7 @@ class LandingScreen extends StatelessWidget {
                       ),
                       const SizedBox(height: 16),
                       Text(
-                        '© 2025 Conecta+ BETA',
+                        '© 2025 Conecta+',
                         style: GoogleFonts.fredoka(
                           fontSize: 12,
                           fontWeight: FontWeight.w500,

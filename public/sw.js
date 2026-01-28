@@ -71,6 +71,7 @@ self.addEventListener('fetch', (event) => {
 // Notificaciones Push (Existente)
 self.addEventListener('push', function (event) {
     if (event.data) {
+        console.log("Push received", event.data.text());
         const data = event.data.json();
         const options = {
             body: data.body,
@@ -88,6 +89,8 @@ self.addEventListener('push', function (event) {
         event.waitUntil(
             self.registration.showNotification(data.title, options)
         );
+    } else {
+        console.log("Push received but no data");
     }
 });
 

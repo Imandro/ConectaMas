@@ -12,13 +12,15 @@ import ChallengeCard from './components/ChallengeCard';
 
 import SupportFundingAd from './components/SupportFundingAd';
 import SupportAdModal from './components/SupportAdModal';
-import GrowthMilestoneModal from './components/GrowthMilestoneModal';
+import GrowthMilestoneModal from "./components/GrowthMilestoneModal";
+import DonationMissionsModal from "./components/DonationMissionsModal";
 import WhatsappModal from '../components/WhatsappModal';
 import WhatsappCard from '../components/WhatsappCard';
 import InstagramModal from '../components/InstagramModal';
 import InstagramCard from '../components/InstagramCard';
 import CheckinModal from '../components/CheckinModal';
 import CountryModal from '../components/CountryModal';
+import DailyQuestionModal from './components/DailyQuestionModal';
 
 interface DashboardStats {
     name: string;
@@ -44,12 +46,35 @@ export default function DashboardHome() {
     const [checkinLoading, setCheckinLoading] = useState(false);
     const [hasCheckedIn, setHasCheckedIn] = useState(false);
     const [currentDate, setCurrentDate] = useState("");
+    const [dailyQuestions, setDailyQuestions] = useState<any[]>([]);
+    const [showDailyQuestions, setShowDailyQuestions] = useState(false);
 
     useEffect(() => {
         const localeMap: Record<string, string> = { es: 'es-ES', en: 'en-US', pt: 'pt-BR' };
         setCurrentDate(new Date().toLocaleDateString(localeMap[language] || 'es-ES', { day: 'numeric', month: 'long' }));
         fetchStats();
+        fetchDailyQuestions();
     }, [language]);
+
+    const fetchDailyQuestions = async () => {
+        try {
+            // Lazy load the action to avoid build issues if mixed
+            const { getDailyQuestions } = await import('./qa/actions');
+            const questions = await getDailyQuestions();
+            // Show if we have questions and user hasn't dismissed today (removed local storage check for simplicity for now, or add it)
+            // Let's rely on session or just show it if random chance? 
+            // For now, ALWAYS show it if there are questions, unless we track it.
+            // Requirement said "modal upon app entry".
+            // I'll check a sessionStorage key "seenDailyQuestions"
+            if (questions.length > 0 && !sessionStorage.getItem('seen_daily_questions')) {
+                setDailyQuestions(questions);
+                setTimeout(() => setShowDailyQuestions(true), 2000); // Small delay for effect
+                sessionStorage.setItem('seen_daily_questions', 'true');
+            }
+        } catch (e) {
+            console.error("Error fetching daily questions", e);
+        }
+    };
 
     const fetchStats = async () => {
         // Cargar desde caché primero para rapidez u offline
@@ -285,6 +310,42 @@ export default function DashboardHome() {
                 <DailyPrayerCard />
             </section>
 
+            {/* Spiritual Insights Value Add Section */}
+            <section className="mb-4">
+                <div className="card border-0 shadow-sm bg-white p-4" style={{ borderRadius: '24px' }}>
+                    <div className="d-flex align-items-center gap-3 mb-3">
+                        <div className="bg-warning-subtle text-warning p-2 rounded-3">
+                            <Sun size={24} />
+                        </div>
+                        <h5 className="fw-bold text-secondary m-0">Sabiduría para hoy</h5>
+                    </div>
+                    <div className="bg-light p-3 rounded-4 mb-3 border-start border-warning border-4">
+                        <p className="small text-muted mb-0 lh-base">
+                            <strong>¿Sabías que?</strong> La palabra &quot;Selah&quot; aparece 74 veces en la Biblia y es una invitación a hacer una pausa, respirar y meditar en lo que acabas de leer. Hoy, tómate un momento Selah.
+                        </p>
+                    </div>
+                    <div className="row g-3">
+                        <div className="col-12">
+                            <h6 className="small fw-bold text-uppercase text-muted mb-2 ls-1" style={{ fontSize: '0.7rem' }}>Tips de Crecimiento</h6>
+                            <ul className="list-unstyled d-flex flex-column gap-2 m-0">
+                                <li className="small d-flex gap-2">
+                                    <span className="text-warning">•</span>
+                                    <span>La oración no es para cambiar a Dios, sino para que Él nos cambie a nosotros.</span>
+                                </li>
+                                <li className="small d-flex gap-2">
+                                    <span className="text-warning">•</span>
+                                    <span>Leer un capítulo al día te permite completar la Biblia en poco más de 3 años.</span>
+                                </li>
+                                <li className="small d-flex gap-2">
+                                    <span className="text-warning">•</span>
+                                    <span>Tus &quot;luchas&quot; son oportunidades para que el poder de Dios se perfeccione en tu debilidad.</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
             {/* Feature Tour (Proactive Tutorial) */}
             {stats && !stats.hasSeenTutorialTour && (
                 <FeatureTour onComplete={() => setStats((prev: DashboardStats | null) => prev ? { ...prev, hasSeenTutorialTour: true } : null)} />
@@ -296,6 +357,7 @@ export default function DashboardHome() {
             </section>
 
             <GrowthMilestoneModal />
+            <DonationMissionsModal />
 
             <div className="pb-5"></div>
 
@@ -310,6 +372,11 @@ export default function DashboardHome() {
                         isLoading={checkinLoading}
                     />
                     <CountryModal hasSelectedCountry={!!stats.country} />
+                    <DailyQuestionModal
+                        questions={dailyQuestions}
+                        isOpen={showDailyQuestions}
+                        onClose={() => setShowDailyQuestions(false)}
+                    />
                 </>
             )}
         </div>

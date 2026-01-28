@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import '../../../config/theme.dart';
+import '../../../l10n/app_localizations.dart';
 import '../data/struggle_provider.dart';
 import '../data/models/struggle_model.dart';
 
@@ -28,6 +29,7 @@ class _LuchasScreenState extends ConsumerState<LuchasScreen> {
   Widget build(BuildContext context) {
     final struggleState = ref.watch(struggleProvider);
     final notifier = ref.read(struggleProvider.notifier);
+    final l10n = AppLocalizations.of(context);
 
     final availableStruggles = struggleState.struggles
         .where((s) => s.status == StruggleStatus.active && !s.isStarted)
@@ -104,43 +106,83 @@ class _LuchasScreenState extends ConsumerState<LuchasScreen> {
                       .fadeIn(duration: 400.ms)
                       .slideY(begin: 0.1),
                   const SizedBox(height: 32),
-                  if (activeStruggles.isNotEmpty) ...[
-                    _buildSectionHeader(
-                            'En Progreso (${activeStruggles.length})')
-                        .animate()
-                        .fadeIn(delay: 100.ms),
-                    ...activeStruggles.asMap().entries.map((entry) =>
-                        _buildStruggleCard(context, entry.value)
-                            .animate()
-                            .fadeIn(delay: (200 + entry.key * 100).ms)
-                            .slideX(begin: 0.1)),
-                    const SizedBox(height: 24),
-                  ],
-                  _buildSectionHeader(
-                          'Planes Disponibles (${availableStruggles.length})')
-                      .animate()
-                      .fadeIn(delay: 300.ms),
-                  ...availableStruggles.asMap().entries.map((entry) =>
-                      _buildStruggleCard(context, entry.value)
+                  if (activeStruggles.isEmpty &&
+                      availableStruggles.isEmpty &&
+                      overcomeStruggles.isEmpty)
+                    _buildEmptyState(l10n)
+                  else ...[
+                    if (activeStruggles.isNotEmpty) ...[
+                      _buildSectionHeader(
+                              'En Progreso (${activeStruggles.length})')
                           .animate()
-                          .fadeIn(delay: (400 + entry.key * 100).ms)
-                          .slideX(begin: 0.1)),
-                  if (overcomeStruggles.isNotEmpty) ...[
-                    const SizedBox(height: 24),
+                          .fadeIn(delay: 100.ms),
+                      ...activeStruggles.asMap().entries.map((entry) =>
+                          _buildStruggleCard(context, entry.value)
+                              .animate()
+                              .fadeIn(delay: (200 + entry.key * 100).ms)
+                              .slideX(begin: 0.1)),
+                      const SizedBox(height: 24),
+                    ],
                     _buildSectionHeader(
-                            'Vencidos (${overcomeStruggles.length}) 🎉')
+                            'Planes Disponibles (${availableStruggles.length})')
                         .animate()
-                        .fadeIn(delay: 500.ms),
-                    ...overcomeStruggles.asMap().entries.map((entry) =>
+                        .fadeIn(delay: 300.ms),
+                    ...availableStruggles.asMap().entries.map((entry) =>
                         _buildStruggleCard(context, entry.value)
                             .animate()
-                            .fadeIn(delay: (600 + entry.key * 100).ms)
+                            .fadeIn(delay: (400 + entry.key * 100).ms)
                             .slideX(begin: 0.1)),
+                    if (overcomeStruggles.isNotEmpty) ...[
+                      const SizedBox(height: 24),
+                      _buildSectionHeader(
+                              'Vencidos (${overcomeStruggles.length}) 🎉')
+                          .animate()
+                          .fadeIn(delay: 500.ms),
+                      ...overcomeStruggles.asMap().entries.map((entry) =>
+                          _buildStruggleCard(context, entry.value)
+                              .animate()
+                              .fadeIn(delay: (600 + entry.key * 100).ms)
+                              .slideX(begin: 0.1)),
+                    ],
                   ],
                 ],
               ),
             ),
     );
+  }
+
+  Widget _buildEmptyState(AppLocalizations l10n) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        const SizedBox(height: 48),
+        Container(
+          padding: const EdgeInsets.all(24),
+          decoration: BoxDecoration(
+            color: AppTheme.primary.withOpacity(0.05),
+            shape: BoxShape.circle,
+          ),
+          child: const Icon(Icons.shield_outlined,
+              color: AppTheme.primary, size: 64),
+        ).animate().scale(duration: 600.ms, curve: Curves.easeOutBack),
+        const SizedBox(height: 24),
+        Text(
+          l10n.emptyStrugglesTitle,
+          style: GoogleFonts.inter(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+            color: AppTheme.primary,
+          ),
+        ),
+        const SizedBox(height: 8),
+        Text(
+          l10n.emptyStrugglesDesc,
+          textAlign: TextAlign.center,
+          style: TextStyle(color: AppTheme.textMuted, fontSize: 14),
+        ),
+        const SizedBox(height: 48),
+      ],
+    ).animate().fadeIn(delay: 200.ms);
   }
 
   Widget _buildSectionHeader(String title) {

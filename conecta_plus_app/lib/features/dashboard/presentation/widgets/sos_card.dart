@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import '../../../../config/theme.dart';
+import '../../../../l10n/app_localizations.dart';
 
 class SOSCard extends StatelessWidget {
   const SOSCard({super.key});
@@ -21,7 +21,8 @@ class SOSCard extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Icon(Icons.emergency_rounded, color: Color(0xFFEF4444), size: 32),
+            const Icon(Icons.emergency_rounded,
+                color: Color(0xFFEF4444), size: 32),
             const SizedBox(height: 12),
             Text(
               l10n.sosLabel,

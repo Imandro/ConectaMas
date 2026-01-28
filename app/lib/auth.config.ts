@@ -10,7 +10,7 @@ export const authConfig = {
         maxAge: 30 * 24 * 60 * 60, // 30 days
     },
     callbacks: {
-        authorized({ auth, request: nextUrl }) {
+        authorized({ auth }) {
             const isLoggedIn = !!auth?.user;
 
             // This logic is currently handled in middleware wrapper, 

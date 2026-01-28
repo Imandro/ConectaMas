@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { ChevronLeft, ShieldCheck, Lock, Eye, Cookie } from "lucide-react";
+import { ChevronLeft, ShieldCheck, Lock, Eye, Cookie, Scale } from "lucide-react";
 
 export default function PrivacyPolicy() {
     return (
@@ -18,7 +18,7 @@ export default function PrivacyPolicy() {
                             <ShieldCheck size={48} className="text-primary" />
                         </div>
                         <h1 className="fw-bold text-secondary">Política de Privacidad</h1>
-                        <p className="text-muted">Tu privacidad es nuestra prioridad en <strong>Conecta+ BETA</strong>.</p>
+                        <p className="text-muted">Tu privacidad es nuestra prioridad en <strong>Conecta+</strong>.</p>
                         <p className="text-muted">Última actualización: 26 de diciembre de 2025</p>
                     </div>
 
@@ -64,10 +64,23 @@ export default function PrivacyPolicy() {
                         <section className="mb-5">
                             <h4 className="fw-bold d-flex align-items-center gap-2 mb-3">
                                 <ShieldCheck size={24} className="text-primary" />
-                                4. Seguridad de tus Datos
+                                4. Seguridad y Retención de Datos
                             </h4>
                             <p>
-                                Implementamos medidas de seguridad técnicas (encriptación, hash de contraseñas) para proteger tu información. No vendemos tus datos personales a terceros bajo ninguna circunstancia.
+                                Implementamos medidas de seguridad técnicas (encriptación SSL, hash de contraseñas de última generación) para proteger tu información. Tus datos personales y espirituales se conservan mientras tu cuenta esté activa.
+                            </p>
+                            <p>
+                                <strong>Derecho de Supresión:</strong> Puedes solicitar la eliminación total de tus datos en cualquier momento desde la configuración de tu perfil. Una vez eliminada la cuenta, todos tus registros (check-ins, notas privadas y progreso) desaparecerán permanentemente de nuestros servidores.
+                            </p>
+                        </section>
+
+                        <section className="mb-5">
+                            <h4 className="fw-bold d-flex align-items-center gap-2 mb-3">
+                                <Scale size={24} className="text-primary" />
+                                5. Tus Derechos (GDPR / Privacidad Local)
+                            </h4>
+                            <p>
+                                Tienes derecho a acceder, rectificar o cancelar el uso de tus datos personales. Conecta+ se compromete a la transparencia absoluta sobre el uso de la información para fines de personalización espiritual.
                             </p>
                         </section>
 
@@ -80,7 +93,7 @@ export default function PrivacyPolicy() {
 
                         <div className="text-center mt-5 pt-4 border-top">
                             <p className="small text-muted mb-0">
-                                Si tienes dudas sobre tu privacidad, contáctanos a través del foro de Soporte dentro de la app.
+                                Para cualquier consulta legal o técnica, puedes escribir a nuestro equipo de soporte ministerial dentro de la plataforma.
                             </p>
                         </div>
                     </div>

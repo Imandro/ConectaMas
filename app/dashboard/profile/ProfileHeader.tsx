@@ -101,44 +101,113 @@ export default function ProfileHeader({ user }: ProfileHeaderProps) {
         return level;
     };
 
+    const [banner, setBanner] = useState(user.bannerUrl);
+    const [isUploadingBanner, setIsUploadingBanner] = useState(false);
+    const bannerInputRef = useRef<HTMLInputElement>(null);
+
+    // ... (existing helper functions)
+
+    const handleBannerClick = () => {
+        bannerInputRef.current?.click();
+    }
+
+    const handleBannerChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (!file) return;
+        if (file.size > 2 * 1024 * 1024) {
+            toast.error(t.profile.image_too_large);
+            return;
+        }
+        setIsUploadingBanner(true);
+        const reader = new FileReader();
+        reader.onloadend = async () => {
+            const base64String = reader.result as string;
+            try {
+                setBanner(base64String);
+                await require("./actions").updateBannerImage(base64String);
+                toast.success(t.profile.image_updated);
+            } catch (error) {
+                toast.error(t.profile.image_error);
+                setBanner(user.bannerUrl);
+            } finally {
+                setIsUploadingBanner(false);
+            }
+        };
+        reader.readAsDataURL(file);
+    };
+
     return (
-        <div className="card border-0 shadow-sm bg-white rounded-4 p-4 mb-4">
-            <div className="d-flex align-items-center gap-4">
-                <div className="position-relative cursor-pointer" onClick={handleImageClick}>
-                    <input
-                        type="file"
-                        ref={fileInputRef}
-                        className="d-none"
-                        accept="image/*"
-                        onChange={handleFileChange}
-                    />
+        <div className="card border-0 shadow-sm bg-white rounded-4 mb-4 overflow-hidden">
+            {/* Banner Section */}
+            <div
+                className="position-relative bg-light"
+                style={{ height: '120px', cursor: 'pointer' }}
+                onClick={handleBannerClick}
+            >
+                <input
+                    type="file"
+                    ref={bannerInputRef}
+                    className="d-none"
+                    accept="image/*"
+                    onChange={handleBannerChange}
+                />
+                {banner ? (
+                    <img src={banner} className="w-100 h-100 object-fit-cover" alt="Banner" />
+                ) : (
+                    <div className="w-100 h-100 d-flex align-items-center justify-content-center text-muted">
+                        <small>{t.profile.banner_label || "Tocá para agregar portada"}</small>
+                    </div>
+                )}
+                <div className="position-absolute bottom-0 end-0 p-2 m-2 bg-white rounded-circle shadow-sm" style={{ opacity: 0.8 }}>
+                    <Camera size={14} />
+                </div>
+            </div>
 
-                    {image ? (
-                        <div
-                            className="bg-primary rounded-circle overflow-hidden shadow-sm"
-                            style={{ width: '80px', height: '80px' }}
-                        >
-                            <img src={image} alt="Profile" className="w-100 h-100 object-fit-cover" />
-                        </div>
-                    ) : (
-                        <div className="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center display-4 fw-bold shadow-sm" style={{ width: '80px', height: '80px' }}>
-                            {user.name ? user.name.charAt(0).toUpperCase() : 'U'}
-                        </div>
-                    )}
+            <div className="p-4 pt-0 position-relative">
+                <div className="d-flex align-items-end gap-4" style={{ marginTop: '-40px' }}>
+                    <div className="position-relative cursor-pointer" onClick={handleImageClick}>
+                        <input
+                            type="file"
+                            ref={fileInputRef}
+                            className="d-none"
+                            accept="image/*"
+                            onChange={handleFileChange}
+                        />
 
-                    <div className="position-absolute bottom-0 end-0 bg-white rounded-circle p-1 shadow-sm border">
-                        <Camera size={16} className="text-secondary" />
+                        {image ? (
+                            <div
+                                className="bg-white rounded-circle overflow-hidden shadow-sm p-1"
+                                style={{ width: '90px', height: '90px' }}
+                            >
+                                <img src={image} alt="Profile" className="w-100 h-100 rounded-circle object-fit-cover" />
+                            </div>
+                        ) : (
+                            <div className="bg-white p-1 rounded-circle shadow-sm">
+                                <div className="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center display-4 fw-bold" style={{ width: '80px', height: '80px' }}>
+                                    {user.name ? user.name.charAt(0).toUpperCase() : 'U'}
+                                </div>
+                            </div>
+                        )}
+                        <div className="position-absolute bottom-0 end-0 bg-white rounded-circle p-1 shadow-sm border">
+                            <Camera size={16} className="text-secondary" />
+                        </div>
                     </div>
                 </div>
 
-                <div>
-                    <h4 className="fw-bold mb-1">{user.name || t.auth.name_label}</h4>
-                    <p className="text-muted mb-0">{user.email}</p>
-                    <span className="badge bg-light text-secondary mt-2 rounded-pill border">
-                        {getSpiritualLevel(user.spiritualLevel)}
-                    </span>
+                {/* User Info Below */}
+                <div className="mt-3">
+                    <div className="d-flex justify-content-between align-items-start">
+                        <div>
+                            <h4 className="fw-bold mb-0">{user.name || t.auth.name_label}</h4>
+                            <p className="text-muted mb-1">{user.email}</p>
+                            <span className="badge bg-light text-secondary rounded-pill border">
+                                {getSpiritualLevel(user.spiritualLevel)}
+                            </span>
+                        </div>
+                    </div>
 
                     <div className="mt-3">
+
                         {isEditingUsername ? (
                             <div className="d-flex align-items-center gap-2">
                                 <span className="text-muted fw-bold small">@</span>

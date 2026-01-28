@@ -11,6 +11,13 @@ interface Checkin {
     createdAt: string;
 }
 
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+    title: 'Bitácora de Bienestar | Conecta+',
+    description: 'Registra tus emociones diariamente y observa tu progreso emocional y espiritual. Una herramienta para el autoconocimiento y la sanidad.',
+};
+
 export default function CheckinPage() {
     const { t, language } = useLanguage();
     const [mood, setMood] = useState<string | null>(null);
@@ -91,7 +98,14 @@ export default function CheckinPage() {
 
     return (
         <div className="animate-fade-in">
-            <h2 className="fw-bold text-secondary mb-4">{t.checkin.title}</h2>
+            <div className="mb-4">
+                <h2 className="fw-bold text-secondary mb-2">{t.checkin.title}</h2>
+                <div className="p-3 bg-primary bg-opacity-10 rounded-4 border border-primary border-opacity-20 mb-4">
+                    <p className="text-dark small mb-0">
+                        <strong>¿Por qué registrar tus emociones?</strong> El autoconocimiento es el primer paso para la sanidad. Al anotar cómo te sientes cada día, podrás identificar patrones, celebrar tus días buenos y llevar tus días difíciles a la presencia de Dios con honestidad.
+                    </p>
+                </div>
+            </div>
 
             {/* Today's Input */}
             <div className="card border-0 shadow-sm bg-white mb-4">

@@ -19,8 +19,8 @@ export default function GrowthMilestoneModal() {
     }, []);
 
     const checkAndShowModal = () => {
-        const STORAGE_KEY = 'growth_milestone_views_v3'; // Version bump
-        const MAX_VIEWS_PER_DAY = 2; // Changed from 3 to 2
+        const STORAGE_KEY = 'growth_milestone_views_v5'; // Version bump
+        const MAX_VIEWS_PER_DAY = 1;
         const today = new Date().toISOString().split('T')[0];
 
         try {
@@ -69,7 +69,7 @@ export default function GrowthMilestoneModal() {
     };
 
     const incrementViewCount = () => {
-        const STORAGE_KEY = 'growth_milestone_views_v3';
+        const STORAGE_KEY = 'growth_milestone_views_v5';
         const today = new Date().toISOString().split('T')[0];
 
         try {
@@ -88,7 +88,7 @@ export default function GrowthMilestoneModal() {
         }
     }
 
-    const GOAL = 1000;
+    const GOAL = 1500;
     const progress = Math.min((userCount / GOAL) * 100, 100);
 
     return (
@@ -131,7 +131,7 @@ export default function GrowthMilestoneModal() {
                                     </div>
                                     <div className="text-start">
                                         <h4 className="fw-bold m-0 lh-1">{t.growth_modal.title}</h4>
-                                        <small className="opacity-90 extra-small">{t.growth_modal.subtitle}</small>
+                                        <small className="opacity-90 fw-bold">{t.growth_modal.real_users}</small>
                                     </div>
                                 </div>
                                 <div className="position-absolute top-0 end-0 p-1 opacity-10">

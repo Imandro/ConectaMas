@@ -33,11 +33,8 @@ export default function InstallTutorial() {
                         <div className="bg-primary text-white p-4 rounded-circle d-inline-block mb-4 shadow-lg">
                             <Download size={48} />
                         </div>
-                        <h2 className="fw-bold">Conecta+ BETA en tu pantalla</h2>
-                        <p className="text-muted lead">
-                            Instala la aplicación para disfrutar de una experiencia completa,
-                            más rápida y sin distracciones.
-                        </p>
+                        <h1 className="fw-bold text-dark mb-2">Instalar Conecta+</h1>
+                        <p className="text-muted">Sigue estos pasos para tener Conecta+ siempre a mano como una aplicación nativa.</p>
                     </div>
 
                     {/* Platform Selector */}
@@ -88,7 +85,7 @@ export default function InstallTutorial() {
                                     <Step
                                         number={4}
                                         title="¡Listo!"
-                                        text="Presiona &apos;Agregar&apos; en la esquina superior derecha. Conecta+ BETA aparecerá entre tus apps."
+                                        text="Presiona &apos;Agregar&apos; en la esquina superior derecha. Conecta+ aparecerá entre tus apps."
                                         icon={<CheckCircle2 className="text-success" size={32} />}
                                     />
                                 </motion.div>
@@ -109,7 +106,7 @@ export default function InstallTutorial() {
                                     <Step
                                         number={2}
                                         title="Instalar Aplicación"
-                                        text="Busca y selecciona la option que dice &apos;Instalar aplicación&apos; o &apos;Instalar Conecta+ BETA&apos;."
+                                        text="Busca y selecciona la option que dice &apos;Instalar aplicación&apos; o &apos;Instalar Conecta+&apos;."
                                         icon={<Download className="text-primary" size={32} />}
                                     />
                                     <Step
@@ -121,7 +118,7 @@ export default function InstallTutorial() {
                                     <Step
                                         number={4}
                                         title="Acceso directo"
-                                        text="Ahora podrás abrir Conecta+ BETA directamente desde tu cajón de aplicaciones."
+                                        text="Ahora podrás abrir Conecta+ directamente desde tu cajón de aplicaciones."
                                         icon={<ArrowRight className="text-primary" size={32} />}
                                     />
                                 </motion.div>

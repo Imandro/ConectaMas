@@ -9,6 +9,17 @@ class User {
   final String? spiritualStatus;
   final String? leaderPhone;
   final String role;
+  
+  // New Fields (Phase 1, 3, 4)
+  final String? bio;
+  final String? country;
+  final String profileType; // 'NORMAL', 'COOPERATOR', 'CHURCH'
+  final String? bannerUrl;
+  final String league;      // 'BRONZE', etc.
+  final int weeklyXP;
+  final int totalXP;
+  
+  int get level => (totalXP / 100).floor() + 1;
 
   User({
     required this.id,
@@ -21,6 +32,14 @@ class User {
     this.spiritualStatus,
     this.leaderPhone,
     this.role = 'USER',
+    
+    this.bio,
+    this.country,
+    this.profileType = 'NORMAL',
+    this.bannerUrl,
+    this.league = 'BRONZE',
+    this.weeklyXP = 0,
+    this.totalXP = 0,
   });
 
   factory User.fromJson(Map<String, dynamic> json) {
@@ -35,6 +54,14 @@ class User {
       spiritualStatus: json['spiritualStatus'],
       leaderPhone: json['leaderPhone'],
       role: json['role'] ?? 'USER',
+      
+      bio: json['bio'],
+      country: json['country'],
+      profileType: json['profileType'] ?? 'NORMAL',
+      bannerUrl: json['bannerUrl'],
+      league: json['league'] ?? 'BRONZE',
+      weeklyXP: json['weeklyXP'] ?? 0,
+      totalXP: json['totalXP'] ?? 0,
     );
   }
 
@@ -50,6 +77,14 @@ class User {
       'spiritualStatus': spiritualStatus,
       'leaderPhone': leaderPhone,
       'role': role,
+      
+      'bio': bio,
+      'country': country,
+      'profileType': profileType,
+      'bannerUrl': bannerUrl,
+      'league': league,
+      'weeklyXP': weeklyXP,
+      'totalXP': totalXP,
     };
   }
 }

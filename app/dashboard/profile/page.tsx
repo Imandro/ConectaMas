@@ -27,6 +27,14 @@ export default async function ProfilePage() {
                 username: true,
                 lastUsernameChange: true,
                 age: true,
+                // New Fields
+                bio: true,
+                profileType: true,
+                bannerUrl: true,
+                country: true,
+                league: true,
+                weeklyXP: true,
+                totalXP: true,
             } as any
         });
     } catch (e) {

@@ -1,10 +1,16 @@
 import { auth } from "@/app/lib/auth";
 import { prisma } from "@/app/lib/prisma";
 import { redirect } from "next/navigation";
-import { ShieldAlert, ArrowLeft } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import StruggleTracker from "../components/StruggleTracker";
 import { getTranslations, Language } from "@/app/lib/getTranslations";
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+    title: 'Transformación | Conecta+',
+    description: 'Gestiona tus planes de crecimiento espiritual y celebra tus victorias. Un camino paso a paso hacia la madurez.',
+};
 
 export default async function LuchasPage() {
     const session = await auth();

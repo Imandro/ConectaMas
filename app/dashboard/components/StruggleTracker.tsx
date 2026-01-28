@@ -128,8 +128,12 @@ export default function StruggleTracker({
                         <h6 className="fw-bold text-muted text-uppercase small m-0">{t.struggles.available_title} ({availableStruggles.length})</h6>
                     </div>
                     {availableStruggles.length === 0 && (
-                        <div className="p-4 text-center bg-white rounded-4 border border-dashed border-2 opacity-75">
-                            <p className="text-muted small fst-italic m-0">{t.struggles.available_empty}</p>
+                        <div className="p-4 text-center bg-white rounded-4 border border-dashed border-2 opacity-75 shadow-sm">
+                            <div className="mb-2 text-primary opacity-50">
+                                <Plus size={32} />
+                            </div>
+                            <p className="text-muted small fw-bold m-0">{t.struggles.available_empty || "¡Listo para nuevos desafíos!"}</p>
+                            <p className="text-muted extra-small m-0">Agrega un área de lucha para comenzar tu plan de transformación.</p>
                         </div>
                     )}
                     {availableStruggles.map(s => renderStruggleCard(s, true))}
@@ -141,8 +145,12 @@ export default function StruggleTracker({
                         <h6 className="fw-bold text-muted text-uppercase small m-0">{t.struggles.progress_title} ({activeStruggles.length})</h6>
                     </div>
                     {activeStruggles.length === 0 && (
-                        <div className="p-4 text-center bg-white rounded-4 border border-dashed border-2 opacity-75">
-                            <p className="text-muted small fst-italic m-0">{t.struggles.progress_empty}</p>
+                        <div className="p-4 text-center bg-white rounded-4 border border-dashed border-2 opacity-75 shadow-sm">
+                            <div className="mb-2 text-warning opacity-50">
+                                <ChevronRight size={32} />
+                            </div>
+                            <p className="text-muted small fw-bold m-0">{t.struggles.progress_empty || "Ningún plan en curso"}</p>
+                            <p className="text-muted extra-small m-0">Selecciona un plan de los disponibles para empezar a caminar hacia la victoria.</p>
                         </div>
                     )}
                     {activeStruggles.map(s => renderStruggleCard(s))}

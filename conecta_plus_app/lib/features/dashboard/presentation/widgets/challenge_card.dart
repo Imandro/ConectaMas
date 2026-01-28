@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:go_router/go_router.dart';
-import '../../../../config/theme.dart';
 import '../../../challenges/data/challenge_provider.dart';
 
 class ChallengeCard extends ConsumerWidget {
@@ -22,16 +21,19 @@ class ChallengeCard extends ConsumerWidget {
         padding: const EdgeInsets.all(20),
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: isCompleted 
-              ? [const Color(0xFF22C55E), const Color(0xFF16A34A)] 
-              : [const Color(0xFF6366F1), const Color(0xFF4F46E5)],
+            colors: isCompleted
+                ? [const Color(0xFF22C55E), const Color(0xFF16A34A)]
+                : [const Color(0xFF6366F1), const Color(0xFF4F46E5)],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
           ),
           borderRadius: BorderRadius.circular(28),
           boxShadow: [
             BoxShadow(
-              color: (isCompleted ? const Color(0xFF22C55E) : const Color(0xFF6366F1)).withValues(alpha: 0.3),
+              color: (isCompleted
+                      ? const Color(0xFF22C55E)
+                      : const Color(0xFF6366F1))
+                  .withValues(alpha: 0.3),
               blurRadius: 15,
               offset: const Offset(0, 8),
             ),
@@ -52,7 +54,9 @@ class ChallengeCard extends ConsumerWidget {
                 shape: BoxShape.circle,
               ),
               child: Icon(
-                isCompleted ? Icons.check_circle_rounded : Icons.auto_awesome_rounded,
+                isCompleted
+                    ? Icons.check_circle_rounded
+                    : Icons.auto_awesome_rounded,
                 color: Colors.white,
                 size: 32,
               ),
@@ -72,11 +76,13 @@ class ChallengeCard extends ConsumerWidget {
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    isCompleted 
-                      ? 'Vuelve mañana para más.' 
-                      : (challengeState.currentChallenges.isNotEmpty && challengeState.dailyProgress < challengeState.currentChallenges.length
-                          ? 'Hoy: ${challengeState.currentChallenges[challengeState.dailyProgress].reference}'
-                          : 'Completa 5 versículos/verdades.'),
+                    isCompleted
+                        ? 'Vuelve mañana para más.'
+                        : (challengeState.currentChallenges.isNotEmpty &&
+                                challengeState.dailyProgress <
+                                    challengeState.currentChallenges.length
+                            ? 'Hoy: ${challengeState.currentChallenges[challengeState.dailyProgress].reference}'
+                            : 'Completa 5 versículos/verdades.'),
                     style: GoogleFonts.openSans(
                       fontSize: 14,
                       fontWeight: FontWeight.w600,
@@ -95,19 +101,17 @@ class ChallengeCard extends ConsumerWidget {
                           borderRadius: BorderRadius.circular(4),
                         ),
                       ),
-                      LayoutBuilder(
-                        builder: (context, constraints) {
-                          return AnimatedContainer(
-                            duration: 500.ms,
-                            height: 8,
-                            width: constraints.maxWidth * progress,
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(4),
-                            ),
-                          );
-                        }
-                      ),
+                      LayoutBuilder(builder: (context, constraints) {
+                        return AnimatedContainer(
+                          duration: 500.ms,
+                          height: 8,
+                          width: constraints.maxWidth * progress,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(4),
+                          ),
+                        );
+                      }),
                     ],
                   ),
                 ],

@@ -13,9 +13,10 @@ export default function NotificationPrompt() {
         // Register Service Worker for Push Notifications
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.register('/sw.js').then((registration) => {
-                // SW registration log removed
+                console.log('SW Registered:', registration);
             }).catch((error) => {
                 console.error('Service Worker registration failed:', error);
+                alert("SW Error: " + error.message);
             });
         }
 
@@ -37,41 +38,58 @@ export default function NotificationPrompt() {
 
     const handleEnable = async () => {
         setLoading(true);
+        console.log("Requesting permission...");
         try {
             const permission = await Notification.requestPermission();
+            console.log("Permission:", permission);
+
             if (permission === 'granted') {
                 if ('serviceWorker' in navigator) {
                     const registration = await navigator.serviceWorker.ready;
-                    const sub = await registration.pushManager.getSubscription();
+                    console.log("SW Ready:", registration);
+
+                    let sub = await registration.pushManager.getSubscription();
+                    console.log("Existing Sub:", sub);
 
                     if (!sub) {
                         const VAPID_PUBLIC_KEY = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY || "BGBZ1Q1LwyPolkAPnshPKwQ6NNijzuu8_lqDziuABVb6z60pX1uwKsw1jgO-rCabt5QIf_90OSNqNRgXKti9zyI";
+                        console.log("Using VAPID Key:", VAPID_PUBLIC_KEY);
 
                         try {
-                            const newSub = await registration.pushManager.subscribe({
+                            sub = await registration.pushManager.subscribe({
                                 userVisibleOnly: true,
                                 applicationServerKey: urlBase64ToUint8Array(VAPID_PUBLIC_KEY),
                             });
+                            console.log("New Sub created:", sub);
 
                             const res = await fetch('/api/notifications/subscribe', {
                                 method: 'POST',
                                 headers: { 'Content-Type': 'application/json' },
-                                body: JSON.stringify(newSub.toJSON()),
+                                body: JSON.stringify(sub.toJSON()),
                             });
 
-                            if (!res.ok) throw new Error("Failed to save subscription on server");
-                        } catch (subErr) {
+                            if (!res.ok) {
+                                const errText = await res.text();
+                                throw new Error("Failed to save subscription on server: " + errText);
+                            }
+                            console.log("Sub saved to server");
+                        } catch (subErr: any) {
                             console.error("Failed to subscribe to push manager:", subErr);
+                            alert("Error subscribing: " + subErr.message);
+                            setLoading(false);
+                            return;
                         }
                     }
                 }
                 setShowPrompt(false);
                 localStorage.setItem("notificationPromptDismissed", "true");
             } else {
+                alert("Permission denied. Please enable notifications in your browser settings.");
                 handleDismiss();
             }
-        } catch (error) {
+        } catch (error: any) {
             console.error("Error requesting notification permission:", error);
+            alert("Error: " + error.message);
             handleDismiss();
         } finally {
             setLoading(false);

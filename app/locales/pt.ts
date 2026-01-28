@@ -50,7 +50,7 @@ export const pt = {
         community_title: "Comunidade de Apoio",
         community_subtitle: "No Conecta+ você não está sozinho. Você pode adicionar amigos para orar uns pelos outros.",
         support_title: "Ajude-nos a Crescer!",
-        support_subtitle: "Conecta+ BETA é um projeto gratuito feito com amor. Queremos alcançar mais jovens publicando o app na Google Play Store.",
+        support_subtitle: "O Conecta+ é um projeto gratuito feito com amor. Queremos alcançar mais jovens publicando o aplicativo na Google Play Store.",
         support_goal: "Meta: Licença Play Store ($25 USD)",
         support_button: "Quero Apoiar",
         community_anonymous_title: "Apoio Anônimo e Seguro",
@@ -259,7 +259,7 @@ export const pt = {
         later: "Talvez mais tarde",
     },
     premium: {
-        title: "Sustente Conecta+ BETA Premium",
+        title: "Sustente Conecta+ Premium",
         subtitle: "Contribua com seu grão de areia por apenas $1 por mês",
         body: "Seu apoio me ajuda a manter os servidores e levar a palavra de Deus a mais jovens. Ao ser Premium, você terá uma experiência 100% livre de anúncios e me ajudará a alcançar a meta da Google Play Store.",
         feature_no_ads: "Sem anúncios do Google em todo o app",
@@ -291,14 +291,30 @@ export const pt = {
     growth_modal: {
         title: "Estamos Crescendo!",
         subtitle: "Família Conecta+",
-        real_users: "Usuários Reais",
+        real_users: "Conectados pelo mundo",
         mission_goal: "Meta Missional",
         completed: "{progress}% concluído",
-        almost_there: "Está quase lá!",
+        almost_there: "Falta pouco!",
         button: "Legal!",
-        share_title: "Conecta+ BETA - Seu espaço seguro",
-        share_text: "Junte-se ao Conecta+ BETA! Uma comunidade de jovens crescendo na fé juntos. 🙏✨",
-        link_copied: "Link copiado para a área de transferência!",
+        share_title: "Conecta+ - Seu espaço seguro",
+        share_text: "Junte-se ao Conecta+! Uma comunidade de jovens crescendo na fé juntos. 🙏✨",
+        link_copied: "Link copiado para a área de transferencia!",
+    },
+    donation_modal: {
+        title: "Apoie a Missão",
+        subtitle: "PROJETO CONECTA+",
+        description: "Seu apoio nos permite continuar levando esperança a milhares de jovens. Atualmente estamos trabalhando em missões especiais fora de nossas fronteiras.",
+        missions_title: "Missões em Andamento:",
+        mission_brasil: "🇧🇷 Pro-Brasil",
+        mission_nicaragua: "🇳🇮 Pro-Nicarágua",
+        bank_details: "Depósito Bancário (Nicarágua):",
+        bank_name: "Banco Lafise",
+        bank_account: "Conta: 132247471",
+        paypal_title: "Doar via PayPal:",
+        collaborators_title: "Colaboradores em Destaque:",
+        collaborator_marvin: "Marvin Cruz Alvarado (Doou!)",
+        button_support: "Apoiar o Projeto",
+        button_close: "Fechar",
     },
     profile: {
         title: "Meu Perfil",
@@ -337,7 +353,7 @@ export const pt = {
         learning_center_subtitle: "Tutoriais e guias de uso.",
         delete_account: "Excluir Conta",
         delete_account_subtitle: "Ação irreversível",
-        reset_confirm: "Tem certeza? Isso redefinirá seu progresso de integração (mas não excluirá sua conta).",
+        reset_confirm: "Tem certeza? Isso redefinirá seu progresso de integração (but not delete your account).",
         reset_error: "Erro ao reiniciar.",
         update_success: "Perfil atualizado com sucesso.",
         update_error: "Erro ao atualizar perfil.",
@@ -356,7 +372,7 @@ export const pt = {
         }
     },
     friends: {
-        title: "Comunidade Conecta+ BETA",
+        title: "Comunidade Conecta+",
         subtitle: "Conecte-se com outros e cresçam juntos na fé.",
         search_title: "Buscar Amigos",
         search_placeholder: "Nome ou @usuário...",
@@ -387,8 +403,8 @@ export const pt = {
         preset_4: "Não desista! 🌟",
     },
     tutorials: {
-        hub_title: "Guias Conecta+ BETA",
-        hub_subtitle: "Tudo o que você precisa saber para dominar o Conecta+ BETA e crescer na sua fé.",
+        hub_title: "Guias Conecta+",
+        hub_subtitle: "Tudo o que você precisa saber para dominar o Conecta+ e crescer em sua fé.",
         recommended: "RECOMENDADO",
         install_guide: "Guia de Instalação",
         install_promo: "O Conecta+ funciona melhor como um aplicativo instalado. Aprenda a ativá-lo em segundos passo a paso.",
@@ -426,7 +442,7 @@ export const pt = {
             step3_tip: "Dica:",
             step3_tip_desc: "Se precisar de ajuda urgente, lembre-se de usar o botão SOS no início.",
             step4_title: "Você está pronto!",
-            step4_desc: "Sua voz importa. Obrigado por fazer parte do Conecta+ BETA. \nQue a conversa comece!",
+            step4_desc: "Sua voz importa. Obrigado por fazer parte do Conecta+. \nQue a conversa comece!",
             step4_verse: "\"Pelo que exortai-vos uns aos outros, e edificai-vos uns aos outros, como também o fazeis.\"",
             step4_verse_ref: "- 1 Tessalonicenses 5:11",
             skip: "Pular tutorial",
@@ -442,13 +458,26 @@ export const pt = {
         leader: "Líder",
     },
     checkin: {
-        title: "Saúde Espiritual",
+        title: "Como está seu coração hoje?",
+        subtitle: "Reserve um momento para refletir diante de Deus.",
+        feeling_label: "Eu me sinto...",
+        struggle_label: "Algo com o que você esteja lutando?",
+        notes_placeholder: "Escreva seus pensamentos ou orações aqui...",
+        submit_button: "Salvar Check-in",
+        saved_alert: "Seu check-in foi salvo. Continue firme!",
+        error_alert: "Não foi possível salvar o check-in. Tente novamente.",
+        moods: {
+            GREAT: "Incrível",
+            GOOD: "Bem",
+            NEUTRAL: "Neutro",
+            BAD: "Mal",
+            AWFUL: "Muito Mal"
+        },
+        // Legacy keys
         how_feeling: "Como você está se sentindo hoje?",
         placeholder: "Escreva una breve nota... (Opcional)",
         saving: "Salvando...",
         save: "Salvar",
-        saved_alert: "Check-in salvo!",
-        error_alert: "Erro ao salvar",
         month_history: "Seu Mês",
         click_details: "Clique para ver detalhes",
         mood_label: "Como você se sentiu:",
@@ -681,8 +710,8 @@ export const pt = {
         button_later: "Talvez mais tarde",
     },
     pwa_prompt: {
-        title: "Instalar Conecta+ BETA",
-        description: "Use o Conecta+ BETA como um aplicativo real no seu telefone: sem barras de navegação e com acesso rápido.",
+        title: "Instalar Conecta+",
+        description: "Use o Conecta+ como um aplicativo real no seu celular: sem barras de navegação e com acesso rápido.",
         ios_step1: "1. Toque no botão compartilhar",
         ios_step1_desc: "Localizado na parte inferior do Safari.",
         ios_step2: "2. Adicionar à tela inicial",
@@ -720,8 +749,8 @@ export const pt = {
         llamas: "LLAMAS",
     },
     feature_tour: {
-        install_title: "Instale o Conecta+ BETA",
-        install_desc: "Use o Conecta+ BETA como uma App real no seu telefone. Você terá acesso mais rápido e uma melhor experiência.",
+        install_title: "Instale o Conecta+",
+        install_desc: "Use o Conecta+ como um aplicativo real no seu celular. Você terá acesso mais rápido e uma experiência melhor.",
         verse_title: "Seu Versículo Diário",
         verse_desc: "A cada dia Deus tem uma nova promessa para você. Aqui você encontrará uma palavra fresca para começar o seu dia.",
         streak_title: "Sua Constância",
@@ -785,6 +814,24 @@ export const pt = {
             citation: "- Salmo 119:105"
         },
     },
+    leagues: {
+        title: "Ligas Conecta+",
+        league_ranking: "Ranking da Liga",
+        promotion_zone: "Zona de Ascensão",
+        demotion_zone: "Zona de Rebaixamento",
+        weekly_xp: "XP Semanal",
+        total_xp: "XP Total",
+        how_it_works: "Como funciona?",
+        rules: "Os 3 melhores sobem de liga todo domingo. Os 3 últimos descem.",
+        names: {
+            BRONZE: "Bronze",
+            SILVER: "Prata",
+            GOLD: "Ouro",
+            DIAMOND: "Diamante",
+            LEGEND: "Lenda"
+        },
+        no_rank: "Nenhum ranking disponível."
+    },
 
     // Language/Region Modal
     language_region_modal: {
@@ -802,8 +849,69 @@ export const pt = {
         brazil: "Brasil"
     },
 
+    leader_survey: {
+        title: "Pesquisa de Líder",
+        motivation: "Por que você quer ser um líder?",
+        exp: "Você tem experiência em liderança?",
+        commitment: "Você se compromete a liderar com responsabilidade?",
+        opt_help: "Quero ajudar os outros a crescer",
+        opt_giveback: "Quero retribuir o que aprendi",
+        opt_church: "Minha igreja me pediu",
+        opt_other: "Outro",
+        opt_yes: "Sim, já liderei grupos antes",
+        opt_assistant: "Já fui assistente de líder",
+        opt_none: "Não, é minha primeira vez",
+        opt_commit: "Sim, eu me comprometo",
+        opt_doubt: "Tenho dúvidas",
+        processing: "Processando...",
+        finish: "Finalizar",
+        success: "Parabéns! Você agora é um Líder.",
+        error_application: "Erro ao enviar inscrição",
+        error_group: "Erro ao criar grupo",
+    },
     // Ad Unit
     ad_unit: {
-        sustainable_ad: "Publicidade sustentável"
+        sustainable_ad: "Publicidade Sustentável"
+    },
+
+    // Q&A System
+    qa: {
+        title: "Comunidade",
+        subtitle: "Pergunte, responda e cresça junto com outros.",
+        ask_button: "Fazer Pergunta",
+        filter_recent: "Recentes",
+        filter_trending: "Tendência",
+        empty_state: "Ainda não há perguntas nesta seção.",
+        be_first: "Seja o primeiro a perguntar!",
+        modal_title: "Fazer uma pergunta",
+        modal_title_label: "Título breve",
+        modal_title_placeholder: "Como posso...?",
+        modal_details_label: "Detalhes",
+        modal_details_placeholder: "Explique sua situação...",
+        modal_submit: "Publicar Pergunta",
+        toast_short: "Por favor escreva mais detalhes",
+        toast_success: "Pergunta publicada!",
+        toast_error: "Erro ao publicar",
+        user_badge_coop: "Coop",
+
+        // Detail View
+        back_link: "Voltar para Comunidade",
+        views: "visualizações",
+        answers_count: "Respostas",
+        placeholder_answer: "Escreva sua resposta...",
+        submit_answer: "Responder",
+        submitting: "Enviando...",
+        answer_sent: "Resposta enviada",
+        error_sending: "Erro ao enviar",
+        be_first_answer: "Seja o primeiro a responder.",
+        accepted: "Aceita",
+
+        // Daily Question Modal
+        daily_modal: {
+            title: "🔥 Perguntas do Dia",
+            subtitle: "A comunidade está falando sobre isso",
+            responses: "respostas",
+            view_all: "Ver todas as perguntas"
+        }
     }
 };

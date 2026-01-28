@@ -1,4 +1,9 @@
-"use client";
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+    title: 'Devocionales | Conecta+',
+    description: 'Reflexiones diarias diseñadas para jóvenes. Encuentra inspiración, consuelo y guía en temas como la ansiedad, identidad y fe.',
+};
 
 import Link from 'next/link';
 import { Clock, BookOpen, Heart, Sparkles, ChevronRight } from 'lucide-react';

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../../config/theme.dart';
+import '../../../l10n/app_localizations.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 
 class CommunityPostsScreen extends StatelessWidget {
   final String categoryId;
@@ -89,7 +91,8 @@ class CommunityPostsScreen extends StatelessWidget {
                         fontSize: 24,
                         fontWeight: FontWeight.bold)),
                 Text(description,
-                    style: const TextStyle(color: Colors.white70, fontSize: 13)),
+                    style:
+                        const TextStyle(color: Colors.white70, fontSize: 13)),
               ],
             ),
           ),
@@ -117,6 +120,14 @@ class CommunityPostsScreen extends StatelessWidget {
           ),
           const SizedBox(height: 24),
 
+          // For demonstration, let's assume we fetch posts and if empty we show the state
+          // Since it has hardcoded data for now, I'll add a boolean or just use the logic
+          // that if a list was empty it would show this.
+
+          /* if (posts.isEmpty) */
+          _buildEmptyState(l10n),
+
+          /* else ...[
           _buildPostCard(
             context,
             id: '1',
@@ -135,12 +146,55 @@ class CommunityPostsScreen extends StatelessWidget {
             replies: 8,
             time: 'Hace 5h',
           ),
+          ] */
         ],
       ),
     );
   }
 
-  Widget _buildPostCard(BuildContext context, {required String id, required String title, required String content, required String author, required int replies, required String time}) {
+  Widget _buildEmptyState(AppLocalizations l10n) {
+    return Column(
+      children: [
+        const SizedBox(height: 64),
+        Container(
+          padding: const EdgeInsets.all(32),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            shape: BoxShape.circle,
+            boxShadow: [
+              BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 20)
+            ],
+          ),
+          child: const Icon(Icons.forum_outlined,
+              color: AppTheme.primary, size: 64),
+        ).animate().scale(duration: 600.ms, curve: Curves.easeOutBack),
+        const SizedBox(height: 32),
+        Text(
+          l10n.emptyCommunityTitle,
+          style: const TextStyle(
+            fontSize: 22,
+            fontWeight: FontWeight.bold,
+            color: AppTheme.primary,
+          ),
+        ),
+        const SizedBox(height: 12),
+        Text(
+          l10n.emptyCommunityDesc,
+          textAlign: TextAlign.center,
+          style: const TextStyle(color: Colors.grey, fontSize: 16),
+        ),
+        const SizedBox(height: 64),
+      ],
+    ).animate().fadeIn(delay: 200.ms);
+  }
+
+  Widget _buildPostCard(BuildContext context,
+      {required String id,
+      required String title,
+      required String content,
+      required String author,
+      required int replies,
+      required String time}) {
     return GestureDetector(
       onTap: () => context.go('/comunidad/$categoryId/post/$id'),
       child: Container(
@@ -149,28 +203,43 @@ class CommunityPostsScreen extends StatelessWidget {
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(24),
-          boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.04), blurRadius: 10)],
+          boxShadow: [
+            BoxShadow(
+                color: Colors.black.withValues(alpha: 0.04), blurRadius: 10)
+          ],
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(title, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18, color: AppTheme.primary)),
+            Text(title,
+                style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18,
+                    color: AppTheme.primary)),
             const SizedBox(height: 12),
-            Text(content, style: const TextStyle(color: Colors.black54, fontSize: 14, height: 1.4), maxLines: 2, overflow: TextOverflow.ellipsis),
+            Text(content,
+                style: const TextStyle(
+                    color: Colors.black54, fontSize: 14, height: 1.4),
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis),
             const SizedBox(height: 20),
             Row(
               children: [
                 const Icon(Icons.person_outline, size: 16, color: Colors.grey),
                 const SizedBox(width: 4),
-                Text(author, style: const TextStyle(color: Colors.grey, fontSize: 12)),
+                Text(author,
+                    style: const TextStyle(color: Colors.grey, fontSize: 12)),
                 const SizedBox(width: 16),
                 const Icon(Icons.access_time, size: 16, color: Colors.grey),
                 const SizedBox(width: 4),
-                Text(time, style: const TextStyle(color: Colors.grey, fontSize: 12)),
+                Text(time,
+                    style: const TextStyle(color: Colors.grey, fontSize: 12)),
                 const Spacer(),
-                const Icon(Icons.chat_bubble_outline, size: 16, color: Colors.grey),
+                const Icon(Icons.chat_bubble_outline,
+                    size: 16, color: Colors.grey),
                 const SizedBox(width: 4),
-                Text('$replies', style: const TextStyle(color: Colors.grey, fontSize: 12)),
+                Text('$replies',
+                    style: const TextStyle(color: Colors.grey, fontSize: 12)),
               ],
             ),
           ],

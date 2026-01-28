@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../../../config/theme.dart';
+import '../../../../l10n/app_localizations.dart';
+import 'donation_missions_modal.dart';
 
 class DonationCard extends StatelessWidget {
   const DonationCard({super.key});
@@ -9,6 +11,14 @@ class DonationCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
+
+    void openDonationModal() {
+      showDialog(
+        context: context,
+        builder: (context) => const DonationMissionsModal(),
+      );
+    }
+
     Future<void> openPaypal() async {
       final url = Uri.parse('https://www.paypal.me/Imandrox/1');
       if (await canLaunchUrl(url)) {
@@ -155,9 +165,7 @@ class DonationCard extends StatelessWidget {
                   ),
                   const SizedBox(height: 20),
                   GestureDetector(
-                    onTap: () {
-                      openPaypal();
-                    },
+                    onTap: openDonationModal,
                     child: Container(
                       width: double.infinity,
                       padding: const EdgeInsets.symmetric(vertical: 16),
@@ -185,13 +193,16 @@ class DonationCard extends StatelessWidget {
                   ),
                   const SizedBox(height: 12),
                   Center(
-                    child: Text(
-                      l10n.paypalNote,
-                      textAlign: TextAlign.center,
-                      style: GoogleFonts.fredoka(
-                        color: Colors.white.withValues(alpha: 0.5),
-                        fontSize: 12,
-                        fontWeight: FontWeight.w500,
+                    child: GestureDetector(
+                      onTap: openPaypal,
+                      child: Text(
+                        l10n.paypalNote,
+                        textAlign: TextAlign.center,
+                        style: GoogleFonts.fredoka(
+                          color: Colors.white.withValues(alpha: 0.5),
+                          fontSize: 12,
+                          fontWeight: FontWeight.w500,
+                        ),
                       ),
                     ),
                   ),

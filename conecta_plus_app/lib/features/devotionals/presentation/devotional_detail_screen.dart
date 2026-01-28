@@ -32,6 +32,17 @@ class DevotionalDetailScreen extends ConsumerWidget {
             ),
           ),
         ),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.share, color: AppTheme.primary),
+            onPressed: () {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                    content: Text('Abriendo opciones para compartir...')),
+              );
+            },
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(24),
@@ -43,7 +54,8 @@ class DevotionalDetailScreen extends ConsumerWidget {
               decoration: BoxDecoration(
                 color: AppTheme.primary.withValues(alpha: 0.05),
                 borderRadius: BorderRadius.circular(12),
-                border: Border.all(color: AppTheme.primary.withValues(alpha: 0.1)),
+                border:
+                    Border.all(color: AppTheme.primary.withValues(alpha: 0.1)),
               ),
               child: Text(
                 devotional.category.toUpperCase(),
@@ -67,7 +79,8 @@ class DevotionalDetailScreen extends ConsumerWidget {
             const SizedBox(height: 12),
             Row(
               children: [
-                const Icon(Icons.access_time, size: 16, color: AppTheme.textMuted),
+                const Icon(Icons.access_time,
+                    size: 16, color: AppTheme.textMuted),
                 const SizedBox(width: 4),
                 Text(
                   '${devotional.time} de lectura • Por ${devotional.author}',
@@ -95,7 +108,8 @@ class DevotionalDetailScreen extends ConsumerWidget {
               ),
               child: Column(
                 children: [
-                  const Icon(Icons.format_quote, color: AppTheme.primary, size: 32),
+                  const Icon(Icons.format_quote,
+                      color: AppTheme.primary, size: 32),
                   const SizedBox(height: 12),
                   Text(
                     '"${devotional.bibleVerse}"',
@@ -144,7 +158,8 @@ class DevotionalDetailScreen extends ConsumerWidget {
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Icon(Icons.check_circle, color: AppTheme.accent, size: 20),
+                      const Icon(Icons.check_circle,
+                          color: AppTheme.accent, size: 20),
                       const SizedBox(width: 12),
                       Expanded(
                         child: Text(
@@ -160,7 +175,10 @@ class DevotionalDetailScreen extends ConsumerWidget {
               padding: const EdgeInsets.all(24),
               decoration: BoxDecoration(
                 gradient: LinearGradient(
-                  colors: [AppTheme.primary, AppTheme.primary.withValues(alpha: 0.8)],
+                  colors: [
+                    AppTheme.primary,
+                    AppTheme.primary.withValues(alpha: 0.8)
+                  ],
                 ),
                 borderRadius: BorderRadius.circular(24),
               ),

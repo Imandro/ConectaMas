@@ -1,12 +1,10 @@
 "use client";
 
 import React from 'react';
-import { motion } from 'framer-motion';
 import {
     ChevronLeft,
     Users,
     MessageCircle,
-    Heart,
     ShieldCheck,
     HelpingHand
 } from 'lucide-react';
@@ -30,10 +28,8 @@ export default function CommunityTutorial() {
                         <div className="bg-info text-white p-4 rounded-circle d-inline-block mb-4 shadow-lg">
                             <Users size={48} />
                         </div>
-                        <h2 className="fw-bold">Comunidad Conecta+ BETA</h2>
-                        <p className="text-muted lead">
-                            Un espacio seguro para compartir, sanar y crecer junto a otros jóvenes que entienden tus luchas.
-                        </p>
+                        <h1 className="fw-bold text-dark mb-2">Comunidad Conecta+</h1>
+                        <p className="text-muted">Aprende cómo interactuar, compartir y crecer junto a otros jóvenes en nuestra plataforma.</p>
                     </div>
 
                     {/* Features List */}

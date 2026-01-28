@@ -209,7 +209,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 ),
                 const SizedBox(height: 40),
                 Text(
-                  '© 2025 Conecta+ BETA\nTu espacio seguro.',
+                  '© 2025 Conecta+\nTu espacio seguro.',
                   textAlign: TextAlign.center,
                   style: GoogleFonts.fredoka(
                       color: const Color(0xFF94A3B8),

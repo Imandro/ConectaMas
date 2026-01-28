@@ -8,7 +8,7 @@ import { usePathname } from 'next/navigation';
 // For now I'm using text/emoji placeholders or basic SVGs if needed to be standalone without running npm install.
 // Assuming lucide-react IS in package.json, we can try to use it, but if it fails to compile without install, we'll fall back.
 // Since user hasn't installed node_modules, imports might partial fail in IDE but let's write code assuming they will install.
-import { Home, BookOpen, HeartPulse, User, Menu, Book, MessageCircle, Zap } from 'lucide-react';
+import { Home, BookOpen, HeartPulse, User, Menu, Book, MessageCircle, Zap, Trophy, Gamepad2, HandHelping } from 'lucide-react';
 import { signOut } from "next-auth/react";
 import { useLanguage } from '@/app/LanguageContext';
 
@@ -22,8 +22,12 @@ export default function DashboardNav() {
         { name: t.nav.devotionals, href: '/dashboard/devotionals', icon: BookOpen },
         { name: t.nav.bible, href: '/dashboard/bible', icon: Book },
         { name: t.nav.trivia, href: '/dashboard/trivia', icon: Zap },
-        { name: t.nav.community, href: '/dashboard/forums', icon: MessageCircle },
+        { name: t.nav.community, href: '/dashboard/qa', icon: MessageCircle },
         { name: t.nav.profile, href: '/dashboard/profile', icon: User },
+        { name: t.leagues.title, href: '/dashboard/leagues', icon: Trophy },
+        { name: "Juegos", href: '/dashboard/games', icon: Gamepad2 },
+        { name: "Oración", href: '/dashboard/prayer', icon: HandHelping },
+        { name: "Estudio Bíblico", href: '/dashboard/study', icon: BookOpen },
     ];
 
     useEffect(() => {

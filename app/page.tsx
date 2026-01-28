@@ -16,6 +16,7 @@ export default function Home() {
                     <div className="position-relative mx-auto" style={{ width: '200px', height: '80px' }}>
                         <Image
                             src="/logo.png"
+                            title="Conecta+"
                             alt="Conecta+ Logo"
                             fill
                             style={{ objectFit: 'contain' }}
@@ -54,7 +55,47 @@ export default function Home() {
                         <span className="opacity-25">|</span>
                         <Link href="/legal/cookies" className="text-decoration-none text-muted hover-primary">Cookies</Link>
                     </div>
-                    <p className="extra-small text-muted mt-2 mb-0">© 2025 Conecta+ BETA</p>
+                    <p className="extra-small text-muted mt-2 mb-0">© 2025 Conecta+</p>
+                </div>
+            </div>
+
+            {/* Value Add Sections for AdSense Coverage */}
+            <div className="mt-5 w-100 animate-fade-in-up" style={{ maxWidth: '800px' }}>
+                <div className="row g-4 px-3">
+                    <div className="col-12 col-md-4">
+                        <div className="p-4 bg-white rounded-5 shadow-sm h-100">
+                            <h3 className="h5 fw-bold text-secondary mb-3">Tu Refugio Digital</h3>
+                            <p className="small text-muted mb-0">
+                                Conecta+ es más que una app; es un espacio seguro diseñado para que los jóvenes encuentren paz en medio del caos digital.
+                            </p>
+                        </div>
+                    </div>
+                    <div className="col-12 col-md-4">
+                        <div className="p-4 bg-white rounded-5 shadow-sm h-100">
+                            <h3 className="h5 fw-bold text-secondary mb-3">Crecimiento Diario</h3>
+                            <p className="small text-muted mb-0">
+                                A través de devocionales personalizados y seguimiento espiritual, te acompañamos en cada paso de tu camino con Dios.
+                            </p>
+                        </div>
+                    </div>
+                    <div className="col-12 col-md-4">
+                        <div className="p-4 bg-white rounded-5 shadow-sm h-100">
+                            <h3 className="h5 fw-bold text-secondary mb-3">Comunidad Real</h3>
+                            <p className="small text-muted mb-0">
+                                No caminamos solos. Conecta con otros jóvenes, comparte peticiones de oración y apóyense mutuamente en fe.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div className="mt-5 p-5 bg-white rounded-5 shadow-sm text-start mx-3">
+                    <h2 className="h4 fw-bold text-secondary mb-4">Nuestra Misión</h2>
+                    <p className="text-muted mb-4">
+                        En un mundo lleno de distracciones y ansiedad, creemos que la tecnología puede ser una herramienta para la redención. Conecta+ nace del deseo de reconciliar a la juventud con lo eterno, proporcionando recursos de alta calidad para el estudio bíblico, la oración constante y el acompañamiento fraternal.
+                    </p>
+                    <p className="text-muted mb-0">
+                        Cada versículo, cada devocional y cada interacción dentro de la plataforma está fundamentada en principios bíblicos, buscando fomentar una relación genuina y profunda con Jesucristo. Estamos comprometidos con la privacidad y la integridad de tu proceso espiritual.
+                    </p>
                 </div>
             </div>
         </div>

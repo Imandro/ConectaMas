@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Flame, Sparkles, Heart, Zap, ChevronLeft, Edit2, Check, X } from "lucide-react";
+import { Flame, Sparkles, Heart, Zap, ChevronLeft, Edit2, Check, X, Trophy } from "lucide-react";
 import Link from "next/link";
 import LlamiMascot from "@/app/components/LlamiMascot";
 import { getOrCreateMascot, feedMascot, updateMascotName } from "./actions";
@@ -25,13 +25,20 @@ export default function LlamiPage() {
     const [isEditingName, setIsEditingName] = useState(false);
     const [newName, setNewName] = useState("");
     const [isDarkMode, setIsDarkMode] = useState(false);
+    const [prevLevel, setPrevLevel] = useState<number | null>(null);
+    const [showLevelUp, setShowLevelUp] = useState(false);
 
 
     const loadMascot = async () => {
         try {
             const data = await getOrCreateMascot();
             if (data) {
+                if (prevLevel !== null && data.level > prevLevel) {
+                    setShowLevelUp(true);
+                    setTimeout(() => setShowLevelUp(false), 5000);
+                }
                 setMascot(data);
+                setPrevLevel(data.level);
                 if (!data.user?.hasSeenLlamiTutorial) {
                     setShowTutorial(true);
                 }
@@ -133,6 +140,44 @@ export default function LlamiPage() {
             <AnimatePresence>
                 {showTutorial && (
                     <LlamiTutorial onComplete={handleTutorialComplete} />
+                )}
+                {showLevelUp && (
+                    <motion.div
+                        initial={{ opacity: 0, scale: 0.5 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0 }}
+                        className="position-fixed top-0 start-0 w-100 h-100 d-flex flex-column align-items-center justify-content-center bg-white bg-opacity-75"
+                        style={{ zIndex: 9999 }}
+                    >
+                        <motion.div
+                            animate={{ rotate: [0, 10, -10, 10, 0], scale: [1, 1.2, 1] }}
+                            transition={{ duration: 0.5, repeat: 3 }}
+                        >
+                            <Trophy size={120} className="text-warning mb-4" />
+                        </motion.div>
+                        <h1 className="display-3 fw-bold text-primary mb-0">¡NIVEL {mascot?.level}!</h1>
+                        <p className="lead fw-bold text-muted">¡{mascot?.name} está evolucionando!</p>
+
+                        {/* Fake Confetti using particles */}
+                        {[...Array(20)].map((_, i) => (
+                            <motion.div
+                                key={i}
+                                className="position-absolute rounded-1"
+                                style={{
+                                    width: 10, height: 10,
+                                    backgroundColor: ['#ffc107', '#fd7e14', '#20c997', '#0d6efd', '#d63384'][i % 5],
+                                    top: '50%', left: '50%'
+                                }}
+                                animate={{
+                                    x: (Math.random() - 0.5) * 500,
+                                    y: (Math.random() - 0.5) * 500,
+                                    rotate: Math.random() * 360,
+                                    opacity: [1, 0]
+                                }}
+                                transition={{ duration: 2, ease: "easeOut" }}
+                            />
+                        ))}
+                    </motion.div>
                 )}
             </AnimatePresence>
 
