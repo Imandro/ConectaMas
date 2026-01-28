@@ -111,6 +111,7 @@ export const pt = {
         age_save_success: "Idade salva",
         age_save_error: "Erro ao salvar",
         years: "anos",
+        next: "Próximo",
     },
     auth: {
         logo_alt: "Conecta+ Logo",

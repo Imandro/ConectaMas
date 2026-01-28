@@ -111,6 +111,7 @@ export const es = {
         age_save_success: "Edad guardada",
         age_save_error: "Error al guardar",
         years: "años",
+        next: "Siguiente",
     },
     auth: {
         logo_alt: "Conecta+ Logo",

@@ -111,6 +111,7 @@ export const en = {
         age_save_success: "Age saved",
         age_save_error: "Error saving",
         years: "years",
+        next: "Next",
     },
     auth: {
         logo_alt: "Conecta+ Logo",
