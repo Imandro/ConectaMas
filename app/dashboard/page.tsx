@@ -294,17 +294,7 @@ export default function DashboardHome() {
                 </Link>
             </section>
 
-            {/* Social Media Cards */}
-            <section className="mb-4 animate-fade-in delay-200">
-                <div className="row g-3">
-                    <div className="col-12 col-md-6">
-                        <WhatsappCard />
-                    </div>
-                    <div className="col-12 col-md-6">
-                        <InstagramCard />
-                    </div>
-                </div>
-            </section>
+
 
             {/* Main Action Grid (New Navigation) */}
             <section className="mb-4 animate-fade-in delay-100">
@@ -396,6 +386,18 @@ export default function DashboardHome() {
                                 </li>
                             </ul>
                         </div>
+                    </div>
+                </div>
+            </section>
+
+            {/* Social Media Cards */}
+            <section className="mb-4 animate-fade-in delay-200">
+                <div className="row g-3">
+                    <div className="col-12 col-md-6">
+                        <WhatsappCard />
+                    </div>
+                    <div className="col-12 col-md-6">
+                        <InstagramCard />
                     </div>
                 </div>
             </section>
