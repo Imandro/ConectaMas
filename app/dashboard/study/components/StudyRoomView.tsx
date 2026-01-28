@@ -21,7 +21,7 @@ interface StudyRoomViewProps {
     room: {
         id: string;
         title: string;
-        theme: string;
+        theme: string | null;
         host: {
             name: string | null;
         };
