@@ -11,7 +11,7 @@ export default async function StudyRoomPage({ params }: { params: { roomId: stri
     if (!roomRes.success || !roomRes.room) redirect("/dashboard/study");
 
     const msgRes = await getStudyMessages(params.roomId);
-    const initialMessages = msgRes.success ? msgRes.messages : [];
+    const initialMessages = (msgRes.success && msgRes.messages) ? msgRes.messages : [];
 
     return (
         <div className="container py-4">
