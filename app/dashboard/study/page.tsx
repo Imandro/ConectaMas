@@ -8,7 +8,7 @@ export default async function StudyPage() {
     if (!session?.user?.id) redirect("/login");
 
     const res = await getOpenStudyRooms();
-    const rooms = res.success ? res.rooms : [];
+    const rooms = (res.success && res.rooms) ? res.rooms : [];
 
     return (
         <div className="container py-4">
