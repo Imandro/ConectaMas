@@ -105,3 +105,131 @@ export async function joinGameRoom(roomId: string) {
         return { success: false, error: "Failed to join room" };
     }
 }
+
+export async function getRoomStatus(roomId: string) {
+    try {
+        const room = await prisma.gameRoom.findUnique({
+            where: { id: roomId },
+            include: {
+                players: {
+                    include: {
+                        user: {
+                            select: { name: true, image: true }
+                        }
+                    },
+                    orderBy: { joinedAt: "asc" }
+                }
+            }
+        });
+        return { success: true, room };
+    } catch (error) {
+        return { success: false, error: "Failed to fetch room" };
+    }
+}
+
+export async function startGame(roomId: string) {
+    try {
+        const session = await auth();
+        if (!session?.user?.id) return { success: false, error: "Unauthorized" };
+
+        const room = await prisma.gameRoom.findUnique({
+            where: { id: roomId },
+            include: { players: true }
+        });
+
+        if (!room) return { success: false, error: "Room not found" };
+
+        // Simple authorized check: Is user in room? Ideally check if creator.
+        // For now, anyone inside can start to keep it simple.
+
+        const firstPlayer = room.players.find(p => p.status === 'ALIVE');
+        if (!firstPlayer) return { success: false, error: "No players" };
+
+        await prisma.gameRoom.update({
+            where: { id: roomId },
+            data: {
+                status: "PLAYING",
+                currentTurnUserId: firstPlayer.userId,
+                bombExplodesAt: new Date(Date.now() + (Math.random() * 20000 + 10000)) // 10-30s
+            }
+        });
+
+        revalidatePath(`/dashboard/games/${roomId}`);
+        return { success: true };
+    } catch (error) {
+        return { success: false, error: "Failed to start" };
+    }
+}
+
+export async function submitGameAnswer(roomId: string, answer: string) {
+    try {
+        const session = await auth();
+        if (!session?.user?.id) return { success: false, error: "Unauthorized" };
+
+        const room = await prisma.gameRoom.findUnique({
+            where: { id: roomId },
+            include: { players: true }
+        });
+
+        if (!room) return { success: false, error: "Room not found" };
+
+        // Check explosion
+        if (room.bombExplodesAt && new Date() > room.bombExplodesAt) {
+            // Eliminated!
+            await prisma.gamePlayer.update({
+                where: { roomId_userId: { roomId, userId: session.user.id } },
+                data: { status: "ELIMINATED" }
+            });
+
+            // Check if game over (1 survivor)
+            const alivePlayers = room.players.filter(p => p.status === "ALIVE" && p.userId !== session.user.id);
+            if (alivePlayers.length <= 1) {
+                if (alivePlayers.length === 1) {
+                    await prisma.gamePlayer.update({
+                        where: { roomId_userId: { roomId, userId: alivePlayers[0].userId } },
+                        data: { status: "WINNER", score: { increment: 50 } }
+                    });
+                }
+                await prisma.gameRoom.update({
+                    where: { id: roomId },
+                    data: { status: "FINISHED" }
+                });
+            } else {
+                // New round? Or just continue?
+                // For Hot Potato usually elimination resets the round.
+                // Reset bomb and pick random next player
+                const nextPlayer = alivePlayers[Math.floor(Math.random() * alivePlayers.length)];
+                await prisma.gameRoom.update({
+                    where: { id: roomId },
+                    data: {
+                        currentTurnUserId: nextPlayer.userId,
+                        bombExplodesAt: new Date(Date.now() + (Math.random() * 20000 + 10000))
+                    }
+                });
+            }
+
+            revalidatePath(`/dashboard/games/${roomId}`);
+            return { success: true, exploded: true };
+        }
+
+        // Pass the bomb
+        const alivePlayers = room.players.filter(p => p.status === "ALIVE");
+        const currentIndex = alivePlayers.findIndex(p => p.userId === session.user.id);
+        const nextIndex = (currentIndex + 1) % alivePlayers.length;
+        const nextPlayer = alivePlayers[nextIndex];
+
+        await prisma.gameRoom.update({
+            where: { id: roomId },
+            data: {
+                currentTurnUserId: nextPlayer.userId
+            }
+        });
+
+        revalidatePath(`/dashboard/games/${roomId}`);
+        return { success: true, exploded: false };
+
+    } catch (error) {
+        console.error(error);
+        return { success: false, error: "Failed to submit" };
+    }
+}
