@@ -54,10 +54,6 @@ export async function updateProfileImage(base64Image: string) {
     revalidatePath('/dashboard/profile');
 }
 
-revalidatePath('/dashboard');
-revalidatePath('/dashboard/profile');
-}
-
 export async function updateBannerImage(base64Image: string) {
     const session = await auth();
     if (!session?.user?.email) throw new Error("Unauthorized");

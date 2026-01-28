@@ -11,12 +11,7 @@ interface Checkin {
     createdAt: string;
 }
 
-import { Metadata } from 'next';
-
-export const metadata: Metadata = {
-    title: 'Bitácora de Bienestar | Conecta+',
-    description: 'Registra tus emociones diariamente y observa tu progreso emocional y espiritual. Una herramienta para el autoconocimiento y la sanidad.',
-};
+// Metadata removed to support client component
 
 export default function CheckinPage() {
     const { t, language } = useLanguage();
