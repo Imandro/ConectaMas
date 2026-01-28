@@ -30,8 +30,10 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
                 const user = await prisma.user.findFirst({
                     where: {
                         OR: [
-                            { email: normalizedIdentifier },
-                            { username: normalizedIdentifier }
+                            { email: { equals: normalizedIdentifier, mode: 'insensitive' } },
+                            { username: { equals: normalizedIdentifier, mode: 'insensitive' } },
+                            // Fallback for username without @ if user types @username (just in case)
+                            { username: { equals: normalizedIdentifier.replace('@', ''), mode: 'insensitive' } }
                         ]
                     },
                 });
