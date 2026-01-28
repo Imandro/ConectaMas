@@ -1,10 +1,11 @@
 "use client";
 
 import { useState, useEffect, useRef, useCallback } from "react";
-import { getStudyMessages, sendStudyMessage } from "../actions";
-import { Send, Book, Users, ChevronRight, Search, BookOpen } from "lucide-react";
+import { getStudyMessages, sendStudyMessage, leaveStudyRoom, deleteStudyRoom, kickParticipant, joinStudyRoom } from "../actions";
+import { Send, Book, Users, ChevronRight, Search, BookOpen, Share2, LogOut, UserMinus, Trash2, Copy } from "lucide-react";
 import Image from "next/image";
 import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 interface Message {
     id: string;
@@ -23,8 +24,17 @@ interface StudyRoomViewProps {
         title: string;
         theme: string | null;
         host: {
+            id: string;
             name: string | null;
         };
+        participants?: Array<{
+            user: {
+                id: string;
+                name: string | null;
+                image: string | null;
+                spiritualLevel: string | null;
+            };
+        }>;
     };
     initialMessages: Message[];
     currentUserId: string;
@@ -146,17 +156,134 @@ export default function StudyRoomView({ room, initialMessages, currentUserId }: 
 
             {/* Right Column: Chat Room */}
             <div className={`col h-100 d-flex flex-column ${showBible ? 'col-lg-7' : 'col-12'}`}>
-                <div className="chat-header d-flex justify-content-between align-items-center mb-3">
-                    <div>
-                        <h4 className="fw-bold mb-0">{room.title}</h4>
-                        <div className="small text-muted d-flex align-items-center gap-2">
-                            <Users size={14} /> Anfitrión: {room.host.name}
+                <div className="chat-header mb-3">
+                    <div className="d-flex justify-content-between align-items-start mb-2">
+                        <div>
+                            <h4 className="fw-bold mb-1">{room.title}</h4>
+                            <div className="small text-muted d-flex align-items-center gap-2">
+                                <Users size={14} /> Anfitrión: {room.host.name}
+                                {room.participants && (
+                                    <>
+                                        <span className="mx-1">•</span>
+                                        <span>{room.participants.length}/20 participantes</span>
+                                    </>
+                                )}
+                            </div>
                         </div>
+                        {!showBible && (
+                            <button className="btn btn-success btn-sm rounded-pill px-3 fw-bold shadow-sm d-flex align-items-center gap-2" onClick={() => setShowBible(true)}>
+                                <Book size={16} /> Abrir Biblia
+                            </button>
+                        )}
                     </div>
-                    {!showBible && (
-                        <button className="btn btn-success btn-sm rounded-pill px-3 fw-bold shadow-sm d-flex align-items-center gap-2" onClick={() => setShowBible(true)}>
-                            <Book size={16} /> Abrir Biblia
+
+                    {/* Room Controls */}
+                    <div className="d-flex gap-2 flex-wrap">
+                        <button
+                            className="btn btn-sm btn-outline-primary rounded-pill d-flex align-items-center gap-1"
+                            onClick={() => {
+                                const link = `${window.location.origin}/dashboard/study/${room.id}`;
+                                navigator.clipboard.writeText(link);
+                                toast.success("¡Link copiado! Compártelo con otros.");
+                            }}
+                        >
+                            <Share2 size={14} /> Compartir
                         </button>
+
+                        <button
+                            className="btn btn-sm btn-outline-danger rounded-pill d-flex align-items-center gap-1"
+                            onClick={async () => {
+                                if (confirm("¿Estás seguro que quieres abandonar esta sala?")) {
+                                    const router = useRouter();
+                                    const res = await leaveStudyRoom(room.id);
+                                    if (res.success) {
+                                        toast.success("Has abandonado la sala");
+                                        window.location.href = "/dashboard/study";
+                                    } else {
+                                        toast.error("Error al salir");
+                                    }
+                                }
+                            }}
+                        >
+                            <LogOut size={14} /> Abandonar
+                        </button>
+
+                        {room.host.id === currentUserId && (
+                            <>
+                                <button
+                                    className="btn btn-sm btn-outline-warning rounded-pill d-flex align-items-center gap-1"
+                                    onClick={() => {
+                                        // Toggle participants list
+                                        const list = document.getElementById('participants-list');
+                                        if (list) list.classList.toggle('d-none');
+                                    }}
+                                >
+                                    <Users size={14} /> Gestionar
+                                </button>
+
+                                <button
+                                    className="btn btn-sm btn-danger rounded-pill d-flex align-items-center gap-1"
+                                    onClick={async () => {
+                                        if (confirm("¿Estás seguro que quieres ELIMINAR esta sala? Esta acción no se puede deshacer.")) {
+                                            const res = await deleteStudyRoom(room.id);
+                                            if (res.success) {
+                                                toast.success("Sala eliminada");
+                                                window.location.href = "/dashboard/study";
+                                            } else {
+                                                toast.error(res.error || "Error al eliminar");
+                                            }
+                                        }
+                                    }}
+                                >
+                                    <Trash2 size={14} /> Eliminar Sala
+                                </button>
+                            </>
+                        )}
+                    </div>
+
+                    {/* Participants List (Collapsible) */}
+                    {room.host.id === currentUserId && room.participants && (
+                        <div id="participants-list" className="d-none mt-3 p-3 bg-light rounded-3 border">
+                            <h6 className="fw-bold mb-3">Participantes ({room.participants.length}/20)</h6>
+                            <div className="d-flex flex-column gap-2" style={{ maxHeight: '200px', overflowY: 'auto' }}>
+                                {room.participants.map((p) => (
+                                    <div key={p.user.id} className="d-flex align-items-center justify-content-between p-2 bg-white rounded-2">
+                                        <div className="d-flex align-items-center gap-2">
+                                            {p.user.image ? (
+                                                <Image src={p.user.image} alt={p.user.name || "U"} width={24} height={24} className="rounded-circle" />
+                                            ) : (
+                                                <div className="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center fw-bold" style={{ width: 24, height: 24, fontSize: '0.7rem' }}>
+                                                    {(p.user.name || "U")[0]}
+                                                </div>
+                                            )}
+                                            <span className="small fw-bold">{p.user.name}</span>
+                                            {p.user.id === room.host.id && (
+                                                <span className="badge bg-success-subtle text-success border border-success" style={{ fontSize: '0.6rem' }}>Anfitrión</span>
+                                            )}
+                                        </div>
+                                        {p.user.id !== room.host.id && (
+                                            <button
+                                                className="btn btn-sm btn-outline-danger rounded-pill px-2 py-0"
+                                                style={{ fontSize: '0.7rem' }}
+                                                onClick={async () => {
+                                                    if (confirm(`¿Expulsar a ${p.user.name}?`)) {
+                                                        const res = await kickParticipant(room.id, p.user.id);
+                                                        if (res.success) {
+                                                            toast.success("Participante expulsado");
+                                                            window.location.reload();
+                                                        } else {
+                                                            toast.error("Error al expulsar");
+                                                        }
+                                                    }
+                                                }}
+                                            >
+                                                <UserMinus size={12} />
+                                            </button>
+                                        )}
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
                     )}
                 </div>
 

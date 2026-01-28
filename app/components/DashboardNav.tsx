@@ -21,15 +21,15 @@ export default function DashboardNav() {
         { name: t.nav.home, href: '/dashboard', icon: Home },
         { name: t.nav.devotionals, href: '/dashboard/devotionals', icon: BookOpen },
         { name: t.nav.bible, href: '/dashboard/bible', icon: Book },
-        { name: "Pregunta", href: '/dashboard/qa', icon: MessageCircle }, // Was Community
+        { name: "Pregunta", href: '/dashboard/qa', icon: MessageCircle, showBadge: true }, // Was Community
         { name: "Oración", href: '/dashboard/prayer', icon: HeartHandshake },
     ];
 
     useEffect(() => {
-        // Fetch notification count
+        // Fetch Q&A notification count
         const fetchCount = async () => {
             try {
-                const res = await fetch("/api/notifications/count");
+                const res = await fetch("/api/notifications/qa-count");
                 if (res.ok) {
                     const data = await res.json();
                     setNotificationCount(data.count);
@@ -65,7 +65,7 @@ export default function DashboardNav() {
                             >
                                 <div className="position-relative">
                                     <Icon size={24} strokeWidth={isActive ? 2.5 : 2} />
-                                    {item.name === t.nav.community && notificationCount > 0 && (
+                                    {item.showBadge && notificationCount > 0 && (
                                         <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style={{ fontSize: '0.6rem', padding: '0.25em 0.4em' }}>
                                             {notificationCount > 9 ? '9+' : notificationCount}
                                         </span>

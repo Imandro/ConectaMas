@@ -18,7 +18,7 @@ export default async function StudyRoomPage({ params }: { params: { roomId: stri
             <StudyRoomView
                 room={roomRes.room}
                 initialMessages={initialMessages}
-                currentUserId={session.user.id}
+                currentUserId={roomRes.currentUserId || session.user.id}
             />
         </div>
     );
