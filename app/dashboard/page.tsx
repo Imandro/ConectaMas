@@ -198,7 +198,7 @@ export default function DashboardHome() {
             {/* Estado y SOS con Llami */}
             <section className="row g-2 mb-4">
                 <div className="col-7">
-                    <div className="card border-0 shadow-sm h-100 bg-white overflow-visible" style={{ borderRadius: '24px' }}>
+                    <div id="tour-checkin" className="card border-0 shadow-sm h-100 bg-white overflow-visible" style={{ borderRadius: '24px' }}>
                         <div className="card-body p-3">
                             <div className="row align-items-between h-100">
                                 <div className="col-7 d-flex flex-column justify-content-center">
@@ -403,8 +403,11 @@ export default function DashboardHome() {
             </section>
 
             {/* Feature Tour (Proactive Tutorial) */}
-            {stats && !stats.hasSeenTutorialTour && (
-                <FeatureTour onComplete={() => setStats((prev: DashboardStats | null) => prev ? { ...prev, hasSeenTutorialTour: true } : null)} />
+            {stats && (!stats.hasSeenTutorialTour || localStorage.getItem('tour_version') !== '2026-01-new-dashboard') && (
+                <FeatureTour onComplete={() => {
+                    setStats((prev: DashboardStats | null) => prev ? { ...prev, hasSeenTutorialTour: true } : null);
+                    localStorage.setItem('tour_version', '2026-01-new-dashboard');
+                }} />
             )}
 
             {/* Support Ad - Moved to bottom */}
