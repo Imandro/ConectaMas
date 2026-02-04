@@ -6,6 +6,7 @@ import { updateUsername } from "./actions";
 import { toast } from "react-hot-toast";
 import { Check, X } from "lucide-react";
 import { useLanguage } from "@/app/LanguageContext";
+import UserAvatar from "@/app/components/UserAvatar";
 
 interface ProfileHeaderProps {
     user: {
@@ -70,9 +71,7 @@ export default function ProfileHeader({ user }: ProfileHeaderProps) {
             <div className="p-4 pt-0 position-relative">
                 <div className="d-flex align-items-end gap-4" style={{ marginTop: '-40px' }}>
                     <div className="bg-white p-1 rounded-circle shadow-sm">
-                        <div className="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center display-4 fw-bold" style={{ width: '80px', height: '80px' }}>
-                            {user.name ? user.name.charAt(0).toUpperCase() : 'U'}
-                        </div>
+                        <UserAvatar name={user.name} size={80} />
                     </div>
                 </div>
 
