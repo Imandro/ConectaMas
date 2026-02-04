@@ -114,6 +114,9 @@ model User {
   
   gameParticipations GamePlayer[]
   leaderApplications LeaderApplication[]
+  
+  questionLikes     QuestionLike[]
+  answerLikes       AnswerLike[]
 }
 
 model SupportMessage {
@@ -618,6 +621,7 @@ model Question {
   
   answers     Answer[]
   tags        String?  // JSON or comma separated
+  likesList   QuestionLike[]
 }
 
 model Answer {
@@ -633,6 +637,27 @@ model Answer {
   
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+  likesList   AnswerLike[]
+}
+
+model QuestionLike {
+  id         String   @id @default(cuid())
+  userId     String
+  questionId String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  question   Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, questionId])
+}
+
+model AnswerLike {
+  id       String @id @default(cuid())
+  userId   String
+  answerId String
+  user     User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  answer   Answer @relation(fields: [answerId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, answerId])
 }
 
 // [NEW] Games (Hot Potato / Trivia)

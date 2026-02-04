@@ -140,7 +140,7 @@ export async function leaveGameRoom(roomId: string) {
 
 export async function getRoomStatus(roomId: string) {
     try {
-        const room = await prisma.gameRoom.findUnique({
+        let room = await prisma.gameRoom.findUnique({
             where: { id: roomId },
             include: {
                 players: {
@@ -153,6 +153,59 @@ export async function getRoomStatus(roomId: string) {
                 }
             }
         });
+
+        if (!room) return { success: false, error: "Room not found" };
+
+        // --- GAME ENGINE LOGIC (Papa Caliente) ---
+        if (room.status === "PLAYING") {
+            const alivePlayers = room.players.filter(p => p.status === "ALIVE");
+
+            // 1. Check if anyone is winner
+            if (alivePlayers.length <= 1) {
+                if (alivePlayers.length === 1) {
+                    await prisma.gamePlayer.update({
+                        where: { roomId_userId: { roomId, userId: alivePlayers[0].userId } },
+                        data: { status: "WINNER", score: { increment: 50 } }
+                    });
+                }
+                room = await prisma.gameRoom.update({
+                    where: { id: roomId },
+                    data: { status: "FINISHED" },
+                    include: { players: { include: { user: { select: { name: true, image: true } } }, orderBy: { joinedAt: "asc" } } }
+                });
+            }
+            // 2. Check if current turn user is GONE or EXPIRED
+            else if (room.currentTurnUserId) {
+                const currentPlayer = alivePlayers.find(p => p.userId === room?.currentTurnUserId);
+                const isTimeUp = room.bombExplodesAt && new Date() > room.bombExplodesAt;
+
+                if (!currentPlayer || isTimeUp) {
+                    // Explode or skip
+                    if (currentPlayer) {
+                        await prisma.gamePlayer.update({
+                            where: { roomId_userId: { roomId, userId: currentPlayer.userId } },
+                            data: { status: "ELIMINATED" }
+                        });
+                    }
+
+                    // Reset bomb and move to next
+                    const remainingAlive = room.players.filter(p => p.status === "ALIVE" && p.userId !== room?.currentTurnUserId);
+                    if (remainingAlive.length > 0) {
+                        const nextPlayer = remainingAlive[Math.floor(Math.random() * remainingAlive.length)];
+                        room = await prisma.gameRoom.update({
+                            where: { id: roomId },
+                            data: {
+                                currentTurnUserId: nextPlayer.userId,
+                                bombExplodesAt: new Date(Date.now() + (Math.random() * 20000 + 10000))
+                            },
+                            include: { players: { include: { user: { select: { name: true, image: true } } }, orderBy: { joinedAt: "asc" } } }
+                        });
+                    }
+                }
+            }
+        }
+        // ----------------------------------------
+
         return { success: true, room };
     } catch (error) {
         return { success: false, error: "Failed to fetch room" };

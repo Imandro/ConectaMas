@@ -1,11 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ArrowLeft, Send, MessageSquare, Heart, CheckCircle, Share2, Eye } from "lucide-react";
 import AnswerCard from "../components/AnswerCard";
 import Link from "next/link";
 import { useLanguage } from "@/app/LanguageContext";
-import { submitAnswer, likeQuestion } from "../actions";
+import { submitAnswer, likeQuestion, incrementQuestionViews } from "../actions";
 import { toast } from "react-hot-toast";
 
 interface QuestionDetailViewProps {
@@ -18,6 +18,10 @@ export default function QuestionDetailView({ question }: QuestionDetailViewProps
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [likes, setLikes] = useState(question.likes);
     const [hasLiked, setHasLiked] = useState(false);
+
+    useEffect(() => {
+        incrementQuestionViews(question.id);
+    }, [question.id]);
 
     const handleLikeQuestion = async () => {
         if (hasLiked) return;
@@ -75,8 +79,9 @@ export default function QuestionDetailView({ question }: QuestionDetailViewProps
                                         {question.user.name}
                                         {question.user.profileType === 'COOPERATOR' && <span className="ms-2 badge bg-warning text-dark small">{t.qa.user_badge_coop}</span>}
                                     </h6>
-                                    <small className="text-muted">
-                                        {new Date(question.createdAt).toLocaleDateString()} · {question.views} {t.qa.views}
+                                    <small className="text-muted d-flex align-items-center gap-1">
+                                        {new Date(question.createdAt).toLocaleDateString()} ·
+                                        <Eye size={12} className="ms-1" /> {question.views} {t.qa.views}
                                     </small>
                                 </div>
                             </div>

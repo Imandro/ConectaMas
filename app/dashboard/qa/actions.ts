@@ -111,21 +111,99 @@ export async function submitAnswer(questionId: string, content: string) {
 // Schema had `likes Int @default(0)`.
 // I will implement a restricted increment (cookie or session based check would be better but simple increment is MVP).
 
-export async function likeQuestion(questionId: string) {
-    // Basic implementation
-    await prisma.question.update({
-        where: { id: questionId },
-        data: { likes: { increment: 1 } }
-    });
-    revalidatePath('/dashboard/qa');
+export async function incrementQuestionViews(questionId: string) {
+    try {
+        await prisma.question.update({
+            where: { id: questionId },
+            data: { views: { increment: 1 } }
+        });
+        // We don't always need to revalidate here as views are "passive"
+    } catch (e) {
+        console.error("Error incrementing views:", e);
+    }
 }
 
-export async function likeAnswer(answerId: string) {
-    await prisma.answer.update({
-        where: { id: answerId },
-        data: { likes: { increment: 1 } }
-    });
-    // Can't easily revalidate path without knowing questionId, hope generic revalidate works or client update.
+export async function likeQuestion(questionId: string) {
+    const session = await auth();
+    if (!session?.user?.id) return { success: false, error: "Unauthorized" };
+
+    try {
+        // Check if already liked
+        const existingLike = await prisma.questionLike.findUnique({
+            where: {
+                userId_questionId: {
+                    userId: session.user.id,
+                    questionId: questionId
+                }
+            }
+        });
+
+        if (existingLike) {
+            return { success: false, error: "Already liked" };
+        }
+
+        // Transaction to ensure consistency
+        await prisma.$transaction([
+            prisma.questionLike.create({
+                data: {
+                    userId: session.user.id,
+                    questionId: questionId
+                }
+            }),
+            prisma.question.update({
+                where: { id: questionId },
+                data: { likes: { increment: 1 } }
+            })
+        ]);
+
+        revalidatePath('/dashboard/qa');
+        revalidatePath(`/dashboard/qa/${questionId}`);
+        return { success: true };
+    } catch (e) {
+        console.error(e);
+        return { success: false, error: "Database error" };
+    }
+}
+
+export async function likeAnswer(answerId: string, questionId: string) {
+    const session = await auth();
+    if (!session?.user?.id) return { success: false, error: "Unauthorized" };
+
+    try {
+        const existingLike = await prisma.answerLike.findUnique({
+            where: {
+                userId_answerId: {
+                    userId: session.user.id,
+                    answerId: answerId
+                }
+            }
+        });
+
+        if (existingLike) {
+            return { success: false, error: "Already liked" };
+        }
+
+        await prisma.$transaction([
+            prisma.answerLike.create({
+                data: {
+                    userId: session.user.id,
+                    answerId: answerId
+                }
+            }),
+            prisma.answer.update({
+                where: { id: answerId },
+                data: { likes: { increment: 1 } }
+            })
+        ]);
+
+        if (questionId) {
+            revalidatePath(`/dashboard/qa/${questionId}`);
+        }
+        return { success: true };
+    } catch (e) {
+        console.error(e);
+        return { success: false, error: "Database error" };
+    }
 }
 
 export async function getQuestionDetails(questionId: string) {

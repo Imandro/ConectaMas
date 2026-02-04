@@ -26,7 +26,8 @@ export async function POST() {
             where: { id: user.id },
             data: {
                 lastChallengeCompleted: new Date(),
-                // Optionally increment flame points or similar here
+                weeklyXP: { increment: 10 },
+                totalXP: { increment: 10 }
             }
         });
 

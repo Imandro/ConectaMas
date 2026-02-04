@@ -36,40 +36,50 @@ export async function deleteAccount() {
 
 export async function updateProfileImage(base64Image: string) {
     const session = await auth();
-    if (!session?.user?.email) throw new Error("Unauthorized");
+    if (!session?.user?.email) return { success: false, error: "Unauthorized" };
 
     // --- OPTIMIZACIÓN DE RECURSOS (NEON DB PROT) ---
-    // Limitar imagen a ~100KB (base64 length is approx 1.33 * bytes)
-    if (base64Image.length > 200000) { // Increased limit slightly
-        throw new Error("Imagen demasiado pesada. Máximo 150KB aprox.");
+    // Limitar imagen a ~150KB (base64 length is approx 1.33 * bytes)
+    if (base64Image.length > 250000) {
+        return { success: false, errorKey: "image_too_large_server" };
     }
     // ------------------------------------------------
 
-    await prisma.user.update({
-        where: { email: session.user.email },
-        data: { image: base64Image }
-    });
+    try {
+        await prisma.user.update({
+            where: { email: session.user.email },
+            data: { image: base64Image }
+        });
 
-    revalidatePath('/dashboard');
-    revalidatePath('/dashboard/profile');
+        revalidatePath('/dashboard');
+        revalidatePath('/dashboard/profile');
+        return { success: true };
+    } catch (e) {
+        return { success: false, error: "Database error" };
+    }
 }
 
 export async function updateBannerImage(base64Image: string) {
     const session = await auth();
-    if (!session?.user?.email) throw new Error("Unauthorized");
+    if (!session?.user?.email) return { success: false, error: "Unauthorized" };
 
     // Limit to ~300KB
-    if (base64Image.length > 400000) {
-        throw new Error("Imagen demasiado pesada. Máximo 300KB aprox.");
+    if (base64Image.length > 450000) {
+        return { success: false, errorKey: "image_too_large_server" };
     }
 
-    await prisma.user.update({
-        where: { email: session.user.email },
-        data: { bannerUrl: base64Image }
-    });
+    try {
+        await prisma.user.update({
+            where: { email: session.user.email },
+            data: { bannerUrl: base64Image }
+        });
 
-    revalidatePath('/dashboard');
-    revalidatePath('/dashboard/profile');
+        revalidatePath('/dashboard');
+        revalidatePath('/dashboard/profile');
+        return { success: true };
+    } catch (e) {
+        return { success: false, error: "Database error" };
+    }
 }
 
 export async function updateLeaderPhone(phone: string) {

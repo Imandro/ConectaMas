@@ -316,19 +316,27 @@ export default function StudyRoomView({ room, initialMessages, currentUserId }: 
                 </div>
 
                 {/* Input Area */}
-                <div className="chat-input shadow-sm rounded-pill overflow-hidden border d-flex bg-white">
-                    <input
-                        type="text"
-                        className="form-control border-0 px-4 py-3"
-                        placeholder="Escribe tu reflexión o pregunta..."
-                        value={content}
-                        onChange={(e) => setContent(e.target.value)}
-                        onKeyPress={(e) => e.key === 'Enter' && handleSend(e)}
-                        disabled={loading}
-                    />
-                    <button className="btn btn-primary px-4" onClick={handleSend} disabled={loading || !content.trim()}>
-                        <Send size={20} />
-                    </button>
+                <div className="flex-shrink-0">
+                    <div className="chat-input shadow-sm rounded-pill overflow-hidden border d-flex bg-white">
+                        <input
+                            type="text"
+                            className="form-control border-0 px-4 py-3"
+                            placeholder="Escribe tu reflexión o pregunta..."
+                            value={content}
+                            onChange={(e) => setContent(e.target.value.slice(0, 120))}
+                            onKeyPress={(e) => e.key === 'Enter' && handleSend(e)}
+                            disabled={loading}
+                            maxLength={120}
+                        />
+                        <button className="btn btn-primary px-4" onClick={handleSend} disabled={loading || !content.trim()}>
+                            <Send size={20} />
+                        </button>
+                    </div>
+                    <div className="text-end px-4 mt-1">
+                        <small className={`extra-small ${content.length === 120 ? 'text-danger fw-bold' : 'text-muted'}`}>
+                            {content.length}/120
+                        </small>
+                    </div>
                 </div>
             </div>
 

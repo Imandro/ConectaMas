@@ -1,10 +1,10 @@
 import 'package:bcrypt/bcrypt.dart';
 import 'package:uuid/uuid.dart';
 import '../../../core/repositories/base_repository.dart';
-import 'models/user_model.dart';
 
 class AuthRepository extends BaseRepository {
-  Future<Map<String, dynamic>?> login(String identifier, String password) async {
+  Future<Map<String, dynamic>?> login(
+      String identifier, String password) async {
     final conn = await db.connection;
     final cleanIdentifier = identifier.trim();
 
@@ -51,21 +51,21 @@ class AuthRepository extends BaseRepository {
     required String securityAnswer,
   }) async {
     final conn = await db.connection;
-    
+
     try {
       // 1. Verificar si el usuario ya existe (Manual para evitar errores genéricos de constraint)
       final existing = await conn.execute(
         r'SELECT id FROM "User" WHERE email = $1 OR username = $2 LIMIT 1',
         parameters: [email.toLowerCase(), username],
       );
-      
+
       if (existing.isNotEmpty) {
         throw Exception('El usuario o email ya existe');
       }
 
       // 2. Hashear contraseña con BCrypt (Cuidado: Prisma usa un formato específico, BCrypt de Dart suele ser compatible)
       final hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
-      
+
       // 3. Crear ID único (UUID v4)
       final String userId = const Uuid().v4();
 

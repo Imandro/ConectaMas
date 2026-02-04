@@ -1,6 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:uuid/uuid.dart';
 import 'models/user_model.dart';
 import 'auth_repository.dart';
 
@@ -25,7 +24,8 @@ class AuthNotifier extends StateNotifier<AuthState> {
         final userData = await _repository.getUserById(userId);
         if (userData != null) {
           final user = User.fromJson(userData);
-          state = state.copyWith(user: user, token: 'local_native_token', isLoading: false);
+          state = state.copyWith(
+              user: user, token: 'local_native_token', isLoading: false);
         } else {
           await logout();
         }
@@ -44,10 +44,12 @@ class AuthNotifier extends StateNotifier<AuthState> {
         final user = User.fromJson(userData);
         state = state.copyWith(user: user, isLoading: false);
       } else {
-        state = state.copyWith(isLoading: false, error: 'Error al actualizar perfil');
+        state = state.copyWith(
+            isLoading: false, error: 'Error al actualizar perfil');
       }
     } catch (e) {
-      state = state.copyWith(isLoading: false, error: 'Error de conexión a la base de datos');
+      state = state.copyWith(
+          isLoading: false, error: 'Error de conexión a la base de datos');
     }
   }
 
@@ -56,9 +58,10 @@ class AuthNotifier extends StateNotifier<AuthState> {
     try {
       print('DEBUG: Iniciando login directo a Neon para $identifier');
       final userData = await _repository.login(identifier, password);
-      
+
       if (userData == null) {
-        state = state.copyWith(isLoading: false, error: 'Credenciales inválidas');
+        state =
+            state.copyWith(isLoading: false, error: 'Credenciales inválidas');
         return false;
       }
 
@@ -116,8 +119,8 @@ class AuthNotifier extends StateNotifier<AuthState> {
       print('ERROR REGISTRO DIRECTO: $e');
       state = state.copyWith(
         isLoading: false,
-        error: e.toString().contains('existe') 
-            ? 'El usuario o email ya existe' 
+        error: e.toString().contains('existe')
+            ? 'El usuario o email ya existe'
             : 'Error al conectar con la base de datos',
       );
       return false;
@@ -131,4 +134,3 @@ class AuthNotifier extends StateNotifier<AuthState> {
     state = AuthState();
   }
 }
-

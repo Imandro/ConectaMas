@@ -224,6 +224,9 @@ export async function sendStudyMessage(roomId: string, content: string) {
     const session = await auth();
     if (!session?.user?.id) return { success: false, error: "Unauthorized" };
 
+    if (!content || content.trim().length === 0) return { success: false, error: "Content required" };
+    if (content.length > 120) return { success: false, error: "Mensaje demasiado largo (máximo 120 caracteres)" };
+
     try {
         // Verify user is participant
         const participant = await prisma.studyRoomParticipant.findUnique({

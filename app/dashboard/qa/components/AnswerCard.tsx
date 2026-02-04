@@ -31,7 +31,8 @@ export default function AnswerCard({ answer }: AnswerCardProps) {
         if (hasLiked) return;
         setLikes(p => p + 1);
         setHasLiked(true);
-        await likeAnswer(answer.id);
+        // @ts-ignore
+        await likeAnswer(answer.id, (answer as any).questionId);
     };
 
     return (

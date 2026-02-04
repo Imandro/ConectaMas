@@ -6,6 +6,7 @@ import { updateProfileImage, updateUsername } from "./actions";
 import { toast } from "react-hot-toast";
 import { Check, X } from "lucide-react";
 import { useLanguage } from "@/app/LanguageContext";
+import ImageCropModal from "./ImageCropModal";
 
 interface ProfileHeaderProps {
     user: {
@@ -29,6 +30,10 @@ export default function ProfileHeader({ user }: ProfileHeaderProps) {
     const [pendingUsername, setPendingUsername] = useState("");
     const fileInputRef = useRef<HTMLInputElement>(null);
 
+    // Crop State
+    const [showCropModal, setShowCropModal] = useState(false);
+    const [imageToCrop, setImageToCrop] = useState<string | null>(null);
+
     const getErrorMessage = (res: any) => {
         if (res.errorKey) {
             let msg = t.profile[res.errorKey as keyof typeof t.profile] as string;
@@ -50,33 +55,38 @@ export default function ProfileHeader({ user }: ProfileHeaderProps) {
         const file = e.target.files?.[0];
         if (!file) return;
 
-        // Validation (Max 2MB)
         if (file.size > 2 * 1024 * 1024) {
             toast.error(t.profile.image_too_large);
             return;
         }
 
-        setIsUploading(true);
-
-        // Convert to Base64
         const reader = new FileReader();
-        reader.onloadend = async () => {
-            const base64String = reader.result as string;
-
-            try {
-                // Optimistic update
-                setImage(base64String);
-                await updateProfileImage(base64String);
-                toast.success(t.profile.image_updated);
-            } catch (error) {
-                console.error("Error upload:", error);
-                toast.error(t.profile.image_error);
-                setImage(user.image); // Revert
-            } finally {
-                setIsUploading(false);
-            }
+        reader.onloadend = () => {
+            setImageToCrop(reader.result as string);
+            setShowCropModal(true);
         };
         reader.readAsDataURL(file);
+    };
+
+    const handleCropComplete = async (croppedImage: string) => {
+        setIsUploading(true);
+        setShowCropModal(false);
+        try {
+            setImage(croppedImage);
+            const res = await updateProfileImage(croppedImage);
+            if (res.success) {
+                toast.success(t.profile.image_updated);
+            } else {
+                toast.error(getErrorMessage(res));
+                setImage(user.image);
+            }
+        } catch (error) {
+            toast.error(t.profile.image_error);
+            setImage(user.image);
+        } finally {
+            setIsUploading(false);
+            if (fileInputRef.current) fileInputRef.current.value = "";
+        }
     };
 
     const handleUpdateUsername = async () => {
@@ -248,6 +258,13 @@ export default function ProfileHeader({ user }: ProfileHeaderProps) {
                 </div>
             </div>
 
+            {showCropModal && imageToCrop && (
+                <ImageCropModal
+                    image={imageToCrop}
+                    onCropComplete={handleCropComplete}
+                    onClose={() => setShowCropModal(false)}
+                />
+            )}
         </div>
     );
 }

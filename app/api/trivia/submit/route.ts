@@ -69,6 +69,15 @@ export async function POST(req: Request) {
                     }
                 });
             }
+
+            // Award XP to user for ranking
+            await prisma.user.update({
+                where: { id: userId },
+                data: {
+                    weeklyXP: { increment: 5 },
+                    totalXP: { increment: 5 }
+                }
+            });
         }
 
         return NextResponse.json({
