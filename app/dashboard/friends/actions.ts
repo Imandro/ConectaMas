@@ -24,7 +24,6 @@ export async function searchUsers(query: string) {
             id: true,
             name: true,
             username: true,
-            image: true,
             spiritualLevel: true
         },
         take: 5
@@ -120,7 +119,7 @@ export async function getSupportMessages() {
                 select: {
                     id: true,
                     name: true,
-                    image: true
+                    username: true
                 }
             }
         },
@@ -202,7 +201,6 @@ export async function getFriends() {
                     id: true,
                     name: true,
                     username: true,
-                    image: true,
                     spiritualLevel: true
                 }
             }
