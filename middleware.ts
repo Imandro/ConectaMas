@@ -8,7 +8,7 @@ export default auth((req) => {
     // 1. EARLY INTERVENTION: Check header size BEFORE anything else
     // This breaks the 494 loop immediately if cookies are poisoned.
     const cookieHeader = req.headers.get('cookie') || "";
-    if (cookieHeader.length > 2500) {
+    if (cookieHeader.length > 2000) {
         // If header is > 2.5KB, it's a danger zone.
         // We force clear EVERYTHING on the next response.
         const response = NextResponse.next();

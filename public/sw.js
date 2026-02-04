@@ -36,6 +36,11 @@ self.addEventListener('activate', (event) => {
 
 // Estrategia de red/caché
 self.addEventListener('fetch', (event) => {
+    // 1. SKIP AUTH ROUTES - Never cache or intercept auth calls
+    if (event.request.url.includes('/auth') || event.request.url.includes('/api/auth')) {
+        return; // Let it go to the network normally
+    }
+
     if (event.request.mode === 'navigate') {
         event.respondWith(
             fetch(event.request).catch(() => {

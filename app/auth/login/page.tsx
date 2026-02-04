@@ -179,9 +179,26 @@ export default function LoginPage() {
                     </button>
 
                     <div className="text-center border-top pt-3">
-                        <p className="small text-muted mb-0">
+                        <p className="small text-muted mb-2">
                             {t.auth.no_account} <Link href="/auth/register" className="text-primary fw-bold text-decoration-none">{t.auth.register_link}</Link>
                         </p>
+                        <button
+                            type="button"
+                            onClick={() => {
+                                if (confirm("¿Tienes problemas para entrar? Esto limpiará los datos de conexión y reiniciará la app. ¿Continuar?")) {
+                                    localStorage.clear();
+                                    sessionStorage.clear();
+                                    document.cookie.split(";").forEach((c) => {
+                                        document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
+                                    });
+                                    window.location.reload();
+                                }
+                            }}
+                            className="btn btn-link text-warning extra-small text-decoration-none"
+                            style={{ fontSize: '0.7rem' }}
+                        >
+                            ¿Problemas técnicos? Limpiar conexión (Reset)
+                        </button>
                     </div>
                 </form>
             </div>

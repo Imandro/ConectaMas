@@ -16,17 +16,13 @@ export default function GlobalCookieCleanup() {
                 const eqPos = cookie.indexOf("=");
                 const name = eqPos > -1 ? cookie.substr(0, eqPos).trim() : cookie.trim();
 
-                // CRITERIA: Delete if it refers to next-auth OR if it's suspciously large (>100 chars? varies)
-                // We target "next-auth.session-token" chunks specifically which cause the bloat.
-                // We also strip any legacy keys impacting header size.
-
+                // Target anything related to auth or suspected bloat
                 if (
                     name.includes('next-auth') ||
-                    name.includes('__Secure') || // Catch secure chunks
-                    cookie.length > 2000 // Lower size threshold to catch medium-large blockers
+                    name.includes('__Secure') ||
+                    name.includes('callback-url') ||
+                    cookie.length > 1000 // Even lower threshold for proactive cleanup
                 ) {
-                    // WE MUST ATTEMPT TO DELETE ON ALL COMMON PATHS/DOMAINS
-                    // because we don't know where the bad cookie was set.
                     const domains = [
                         window.location.hostname,
                         '.' + window.location.hostname,
@@ -34,12 +30,12 @@ export default function GlobalCookieCleanup() {
                         '.' + window.location.hostname.replace('www.', '')
                     ];
 
-                    const paths = ['/', '/dashboard', '/auth'];
+                    const paths = ['/', '/dashboard', '/auth', '/api/auth'];
 
                     domains.forEach(d => {
                         paths.forEach(p => {
                             document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 GMT; path=${p}; domain=${d}`;
-                            document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 GMT; path=${p};`; // No domain fallback
+                            document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 GMT; path=${p};`;
                         });
                     });
 
@@ -48,9 +44,9 @@ export default function GlobalCookieCleanup() {
             }
 
             if (cleaned) {
-                console.warn("GlobalCookieCleanup: Large/Corrupt cookies have been purged to prevent 494 errors.");
-                // Optional: Force reload if we cleaned something, to ensure next request is clean?
-                // window.location.reload(); // Risky loop, better to just let next interaction work.
+                console.warn("GlobalCookieCleanup: Purged suspected bloat.");
+                // We don't reload here unless we are specifically on an error/offline page
+                // to avoid infinite refresh loops.
             }
         } catch (e) {
             console.error("Cookie cleanup failed", e);

@@ -79,6 +79,26 @@ export default async function RootLayout({
 
     return (
         <html lang="es">
+            <head>
+                <script dangerouslySetInnerHTML={{
+                    __html: `
+            (function() {
+              try {
+                if (document.cookie.length > 2000) {
+                  console.warn("Nuking large cookies in head to prevent 494...");
+                  var cookies = document.cookie.split(";");
+                  for (var i = 0; i < cookies.length; i++) {
+                    var name = cookies[i].split("=")[0].trim();
+                    if (name.includes("next-auth") || name.length > 50) {
+                      document.cookie = name + "=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/";
+                      document.cookie = name + "=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/; domain=" + window.location.hostname;
+                    }
+                  }
+                }
+              } catch (e) {}
+            })();
+          `}} />
+            </head>
             <body className={`${fredoka.variable} font-fredoka`}>
                 <GlobalCookieCleanup />
                 <OfflineAlert />

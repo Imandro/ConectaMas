@@ -32,6 +32,22 @@ export default function OfflinePage() {
                     >
                         Reintentar Conexión
                     </button>
+
+                    <button
+                        onClick={() => {
+                            if (confirm("Se cerrará tu sesión y se limpiarán datos corruptos. ¿Continuar?")) {
+                                localStorage.clear();
+                                sessionStorage.clear();
+                                document.cookie.split(";").forEach((c) => {
+                                    document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
+                                });
+                                window.location.href = "/auth/login";
+                            }
+                        }}
+                        className="btn btn-link text-warning small mt-2"
+                    >
+                        ¿Sigues con problemas? Limpiar todo (Reset Nuclear)
+                    </button>
                 </div>
 
                 <div className="mt-5 p-3 rounded-4 bg-white bg-opacity-10 text-start">
