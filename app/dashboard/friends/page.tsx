@@ -6,6 +6,7 @@ import Link from "next/link";
 import { searchUsers, addFriend, getFriends, removeFriend, sendSupportMessage, getSupportMessages, markSupportMessageRead } from "./actions";
 import { toast } from "react-hot-toast";
 import { useLanguage } from "@/app/LanguageContext";
+import UserAvatar from "@/app/components/UserAvatar";
 
 export default function FriendsPage() {
     const { t } = useLanguage();
@@ -156,13 +157,7 @@ export default function FriendsPage() {
                                     {searchResults.map((user) => (
                                         <div key={user.id} className="p-3 border rounded-3 d-flex align-items-center justify-content-between bg-light bg-opacity-50">
                                             <div className="d-flex align-items-center gap-2">
-                                                {user.image ? (
-                                                    <img src={user.image} className="rounded-circle" style={{ width: 32, height: 32 }} />
-                                                ) : (
-                                                    <div className="bg-primary-subtle text-primary rounded-circle d-flex align-items-center justify-content-center fw-bold" style={{ width: 32, height: 32 }}>
-                                                        {user.name?.[0]}
-                                                    </div>
-                                                )}
+                                                <UserAvatar name={user.name} size={32} />
                                                 <div>
                                                     <span className="d-block fw-bold small">{user.name}</span>
                                                     <span className="text-muted small">@{user.username}</span>
@@ -250,13 +245,7 @@ export default function FriendsPage() {
                                             <div className="p-3 border rounded-4 bg-white hover-shadow transition">
                                                 <div className="d-flex align-items-center justify-content-between">
                                                     <div className="d-flex align-items-center gap-3">
-                                                        {friend.image ? (
-                                                            <img src={friend.image} className="rounded-circle shadow-sm" style={{ width: 48, height: 48 }} />
-                                                        ) : (
-                                                            <div className="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center fw-bold shadow-sm" style={{ width: 48, height: 48 }}>
-                                                                {friend.name?.[0]}
-                                                            </div>
-                                                        )}
+                                                        <UserAvatar name={friend.name} size={48} className="shadow-sm" />
                                                         <div>
                                                             <h6 className="fw-bold mb-0">{friend.name}</h6>
                                                             <div className="d-flex gap-2 align-items-center">
