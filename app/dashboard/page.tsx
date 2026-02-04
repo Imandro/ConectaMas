@@ -93,7 +93,17 @@ export default function DashboardHome() {
         }
 
         try {
-            const res = await fetch('/api/dashboard/stats');
+            // Add timeout to prevent infinite loading
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 8000); // 8 seconds max
+
+            const res = await fetch('/api/dashboard/stats', {
+                signal: controller.signal,
+                next: { revalidate: 0 } // Ensure fresh data
+            });
+
+            clearTimeout(timeoutId);
+
             if (res.ok) {
                 const data = await res.json();
                 setStats(data);
@@ -104,9 +114,11 @@ export default function DashboardHome() {
                     if (lastDate === today) setHasCheckedIn(true);
                 }
             }
-        } catch (error) {
+        } catch (error: any) {
             console.error('Error fetching stats:', error);
-            // Si hay error (probablemente offline), mantenemos lo que hay en stats (que vino del caché)
+            if (error.name === 'AbortError') {
+                console.warn('Stats fetch timed out, using cache or default.');
+            }
         } finally {
             setLoading(false);
         }
