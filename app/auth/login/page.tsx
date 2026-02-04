@@ -24,6 +24,31 @@ export default function LoginPage() {
         if (searchParams.get('registered') === 'true') {
             setSuccessMessage(t.auth.account_created);
         }
+
+        // EMERGENCY COOKIE CLEANUP
+        // If the user lands here, we assume they might be having issues. 
+        // We clear legacy giant cookies to fix 494 errors.
+        const cookies = document.cookie.split(";");
+        let cleaned = false;
+
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i];
+            const eqPos = cookie.indexOf("=");
+            const name = eqPos > -1 ? cookie.substr(0, eqPos).trim() : cookie.trim();
+
+            // Identify massive cookies or legacy ones
+            if (name.includes('next-auth') || name.length > 50) {
+                // Nuke it with various domains/paths to be sure
+                document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/";
+                document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/; domain=" + window.location.hostname;
+                document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/; domain=." + window.location.hostname;
+                cleaned = true;
+            }
+        }
+
+        if (cleaned) {
+            console.log("Cleaned cookies to prevent 494 error.");
+        }
     }, [searchParams, t]);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {

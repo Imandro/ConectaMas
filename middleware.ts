@@ -48,9 +48,25 @@ export default auth((req) => {
             }
         });
 
-        // Iterate over all cookies to find and delete stale auth chunks if we are stable?
-        // Note: We can't safely delete chunks blindly as they might be the VALID session.
-        // But we can ensure we don't duplicate.
+        // Iterate over all cookies to find and delete stale auth chunks
+        // NextAuth splits large cookies into chunks like __Secure-next-auth.session-token.0, .1, etc.
+        // We must clean these up if we are trying to fix a 494 error.
+
+        req.cookies.getAll().forEach(cookie => {
+            if (
+                cookie.name.includes('next-auth.session-token.') ||
+                cookie.name.includes('__Secure-next-auth.session-token.') ||
+                cookie.name.includes('next-auth.callback-url') ||
+                cookie.name.includes('next-auth.csrf-token') ||
+                cookie.name.includes('next-auth.pkce') ||
+                cookie.name.includes('next-auth.state')
+            ) {
+                // If it's a chunk or a temp cookie, nuke it.
+                // NOTE: This might log the user out if we delete the *active* session chunks,
+                // but that is acceptable/desired to fix the corrupted state.
+                response.cookies.delete(cookie.name);
+            }
+        });
     }
 
     return response;
