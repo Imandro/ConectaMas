@@ -1,38 +1,28 @@
 "use client";
 
-import { useState, useRef } from "react";
-import { Camera, Edit2 } from "lucide-react";
-import { updateProfileImage, updateUsername } from "./actions";
+import { useState } from "react";
+import { Edit2 } from "lucide-react";
+import { updateUsername } from "./actions";
 import { toast } from "react-hot-toast";
 import { Check, X } from "lucide-react";
 import { useLanguage } from "@/app/LanguageContext";
-import ImageCropModal from "./ImageCropModal";
 
 interface ProfileHeaderProps {
     user: {
         name: string | null;
         email: string | null;
-        image: string | null;
         spiritualLevel: string;
         username?: string | null;
         lastUsernameChange?: Date | string | null;
         age?: number | null;
-        bannerUrl?: string | null;
     };
 }
 
 export default function ProfileHeader({ user }: ProfileHeaderProps) {
     const { t } = useLanguage();
-    const [image, setImage] = useState(user.image);
-    const [isUploading, setIsUploading] = useState(false);
     const [isEditingUsername, setIsEditingUsername] = useState(false);
     const [username, setUsername] = useState(user.username || "");
     const [pendingUsername, setPendingUsername] = useState("");
-    const fileInputRef = useRef<HTMLInputElement>(null);
-
-    // Crop State
-    const [showCropModal, setShowCropModal] = useState(false);
-    const [imageToCrop, setImageToCrop] = useState<string | null>(null);
 
     const getErrorMessage = (res: any) => {
         if (res.errorKey) {
@@ -47,48 +37,6 @@ export default function ProfileHeader({ user }: ProfileHeaderProps) {
         return res.error || t.profile.error_updating;
     };
 
-    const handleImageClick = () => {
-        fileInputRef.current?.click();
-    };
-
-    const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-        const file = e.target.files?.[0];
-        if (!file) return;
-
-        if (file.size > 2 * 1024 * 1024) {
-            toast.error(t.profile.image_too_large);
-            return;
-        }
-
-        const reader = new FileReader();
-        reader.onloadend = () => {
-            setImageToCrop(reader.result as string);
-            setShowCropModal(true);
-        };
-        reader.readAsDataURL(file);
-    };
-
-    const handleCropComplete = async (croppedImage: string) => {
-        setIsUploading(true);
-        setShowCropModal(false);
-        try {
-            setImage(croppedImage);
-            const res = await updateProfileImage(croppedImage);
-            if (res.success) {
-                toast.success(t.profile.image_updated);
-            } else {
-                toast.error(getErrorMessage(res));
-                setImage(user.image);
-            }
-        } catch (error) {
-            toast.error(t.profile.image_error);
-            setImage(user.image);
-        } finally {
-            setIsUploading(false);
-            if (fileInputRef.current) fileInputRef.current.value = "";
-        }
-    };
-
     const handleUpdateUsername = async () => {
         if (!pendingUsername) return;
         const result = await updateUsername(pendingUsername);
@@ -101,6 +49,8 @@ export default function ProfileHeader({ user }: ProfileHeaderProps) {
         }
     };
 
+
+
     const getSpiritualLevel = (level: string) => {
         if (!level) return t.spiritual_levels.exploring;
         const l = level.toLowerCase();
@@ -112,95 +62,16 @@ export default function ProfileHeader({ user }: ProfileHeaderProps) {
         return level;
     };
 
-    const [banner, setBanner] = useState(user.bannerUrl);
-    const [isUploadingBanner, setIsUploadingBanner] = useState(false);
-    const bannerInputRef = useRef<HTMLInputElement>(null);
-
-    // ... (existing helper functions)
-
-    const handleBannerClick = () => {
-        bannerInputRef.current?.click();
-    }
-
-    const handleBannerChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-        const file = e.target.files?.[0];
-        if (!file) return;
-        if (file.size > 2 * 1024 * 1024) {
-            toast.error(t.profile.image_too_large);
-            return;
-        }
-        setIsUploadingBanner(true);
-        const reader = new FileReader();
-        reader.onloadend = async () => {
-            const base64String = reader.result as string;
-            try {
-                setBanner(base64String);
-                await require("./actions").updateBannerImage(base64String);
-                toast.success(t.profile.image_updated);
-            } catch (error) {
-                toast.error(t.profile.image_error);
-                setBanner(user.bannerUrl);
-            } finally {
-                setIsUploadingBanner(false);
-            }
-        };
-        reader.readAsDataURL(file);
-    };
-
     return (
         <div className="card border-0 shadow-sm bg-white rounded-4 mb-4 overflow-hidden">
-            {/* Banner Section */}
-            <div
-                className="position-relative bg-light"
-                style={{ height: '120px', cursor: 'pointer' }}
-                onClick={handleBannerClick}
-            >
-                <input
-                    type="file"
-                    ref={bannerInputRef}
-                    className="d-none"
-                    accept="image/*"
-                    onChange={handleBannerChange}
-                />
-                {banner ? (
-                    <img src={banner} className="w-100 h-100 object-fit-cover" alt="Banner" />
-                ) : (
-                    <div className="w-100 h-100 d-flex align-items-center justify-content-center text-muted">
-                        <small>{t.profile.banner_label || "Tocá para agregar portada"}</small>
-                    </div>
-                )}
-                <div className="position-absolute bottom-0 end-0 p-2 m-2 bg-white rounded-circle shadow-sm" style={{ opacity: 0.8 }}>
-                    <Camera size={14} />
-                </div>
-            </div>
+            {/* Simple Header with Initials Avatar */}
+            <div className="bg-gradient-primary" style={{ height: '80px' }}></div>
 
             <div className="p-4 pt-0 position-relative">
                 <div className="d-flex align-items-end gap-4" style={{ marginTop: '-40px' }}>
-                    <div className="position-relative cursor-pointer" onClick={handleImageClick}>
-                        <input
-                            type="file"
-                            ref={fileInputRef}
-                            className="d-none"
-                            accept="image/*"
-                            onChange={handleFileChange}
-                        />
-
-                        {image ? (
-                            <div
-                                className="bg-white rounded-circle overflow-hidden shadow-sm p-1"
-                                style={{ width: '90px', height: '90px' }}
-                            >
-                                <img src={image} alt="Profile" className="w-100 h-100 rounded-circle object-fit-cover" />
-                            </div>
-                        ) : (
-                            <div className="bg-white p-1 rounded-circle shadow-sm">
-                                <div className="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center display-4 fw-bold" style={{ width: '80px', height: '80px' }}>
-                                    {user.name ? user.name.charAt(0).toUpperCase() : 'U'}
-                                </div>
-                            </div>
-                        )}
-                        <div className="position-absolute bottom-0 end-0 bg-white rounded-circle p-1 shadow-sm border">
-                            <Camera size={16} className="text-secondary" />
+                    <div className="bg-white p-1 rounded-circle shadow-sm">
+                        <div className="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center display-4 fw-bold" style={{ width: '80px', height: '80px' }}>
+                            {user.name ? user.name.charAt(0).toUpperCase() : 'U'}
                         </div>
                     </div>
                 </div>
@@ -257,14 +128,6 @@ export default function ProfileHeader({ user }: ProfileHeaderProps) {
                     </div>
                 </div>
             </div>
-
-            {showCropModal && imageToCrop && (
-                <ImageCropModal
-                    image={imageToCrop}
-                    onCropComplete={handleCropComplete}
-                    onClose={() => setShowCropModal(false)}
-                />
-            )}
         </div>
     );
 }

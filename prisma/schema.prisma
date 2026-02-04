@@ -19,7 +19,6 @@ model User {
   email         String?   @unique
   passwordHash  String?
   name          String?
-  image         String?
   role          String    @default("USER") // Was UserRole
   
   username      String?   @unique
@@ -83,7 +82,6 @@ model User {
   // New Layout Fields
   bio           String?
   profileType   String    @default("NORMAL") // NORMAL, COOPERATOR, CHURCH
-  bannerUrl     String?
   country       String?   @default("AR") // Default to something standard or make optional
   
   // Gamification & Groups
@@ -254,7 +252,6 @@ model Video {
   title       String
   description String?
   videoUrl    String   // URL to video file or placeholder
-  thumbnailUrl String?  // Thumbnail image
   duration    Int?     // Duration in seconds
   category    String   // Category for filtering
   tags        String?  // Additional tags
@@ -535,7 +532,6 @@ model Group {
   id          String   @id @default(cuid())
   name        String
   description String?
-  image       String?
   motto       String?
   
   leaderId    String
