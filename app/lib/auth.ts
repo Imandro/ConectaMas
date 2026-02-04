@@ -74,11 +74,18 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 
             if (user) {
                 console.log("[Auth] JWT Callback: Initializing token for user:", user.email);
+                // SANITIZATION: Check if image is massive (base64)
+                let safePicture = user.image;
+                if (safePicture && safePicture.length > 500) {
+                    console.warn("[Auth] User image is too large (base64?), stripping from token to prevent 494 error.");
+                    safePicture = null; // Fallback to initial/null
+                }
+
                 return {
                     id: user.id || '',
                     name: user.name ? user.name.split(' ')[0] : 'Usuario',
                     email: user.email || '',
-                    picture: user.image,
+                    picture: safePicture,
                     // Standard JWT fields handled by NextAuth automatically (sub, iat, exp, jti) usually, 
                     // but returning a fresh object might wipe them if not careful during updates.
                     // However, `token` passed in already has them. 
@@ -89,10 +96,14 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
             // On session update
             if (trigger === "update" && session?.user) {
                 // If updating, we only update specific fields, but we MUST ensure we don't merge garbage.
+                // Sanitize updated picture too
+                const newPicture = session.user.image || token.picture;
+                const safePicture = (newPicture && newPicture.length > 500) ? null : newPicture;
+
                 return {
                     ...token, // Keep existing safe token
                     name: session.user.name ? session.user.name.split(' ')[0] : token.name,
-                    picture: session.user.image || token.picture,
+                    picture: safePicture,
                 };
             }
 
