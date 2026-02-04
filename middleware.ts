@@ -26,13 +26,20 @@ export default auth((req) => {
     const response = NextResponse.next();
 
     // Cleanup unnecessary cookies after login to prevent "Headers Too Large"
+    // Cleanup unnecessary cookies after login to prevent "Headers Too Large"
     if (isLoggedIn) {
         // Clear callback URL and CSRF token as they are only needed during the auth flow
+        // Also try to clear any "chunked" legacy cookies if possible (though we can't wildcard delete easily)
         const cookiesToClear = [
             'next-auth.callback-url',
             'next-auth.csrf-token',
             '__Secure-next-auth.callback-url',
-            '__Secure-next-auth.csrf-token'
+            '__Secure-next-auth.csrf-token',
+            // Add other potential culprits
+            'next-auth.state',
+            '__Secure-next-auth.state',
+            'next-auth.pkce.code_verifier',
+            '__Secure-next-auth.pkce.code_verifier'
         ];
 
         cookiesToClear.forEach(cookieName => {
@@ -40,6 +47,10 @@ export default auth((req) => {
                 response.cookies.delete(cookieName);
             }
         });
+
+        // Iterate over all cookies to find and delete stale auth chunks if we are stable?
+        // Note: We can't safely delete chunks blindly as they might be the VALID session.
+        // But we can ensure we don't duplicate.
     }
 
     return response;
