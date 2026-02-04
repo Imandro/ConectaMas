@@ -117,6 +117,7 @@ export const en = {
         logo_alt: "Conecta+ Logo",
         welcome_back: "Welcome back",
         login_subtitle: "Log in to continue your journey.",
+        logging_in: "Logging in...",
         email_user: "Email or Username",
         password: "Password",
         forgot_password: "Forgot your password?",

@@ -56,9 +56,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
                     id: user.id,
                     name: user.name,
                     email: user.email,
-                    image: user.image,
-                    // We can't return arbitrary fields here easily without updating types, 
-                    // but we can fetch them in session callback
+                    // IMAGE REMOVED TO PREVENT 494 ERRORS
                 };
             }
         })
@@ -70,51 +68,32 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     callbacks: {
         async jwt({ token, user, trigger, session }: { token: JWT, user: User | null, trigger?: "signIn" | "signUp" | "update", session?: Session }) {
             // STRICT WHITELIST APPROACH ("Blindado")
-            // We reconstruct the token from scratch to ensure NO hidden large objects survive.
+            // Reconstructing the token with ABSOLUTELY MINIMAL data.
+            // NO IMAGES allowed in the JWT.
 
             if (user) {
                 console.log("[Auth] JWT Callback: Initializing token for user:", user.email);
-                // SANITIZATION: Check if image is massive (base64)
-                let safePicture = user.image;
-                if (safePicture && safePicture.length > 500) {
-                    console.warn("[Auth] User image is too large (base64?), stripping from token to prevent 494 error.");
-                    safePicture = null; // Fallback to initial/null
-                }
-
                 return {
                     id: user.id || '',
                     name: user.name ? user.name.split(' ')[0] : 'Usuario',
                     email: user.email || '',
-                    picture: safePicture,
-                    // Standard JWT fields handled by NextAuth automatically (sub, iat, exp, jti) usually, 
-                    // but returning a fresh object might wipe them if not careful during updates.
-                    // However, `token` passed in already has them. 
-                    // To be safe and "blindado", we explicitly pick what we want from `token` if it exists.
                 };
             }
 
             // On session update
             if (trigger === "update" && session?.user) {
-                // If updating, we only update specific fields, but we MUST ensure we don't merge garbage.
-                // Sanitize updated picture too
-                const newPicture = session.user.image || token.picture;
-                const safePicture = (newPicture && newPicture.length > 500) ? null : newPicture;
-
                 return {
-                    ...token, // Keep existing safe token
+                    ...token,
                     name: session.user.name ? session.user.name.split(' ')[0] : token.name,
-                    picture: safePicture,
+                    // picture blocked here too
                 };
             }
 
-            // FINAL FILTER: Even if no user/trigger (just a rote check), 
-            // ensure the token returned is ONLY our expected shape.
-            // This strips any "zombie" fields that might be clinging to the cookie.
+            // FINAL FILTER: Ensure only minimal fields exist
             return {
                 id: token.id,
                 name: token.name,
                 email: token.email,
-                picture: token.picture,
                 sub: token.sub,
                 iat: token.iat,
                 exp: token.exp,
@@ -126,8 +105,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
                 session.user.id = token.sub || token.id;
                 session.user.name = token.name;
                 session.user.email = token.email;
-                session.user.image = token.picture;
-                // REMOVED: leaderPhone, isPremium, etc.
+                session.user.image = undefined; // Force undefined for UI
             }
             return session;
         },

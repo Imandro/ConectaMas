@@ -87,90 +87,104 @@ export default function LoginPage() {
     };
 
     return (
-        <div className="card shadow-sm border-0 p-4 animate-fade-in-up">
-            <div className="text-center mb-4">
-                <Link href="/" className="d-inline-block mb-3">
-                    <div className="position-relative" style={{ width: '120px', height: '50px', margin: '0 auto' }}>
-                        <img
-                            src="/logo.png"
-                            alt={t.auth.logo_alt}
-                            style={{ width: '100%', height: '100%', objectFit: 'contain' }}
-                        />
+        <div className="position-relative">
+            {loading && (
+                <div
+                    className="position-fixed top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center bg-white"
+                    style={{ zIndex: 9999, opacity: 0.8 }}
+                >
+                    <div className="text-center">
+                        <Loader2 className="animate-spin text-primary mb-3" size={48} />
+                        <h5 className="text-secondary fw-bold">{t.auth.logging_in || 'Iniciando sesión...'}</h5>
                     </div>
-                </Link>
-                <h3 className="fw-bold text-secondary">{t.auth.welcome_back}</h3>
-                <p className="text-muted small">{t.auth.login_subtitle}</p>
-            </div>
-
-            {successMessage && (
-                <div className="alert alert-success small p-2 text-center" role="alert">
-                    {successMessage}
                 </div>
             )}
 
-            {error && (
-                <div className="alert alert-danger small p-2 text-center" role="alert">
-                    {error}
-                </div>
-            )}
-
-            <form onSubmit={handleSubmit}>
-                <div className="mb-3">
-                    <label htmlFor="identifier" className="form-label small fw-bold text-primary ps-2">{t.auth.email_user}</label>
-                    <input
-                        type="text"
-                        className="form-control form-control-lg bg-light border-0"
-                        id="identifier"
-                        placeholder={t.auth.placeholder_email}
-                        value={formData.identifier}
-                        onChange={handleChange}
-                        required
-                    />
+            <div className="card shadow-sm border-0 p-4 animate-fade-in-up">
+                <div className="text-center mb-4">
+                    <Link href="/" className="d-inline-block mb-3">
+                        <div className="position-relative" style={{ width: '120px', height: '50px', margin: '0 auto' }}>
+                            <img
+                                src="/logo.png"
+                                alt={t.auth.logo_alt}
+                                style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+                            />
+                        </div>
+                    </Link>
+                    <h3 className="fw-bold text-secondary">{t.auth.welcome_back}</h3>
+                    <p className="text-muted small">{t.auth.login_subtitle}</p>
                 </div>
 
-                <div className="mb-4">
-                    <label htmlFor="password" className="form-label small fw-bold text-primary ps-2">{t.auth.password}</label>
-                    <div className="position-relative">
+                {successMessage && (
+                    <div className="alert alert-success small p-2 text-center" role="alert">
+                        {successMessage}
+                    </div>
+                )}
+
+                {error && (
+                    <div className="alert alert-danger small p-2 text-center" role="alert">
+                        {error}
+                    </div>
+                )}
+
+                <form onSubmit={handleSubmit}>
+                    <div className="mb-3">
+                        <label htmlFor="identifier" className="form-label small fw-bold text-primary ps-2">{t.auth.email_user}</label>
                         <input
-                            type={showPassword ? "text" : "password"}
-                            className="form-control form-control-lg bg-light border-0 pe-5"
-                            id="password"
-                            placeholder={t.auth.placeholder_password}
-                            value={formData.password}
+                            type="text"
+                            className="form-control form-control-lg bg-light border-0"
+                            id="identifier"
+                            placeholder={t.auth.placeholder_email}
+                            value={formData.identifier}
                             onChange={handleChange}
                             required
                         />
-                        <button
-                            type="button"
-                            className="btn btn-link position-absolute top-50 end-0 translate-middle-y text-muted text-decoration-none"
-                            onClick={() => setShowPassword(!showPassword)}
-                            style={{ zIndex: 10 }}
-                        >
-                            {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
-                        </button>
                     </div>
-                </div>
 
-                <div className="text-end mb-4">
-                    <Link href="/auth/forgot-password" className="small text-muted text-decoration-none">
-                        {t.auth.forgot_password}
-                    </Link>
-                </div>
+                    <div className="mb-4">
+                        <label htmlFor="password" className="form-label small fw-bold text-primary ps-2">{t.auth.password}</label>
+                        <div className="position-relative">
+                            <input
+                                type={showPassword ? "text" : "password"}
+                                className="form-control form-control-lg bg-light border-0 pe-5"
+                                id="password"
+                                placeholder={t.auth.placeholder_password}
+                                value={formData.password}
+                                onChange={handleChange}
+                                required
+                            />
+                            <button
+                                type="button"
+                                className="btn btn-link position-absolute top-50 end-0 translate-middle-y text-muted text-decoration-none"
+                                onClick={() => setShowPassword(!showPassword)}
+                                style={{ zIndex: 10 }}
+                            >
+                                {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                            </button>
+                        </div>
+                    </div>
 
-                <button
-                    type="submit"
-                    className="btn btn-primary btn-lg w-100 text-white shadow-sm mb-3 hover-scale rounded-pill fw-bold"
-                    disabled={loading}
-                >
-                    {loading ? <Loader2 className="animate-spin" /> : t.auth.login_button}
-                </button>
+                    <div className="text-end mb-4">
+                        <Link href="/auth/forgot-password" className="small text-muted text-decoration-none">
+                            {t.auth.forgot_password}
+                        </Link>
+                    </div>
 
-                <div className="text-center border-top pt-3">
-                    <p className="small text-muted mb-0">
-                        {t.auth.no_account} <Link href="/auth/register" className="text-primary fw-bold text-decoration-none">{t.auth.register_link}</Link>
-                    </p>
-                </div>
-            </form>
+                    <button
+                        type="submit"
+                        className="btn btn-primary btn-lg w-100 text-white shadow-sm mb-3 hover-scale rounded-pill fw-bold"
+                        disabled={loading}
+                    >
+                        {loading ? <Loader2 className="animate-spin" /> : t.auth.login_button}
+                    </button>
+
+                    <div className="text-center border-top pt-3">
+                        <p className="small text-muted mb-0">
+                            {t.auth.no_account} <Link href="/auth/register" className="text-primary fw-bold text-decoration-none">{t.auth.register_link}</Link>
+                        </p>
+                    </div>
+                </form>
+            </div>
         </div>
     );
 }

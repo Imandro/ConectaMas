@@ -117,6 +117,7 @@ export const es = {
         logo_alt: "Conecta+ Logo",
         welcome_back: "Bienvenido de nuevo",
         login_subtitle: "Ingresa para continuar tu camino.",
+        logging_in: "Iniciando sesión...",
         email_user: "Email o Usuario",
         password: "Contraseña",
         forgot_password: "¿Olvidaste tu contraseña?",

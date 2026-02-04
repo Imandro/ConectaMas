@@ -5,6 +5,24 @@ import { NextResponse } from "next/server";
 const { auth } = NextAuth(authConfig);
 
 export default auth((req) => {
+    // 1. EARLY INTERVENTION: Check header size BEFORE anything else
+    // This breaks the 494 loop immediately if cookies are poisoned.
+    const cookieHeader = req.headers.get('cookie') || "";
+    if (cookieHeader.length > 2500) {
+        // If header is > 2.5KB, it's a danger zone.
+        // We force clear EVERYTHING on the next response.
+        const response = NextResponse.next();
+        response.headers.set('Clear-Site-Data', '"cookies", "storage"');
+        console.warn("CRITICAL: Detected huge cookies (Header size: " + cookieHeader.length + "). Nuking site data.");
+        // We also clear specific chunks as a backup
+        req.cookies.getAll().forEach(cookie => {
+            if (cookie.name.includes('next-auth')) {
+                response.cookies.delete(cookie.name);
+            }
+        });
+        return response;
+    }
+
     const isLoggedIn = !!req.auth;
     const isAuthPage = req.nextUrl.pathname.startsWith('/auth');
     const isPublicPage = req.nextUrl.pathname === '/';
@@ -25,22 +43,10 @@ export default auth((req) => {
 
     const response = NextResponse.next();
 
-    // FINAL SAFEGUARD: If cookies are dangerously large, force a total site data clear.
-    // This is the "Nuclear Option" requested to prevent users being stuck.
-    const cookieHeader = req.headers.get('cookie') || "";
-    if (cookieHeader.length > 3500) {
-        // If header is > 3.5KB, we are in danger zone (Vercel limit ~4KB-8KB).
-        // Sending this header tells the browser to DELETE ALL COOKIES for this origin.
-        response.headers.set('Clear-Site-Data', '"cookies", "storage"');
-        console.log("CRITICAL: Detected large cookie header. Wiping site data.");
-        return response;
-    }
-
-    // Cleanup unnecessary cookies after login to prevent "Headers Too Large"
+    // Secondary Cleanup for logged in users to keep headers small
     if (isLoggedIn) {
-        // ... (rest of cleanup logic) ...
         req.cookies.getAll().forEach(cookie => {
-            if (cookie.name.includes('next-auth')) {
+            if (cookie.name.includes('next-auth.callback-url') || cookie.name.includes('next-auth.csrf-token')) {
                 response.cookies.delete(cookie.name);
             }
         });
