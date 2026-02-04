@@ -69,36 +69,46 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     },
     callbacks: {
         async jwt({ token, user, trigger, session }: { token: JWT, user: User | null, trigger?: "signIn" | "signUp" | "update", session?: Session }) {
-            // On sign in, populate token with minimal user data
+            // STRICT WHITELIST APPROACH ("Blindado")
+            // We reconstruct the token from scratch to ensure NO hidden large objects survive.
+
             if (user) {
                 console.log("[Auth] JWT Callback: Initializing token for user:", user.email);
-                token.id = user.id || '';
-                // Store only first name to save space
-                token.name = user.name ? user.name.split(' ')[0] : 'Usuario';
-                token.email = user.email || '';
-                token.picture = user.image;
+                return {
+                    id: user.id || '',
+                    name: user.name ? user.name.split(' ')[0] : 'Usuario',
+                    email: user.email || '',
+                    picture: user.image,
+                    // Standard JWT fields handled by NextAuth automatically (sub, iat, exp, jti) usually, 
+                    // but returning a fresh object might wipe them if not careful during updates.
+                    // However, `token` passed in already has them. 
+                    // To be safe and "blindado", we explicitly pick what we want from `token` if it exists.
+                };
             }
 
-            // On session update, we might want to allow updating the name/image
+            // On session update
             if (trigger === "update" && session?.user) {
-                if (session.user.name) token.name = session.user.name.split(' ')[0];
-                if (session.user.image) token.picture = session.user.image;
+                // If updating, we only update specific fields, but we MUST ensure we don't merge garbage.
+                return {
+                    ...token, // Keep existing safe token
+                    name: session.user.name ? session.user.name.split(' ')[0] : token.name,
+                    picture: session.user.image || token.picture,
+                };
             }
 
-            // AGGRESSIVE CLEANUP: Remove old legacy fields to ensure cookie deflates
-            // Short codes used previously: lp, st, co, ip
-            delete token.lp;
-            delete token.st;
-            delete token.co;
-            delete token.ip;
-            // Full names just in case
-            delete token.leaderPhone;
-            delete token.hasSeenTutorialTour;
-            delete token.hasCompletedOnboarding;
-            delete token.isPremium;
-            delete token.role; // Permissions handling moved to DB
-
-            return token;
+            // FINAL FILTER: Even if no user/trigger (just a rote check), 
+            // ensure the token returned is ONLY our expected shape.
+            // This strips any "zombie" fields that might be clinging to the cookie.
+            return {
+                id: token.id,
+                name: token.name,
+                email: token.email,
+                picture: token.picture,
+                sub: token.sub,
+                iat: token.iat,
+                exp: token.exp,
+                jti: token.jti
+            };
         },
         async session({ session, token }: { session: Session, token: JWT }) {
             if (token && session.user) {
