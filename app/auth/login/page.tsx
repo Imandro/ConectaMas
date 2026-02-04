@@ -61,11 +61,10 @@ export default function LoginPage() {
             <div className="text-center mb-4">
                 <Link href="/" className="d-inline-block mb-3">
                     <div className="position-relative" style={{ width: '120px', height: '50px', margin: '0 auto' }}>
-                        <Image
+                        <img
                             src="/logo.png"
                             alt={t.auth.logo_alt}
-                            fill
-                            style={{ objectFit: 'contain' }}
+                            style={{ width: '100%', height: '100%', objectFit: 'contain' }}
                         />
                     </div>
                 </Link>

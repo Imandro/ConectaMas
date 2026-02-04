@@ -12,8 +12,6 @@ import ChallengeCard from './components/ChallengeCard';
 
 import SupportFundingAd from './components/SupportFundingAd';
 import SupportAdModal from './components/SupportAdModal';
-import GrowthMilestoneModal from "./components/GrowthMilestoneModal";
-import DonationMissionsModal from "./components/DonationMissionsModal";
 import WhatsappModal from '../components/WhatsappModal';
 import WhatsappCard from '../components/WhatsappCard';
 import InstagramModal from '../components/InstagramModal';
@@ -416,9 +414,6 @@ export default function DashboardHome() {
                     <section className="mb-5 pb-5 mt-5">
                         <SupportFundingAd />
                     </section>
-
-                    <GrowthMilestoneModal />
-                    <DonationMissionsModal />
 
                     <div className="pb-5"></div>
 

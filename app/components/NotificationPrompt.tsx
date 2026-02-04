@@ -52,8 +52,9 @@ export default function NotificationPrompt() {
                     console.log("Existing Sub:", sub);
 
                     if (!sub) {
-                        const VAPID_PUBLIC_KEY = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY || "BGBZ1Q1LwyPolkAPnshPKwQ6NNijzuu8_lqDziuABVb6z60pX1uwKsw1jgO-rCabt5QIf_90OSNqNRgXKti9zyI";
-                        console.log("Using VAPID Key:", VAPID_PUBLIC_KEY);
+                        const rawKey = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY || "BGBZ1Q1LwyPolkAPnshPKwQ6NNijzuu8_lqDziuABVb6z60pX1uwKsw1jgO-rCabt5QIf_90OSNqNRgXKti9zyI";
+                        const VAPID_PUBLIC_KEY = rawKey.trim();
+                        console.log("Using VAPID Key length:", VAPID_PUBLIC_KEY.length);
 
                         try {
                             sub = await registration.pushManager.subscribe({
