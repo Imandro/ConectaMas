@@ -3,8 +3,8 @@
 import { useState } from "react";
 import { createPrayerRequest, prayForRequest } from "./actions";
 import { Heart, Send, Shield, User, MessageSquare, HeartHandshake } from "lucide-react";
-import Image from "next/image";
 import toast from "react-hot-toast";
+import UserAvatar from "@/app/components/UserAvatar";
 
 interface Prayer {
     id: string;
@@ -14,7 +14,6 @@ interface Prayer {
     createdAt: Date;
     user: {
         name: string | null;
-        image: string | null;
     };
     _count?: {
         prayers: number;
@@ -144,13 +143,7 @@ export default function PrayerWallView({ initialPrayers, currentUserId }: Prayer
                                         <Shield size={24} />
                                     </div>
                                 ) : (
-                                    prayer.user.image ? (
-                                        <Image src={prayer.user.image} alt={prayer.user.name || "User"} width={40} height={40} className="rounded-circle shadow-sm" />
-                                    ) : (
-                                        <div className="bg-primary-subtle text-primary rounded-circle d-flex align-items-center justify-content-center shadow-sm fw-bold" style={{ width: 40, height: 40 }}>
-                                            {(prayer.user.name || "U")[0]}
-                                        </div>
-                                    )
+                                    <UserAvatar name={prayer.user.name} size={40} className="shadow-sm" />
                                 )}
                                 <div>
                                     <h6 className="fw-bold mb-0">

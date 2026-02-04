@@ -6,6 +6,7 @@ import Link from "next/link";
 import { toast } from "react-hot-toast";
 import { useState } from "react";
 import { completeTask, submitNeed, createTask, removeMember } from "../actions";
+import UserAvatar from "@/app/components/UserAvatar";
 
 interface GroupDashboardProps {
     group: any;
@@ -209,9 +210,7 @@ export default function GroupDashboardView({ group, currentUserId }: GroupDashbo
                                 {group.members.map((m: any) => (
                                     <div key={m.id} className="d-flex align-items-center justify-content-between">
                                         <div className="d-flex align-items-center gap-3">
-                                            <div className="rounded-circle bg-light d-flex align-items-center justify-content-center fw-bold text-muted" style={{ width: 40, height: 40 }}>
-                                                {m.user.image ? <img src={m.user.image} className="w-100 h-100 rounded-circle" alt="" /> : m.user.name?.[0]}
-                                            </div>
+                                            <UserAvatar name={m.user.name} size={40} />
                                             <div>
                                                 <div className="fw-bold text-dark small">{m.user.name}</div>
                                                 <div className="text-muted" style={{ fontSize: '0.7rem' }}>

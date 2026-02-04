@@ -2,12 +2,11 @@
 
 import { useLanguage } from "@/app/LanguageContext";
 import { Trophy, ArrowUp, ArrowDown, Info } from "lucide-react";
-import Image from "next/image";
+import UserAvatar from "@/app/components/UserAvatar";
 
 interface RankingEntry {
     id: string;
     name: string | null;
-    image: string | null;
     weeklyXP: number;
     league: string;
 }
@@ -74,19 +73,7 @@ export default function LeagueRankingView({ initialRanking, userLeague, currentU
                                         {index + 1}
                                     </div>
                                     <div className="position-relative">
-                                        {player.image ? (
-                                            <Image
-                                                src={player.image}
-                                                alt={player.name || "User"}
-                                                width={40}
-                                                height={40}
-                                                className="rounded-circle shadow-sm"
-                                            />
-                                        ) : (
-                                            <div className="bg-light rounded-circle d-flex align-items-center justify-content-center shadow-sm" style={{ width: 40, height: 40 }}>
-                                                <span className="text-primary fw-bold">{(player.name || "U")[0]}</span>
-                                            </div>
-                                        )}
+                                        <UserAvatar name={player.name} size={40} className="shadow-sm" />
                                     </div>
                                     <div className="flex-grow-1">
                                         <div className={`fw-bold ${isCurrentUser ? 'text-primary' : 'text-dark'}`}>

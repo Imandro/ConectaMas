@@ -3,8 +3,8 @@
 import { useState, useEffect, useCallback } from "react";
 import { getRoomStatus, startGame, submitGameAnswer } from "../actions";
 import { Zap, Users, Shield, Clock, Award, Play } from "lucide-react";
-import Image from "next/image";
 import toast from "react-hot-toast";
+import UserAvatar from "@/app/components/UserAvatar";
 
 interface Player {
     id: string;
@@ -13,7 +13,6 @@ interface Player {
     score: number;
     user: {
         name: string | null;
-        image: string | null;
     };
 }
 
@@ -243,13 +242,7 @@ export default function HotPotatoView({ initialRoom, currentUserId, roomId }: Ho
                     {room.players.map((p) => (
                         <div key={p.id} className="list-group-item d-flex align-items-center gap-3 py-3 border-0">
                             <div className="position-relative">
-                                {p.user.image ? (
-                                    <Image src={p.user.image} alt={p.user.name || "User"} width={40} height={40} className="rounded-circle shadow-sm" />
-                                ) : (
-                                    <div className="bg-light rounded-circle d-flex align-items-center justify-content-center shadow-sm" style={{ width: 40, height: 40 }}>
-                                        <span className="text-primary fw-bold">{(p.user.name || "U")[0]}</span>
-                                    </div>
-                                )}
+                                <UserAvatar name={p.user.name} size={40} className="shadow-sm" />
                                 {p.status === "ELIMINATED" && (
                                     <div className="position-absolute bottom-0 end-0 bg-danger text-white rounded-circle d-flex align-items-center justify-content-center" style={{ width: 16, height: 16, fontSize: '10px' }}>
                                         X
