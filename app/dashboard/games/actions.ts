@@ -146,7 +146,7 @@ export async function getRoomStatus(roomId: string) {
                 players: {
                     include: {
                         user: {
-                            select: { name: true, image: true }
+                            select: { name: true }
                         }
                     },
                     orderBy: { joinedAt: "asc" }
@@ -171,7 +171,7 @@ export async function getRoomStatus(roomId: string) {
                 room = await prisma.gameRoom.update({
                     where: { id: roomId },
                     data: { status: "FINISHED" },
-                    include: { players: { include: { user: { select: { name: true, image: true } } }, orderBy: { joinedAt: "asc" } } }
+                    include: { players: { include: { user: { select: { name: true } } }, orderBy: { joinedAt: "asc" } } }
                 });
             }
             // 2. Check if current turn user is GONE or EXPIRED
@@ -198,7 +198,7 @@ export async function getRoomStatus(roomId: string) {
                                 currentTurnUserId: nextPlayer.userId,
                                 bombExplodesAt: new Date(Date.now() + (Math.random() * 20000 + 10000))
                             },
-                            include: { players: { include: { user: { select: { name: true, image: true } } }, orderBy: { joinedAt: "asc" } } }
+                            include: { players: { include: { user: { select: { name: true } } }, orderBy: { joinedAt: "asc" } } }
                         });
                     }
                 }
