@@ -74,16 +74,32 @@ export default function ImageCropModal({ image, onCropComplete, onClose }: Image
     };
 
     return (
-        <div className="position-fixed top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center" style={{ zIndex: 1050, backgroundColor: 'rgba(0,0,0,0.8)' }}>
-            <div className="bg-white rounded-4 overflow-hidden shadow-lg w-100 mx-3" style={{ maxWidth: '500px', height: '600px' }}>
-                <div className="p-3 border-bottom d-flex justify-content-between align-items-center">
+        <div
+            className="position-fixed top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center p-2 p-md-4"
+            style={{
+                zIndex: 2000,
+                backgroundColor: 'rgba(0,0,0,0.85)',
+                backdropFilter: 'blur(4px)'
+            }}
+        >
+            <div
+                className="bg-white rounded-4 shadow-lg w-100 d-flex flex-column"
+                style={{
+                    maxWidth: '500px',
+                    maxHeight: '90vh',
+                    overflow: 'hidden'
+                }}
+            >
+                {/* Header */}
+                <div className="p-3 border-bottom d-flex justify-content-between align-items-center bg-white">
                     <h6 className="fw-bold mb-0">Recortar Foto</h6>
                     <button className="btn btn-link text-muted p-0" onClick={onClose}>
                         <X size={20} />
                     </button>
                 </div>
 
-                <div className="position-relative w-100" style={{ height: '400px', backgroundColor: '#333' }}>
+                {/* Cropper Area */}
+                <div className="position-relative w-100 flex-grow-1" style={{ minHeight: '300px', backgroundColor: '#1a1a1a' }}>
                     <Cropper
                         image={image}
                         crop={crop}
@@ -95,11 +111,15 @@ export default function ImageCropModal({ image, onCropComplete, onClose }: Image
                     />
                 </div>
 
-                <div className="p-4">
-                    <div className="mb-4">
-                        <label className="form-label small text-muted d-flex align-items-center gap-2">
-                            <Search size={14} /> Zoom: {Math.round(zoom * 100)}%
-                        </label>
+                {/* Controls Area */}
+                <div className="p-3 p-md-4 bg-white border-top">
+                    <div className="mb-3">
+                        <div className="d-flex justify-content-between align-items-center mb-2">
+                            <label className="form-label small text-muted d-flex align-items-center gap-2 mb-0">
+                                <Search size={14} /> Zoom
+                            </label>
+                            <span className="badge bg-light text-dark">{Math.round(zoom * 100)}%</span>
+                        </div>
                         <input
                             type="range"
                             className="form-range"
@@ -111,8 +131,11 @@ export default function ImageCropModal({ image, onCropComplete, onClose }: Image
                         />
                     </div>
 
-                    <div className="d-grid gap-2">
-                        <button className="btn btn-primary rounded-pill py-2 fw-bold d-flex align-items-center justify-content-center gap-2" onClick={handleSave}>
+                    <div className="d-grid">
+                        <button
+                            className="btn btn-primary rounded-pill py-2 fw-bold d-flex align-items-center justify-content-center gap-2"
+                            onClick={handleSave}
+                        >
                             <Check size={18} /> Aplicar Recorte
                         </button>
                     </div>
