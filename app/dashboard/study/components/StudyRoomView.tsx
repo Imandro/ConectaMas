@@ -6,6 +6,7 @@ import { Send, Book, Users, ChevronRight, Search, BookOpen, Share2, LogOut, User
 import Image from "next/image";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
+import UserAvatar from "@/app/components/UserAvatar";
 
 interface Message {
     id: string;
@@ -13,7 +14,6 @@ interface Message {
     createdAt: Date;
     user: {
         name: string | null;
-        image: string | null;
     };
     userId: string;
 }
@@ -31,7 +31,6 @@ interface StudyRoomViewProps {
             user: {
                 id: string;
                 name: string | null;
-                image: string | null;
                 spiritualLevel: string | null;
             };
         }>;
@@ -249,13 +248,7 @@ export default function StudyRoomView({ room, initialMessages, currentUserId }: 
                                 {room.participants.map((p) => (
                                     <div key={p.user.id} className="d-flex align-items-center justify-content-between p-2 bg-white rounded-2">
                                         <div className="d-flex align-items-center gap-2">
-                                            {p.user.image ? (
-                                                <Image src={p.user.image} alt={p.user.name || "U"} width={24} height={24} className="rounded-circle" />
-                                            ) : (
-                                                <div className="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center fw-bold" style={{ width: 24, height: 24, fontSize: '0.7rem' }}>
-                                                    {(p.user.name || "U")[0]}
-                                                </div>
-                                            )}
+                                            <UserAvatar name={p.user.name} size={24} />
                                             <span className="small fw-bold">{p.user.name}</span>
                                             {p.user.id === room.host.id && (
                                                 <span className="badge bg-success-subtle text-success border border-success" style={{ fontSize: '0.6rem' }}>Anfitrión</span>
@@ -293,13 +286,7 @@ export default function StudyRoomView({ room, initialMessages, currentUserId }: 
                             <div key={msg.id || i} className={`d-flex gap-3 ${msg.userId === currentUserId ? 'flex-row-reverse align-self-end' : 'align-self-start'}`} style={{ maxWidth: '80%' }}>
                                 {msg.userId !== currentUserId && (
                                     <div className="flex-shrink-0">
-                                        {msg.user.image ? (
-                                            <Image src={msg.user.image} alt={msg.user.name || "U"} width={32} height={32} className="rounded-circle" />
-                                        ) : (
-                                            <div className="bg-light rounded-circle d-flex align-items-center justify-content-center fw-bold text-muted small" style={{ width: 32, height: 32 }}>
-                                                {(msg.user.name || "U")[0]}
-                                            </div>
-                                        )}
+                                        <UserAvatar name={msg.user.name} size={32} />
                                     </div>
                                 )}
                                 <div className={`message-bubble p-3 rounded-4 shadow-sm ${msg.userId === currentUserId ? 'bg-primary text-white' : 'bg-light'}`}>

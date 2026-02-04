@@ -16,7 +16,7 @@ export async function GET(req: Request) {
                             id: true,
                             name: true,
                             username: true,
-                            image: true,
+
                             spiritualLevel: true
                         }
                     }
@@ -29,7 +29,7 @@ export async function GET(req: Request) {
                         select: {
                             id: true,
                             name: true,
-                            image: true
+
                         }
                     }
                 },
@@ -70,7 +70,7 @@ export async function POST(req: Request) {
                     id: true,
                     name: true,
                     username: true,
-                    image: true,
+
                     spiritualLevel: true
                 },
                 take: 10

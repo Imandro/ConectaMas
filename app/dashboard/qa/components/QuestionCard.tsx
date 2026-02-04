@@ -4,6 +4,8 @@ import Link from "next/link";
 import { MessageSquare, Heart, Eye } from "lucide-react";
 import { useLanguage } from "@/app/LanguageContext";
 
+import UserAvatar from "@/app/components/UserAvatar";
+
 interface QuestionCardProps {
     question: {
         id: string;
@@ -14,7 +16,6 @@ interface QuestionCardProps {
         createdAt: Date;
         user: {
             name: string | null;
-            image: string | null;
             profileType?: string | null;
         };
         _count: {
@@ -39,18 +40,7 @@ export default function QuestionCard({ question }: QuestionCardProps) {
                 <div className="card-body">
                     {/* Header */}
                     <div className="d-flex align-items-center gap-2 mb-2">
-                        <div
-                            className="rounded-circle overflow-hidden bg-light"
-                            style={{ width: 24, height: 24 }}
-                        >
-                            {question.user.image ? (
-                                <img src={question.user.image} alt={question.user.name || "User"} className="w-100 h-100 object-fit-cover" />
-                            ) : (
-                                <div className="w-100 h-100 d-flex align-items-center justify-content-center bg-primary text-white text-xs fw-bold">
-                                    {question.user.name?.[0] || "U"}
-                                </div>
-                            )}
-                        </div>
+                        <UserAvatar name={question.user.name} size={24} />
                         <span className="small text-muted fw-medium">
                             {question.user.name}
                             {question.user.profileType === 'COOPERATOR' && <span className="ms-1 badge bg-info text-dark" style={{ fontSize: '0.6rem' }}>{t.qa.user_badge_coop}</span>}

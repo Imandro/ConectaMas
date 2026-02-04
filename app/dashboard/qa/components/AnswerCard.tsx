@@ -5,6 +5,7 @@ import { useLanguage } from "@/app/LanguageContext";
 import { likeAnswer } from "../actions";
 import { useState } from "react";
 import toast from "react-hot-toast";
+import UserAvatar from "@/app/components/UserAvatar";
 
 interface AnswerCardProps {
     answer: {
@@ -15,7 +16,6 @@ interface AnswerCardProps {
         isAccepted: boolean;
         user: {
             name: string | null;
-            image: string | null;
             profileType?: string | null;
         };
     };
@@ -40,18 +40,7 @@ export default function AnswerCard({ answer }: AnswerCardProps) {
             <div className="card-body p-3">
                 <div className="d-flex gap-3">
                     {/* User Avatar */}
-                    <div
-                        className="rounded-circle overflow-hidden bg-light flex-shrink-0"
-                        style={{ width: 32, height: 32 }}
-                    >
-                        {answer.user.image ? (
-                            <img src={answer.user.image} alt={answer.user.name || "User"} className="w-100 h-100 object-fit-cover" />
-                        ) : (
-                            <div className="w-100 h-100 d-flex align-items-center justify-content-center bg-secondary text-white fw-bold">
-                                {answer.user.name?.[0] || "U"}
-                            </div>
-                        )}
-                    </div>
+                    <UserAvatar name={answer.user.name} size={32} />
 
                     <div className="flex-grow-1">
                         <div className="d-flex align-items-center justify-content-between mb-1">

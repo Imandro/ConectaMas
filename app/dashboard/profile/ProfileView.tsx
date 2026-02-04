@@ -22,7 +22,6 @@ export default function ProfileView({ user }: ProfileViewProps) {
                 user={{
                     name: user.name,
                     email: user.email,
-                    image: user.image,
                     spiritualLevel: user.spiritualLevel,
                     username: user.username,
                     lastUsernameChange: user.lastUsernameChange ? user.lastUsernameChange.toISOString() : null,

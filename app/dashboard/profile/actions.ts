@@ -34,53 +34,7 @@ export async function deleteAccount() {
     redirect("/auth/login");
 }
 
-export async function updateProfileImage(base64Image: string) {
-    const session = await auth();
-    if (!session?.user?.email) return { success: false, error: "Unauthorized" };
 
-    // --- OPTIMIZACIÓN DE RECURSOS (NEON DB PROT) ---
-    // Limitar imagen a ~150KB (base64 length is approx 1.33 * bytes)
-    if (base64Image.length > 250000) {
-        return { success: false, errorKey: "image_too_large_server" };
-    }
-    // ------------------------------------------------
-
-    try {
-        await prisma.user.update({
-            where: { email: session.user.email },
-            data: { image: base64Image }
-        });
-
-        revalidatePath('/dashboard');
-        revalidatePath('/dashboard/profile');
-        return { success: true };
-    } catch (e) {
-        return { success: false, error: "Database error" };
-    }
-}
-
-export async function updateBannerImage(base64Image: string) {
-    const session = await auth();
-    if (!session?.user?.email) return { success: false, error: "Unauthorized" };
-
-    // Limit to ~300KB
-    if (base64Image.length > 450000) {
-        return { success: false, errorKey: "image_too_large_server" };
-    }
-
-    try {
-        await prisma.user.update({
-            where: { email: session.user.email },
-            data: { bannerUrl: base64Image }
-        });
-
-        revalidatePath('/dashboard');
-        revalidatePath('/dashboard/profile');
-        return { success: true };
-    } catch (e) {
-        return { success: false, error: "Database error" };
-    }
-}
 
 export async function updateLeaderPhone(phone: string) {
     const session = await auth();

@@ -30,7 +30,7 @@ export default async function ProfilePage() {
                 // New Fields
                 bio: true,
                 profileType: true,
-                bannerUrl: true,
+
                 country: true,
                 league: true,
                 weeklyXP: true,

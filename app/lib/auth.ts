@@ -105,7 +105,6 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
                 session.user.id = token.sub || token.id;
                 session.user.name = token.name;
                 session.user.email = token.email;
-                session.user.image = undefined; // Force undefined for UI
             }
             return session;
         },

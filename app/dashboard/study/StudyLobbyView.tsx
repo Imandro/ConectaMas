@@ -13,7 +13,6 @@ interface StudyRoom {
     description: string | null;
     host: {
         name: string | null;
-        image: string | null;
     };
     _count: {
         messages: number;

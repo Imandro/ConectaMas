@@ -7,6 +7,7 @@ import Link from "next/link";
 import { useLanguage } from "@/app/LanguageContext";
 import { submitAnswer, likeQuestion, incrementQuestionViews } from "../actions";
 import { toast } from "react-hot-toast";
+import UserAvatar from "@/app/components/UserAvatar";
 
 interface QuestionDetailViewProps {
     question: any;
@@ -65,15 +66,7 @@ export default function QuestionDetailView({ question }: QuestionDetailViewProps
                         <div className="card-body p-4">
                             {/* Author Header */}
                             <div className="d-flex align-items-center gap-3 mb-3">
-                                <div className="rounded-circle overflow-hidden bg-light" style={{ width: 40, height: 40 }}>
-                                    {question.user.image ? (
-                                        <img src={question.user.image} alt={question.user.name} className="w-100 h-100 object-fit-cover" />
-                                    ) : (
-                                        <div className="w-100 h-100 fw-bold d-flex align-items-center justify-content-center bg-primary text-white">
-                                            {question.user.name?.[0] || "U"}
-                                        </div>
-                                    )}
-                                </div>
+                                <UserAvatar name={question.user.name} size={40} />
                                 <div>
                                     <h6 className="fw-bold mb-0 text-dark">
                                         {question.user.name}
