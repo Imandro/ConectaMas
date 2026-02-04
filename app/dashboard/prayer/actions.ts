@@ -33,7 +33,7 @@ export async function getGlobalPrayers() {
             orderBy: { createdAt: "desc" },
             include: {
                 user: {
-                    select: { name: true, image: true }
+                    select: { name: true }
                 },
                 _count: {
                     select: { prayers: true }

@@ -18,7 +18,7 @@ export default async function ProfilePage() {
             select: {
                 name: true,
                 email: true,
-                image: true,
+
                 gender: true,
                 spiritualLevel: true,
                 hasCompletedOnboarding: true,
@@ -43,7 +43,7 @@ export default async function ProfilePage() {
             select: {
                 name: true,
                 email: true,
-                image: true,
+
             }
         });
 

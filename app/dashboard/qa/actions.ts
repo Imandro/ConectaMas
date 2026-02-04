@@ -21,7 +21,7 @@ export async function getQuestions(filter: 'trending' | 'recent' = 'recent', lim
                 select: {
                     id: true,
                     name: true,
-                    image: true,
+
                     profileType: true,
                     league: true,
                 }
@@ -218,7 +218,7 @@ export async function getQuestionDetails(questionId: string) {
                 select: {
                     id: true,
                     name: true,
-                    image: true,
+
                     profileType: true,
                     league: true,
                 }
@@ -233,7 +233,7 @@ export async function getQuestionDetails(questionId: string) {
                         select: {
                             id: true,
                             name: true,
-                            image: true,
+
                             profileType: true,
                         }
                     }

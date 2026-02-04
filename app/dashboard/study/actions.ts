@@ -177,7 +177,7 @@ export async function getOpenStudyRooms() {
             where: { status: "OPEN" },
             include: {
                 host: {
-                    select: { name: true, image: true }
+                    select: { name: true }
                 },
                 _count: {
                     select: { messages: true, participants: true }
@@ -207,7 +207,7 @@ export async function getStudyMessages(roomId: string) {
             where: { roomId },
             include: {
                 user: {
-                    select: { name: true, image: true }
+                    select: { name: true }
                 }
             },
             orderBy: { createdAt: "asc" },
@@ -262,14 +262,14 @@ export async function getRoomDetails(roomId: string) {
         const room = await prisma.studyRoom.findUnique({
             where: { id: roomId },
             include: {
-                host: { select: { id: true, name: true, image: true } },
+                host: { select: { id: true, name: true } },
                 participants: {
                     include: {
                         user: {
                             select: {
                                 id: true,
                                 name: true,
-                                image: true,
+
                                 spiritualLevel: true
                             }
                         }

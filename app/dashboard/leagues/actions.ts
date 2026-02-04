@@ -25,7 +25,7 @@ export async function getLeagueRanking() {
             select: {
                 id: true,
                 name: true,
-                image: true,
+
                 weeklyXP: true,
                 league: true
             },

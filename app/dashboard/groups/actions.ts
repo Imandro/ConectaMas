@@ -82,8 +82,8 @@ export async function getGroupDetails(groupId: string) {
         const group = await prisma.group.findUnique({
             where: { id: groupId },
             include: {
-                leader: { select: { id: true, name: true, image: true } },
-                members: { include: { user: { select: { name: true, image: true } } } },
+                leader: { select: { id: true, name: true } },
+                members: { include: { user: { select: { name: true } } } },
                 tasks: {
                     include: {
                         completions: {
