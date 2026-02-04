@@ -67,6 +67,8 @@ import GoogleAdSense from './components/monetization/GoogleAdSense';
 import { LanguageProvider } from '@/app/LanguageContext';
 import LanguageRegionModal from './components/LanguageRegionModal';
 
+import GlobalCookieCleanup from '@/app/components/GlobalCookieCleanup';
+
 export default async function RootLayout({
     children,
 }: {
@@ -78,6 +80,7 @@ export default async function RootLayout({
     return (
         <html lang="es">
             <body className={`${fredoka.variable} font-fredoka`}>
+                <GlobalCookieCleanup />
                 <OfflineAlert />
                 <LanguageProvider>
                     <Providers session={serializableSession}>
