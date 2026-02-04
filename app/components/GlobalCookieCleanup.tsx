@@ -22,9 +22,8 @@ export default function GlobalCookieCleanup() {
 
                 if (
                     name.includes('next-auth') ||
-                    name.includes('__Secure-next-auth') ||
-                    // If we want to be very aggressive on size:
-                    cookie.length > 4000
+                    name.includes('__Secure') || // Catch secure chunks
+                    cookie.length > 2000 // Lower size threshold to catch medium-large blockers
                 ) {
                     // WE MUST ATTEMPT TO DELETE ON ALL COMMON PATHS/DOMAINS
                     // because we don't know where the bad cookie was set.

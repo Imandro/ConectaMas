@@ -53,17 +53,9 @@ export default auth((req) => {
         // We must clean these up if we are trying to fix a 494 error.
 
         req.cookies.getAll().forEach(cookie => {
-            if (
-                cookie.name.includes('next-auth.session-token.') ||
-                cookie.name.includes('__Secure-next-auth.session-token.') ||
-                cookie.name.includes('next-auth.callback-url') ||
-                cookie.name.includes('next-auth.csrf-token') ||
-                cookie.name.includes('next-auth.pkce') ||
-                cookie.name.includes('next-auth.state')
-            ) {
-                // If it's a chunk or a temp cookie, nuke it.
-                // NOTE: This might log the user out if we delete the *active* session chunks,
-                // but that is acceptable/desired to fix the corrupted state.
+            // MATCH ANY NEXT-AUTH RELATED COOKIE
+            // We want to burn them all down if we are in this state.
+            if (cookie.name.includes('next-auth')) {
                 response.cookies.delete(cookie.name);
             }
         });
