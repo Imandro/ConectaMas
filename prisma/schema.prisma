@@ -674,6 +674,8 @@ model UserArticleRead {
   id        String   @id @default(cuid())
   userId    String
   articleId String
+  progress  Int      @default(100)
+  completed Boolean  @default(true)
   readAt    DateTime @default(now())
 
   user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
