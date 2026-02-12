@@ -1,159 +1,183 @@
 export const pdfResources = [
     // --- IDENTIDAD Y PROPÓSITO ---
     {
+        id: "identidad-cristo",
         title: "Guía: ¿Quién soy en realidad?",
-        description: "Descubre tu identidad en Cristo más allá de los likes, las etiquetas y las expectativas de los demás. Un manual para jóvenes que buscan pertenencia real.",
+        description: "Descubre tu identidad en Cristo más allá de los likes, las etiquetas y las expectativas de los demás.",
         type: "PDF",
         category: "Identidad",
-        url: "/resources/pdfs/identidad-cristo.pdf",
+        url: "/dashboard/resources/identidad-cristo/download",
         isPremium: false
     },
     {
+        id: "proposito-joven",
         title: "Manual: Tu Vocación y el Reino",
-        description: "Cómo elegir carrera y propósito sin entrar en crisis, entendiendo que Dios tiene un diseño único para tus talentos en el mundo actual.",
+        description: "Cómo elegir carrera y propósito sin entrar en crisis, entendiendo el diseño de Dios para ti.",
         type: "PDF",
         category: "Propósito",
-        url: "/resources/pdfs/proposito-joven.pdf",
+        url: "/dashboard/resources/proposito-joven/download",
         isPremium: true
     },
     {
+        id: "dones-espirituales",
         title: "Dones Espirituales: Test y Activación",
-        description: "No eres un espectador. Aprende qué herramientas te dio el Espíritu Santo para servir a otros y cambiar tu entorno desde ahora.",
+        description: "Aprende qué herramientas te dio el Espíritu Santo para servir a otros y cambiar tu entorno.",
         type: "PDF",
         category: "Discipulado",
-        url: "/resources/pdfs/dones-espirituales.pdf",
+        url: "/dashboard/resources/dones-espirituales/download",
         isPremium: false
     },
-
-    // --- BATALLAS MENTALES Y EMOCIONALES ---
     {
+        id: "ansiedad-joven",
         title: "Venciendo la Ansiedad Escolar y Social",
-        description: "Estrategias bíblicas para manejar la presión de los exámenes, el futuro y la comparación constante en redes sociales.",
+        description: "Estrategias bíblicas para manejar la presión de los exámenes, el futuro y la comparación social.",
         type: "PDF",
         category: "Salud Mental",
-        url: "/resources/pdfs/ansiedad-joven.pdf",
+        url: "/dashboard/resources/ansiedad-joven/download",
         isPremium: false
     },
     {
+        id: "autoestima-biblica",
         title: "Manual: Sanando la Baja Autoestima",
-        description: "Mírate como Dios te mira. Una guía para romper con la inseguridad y abrazar la gracia que te hace nuevo cada día.",
+        description: "Mírate como Dios te mira. Una guía para romper con la inseguridad y abrazar la gracia.",
         type: "PDF",
         category: "Salud Mental",
-        url: "/resources/pdfs/autoestima-biblica.pdf",
+        url: "/dashboard/resources/autoestima-biblica/download",
         isPremium: true
     },
     {
+        id: "esperanza-depresion",
         title: "Depresión: Luz en el Túnel de la Juventud",
-        description: "Una perspectiva Cristo-céntrica sobre la tristeza profunda, con pasos prácticos y promesas de esperanza para salir del aislamiento.",
+        description: "Una perspectiva Cristo-céntrica sobre la tristeza profunda, con pasos prácticos y esperanza.",
         type: "PDF",
         category: "Salud Mental",
-        url: "/resources/pdfs/esperanza-depresion.pdf",
+        url: "/dashboard/resources/esperanza-depresion/download",
         isPremium: true
     },
-
-    // --- RELACIONES Y SANTIDAD ---
     {
+        id: "noviazgo-santo",
         title: "Noviazgo: El Mapa de la Santidad",
-        description: "Límites, banderas rojas y cómo construir una relación que acerque a ambos a Dios en lugar de alejarlos.",
+        description: "Límites, banderas rojas y cómo construir una relación que te acerque a Dios.",
         type: "PDF",
         category: "Relaciones",
-        url: "/resources/pdfs/noviazgo-santo.pdf",
+        url: "/dashboard/resources/noviazgo-santo/download",
         isPremium: true
     },
     {
+        id: "pureza-digital",
         title: "Manual: Pureza en la Generación Z",
-        description: "Cómo vivir en santidad sexual en un mundo hipersexualizado, venciendo la pornografía y los estándares culturales.",
+        description: "Cómo vivir en santidad sexual en un mundo hipersexualizado, venciendo la pornografía.",
         type: "PDF",
         category: "Pureza",
-        url: "/resources/pdfs/pureza-digital.pdf",
+        url: "/dashboard/resources/pureza-digital/download",
         isPremium: true
     },
     {
+        id: "amistades-reales",
         title: "Amistades: Círculo de Crecimiento",
-        description: "Aprende a rodearte de personas que desafíen tu fe y a ser el amigo que otros necesitan para acercarse a Jesús.",
+        description: "Aprende a rodearte de personas que desafíen tu fe y a ser el amigo que otros necesitan.",
         type: "PDF",
         category: "Relaciones",
-        url: "/resources/pdfs/amistades-reales.pdf",
+        url: "/dashboard/resources/amistades-reales/download",
         isPremium: false
     },
-
-    // --- VIDA DIGITAL Y CULTURA ---
     {
+        id: "redes-sociales",
         title: "Redes Sociales: ¿Dueño o Esclavo?",
-        description: "Guía para un ayuno digital efectivo y cómo usar la tecnología como una herramienta del Reino sin perder el alma.",
+        description: "Guía para un ayuno digital efectivo y cómo usar la tecnología para el Reino sin perder el alma.",
         type: "PDF",
         category: "Vida Cristiana",
-        url: "/resources/pdfs/redes-sociales.pdf",
+        url: "/dashboard/resources/redes-sociales/download",
         isPremium: false
     },
     {
+        id: "apologetica-joven",
         title: "Manual: Defendiendo tu Fe en el Colegio",
-        description: "Apologética básica para jóvenes: cómo responder a preguntas difíciles sobre ciencia, Biblia y moralidad con amor y firmeza.",
+        description: "Apologética básica: cómo responder a preguntas difíciles sobre ciencia, Biblia y moralidad.",
         type: "PDF",
         category: "Evangelismo",
-        url: "/resources/pdfs/apologetica-joven.pdf",
+        url: "/dashboard/resources/apologetica-joven/download",
         isPremium: true
     },
-
-    // --- DISCIPULADO Y CRECIMIENTO ---
     {
+        id: "gym-espiritual",
         title: "Ayuno y Oración: El Gimnasio Espiritual",
-        description: "Manual práctico para jóvenes que quieren subir de nivel espiritual a través del sacrificio y la comunión profunda con el Padre.",
+        description: "Manual práctico para jóvenes que quieren subir de nivel espiritual con sacrificio y comunión.",
         type: "PDF",
         category: "Oración",
-        url: "/resources/pdfs/gym-espiritual.pdf",
+        url: "/dashboard/resources/gym-espiritual/download",
         isPremium: false
     },
     {
+        id: "leer-biblia",
         title: "Guía: ¿Cómo Leer la Biblia sin Aburrirse?",
-        description: "Métodos dinámicos y herramientas de estudio para que la Palabra de Dios cobre vida en tu día a día.",
+        description: "Métodos dinámicos y herramientas de estudio para que la Palabra cobre vida en tu día a día.",
         type: "PDF",
         category: "Estudio Bíblico",
-        url: "/resources/pdfs/leer-biblia.pdf",
+        url: "/dashboard/resources/leer-biblia/download",
         isPremium: false
     },
     {
+        id: "guerra-espiritual-joven",
         title: "Manual de Guerra Espiritual Juvenil",
-        description: "Aprende a usar la armadura de Dios contra los ataques específicos que enfrentan los jóvenes hoy: dudas, miedos y tentaciones.",
+        description: "Usa la armadura de Dios contra los ataques específicos: dudas, miedos y tentaciones.",
         type: "PDF",
         category: "Guerra Espiritual",
-        url: "/resources/pdfs/guerra-espiritual-joven.pdf",
+        url: "/dashboard/resources/guerra-espiritual-joven/download",
         isPremium: true
     },
-
-    // --- LIDERAZGO Y SERVICIO ---
     {
+        id: "liderazgo-joven",
         title: "Liderazgo Influyente: Sé el Ejemplo",
-        description: "No esperes a ser mayor para liderar. Guía sobre cómo influir en tu generación desde tus acciones y tu integridad.",
+        description: "No esperes a ser mayor para liderar. Guía sobre cómo influir desde tus acciones e integridad.",
         type: "PDF",
         category: "Liderazgo",
-        url: "/resources/pdfs/liderazgo-joven.pdf",
+        url: "/dashboard/resources/liderazgo-joven/download",
         isPremium: true
     },
     {
+        id: "evangelismo-creativo",
         title: "Manual: Evangelismo Creativo",
-        description: "Formas frescas y no invasivas de compartir a Jesús en tu grupo de amigos, deportes o escuela.",
+        description: "Formas frescas y no invasivas de compartir a Jesús en tu círculo social y escuela.",
         type: "PDF",
         category: "Evangelismo",
-        url: "/resources/pdfs/evangelismo-creativo.pdf",
+        url: "/dashboard/resources/evangelismo-creativo/download",
         isPremium: false
     },
     {
+        id: "finanzas-jovenes",
         title: "Guía de Finanzas para Jóvenes Cristianos",
-        description: "Cómo administrar tu primer sueldo o mesada con sabiduría bíblica, evitando deudas y practicando la generosidad.",
+        description: "Cómo administrar tu primer sueldo o mesada con sabiduría bíblica y generosidad.",
         type: "PDF",
         category: "Finanzas",
-        url: "/resources/pdfs/finanzas-jovenes.pdf",
+        url: "/dashboard/resources/finanzas-jovenes/download",
         isPremium: true
     },
-
-    // --- FAMILIA ---
     {
+        id: "honra-familia",
         title: "Honrando a Padres Difíciles",
-        description: "Cómo vivir el mandamiento de la honra cuando hay conflictos en casa, manteniendo el corazón sano y el testimonio firme.",
+        description: "Cómo vivir el mandamiento de la honra cuando hay conflictos en casa, manteniendo el corazón sano.",
         type: "PDF",
         category: "Relaciones",
-        url: "/resources/pdfs/honra-familia.pdf",
+        url: "/dashboard/resources/honra-familia/download",
+        isPremium: false
+    },
+    {
+        id: "perdon-sanidad",
+        title: "Manual: El Camino del Perdón",
+        description: "Guía para soltar el pasado y sanar heridas del corazón a través de la gracia de Dios.",
+        type: "PDF",
+        category: "Salud Mental",
+        url: "/dashboard/resources/perdon-sanidad/download",
+        isPremium: true
+    },
+    {
+        id: "biblia-y-ciencia",
+        title: "Guía: Biblia y Ciencia en Armonía",
+        description: "Explora cómo la creación revela la gloria de Dios sin contradicciones con la ciencia verdadera.",
+        type: "PDF",
+        category: "Estudio Bíblico",
+        url: "/dashboard/resources/biblia-y-ciencia/download",
         isPremium: false
     }
 ];
