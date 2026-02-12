@@ -47,13 +47,29 @@ export default function DashboardHome() {
     const [currentDate, setCurrentDate] = useState("");
     const [dailyQuestions, setDailyQuestions] = useState<any[]>([]);
     const [showDailyQuestions, setShowDailyQuestions] = useState(false);
+    const [featuredArticle, setFeaturedArticle] = useState<any>(null);
 
     useEffect(() => {
         const localeMap: Record<string, string> = { es: 'es-ES', en: 'en-US', pt: 'pt-BR' };
         setCurrentDate(new Date().toLocaleDateString(localeMap[language] || 'es-ES', { day: 'numeric', month: 'long' }));
         fetchStats();
         fetchDailyQuestions();
+        fetchFeaturedArticle();
     }, [language]);
+
+    const fetchFeaturedArticle = async () => {
+        try {
+            const res = await fetch('/api/articles?featured=true&limit=1');
+            if (res.ok) {
+                const data = await res.json();
+                if (data.articles && data.articles.length > 0) {
+                    setFeaturedArticle(data.articles[0]);
+                }
+            }
+        } catch (e) {
+            console.error("Error fetching featured article", e);
+        }
+    };
 
     const fetchDailyQuestions = async () => {
         try {
@@ -193,6 +209,43 @@ export default function DashboardHome() {
             <section className="mb-4" id="tour-verse">
                 <DailyVerse />
             </section>
+
+            {/* Featured Article of the Day */}
+            {featuredArticle && (
+                <section className="mb-4">
+                    <Link href={`/dashboard/articles/${featuredArticle.slug}`} className="text-decoration-none">
+                        <div className="card border-0 shadow-sm bg-white hover-scale overflow-hidden" style={{ borderRadius: '24px' }}>
+                            {featuredArticle.coverImage && (
+                                <div style={{ height: '180px', overflow: 'hidden' }}>
+                                    <img
+                                        src={featuredArticle.coverImage}
+                                        alt={featuredArticle.title}
+                                        className="w-100 h-100 object-fit-cover"
+                                        style={{ objectFit: 'cover' }}
+                                    />
+                                </div>
+                            )}
+                            <div className="card-body p-4">
+                                <div className="d-flex align-items-center gap-2 mb-2">
+                                    <span className="badge bg-warning text-dark px-3 py-1 rounded-pill">⭐ Artículo Destacado</span>
+                                    <span className="badge bg-primary px-3 py-1 rounded-pill">{featuredArticle.category}</span>
+                                </div>
+                                <h4 className="fw-bold text-dark mb-2">{featuredArticle.title}</h4>
+                                <p className="text-muted mb-3" style={{ display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
+                                    {featuredArticle.excerpt}
+                                </p>
+                                <div className="d-flex align-items-center justify-content-between">
+                                    <div className="d-flex align-items-center gap-3 text-muted small">
+                                        <span>📖 {featuredArticle.readTime} min</span>
+                                        <span>👁️ {featuredArticle.views} vistas</span>
+                                    </div>
+                                    <span className="btn btn-sm btn-primary rounded-pill px-4">Leer ahora →</span>
+                                </div>
+                            </div>
+                        </div>
+                    </Link>
+                </section>
+            )}
 
             {/* Nuevo: Reto Diario Estilo Duolingo */}
             <section className="mb-4">

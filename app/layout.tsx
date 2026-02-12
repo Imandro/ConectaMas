@@ -60,7 +60,7 @@ export const viewport: Viewport = {
 };
 
 import { Providers } from './components/Providers';
-import AnnouncementModal from './components/AnnouncementModal';
+
 
 import { auth } from './lib/auth';
 import GoogleAdSense from './components/monetization/GoogleAdSense';
@@ -109,7 +109,7 @@ export default async function RootLayout({
                         <main className="main-content">
                             {children}
                         </main>
-                        <AnnouncementModal />
+
                         <PWAInstallPrompt />
                         <NotificationPrompt />
                         <Analytics />

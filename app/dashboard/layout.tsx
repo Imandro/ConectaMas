@@ -1,5 +1,6 @@
 import DashboardNav from '@/app/components/DashboardNav';
 import SessionRefresher from '@/app/components/SessionRefresher';
+import LegalFooter from '@/app/components/LegalFooter';
 
 export default function DashboardLayout({
     children,
@@ -32,6 +33,9 @@ export default function DashboardLayout({
                         </div>
                     </div>
                 </div>
+
+                {/* Legal Footer */}
+                <LegalFooter />
             </main>
         </div>
     );

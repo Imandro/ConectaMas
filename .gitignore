@@ -44,3 +44,10 @@ android/.gradle/
 conecta_plus_app/android/.gradle/
 conecta_plus_app/android/.kotlin/
 conecta_plus_app/build/
+
+# Custom Scripts and local DB
+scripts/check_db_health.js
+scripts/check_sqlite_health.js
+scripts/read_seed_log.js
+prisma/dev.db
+prisma/seed.js

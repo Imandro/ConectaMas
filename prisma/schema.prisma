@@ -7,231 +7,177 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// Enums (Commented out for SQLite compatibility, handled as Strings in App)
-// enum UserRole { USER, ADMIN, MODERATOR }
-// enum SpiritualLevel { EXPLORING, NEW_BELIEVER, GROWING, DISCIPLE }
-// enum StruggleType { ... }
-// enum Mood { ... }
-
-// User Model
 model User {
-  id            String    @id @default(cuid())
-  email         String?   @unique
-  passwordHash  String?
-  name          String?
-  role          String    @default("USER") // Was UserRole
-  
-  username      String?   @unique
-  securityAnswer String?   // Answer to "What was your first pet's name?" (Hashed recommended, but simple for now)
-  friends       User[]    @relation("UserFriends")
-  symmetricFriends User[] @relation("UserFriends")
-  
-  isAnonymous   Boolean   @default(false)
-  gender        String?   // MALE, FEMALE
-  spiritualStatus     String?   // "ACCEPT" | "RENEW" | "DEEPEN" | "UNSURE"
-  sinsToOvercome      String?   // JSON array stored as string
-  problemsFaced       String?   // JSON array stored as string
-  connectionMethods   String?   // JSON array stored as string
-  spiritualLevel String   @default("Explorador") // Was SpiritualLevel
-  
-  hasCompletedOnboarding Boolean @default(false)
-  hasSeenTutorialTour   Boolean @default(false)
-  hasSeenLlamiTutorial  Boolean @default(false)
-  hasSeenCommunityTutorial Boolean @default(false)
-  hasJoinedWhatsapp      Boolean @default(false)
-  hasFollowedInstagram   Boolean @default(false)
-  // country moved down to layout fields section
-
-  leaderPhone            String?   // For SC kontakt
-  age                    Int?
-  lastUsernameChange     DateTime?
-  lastChallengeCompleted DateTime?
-  lastForumCheck         DateTime?  @default(now())
-  
-  preferredLanguage      String    @default("es") // es, en, pt
-  region                 String    @default("LATAM") // LATAM, US, BR, ES
-
-
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-
-  // Relations
-  struggles     UserStruggle[]
-  checkins      DailyCheckin[]
-  journalEntries JournalEntry[]
-  streak        Streak?
-  completedDevotionals UserDevotional[]
-  watchedVideos UserVideo[]
-  
-  // Forum relations
-  forumPosts    ForumPost[]
-  forumReplies  ForumReply[]
-  isCounselor   Boolean   @default(false) // Flag for counselor accounts
-  
-  pushSubscriptions PushSubscription[]
-  accounts          Account[]
-  sessions          Session[]
-  mascot            Mascot?
-  triviaAttempts    UserTriviaAttempt[]
-  forumNotifications ForumNotification[]
-  isPremium     Boolean   @default(false)
-
-  // receivedSupport moved down to relations section
-
-  
-  // New Layout Fields
-  bio           String?
-  profileType   String    @default("NORMAL") // NORMAL, COOPERATOR, CHURCH
-  country       String?   @default("AR") // Default to something standard or make optional
-  
-  // Gamification & Groups
-  league        String    @default("BRONZE")
-  weeklyXP      Int       @default(0)
-  totalXP       Int       @default(0)
-  
-  // Relations
-  sentSupport     SupportMessage[] @relation("SentSupport")
-  receivedSupport SupportMessage[] @relation("ReceivedSupport")
-
-  sentRequests      Friendship[] @relation("SentRequests")
-  receivedRequests  Friendship[] @relation("ReceivedRequests")
-  
-  ledGroups         Group[]      @relation("GroupLeader")
-  groupMemberships  GroupMember[]
-  groupTaskCompletions GroupTaskCompletion[]
-  
-  questions         Question[]
-  answers           Answer[]
-  
-  prayerRequests    PrayerRequest[]
-  prayerUpdates     PrayerUpdate[]
-  
-  hostedStudies     StudyRoom[]    @relation("StudyHost")
-  studyMessages     StudyMessage[]
-  roomParticipations StudyRoomParticipant[]
-  
-  gameParticipations GamePlayer[]
-  leaderApplications LeaderApplication[]
-  
-  questionLikes     QuestionLike[]
-  answerLikes       AnswerLike[]
+  id                       String                 @id @default(cuid())
+  email                    String?                @unique
+  passwordHash             String?
+  name                     String?
+  role                     String                 @default("USER")
+  username                 String?                @unique
+  securityAnswer           String?
+  isAnonymous              Boolean                @default(false)
+  gender                   String?
+  spiritualStatus          String?
+  sinsToOvercome           String?
+  problemsFaced            String?
+  connectionMethods        String?
+  spiritualLevel           String                 @default("Explorador")
+  hasCompletedOnboarding   Boolean                @default(false)
+  hasSeenTutorialTour      Boolean                @default(false)
+  hasSeenLlamiTutorial     Boolean                @default(false)
+  hasSeenCommunityTutorial Boolean                @default(false)
+  leaderPhone              String?
+  age                      Int?
+  lastUsernameChange       DateTime?
+  lastForumCheck           DateTime?              @default(now())
+  createdAt                DateTime               @default(now())
+  updatedAt                DateTime               @updatedAt
+  isCounselor              Boolean                @default(false)
+  isPremium                Boolean                @default(false)
+  hasJoinedWhatsapp        Boolean                @default(false)
+  hasFollowedInstagram     Boolean                @default(false)
+  country                  String?                @default("AR")
+  lastChallengeCompleted   DateTime?
+  preferredLanguage        String                 @default("es")
+  region                   String                 @default("LATAM")
+  bio                      String?
+  league                   String                 @default("BRONZE")
+  profileType              String                 @default("NORMAL")
+  totalXP                  Int                    @default(0)
+  weeklyXP                 Int                    @default(0)
+  accounts                 Account[]
+  answers                  Answer[]
+  answerLikes              AnswerLike[]
+  checkins                 DailyCheckin[]
+  forumNotifications       ForumNotification[]
+  forumPosts               ForumPost[]
+  forumReplies             ForumReply[]
+  receivedRequests         Friendship[]           @relation("ReceivedRequests")
+  sentRequests             Friendship[]           @relation("SentRequests")
+  gameParticipations       GamePlayer[]
+  ledGroups                Group[]                @relation("GroupLeader")
+  groupMemberships         GroupMember[]
+  groupTaskCompletions     GroupTaskCompletion[]
+  journalEntries           JournalEntry[]
+  leaderApplications       LeaderApplication[]
+  mascot                   Mascot?
+  prayerRequests           PrayerRequest[]
+  prayerUpdates            PrayerUpdate[]
+  pushSubscriptions        PushSubscription[]
+  questions                Question[]
+  questionLikes            QuestionLike[]
+  sessions                 Session[]
+  streak                   Streak?
+  studyMessages            StudyMessage[]
+  hostedStudies            StudyRoom[]            @relation("StudyHost")
+  roomParticipations       StudyRoomParticipant[]
+  receivedSupport          SupportMessage[]       @relation("ReceivedSupport")
+  sentSupport              SupportMessage[]       @relation("SentSupport")
+  completedDevotionals     UserDevotional[]
+  struggles                UserStruggle[]
+  triviaAttempts           UserTriviaAttempt[]
+  watchedVideos            UserVideo[]
+  User_A                   User[]                 @relation("UserFriends")
+  User_B                   User[]                 @relation("UserFriends")
+  readArticles             UserArticleRead[]
 }
 
 model SupportMessage {
-  id        String   @id @default(cuid())
-  senderId  String
-  sender    User     @relation("SentSupport", fields: [senderId], references: [id])
+  id         String   @id @default(cuid())
+  senderId   String
   receiverId String
-  receiver  User     @relation("ReceivedSupport", fields: [receiverId], references: [id])
-  message   String
-  createdAt DateTime @default(now())
-  read      Boolean  @default(false)
+  message    String
+  createdAt  DateTime @default(now())
+  read       Boolean  @default(false)
+  receiver   User     @relation("ReceivedSupport", fields: [receiverId], references: [id])
+  sender     User     @relation("SentSupport", fields: [senderId], references: [id])
 }
-
 
 model UserDevotional {
   id           String   @id @default(cuid())
   userId       String
-  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   devotionalId String
   completedAt  DateTime @default(now())
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([userId, devotionalId])
 }
 
-// Struggle Tracking
 model UserStruggle {
-  id          String       @id @default(cuid())
-  userId      String
-  user        User         @relation(fields: [userId], references: [id], onDelete: Cascade)
-  title       String       // Was type/customName mixed. Let's use title for flexibility
-  
-  status      String       @default("ACTIVE") // ACTIVE, OVERCOME
-  
-  startDate   DateTime     @default(now())
-  lastRelapse DateTime?
-
-  // Plan progress
-  currentDay    Int        @default(1)
-  completedDays String     @default("") // Comma separated "1,2,3"
-  isStarted     Boolean    @default(false)
-  gravity       Int        @default(5)  // 1 to 10 scale
-  
-  createdAt   DateTime     @default(now())
-  updatedAt   DateTime     @updatedAt
+  id            String    @id @default(cuid())
+  userId        String
+  title         String
+  status        String    @default("ACTIVE")
+  startDate     DateTime  @default(now())
+  lastRelapse   DateTime?
+  currentDay    Int       @default(1)
+  completedDays String    @default("")
+  isStarted     Boolean   @default(false)
+  gravity       Int       @default(5)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([userId, title])
 }
 
 model StrugglePlan {
-  id          String       @id @default(cuid())
-  title       String       @unique // "Pornografía", "Ansiedad", etc.
+  id          String            @id @default(cuid())
+  title       String            @unique
   description String?
+  createdAt   DateTime          @default(now())
   days        StrugglePlanDay[]
-  createdAt   DateTime     @default(now())
 }
 
 model StrugglePlanDay {
-  id          String        @id @default(cuid())
-  planId      String
-  plan        StrugglePlan  @relation(fields: [planId], references: [id], onDelete: Cascade)
-  dayNumber     Int
-  
-  title       String
-  bibleStudy  String        @db.Text
-  practicalExercise String   @db.Text
-  youthAdvice String        @db.Text
-  reflectionQuestions String @db.Text
-  scripture   String
-  
-  createdAt   DateTime      @default(now())
+  id                  String       @id @default(cuid())
+  planId              String
+  dayNumber           Int
+  title               String
+  bibleStudy          String
+  practicalExercise   String
+  youthAdvice         String
+  reflectionQuestions String
+  scripture           String
+  createdAt           DateTime     @default(now())
+  plan                StrugglePlan @relation(fields: [planId], references: [id], onDelete: Cascade)
 
   @@unique([planId, dayNumber])
 }
 
-// Daily Check-in
 model DailyCheckin {
-  id          String   @id @default(cuid())
-  userId      String
-  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  
-  mood        String   // Was Mood
-  note        String?  // Optional note
-  
-  gratitude   String?
-  prayer      String?
-  
-  createdAt   DateTime @default(now())
-  
+  id        String   @id @default(cuid())
+  userId    String
+  mood      String
+  note      String?
+  gratitude String?
+  prayer    String?
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
   @@index([userId, createdAt])
 }
 
-// Private Journal
 model JournalEntry {
-  id          String   @id @default(cuid())
-  userId      String
-  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  
-  title       String?
-  content     String
-  tags        String // SQLite doesn't support String[], using comma separated string or relation. Simplifying to String for demo
-  
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id        String   @id @default(cuid())
+  userId    String
+  title     String?
+  content   String
+  tags      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
-// Gamification
 model Streak {
-  id          String   @id @default(cuid())
-  userId      String   @unique
-  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  
-  currentStreak Int    @default(0)
-  longestStreak Int    @default(0)
+  id            String   @id @default(cuid())
+  userId        String   @unique
+  currentStreak Int      @default(0)
+  longestStreak Int      @default(0)
   lastActivity  DateTime @default(now())
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
-// Content
 model Devotional {
   id          String   @id @default(cuid())
   title       String
@@ -239,148 +185,129 @@ model Devotional {
   content     String
   prayer      String
   application String
-  
-  tags        String // Was String[]
+  tags        String
   publishedAt DateTime @default(now())
-  
   isPremium   Boolean  @default(false)
 }
 
-// Videos
 model Video {
-  id          String   @id @default(cuid())
+  id          String      @id @default(cuid())
   title       String
   description String?
-  videoUrl    String   // URL to video file or placeholder
-  duration    Int?     // Duration in seconds
-  category    String   // Category for filtering
-  tags        String?  // Additional tags
-  publishedAt DateTime @default(now())
-  
-  isPremium   Boolean  @default(false)
-  
-  // Relations
+  videoUrl    String
+  duration    Int?
+  category    String
+  tags        String?
+  publishedAt DateTime    @default(now())
+  isPremium   Boolean     @default(false)
   userVideos  UserVideo[]
 }
 
 model UserVideo {
   id        String   @id @default(cuid())
   userId    String
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   videoId   String
-  video     Video    @relation(fields: [videoId], references: [id], onDelete: Cascade)
-  
   watchedAt DateTime @default(now())
   liked     Boolean  @default(false)
-  
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  video     Video    @relation(fields: [videoId], references: [id], onDelete: Cascade)
+
   @@unique([userId, videoId])
 }
 
 model Song {
-  id          String   @id @default(cuid())
-  title       String
-  artist      String
-  url         String
-  category    String?
-  createdAt   DateTime @default(now())
+  id        String   @id @default(cuid())
+  title     String
+  artist    String
+  url       String
+  category  String?
+  createdAt DateTime @default(now())
 }
 
-// Daily Prayer (365 days)
 model DailyPrayer {
-  id          String   @id @default(cuid())
-  dayOfYear   Int      @unique // 1-366
-  title       String
-  content     String
-  theme       String?
+  id        String  @id @default(cuid())
+  dayOfYear Int     @unique
+  title     String
+  content   String
+  theme     String?
 }
 
-// Curated Bible Verses (e.g., NTV specific for struggles)
 model BibleVerse {
-  id          String   @id @default(cuid())
-  reference   String   // e.g. "Salmos 23:1"
-  text        String   // The actual verse content (NTV)
-  tags        String   // Categories: "Ansiedad", "Lujuria", etc.
-  book        String
-  chapter     Int
-  verseNum    Int
+  id        String @id @default(cuid())
+  reference String
+  text      String
+  tags      String
+  book      String
+  chapter   Int
+  verseNum  Int
 }
 
-// Community Forums
 model ForumCategory {
   id          String      @id @default(cuid())
-  name        String      @unique // "Ansiedad", "Lujuria", "Adicciones", etc.
+  name        String      @unique
   description String?
-  icon        String?     // Emoji or icon name
+  icon        String?
   createdAt   DateTime    @default(now())
-  
   posts       ForumPost[]
 }
 
 model ForumPost {
-  id          String        @id @default(cuid())
-  userId      String
-  user        User          @relation(fields: [userId], references: [id], onDelete: Cascade)
-  categoryId  String
-  category    ForumCategory @relation(fields: [categoryId], references: [id], onDelete: Cascade)
-  
-  title       String
-  content     String        // Post content
-  isAnonymous Boolean       @default(false) // If true, hide user identity
-  
-  createdAt   DateTime      @default(now())
-  updatedAt   DateTime      @updatedAt
-  
-  replies     ForumReply[]
+  id            String              @id @default(cuid())
+  userId        String
+  categoryId    String
+  title         String
+  content       String
+  isAnonymous   Boolean             @default(false)
+  createdAt     DateTime            @default(now())
+  updatedAt     DateTime            @updatedAt
   notifications ForumNotification[]
-  
+  category      ForumCategory       @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  user          User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+  replies       ForumReply[]
+
   @@index([categoryId, createdAt])
 }
 
 model ForumReply {
-  id          String     @id @default(cuid())
+  id          String    @id @default(cuid())
   postId      String
-  post        ForumPost  @relation(fields: [postId], references: [id], onDelete: Cascade)
   userId      String
-  user        User       @relation(fields: [userId], references: [id], onDelete: Cascade)
-  
   content     String
-  isAnonymous Boolean    @default(false)
-  
-  createdAt   DateTime   @default(now())
-  updatedAt   DateTime   @updatedAt
-  
+  isAnonymous Boolean   @default(false)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  post        ForumPost @relation(fields: [postId], references: [id], onDelete: Cascade)
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
   @@index([postId, createdAt])
 }
 
 model PushSubscription {
   id        String   @id @default(cuid())
   userId    String
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  
   endpoint  String   @unique
   p256dh    String
   auth      String
-  
   createdAt DateTime @default(now())
-  
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
   @@index([userId])
 }
 
 model Account {
-  id                 String  @id @default(cuid())
-  userId             String
-  type               String
-  provider           String
-  providerAccountId  String
-  refresh_token      String?  
-  access_token       String?  
-  expires_at         Int?
-  token_type         String?
-  scope              String?
-  id_token           String?  
-  session_state      String?
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
 }
@@ -400,64 +327,57 @@ model VerificationToken {
 
   @@unique([identifier, token])
 }
+
 model Mascot {
-  id          String   @id @default(cuid())
-  userId      String   @unique
-  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  
-  level       Int      @default(1)
-  experience  Int      @default(0)
-  flamePoints Int      @default(0) // Puntos de llama obtenidos por actividades
-  lastFed     DateTime @default(now())
-  
-  name        String   @default("Llami")
-  mood        String   @default("FELIZ") // FELIZ, HAMBRIENTA, MOTIVADA
-  
-  outfit      String   @default("none") // none, glasses, bow, cap, scarf
+  id               String   @id @default(cuid())
+  userId           String   @unique
+  level            Int      @default(1)
+  experience       Int      @default(0)
+  flamePoints      Int      @default(0)
+  lastFed          DateTime @default(now())
+  name             String   @default("Llami")
+  mood             String   @default("FELIZ")
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
   lastOutfitChange DateTime @default(now())
-  
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  outfit           String   @default("none")
+  user             User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model TriviaQuestion {
-  id            String   @id @default(cuid())
-  question      String
-  options       String   // JSON string of options ["A", "B", "C", "D"]
-  correctIndex  Int      // 0-indexed
-  explanation   String?
-  reference     String?
-  difficulty    String   @default("NORMAL") // EASY, NORMAL, HARD
-  
-  attempts      UserTriviaAttempt[]
+  id           String              @id @default(cuid())
+  question     String
+  options      String
+  correctIndex Int
+  explanation  String?
+  reference    String?
+  difficulty   String              @default("NORMAL")
+  attempts     UserTriviaAttempt[]
 }
 
 model UserTriviaAttempt {
-  id            String   @id @default(cuid())
-  userId        String
-  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  questionId    String
-  question      TriviaQuestion @relation(fields: [questionId], references: [id], onDelete: Cascade)
-  
-  isCorrect     Boolean
-  attemptDate   DateTime @default(now())
+  id          String         @id @default(cuid())
+  userId      String
+  questionId  String
+  isCorrect   Boolean
+  attemptDate DateTime       @default(now())
+  question    TriviaQuestion @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  user        User           @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([userId, questionId])
 }
 
 model ForumNotification {
-  id          String   @id @default(cuid())
-  userId      String
-  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  
-  type        String   // "NEW_REPLY" | "NEW_POST_IN_CATEGORY"
-  postId      String
-  post        ForumPost @relation(fields: [postId], references: [id], onDelete: Cascade)
-  replyId     String?
-  
-  isRead      Boolean  @default(false)
-  createdAt   DateTime @default(now())
-  
+  id        String    @id @default(cuid())
+  userId    String
+  type      String
+  postId    String
+  replyId   String?
+  isRead    Boolean   @default(false)
+  createdAt DateTime  @default(now())
+  post      ForumPost @relation(fields: [postId], references: [id], onDelete: Cascade)
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
   @@index([userId, isRead])
   @@index([createdAt])
 }
@@ -475,89 +395,72 @@ model Tutorial {
   title       String
   description String
   category    String
-  icon        String   // Name of the icon
-  color       String   // Hex code or color name
-  href        String   // Route or URL
+  icon        String
+  color       String
+  href        String
   order       Int      @default(0)
   createdAt   DateTime @default(now())
 }
 
 model Announcement {
-  id          String   @id @default(cuid())
+  id          String    @id @default(cuid())
   title       String
   subtitle    String?
-  content     String   @db.Text
-  isCritical  Boolean  @default(false)
+  content     String
+  isCritical  Boolean   @default(false)
   actionText  String?
   actionUrl   String?
-  stats       String?  // JSON string e.g. '[{"label": "Visitas", "value": "20k"}]'
-  publishedAt DateTime @default(now())
+  stats       String?
+  publishedAt DateTime  @default(now())
   expiresAt   DateTime?
 }
-// ... existing models ...
 
-// [NEW] Enhanced User Fields & Gamification
-// Add to User model:
-// bio String?
-// profileType String @default("NORMAL") // NORMAL, COOPERATOR, CHURCH
-// bannerUrl String?
-// league String @default("BRONZE") // BRONZE, SILVER, GOLD, DIAMOND, LEGEND
-// weeklyXP Int @default(0)
-// totalXP Int @default(0)
-
-// [NEW] Social System
 model Friendship {
   id          String   @id @default(cuid())
   requesterId String
-  requester   User     @relation("SentRequests", fields: [requesterId], references: [id], onDelete: Cascade)
   addresseeId String
-  addressee   User     @relation("ReceivedRequests", fields: [addresseeId], references: [id], onDelete: Cascade)
-  status      String   @default("PENDING") // PENDING, ACCEPTED, IGNORED
+  status      String   @default("PENDING")
   createdAt   DateTime @default(now())
+  addressee   User     @relation("ReceivedRequests", fields: [addresseeId], references: [id], onDelete: Cascade)
+  requester   User     @relation("SentRequests", fields: [requesterId], references: [id], onDelete: Cascade)
 
   @@unique([requesterId, addresseeId])
 }
 
-// [NEW] Groups & Leadership
 model LeaderApplication {
   id        String   @id @default(cuid())
   userId    String
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  answers   String   // JSON string containing survey answers
-  status    String   @default("PENDING") // PENDING, APPROVED, REJECTED
+  answers   String
+  status    String   @default("PENDING")
   createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Group {
-  id          String   @id @default(cuid())
+  id          String          @id @default(cuid())
   name        String
   description String?
   motto       String?
-  
   leaderId    String
-  leader      User     @relation("GroupLeader", fields: [leaderId], references: [id])
-  
-  accessCode  String   @unique // e.g. "GRUPO-8X2"
-  privacy     String   @default("PRIVATE") // PUBLIC, PRIVATE
-  
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  
+  accessCode  String          @unique
+  privacy     String          @default("PRIVATE")
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+  leader      User            @relation("GroupLeader", fields: [leaderId], references: [id])
   members     GroupMember[]
-  tasks       GroupTask[]
-  resources   GroupResource[]
   needs       GroupNeed[]
+  resources   GroupResource[]
+  tasks       GroupTask[]
 }
 
 model GroupMember {
-  id        String   @id @default(cuid())
-  groupId   String
-  group     Group    @relation(fields: [groupId], references: [id], onDelete: Cascade)
-  userId    String
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  
-  role      String   @default("MEMBER") // MEMBER, ADMIN
-  joinedAt  DateTime @default(now())
+  id       String   @id @default(cuid())
+  groupId  String
+  userId   String
+  role     String   @default("MEMBER")
+  joinedAt DateTime @default(now())
+  group    Group    @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([groupId, userId])
 }
@@ -565,83 +468,72 @@ model GroupMember {
 model GroupResource {
   id        String   @id @default(cuid())
   groupId   String
-  group     Group    @relation(fields: [groupId], references: [id], onDelete: Cascade)
   title     String
-  content   String   // URL or Text
-  type      String   // LINK, PDF, TEXT
+  content   String
+  type      String
   createdAt DateTime @default(now())
+  group     Group    @relation(fields: [groupId], references: [id], onDelete: Cascade)
 }
 
 model GroupTask {
-  id          String   @id @default(cuid())
+  id          String                @id @default(cuid())
   groupId     String
-  group       Group    @relation(fields: [groupId], references: [id], onDelete: Cascade)
-  
   title       String
   description String?
-  type        String   // READING, ACTIVITY, ENCOURAGEMENT
-  date        DateTime // Target date
-  
-  createdAt   DateTime @default(now())
-  
+  type        String
+  date        DateTime
+  createdAt   DateTime              @default(now())
+  group       Group                 @relation(fields: [groupId], references: [id], onDelete: Cascade)
   completions GroupTaskCompletion[]
 }
 
 model GroupTaskCompletion {
-  id        String   @id @default(cuid())
-  taskId    String
-  task      GroupTask @relation(fields: [taskId], references: [id], onDelete: Cascade)
-  userId    String
-  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  
-  completedAt DateTime @default(now())
-  
+  id          String    @id @default(cuid())
+  taskId      String
+  userId      String
+  completedAt DateTime  @default(now())
+  task        GroupTask @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
   @@unique([taskId, userId])
 }
 
-// [NEW] Q&A System (Replacing Forums / Community)
 model Question {
-  id          String   @id @default(cuid())
-  userId      String
-  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  
-  title       String
-  content     String
-  
-  views       Int      @default(0)
-  likes       Int      @default(0)
-  isTrending  Boolean  @default(false)
-  
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  
-  answers     Answer[]
-  tags        String?  // JSON or comma separated
-  likesList   QuestionLike[]
+  id         String         @id @default(cuid())
+  userId     String
+  title      String
+  content    String
+  views      Int            @default(0)
+  likes      Int            @default(0)
+  isTrending Boolean        @default(false)
+  createdAt  DateTime       @default(now())
+  updatedAt  DateTime       @updatedAt
+  tags       String?
+  answers    Answer[]
+  user       User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  likesList  QuestionLike[]
 }
 
 model Answer {
-  id          String   @id @default(cuid())
-  questionId  String
-  question    Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
-  userId      String
-  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  
-  content     String
-  likes       Int      @default(0)
-  isAccepted  Boolean  @default(false)
-  
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  likesList   AnswerLike[]
+  id         String       @id @default(cuid())
+  questionId String
+  userId     String
+  content    String
+  likes      Int          @default(0)
+  isAccepted Boolean      @default(false)
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @updatedAt
+  question   Question     @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  user       User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  likesList  AnswerLike[]
 }
 
 model QuestionLike {
   id         String   @id @default(cuid())
   userId     String
   questionId String
-  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   question   Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([userId, questionId])
 }
@@ -650,121 +542,154 @@ model AnswerLike {
   id       String @id @default(cuid())
   userId   String
   answerId String
-  user     User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   answer   Answer @relation(fields: [answerId], references: [id], onDelete: Cascade)
+  user     User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([userId, answerId])
 }
 
-// [NEW] Games (Hot Potato / Trivia)
 model GameRoom {
-  id          String   @id @default(cuid())
-  code        String   @unique // 6 chars
-  name        String?  // [NEW] Room name
-  isPrivate   Boolean  @default(false) // [NEW] Public vs Private
-  type        String   @default("HOT_POTATO") // [NEW] Game type
-  status      String   @default("WAITING") // WAITING, PLAYING, FINISHED
-  
+  id                String       @id @default(cuid())
+  code              String       @unique
+  status            String       @default("WAITING")
   currentTurnUserId String?
   bombExplodesAt    DateTime?
-  
   activeQuestionId  String?
-  // We can link to TriviaQuestion here if needed, or store JSON
-  currentQuestion   String? // JSON snapshot of question
-  
-  createdAt   DateTime @default(now())
-  
-  players     GamePlayer[]
+  currentQuestion   String?
+  createdAt         DateTime     @default(now())
+  isPrivate         Boolean      @default(false)
+  name              String?
+  type              String       @default("HOT_POTATO")
+  players           GamePlayer[]
 }
 
 model GamePlayer {
-  id          String   @id @default(cuid())
-  roomId      String
-  room        GameRoom @relation(fields: [roomId], references: [id], onDelete: Cascade)
-  userId      String
-  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  
-  status      String   @default("ALIVE") // ALIVE, ELIMINATED, WINNER
-  score       Int      @default(0)
-  
-  joinedAt    DateTime @default(now())
-  
+  id       String   @id @default(cuid())
+  roomId   String
+  userId   String
+  status   String   @default("ALIVE")
+  score    Int      @default(0)
+  joinedAt DateTime @default(now())
+  room     GameRoom @relation(fields: [roomId], references: [id], onDelete: Cascade)
+  user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
   @@unique([roomId, userId])
 }
+
 model GroupNeed {
-  id        String   @id @default(cuid())
-  groupId   String
-  group     Group    @relation(fields: [groupId], references: [id], onDelete: Cascade)
-  content   String
-  isAnonymous Boolean @default(true)
-  userId    String?  // Optional, if we want to track who sent it internally
-  createdAt DateTime @default(now())
+  id          String   @id @default(cuid())
+  groupId     String
+  content     String
+  isAnonymous Boolean  @default(true)
+  userId      String?
+  createdAt   DateTime @default(now())
+  group       Group    @relation(fields: [groupId], references: [id], onDelete: Cascade)
 }
 
 model PrayerRequest {
-  id          String   @id @default(cuid())
+  id          String         @id @default(cuid())
   userId      String
-  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  
   content     String
-  isAnonymous Boolean  @default(false)
-  isGlobal    Boolean  @default(false)
-  
-  prayCount   Int      @default(0)
+  isAnonymous Boolean        @default(false)
+  isGlobal    Boolean        @default(false)
+  prayCount   Int            @default(0)
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+  user        User           @relation(fields: [userId], references: [id], onDelete: Cascade)
   prayers     PrayerUpdate[]
-  
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
 }
 
 model PrayerUpdate {
-  id          String   @id @default(cuid())
-  userId      String
-  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  requestId   String
-  request     PrayerRequest @relation(fields: [requestId], references: [id], onDelete: Cascade)
-  
-  createdAt   DateTime @default(now())
+  id        String        @id @default(cuid())
+  userId    String
+  requestId String
+  createdAt DateTime      @default(now())
+  request   PrayerRequest @relation(fields: [requestId], references: [id], onDelete: Cascade)
+  user      User          @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model StudyRoom {
-  id          String   @id @default(cuid())
-  title       String
-  description String?
-  theme       String?
-  
-  hostId      String
-  host        User     @relation("StudyHost", fields: [hostId], references: [id])
-  
-  status      String   @default("OPEN") // OPEN, CLOSED
-  
-  messages    StudyMessage[]
+  id           String                 @id @default(cuid())
+  title        String
+  description  String?
+  theme        String?
+  hostId       String
+  status       String                 @default("OPEN")
+  createdAt    DateTime               @default(now())
+  updatedAt    DateTime               @updatedAt
+  messages     StudyMessage[]
+  host         User                   @relation("StudyHost", fields: [hostId], references: [id])
   participants StudyRoomParticipant[]
-  
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
 }
 
 model StudyRoomParticipant {
-  id        String   @id @default(cuid())
-  roomId    String
-  room      StudyRoom @relation(fields: [roomId], references: [id], onDelete: Cascade)
-  userId    String
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  
-  role      String   @default("MEMBER")
-  joinedAt  DateTime @default(now())
+  id       String    @id @default(cuid())
+  roomId   String
+  userId   String
+  role     String    @default("MEMBER")
+  joinedAt DateTime  @default(now())
+  room     StudyRoom @relation(fields: [roomId], references: [id], onDelete: Cascade)
+  user     User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([roomId, userId])
 }
 
 model StudyMessage {
-  id        String   @id @default(cuid())
+  id        String    @id @default(cuid())
   roomId    String
-  room      StudyRoom @relation(fields: [roomId], references: [id], onDelete: Cascade)
   userId    String
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  
   content   String
-  createdAt DateTime @default(now())
+  createdAt DateTime  @default(now())
+  room      StudyRoom @relation(fields: [roomId], references: [id], onDelete: Cascade)
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+// [NEW] Content System for Monetization
+model Article {
+  id         String  @id @default(cuid())
+  title      String
+  slug       String  @unique
+  excerpt    String // Resumen corto
+  content    String  @db.Text // Contenido completo en markdown
+  coverImage String? // URL de imagen de portada
+
+  category String // Categorías: "Vida Cristiana", "Relaciones", "Salud Mental", etc.
+  tags     String? // Tags separados por comas
+
+  author   String @default("Equipo ConectaMas")
+  readTime Int    @default(5) // Minutos estimados de lectura
+  views    Int    @default(0)
+
+  isFeatured  Boolean @default(false)
+  isPublished Boolean @default(true)
+
+  publishedAt DateTime @default(now())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  userReads UserArticleRead[]
+}
+
+model UserArticleRead {
+  id        String   @id @default(cuid())
+  userId    String
+  articleId String
+  readAt    DateTime @default(now())
+
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  article Article @relation(fields: [articleId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, articleId])
+}
+
+model Resource {
+  id          String   @id @default(cuid())
+  title       String
+  description String?
+  type        String // PDF, VIDEO, AUDIO, GUIDE, WORKSHEET
+  url         String // Link de descarga o visualización
+  category    String // Categorías: "Estudio Bíblico", "Oración", etc.
+  isPremium   Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
