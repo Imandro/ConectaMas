@@ -685,13 +685,14 @@ model UserArticleRead {
 }
 
 model Resource {
-  id          String   @id @default(cuid())
-  title       String
-  description String?
-  type        String // PDF, VIDEO, AUDIO, GUIDE, WORKSHEET
-  url         String // Link de descarga o visualización
-  category    String // Categorías: "Estudio Bíblico", "Oración", etc.
-  isPremium   Boolean  @default(false)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id            String   @id @default(cuid())
+  title         String
+  description   String?
+  type          String // PDF, VIDEO, AUDIO, GUIDE, WORKSHEET
+  url           String // Link de descarga o visualización
+  category      String // Categorías: "Estudio Bíblico", "Oración", etc.
+  downloadCount Int      @default(0)
+  isPremium     Boolean  @default(false)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 }
