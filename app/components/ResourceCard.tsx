@@ -1,3 +1,5 @@
+"use client";
+
 import { Download, FileText, Video, Headphones, BookOpen, FileCheck } from 'lucide-react';
 
 interface ResourceCardProps {
