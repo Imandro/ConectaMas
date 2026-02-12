@@ -77,8 +77,8 @@ model User {
   struggles                UserStruggle[]
   triviaAttempts           UserTriviaAttempt[]
   watchedVideos            UserVideo[]
-  User_A                   User[]                 @relation("UserFriends")
-  User_B                   User[]                 @relation("UserFriends")
+  friends                  User[]                 @relation("UserFriends")
+  symmetricFriends         User[]                 @relation("UserFriends")
   readArticles             UserArticleRead[]
 }
 
