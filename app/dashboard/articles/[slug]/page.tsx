@@ -103,18 +103,20 @@ export default function ArticlePage() {
     return (
         <div className="animate-fade-in pb-5">
             {/* Back Button */}
-            <Link
-                href="/dashboard/articles"
-                className="btn btn-light rounded-pill mb-4 d-inline-flex align-items-center gap-2"
-            >
-                <ArrowLeft size={18} />
-                Volver a Artículos
-            </Link>
+            <div className="no-print back-button-container">
+                <Link
+                    href="/dashboard/articles"
+                    className="btn btn-light rounded-pill mb-4 d-inline-flex align-items-center gap-2"
+                >
+                    <ArrowLeft size={18} />
+                    Volver a Artículos
+                </Link>
+            </div>
 
             {/* Article Header */}
             <article>
                 {/* Category Badge */}
-                <div className="mb-3">
+                <div className="mb-3 no-print">
                     <span className="badge bg-primary px-4 py-2 rounded-pill fs-6">
                         {article.category}
                     </span>
@@ -137,7 +139,7 @@ export default function ArticlePage() {
                         <Clock size={16} />
                         <span>{article.readTime} min de lectura</span>
                     </div>
-                    <div className="d-flex align-items-center gap-1">
+                    <div className="d-flex align-items-center gap-1 no-print">
                         <Eye size={16} />
                         <span>{article.views} vistas</span>
                     </div>
@@ -165,14 +167,21 @@ export default function ArticlePage() {
                     </div>
                 )}
 
-                {/* Share Button */}
-                <div className="mb-4">
+                {/* Actions Button */}
+                <div className="mb-4 d-flex gap-2 no-print">
                     <button
                         onClick={handleShare}
                         className="btn btn-outline-primary rounded-pill px-4"
                     >
                         <Share2 size={18} className="me-2" />
-                        Compartir artículo
+                        Compartir
+                    </button>
+                    <button
+                        onClick={() => window.print()}
+                        className="btn btn-primary rounded-pill px-4 d-flex align-items-center gap-2"
+                    >
+                        <BookOpen size={18} />
+                        Descargar PDF
                     </button>
                 </div>
 
@@ -214,7 +223,7 @@ export default function ArticlePage() {
 
             {/* Related Articles */}
             {relatedArticles.length > 0 && (
-                <section className="mt-5">
+                <section className="mt-5 no-print related-articles-section">
                     <h3 className="fw-bold text-dark mb-4">📖 Artículos Relacionados</h3>
                     <div className="row g-3">
                         {relatedArticles.map((relatedArticle) => (

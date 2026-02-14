@@ -181,3 +181,56 @@ header h2 {
 .card.bg-primary .text-warning {
     color: #fbbf24 !important;
 }
+
+@media print {
+    .navbar, 
+    .navbar.fixed-bottom,
+    .d-none.d-md-flex.flex-column.bg-primary,
+    .btn, 
+    .no-print,
+    .related-articles-section,
+    .back-button-container,
+    footer {
+        display: none !important;
+    }
+
+    body {
+        background-color: white !important;
+        padding-top: 0 !important;
+    }
+
+    .main-content {
+        margin: 0 !important;
+        padding: 0 !important;
+        min-height: auto !important;
+    }
+
+    .container-fluid {
+        width: 100% !important;
+        max-width: none !important;
+        padding: 0 !important;
+    }
+
+    .card {
+        box-shadow: none !important;
+        border: none !important;
+        padding: 0 !important;
+        background-color: white !important;
+    }
+
+    .article-content {
+        font-size: 12pt !important;
+        line-height: 1.6 !important;
+        color: black !important;
+    }
+
+    h1 {
+        font-size: 24pt !important;
+        margin-top: 0 !important;
+    }
+
+    img {
+        max-width: 100% !important;
+        height: auto !important;
+    }
+}
