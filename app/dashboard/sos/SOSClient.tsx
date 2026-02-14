@@ -1,11 +1,8 @@
 "use client";
 
 import Link from 'next/link';
-import { X, Phone, BookHeart, Music, Plus, Loader2 } from 'lucide-react';
-import { useState, useEffect } from 'react';
-import { seedSongsAction } from './seed-action';
-import EnhancedMusicPlayer from '@/app/components/EnhancedMusicPlayer';
-import MusicUploadModal from '@/app/components/MusicUploadModal';
+import { X, Phone, BookHeart } from 'lucide-react';
+import { useState } from 'react';
 import { useLanguage } from '@/app/LanguageContext';
 import { getSOSContent } from '@/app/lib/sosData';
 
@@ -13,21 +10,10 @@ interface SOSClientProps {
     leaderPhone: string | null;
 }
 
-interface Song {
-    id: string;
-    title: string;
-    artist: string;
-    url: string;
-    category: string;
-}
-
 export default function SOSClient({ leaderPhone }: SOSClientProps) {
     const { t, language } = useLanguage();
     const [showTruths, setShowTruths] = useState(false);
-    const [showMusic, setShowMusic] = useState(false);
-    const [songs, setSongs] = useState<Song[]>([]);
     const [randomTruths, setRandomTruths] = useState<string[]>([]);
-    const [showUploadModal, setShowUploadModal] = useState(false);
     const [showPrayer, setShowPrayer] = useState(false);
     const [currentPrayer, setCurrentPrayer] = useState('');
 
@@ -44,21 +30,6 @@ export default function SOSClient({ leaderPhone }: SOSClientProps) {
         setCurrentPrayer(prayers[randomIndex]);
         setShowPrayer(true);
     };
-
-    const fetchSongs = () => {
-        fetch('/api/songs')
-            .then(res => res.json())
-            .then(data => setSongs(data))
-            .catch(err => console.error("Error fetching songs:", err));
-    };
-
-    useEffect(() => {
-        seedSongsAction().then(() => {
-            fetchSongs();
-        });
-    }, []);
-
-
 
     return (
         <div className="min-vh-100 bg-primary text-white d-flex flex-column p-4 position-relative overflow-hidden">
@@ -109,17 +80,6 @@ export default function SOSClient({ leaderPhone }: SOSClientProps) {
                         </button>
 
                         <button
-                            onClick={() => setShowMusic(!showMusic)}
-                            className="btn bg-white btn-lg shadow-sm text-primary d-flex align-items-center justify-content-start gap-3 p-3 hover-scale transition-all"
-                        >
-                            <Music size={24} className="text-secondary" />
-                            <div className="text-start">
-                                <span className="d-block fw-bold">{t.sos.music_btn}</span>
-                                <small className="opacity-75">{t.sos.music_desc}</small>
-                            </div>
-                        </button>
-
-                        <button
                             onClick={() => {
                                 if (leaderPhone) {
                                     window.location.href = `tel:${leaderPhone}`;
@@ -158,35 +118,6 @@ export default function SOSClient({ leaderPhone }: SOSClientProps) {
                     </div>
                 )}
 
-                {showMusic && (
-                    <div className="animate-in fade-in slide-in-from-bottom-4 mt-3">
-                        <div className="bg-white bg-opacity-10 backdrop-blur-sm rounded-4 p-4 border border-white-50">
-                            <div className="d-flex justify-content-between align-items-center mb-4">
-                                <h3 className="fw-bold m-0 d-flex align-items-center gap-2"><Music size={28} /> {t.sos.music_title}</h3>
-                                <div className="d-flex gap-2">
-                                    <button
-                                        onClick={() => setShowUploadModal(true)}
-                                        className="btn btn-sm btn-warning rounded-pill px-3 fw-bold d-flex align-items-center gap-1 shadow-sm"
-                                        style={{ backgroundColor: '#f3b33e', color: '#0B1B32', border: 'none' }}
-                                    >
-                                        <Plus size={18} /> {t.sos.upload}
-                                    </button>
-                                    <button onClick={() => setShowMusic(false)} className="btn btn-sm btn-outline-light rounded-circle"><X size={20} /></button>
-                                </div>
-                            </div>
-
-                            {songs.length === 0 ? (
-                                <div className="text-center py-5">
-                                    <Loader2 className="animate-spin mb-3 mx-auto" size={40} />
-                                    <p className="opacity-75">{t.sos.loading_music}</p>
-                                </div>
-                            ) : (
-                                <EnhancedMusicPlayer songs={songs} />
-                            )}
-                        </div>
-                    </div>
-                )}
-
                 {showPrayer && (
                     <div className="animate-in fade-in slide-in-from-bottom-4 mt-3">
                         <div className="bg-white bg-opacity-10 backdrop-blur-sm rounded-5 p-4 border border-white-50">
@@ -205,12 +136,6 @@ export default function SOSClient({ leaderPhone }: SOSClientProps) {
                         </div>
                     </div>
                 )}
-
-                <MusicUploadModal
-                    isOpen={showUploadModal}
-                    onClose={() => setShowUploadModal(false)}
-                    onSuccess={fetchSongs}
-                />
 
             </div>
 

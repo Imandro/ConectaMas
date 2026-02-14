@@ -111,59 +111,45 @@ export default function NotificationPrompt() {
     if (!showPrompt) return null;
 
     return (
-        <div className="fixed-bottom p-3 z-5" style={{ zIndex: 9998, bottom: '80px' }}>
+        <div className="fixed-bottom p-3 z-5 d-flex justify-content-center justify-content-md-end" style={{ zIndex: 9998, bottom: '80px' }}>
             <div className="card shadow-lg border-0 overflow-hidden animate-slide-up" style={{
-                borderRadius: '24px',
-                backgroundColor: 'var(--card-bg)',
+                borderRadius: '20px',
+                backgroundColor: 'rgba(11, 27, 50, 0.95)',
                 backdropFilter: 'blur(10px)',
-                border: '1px solid var(--border-color)'
+                border: '1px solid rgba(255,255,255,0.1)',
+                maxWidth: '350px'
             }}>
-                <div className="card-body p-0">
-                    {/* Header with gradient */}
-                    <div className="d-flex align-items-center justify-content-between p-3 text-white" style={{
-                        background: 'linear-gradient(135deg, #0B1B32 0%, #1e293b 100%)'
-                    }}>
-                        <div className="d-flex align-items-center gap-2">
-                            <div className="bg-secondary rounded-circle p-1">
-                                <Bell size={18} className="text-primary" />
-                            </div>
-                            <div className="text-start">
-                                <h6 className="mb-0 fw-bold">{t.notifications_prompt.title}</h6>
-                                <small className="text-muted">{t.notifications_prompt.welcome}</small>
+                <div className="card-body p-3">
+                    <div className="d-flex align-items-start gap-3">
+                        <div className="bg-secondary rounded-circle p-2 flex-shrink-0">
+                            <Bell size={20} className="text-primary" />
+                        </div>
+                        <div className="flex-grow-1">
+                            <h6 className="mb-1 fw-bold text-white small">{t.notifications_prompt.heading}</h6>
+                            <p className="extra-small text-white-50 mb-2 lh-sm">
+                                {t.notifications_prompt.description}
+                            </p>
+                            <div className="d-flex gap-2">
+                                <button
+                                    onClick={handleEnable}
+                                    className="btn btn-primary btn-sm rounded-pill px-3 fw-bold flex-grow-1"
+                                    disabled={loading}
+                                    style={{ fontSize: '0.75rem' }}
+                                >
+                                    {loading ? '...' : t.notifications_prompt.button_enable}
+                                </button>
+                                <button
+                                    onClick={handleDismiss}
+                                    className="btn btn-outline-light btn-sm rounded-pill px-3 flex-grow-1"
+                                    style={{ fontSize: '0.75rem' }}
+                                >
+                                    {t.notifications_prompt.button_later}
+                                </button>
                             </div>
                         </div>
-                        <button onClick={handleDismiss} className="btn btn-link p-0 text-white opacity-75">
-                            <X size={20} />
+                        <button onClick={handleDismiss} className="btn btn-link p-0 text-white opacity-50 hover-opacity-100">
+                            <X size={16} />
                         </button>
-                    </div>
-
-                    {/* Content */}
-                    <div className="p-4 text-center">
-                        <div className="mb-3 d-flex justify-content-center gap-2">
-                            <Sparkles className="text-secondary" size={24} />
-                            <CheckCircle2 className="text-success" size={24} />
-                        </div>
-                        <h5 className="fw-bold mb-2" style={{ color: 'var(--text-color)' }}>{t.notifications_prompt.heading}</h5>
-                        <p className="small text-muted mb-4">
-                            {t.notifications_prompt.description}
-                        </p>
-
-                        <div className="d-grid gap-2">
-                            <button
-                                onClick={handleEnable}
-                                className="btn btn-primary rounded-pill py-2 fw-bold shadow-sm d-flex align-items-center justify-content-center gap-2"
-                                disabled={loading}
-                            >
-                                {loading && <span className="spinner-border spinner-border-sm" role="status"></span>}
-                                {loading ? t.notifications_prompt.button_enabling : t.notifications_prompt.button_enable}
-                            </button>
-                            <button
-                                onClick={handleDismiss}
-                                className="btn btn-link btn-sm text-muted text-decoration-none"
-                            >
-                                {t.notifications_prompt.button_later}
-                            </button>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -175,6 +161,9 @@ export default function NotificationPrompt() {
                 }
                 .animate-slide-up {
                     animation: slideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+                }
+                .extra-small {
+                    font-size: 0.7rem;
                 }
             `}</style>
         </div>

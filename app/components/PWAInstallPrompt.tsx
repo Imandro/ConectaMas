@@ -42,96 +42,69 @@ export default function PWAInstallPrompt() {
     if (!showPrompt) return null;
 
     return (
-        <div className="fixed-bottom p-3 z-5" style={{ zIndex: 9999 }}>
-            <div className="card shadow-lg border-0 bg-white animate-slide-up overflow-hidden">
-                <div className="card-body p-0">
-                    {/* Header */}
-                    <div className="d-flex align-items-center justify-content-between p-3 border-bottom bg-primary text-white">
-                        <div className="d-flex align-items-center gap-2">
-                            <img src="/logo.png" alt="Logo" width="32" height="32" className="rounded" />
-                            <div className="text-start">
-                                <h6 className="mb-0 fw-bold">{t.pwa_prompt.title}</h6>
-                                <small className="text-muted">{t.nav.safe_space}</small>
-                            </div>
+        <div className="fixed-bottom p-3 z-5 d-flex justify-content-center justify-content-md-end" style={{ zIndex: 9999, bottom: '160px' }}>
+            <div className="card shadow-lg border-0 overflow-hidden animate-slide-up" style={{
+                borderRadius: '20px',
+                backgroundColor: 'rgba(255, 255, 255, 0.98)',
+                backdropFilter: 'blur(10px)',
+                width: '100%',
+                maxWidth: '350px',
+                border: '1px solid rgba(0,0,0,0.05)'
+            }}>
+                <div className="card-body p-3">
+                    <div className="d-flex align-items-start gap-3">
+                        <img src="/logo.png" alt="Logo" width="40" height="40" className="rounded-3 shadow-sm" />
+                        <div className="flex-grow-1">
+                            <h6 className="mb-1 fw-bold text-dark small">{t.pwa_prompt.title}</h6>
+                            <p className="extra-small text-muted mb-3 lh-sm">
+                                {t.pwa_prompt.description}
+                            </p>
+
+                            {platform === "ios" ? (
+                                <div className="ios-steps extra-small text-primary fw-bold mb-3 d-flex flex-column gap-1">
+                                    <div className="d-flex align-items-center gap-2">
+                                        <Share size={14} /> {t.pwa_prompt.ios_step1}
+                                    </div>
+                                    <div className="d-flex align-items-center gap-2">
+                                        <PlusSquare size={14} /> {t.pwa_prompt.ios_step2}
+                                    </div>
+                                </div>
+                            ) : (
+                                <div className="android-steps extra-small text-primary fw-bold mb-3 d-flex flex-column gap-1">
+                                    <div className="d-flex align-items-center gap-2">
+                                        <MoreVertical size={14} /> {t.pwa_prompt.android_step1}
+                                    </div>
+                                    <div className="d-flex align-items-center gap-2">
+                                        <Download size={14} /> {t.pwa_prompt.android_step2}
+                                    </div>
+                                </div>
+                            )}
+
+                            <button
+                                onClick={handleClose}
+                                className="btn btn-primary btn-sm w-100 rounded-pill fw-bold"
+                                style={{ fontSize: '0.75rem' }}
+                            >
+                                {t.pwa_prompt.button}
+                            </button>
                         </div>
-                        <button onClick={handleClose} className="btn btn-link p-0 text-white">
-                            <X size={20} />
-                        </button>
-                    </div>
-
-                    {/* Content */}
-                    <div className="p-4">
-                        <p className="small text-muted mb-4">
-                            {t.pwa_prompt.description}
-                        </p>
-
-                        {platform === "ios" ? (
-                            <div className="ios-tutorial">
-                                <div className="d-flex align-items-start gap-3 mb-3">
-                                    <div className="bg-light p-2 rounded">
-                                        <Share size={20} className="text-primary" />
-                                    </div>
-                                    <div className="flex-grow-1">
-                                        <h6 className="small fw-bold mb-1">{t.pwa_prompt.ios_step1}</h6>
-                                        <p className="extra-small text-muted mb-0">{t.pwa_prompt.ios_step1_desc}</p>
-                                    </div>
-                                </div>
-                                <div className="d-flex align-items-start gap-3">
-                                    <div className="bg-light p-2 rounded">
-                                        <PlusSquare size={20} className="text-primary" />
-                                    </div>
-                                    <div className="flex-grow-1">
-                                        <h6 className="small fw-bold mb-1">{t.pwa_prompt.ios_step2}</h6>
-                                        <p className="extra-small text-muted mb-0">{t.pwa_prompt.ios_step2_desc}</p>
-                                    </div>
-                                </div>
-                            </div>
-                        ) : (
-                            <div className="android-tutorial">
-                                <div className="d-flex align-items-start gap-3 mb-3">
-                                    <div className="bg-light p-2 rounded">
-                                        <MoreVertical size={20} className="text-primary" />
-                                    </div>
-                                    <div className="flex-grow-1">
-                                        <h6 className="small fw-bold mb-1">{t.pwa_prompt.android_step1}</h6>
-                                        <p className="extra-small text-muted mb-0">{t.pwa_prompt.android_step1_desc}</p>
-                                    </div>
-                                </div>
-                                <div className="d-flex align-items-start gap-3">
-                                    <div className="bg-light p-2 rounded">
-                                        <Download size={20} className="text-primary" />
-                                    </div>
-                                    <div className="flex-grow-1">
-                                        <h6 className="small fw-bold mb-1">{t.pwa_prompt.android_step2}</h6>
-                                        <p className="extra-small text-muted mb-0">{t.pwa_prompt.android_step2_desc}</p>
-                                    </div>
-                                </div>
-                            </div>
-                        )}
-                    </div>
-
-                    {/* Button */}
-                    <div className="p-3 bg-light text-center border-top">
-                        <button
-                            onClick={handleClose}
-                            className="btn btn-primary w-100 rounded-pill py-2 fw-bold"
-                        >
-                            {t.pwa_prompt.button}
+                        <button onClick={handleClose} className="btn btn-link p-0 text-muted opacity-50 hover-opacity-100">
+                            <X size={16} />
                         </button>
                     </div>
                 </div>
             </div>
 
-            <style>{`
+            <style jsx>{`
                 @keyframes slideUp {
-                    from { transform: translateY(100%); }
-                    to { transform: translateY(0); }
+                    from { transform: translateY(100%); opacity: 0; }
+                    to { transform: translateY(0); opacity: 1; }
                 }
                 .animate-slide-up {
-                    animation: slideUp 0.4s ease-out;
+                    animation: slideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1);
                 }
-                .x-small {
-                    font-size: 0.75rem;
+                .extra-small {
+                    font-size: 0.7rem;
                 }
             `}</style>
         </div>

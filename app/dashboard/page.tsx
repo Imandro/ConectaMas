@@ -73,18 +73,18 @@ export default function DashboardHome() {
 
     const fetchDailyQuestions = async () => {
         try {
-            // Lazy load the action to avoid build issues if mixed
+            // Check if seen today
+            const today = new Date().toDateString();
+            const lastSeen = localStorage.getItem('seen_daily_questions_date');
+            if (lastSeen === today) return;
+
             const { getDailyQuestions } = await import('./qa/actions');
             const questions = await getDailyQuestions();
-            // Show if we have questions and user hasn't dismissed today (removed local storage check for simplicity for now, or add it)
-            // Let's rely on session or just show it if random chance? 
-            // For now, ALWAYS show it if there are questions, unless we track it.
-            // Requirement said "modal upon app entry".
-            // I'll check a sessionStorage key "seenDailyQuestions"
-            if (questions.length > 0 && !sessionStorage.getItem('seen_daily_questions')) {
+
+            if (questions.length > 0) {
                 setDailyQuestions(questions);
-                setTimeout(() => setShowDailyQuestions(true), 2000); // Small delay for effect
-                sessionStorage.setItem('seen_daily_questions', 'true');
+                setTimeout(() => setShowDailyQuestions(true), 2000);
+                localStorage.setItem('seen_daily_questions_date', today);
             }
         } catch (e) {
             console.error("Error fetching daily questions", e);

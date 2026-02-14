@@ -26,7 +26,6 @@ export const metadata: Metadata = {
         telephone: false,
     },
     other: {
-        'google-adsense-account': 'ca-pub-9787254836039496',
     },
     openGraph: {
         title: 'Conecta+ | Tu Espacio de Crecimiento Espiritual',
@@ -63,7 +62,6 @@ import { Providers } from './components/Providers';
 
 
 import { auth } from './lib/auth';
-import GoogleAdSense from './components/monetization/GoogleAdSense';
 import { LanguageProvider } from '@/app/LanguageContext';
 import LanguageRegionModal from './components/LanguageRegionModal';
 
@@ -104,8 +102,6 @@ export default async function RootLayout({
                 <OfflineAlert />
                 <LanguageProvider>
                     <Providers session={serializableSession}>
-                        <GoogleAdSense pId="ca-pub-9787254836039496" />
-                        <LanguageRegionModal />
                         <main className="main-content">
                             {children}
                         </main>
