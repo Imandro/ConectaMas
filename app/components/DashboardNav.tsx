@@ -11,22 +11,11 @@ import { usePathname } from 'next/navigation';
 import { Home, BookOpen, HeartPulse, User, Menu, Book, MessageCircle, Zap, Trophy, Gamepad2, HeartHandshake, FileText, FolderOpen, Globe } from 'lucide-react';
 import { signOut } from "next-auth/react";
 import { useLanguage } from '@/app/LanguageContext';
-import LanguageRegionModal from "./LanguageRegionModal";
 
 export default function DashboardNav() {
-    const { t, language } = useLanguage();
+    const { t } = useLanguage();
     const pathname = usePathname();
     const [notificationCount, setNotificationCount] = useState(0);
-    const [isLangModalOpen, setIsLangModalOpen] = useState(false);
-
-    const getFlag = (lang: string) => {
-        switch (lang) {
-            case 'es': return '🇪🇸';
-            case 'en': return '🇺🇸';
-            case 'pt': return '🇧🇷';
-            default: return '🌐';
-        }
-    };
 
     const navItems = [
         { name: t.nav.home, href: '/dashboard', icon: Home },
@@ -59,8 +48,6 @@ export default function DashboardNav() {
 
     return (
         <>
-            <LanguageRegionModal isOpen={isLangModalOpen} onClose={() => setIsLangModalOpen(false)} />
-
             {/* Mobile Bottom Nav */}
             <nav
                 className="navbar fixed-bottom navbar-light bg-white border-top d-md-none safe-area-bottom shadow-lg p-0"
@@ -89,30 +76,14 @@ export default function DashboardNav() {
                             </Link>
                         );
                     })}
-                    <button
-                        onClick={() => setIsLangModalOpen(true)}
-                        className="nav-link btn btn-link d-flex flex-column align-items-center justify-content-center small flex-grow-1 text-center h-100 text-muted border-0"
-                    >
-                        <span style={{ fontSize: '24px' }}>{getFlag(language)}</span>
-                        <span style={{ fontSize: '10px' }}>{language.toUpperCase()}</span>
-                    </button>
                 </div>
             </nav>
 
             {/* Desktop Sidebar (Hidden on Mobile) */}
             <div className="d-none d-md-flex flex-column bg-primary border-end h-100 p-3 position-fixed top-0 start-0 text-white" style={{ width: '240px' }}>
-                <div className="d-flex justify-content-between align-items-start mb-5 px-2 mt-2">
-                    <div>
-                        <h4 className="fw-bold text-white mb-0">Conecta<span className="text-secondary">+</span></h4>
-                        <small className="text-white-50 small">{t.nav.safe_space}</small>
-                    </div>
-                    <button
-                        onClick={() => setIsLangModalOpen(true)}
-                        className="btn btn-outline-light border-0 rounded-circle p-2 hover-bg-white-10 transition-all shadow-sm"
-                        title="Cambiar Idioma / Region"
-                    >
-                        <span style={{ fontSize: '24px' }}>{getFlag(language)}</span>
-                    </button>
+                <div className="mb-5 px-2 mt-2">
+                    <h4 className="fw-bold text-white mb-0">Conecta<span className="text-secondary">+</span></h4>
+                    <small className="text-white-50 small">{t.nav.safe_space}</small>
                 </div>
 
                 <nav className="nav flex-column gap-2">

@@ -231,34 +231,38 @@ export default function ClientProfileActions({
             </div>
 
             {/* Language & Region Section */}
-            <div className="card shadow-none border rounded-3 p-3 bg-light bg-opacity-50">
-                <div className="d-flex align-items-center gap-3 mb-3">
-                    <Globe size={20} className="text-secondary" />
+            <div className="card shadow-none border rounded-4 p-4 bg-light bg-opacity-25">
+                <div className="d-flex align-items-center gap-3 mb-4">
+                    <div className="bg-primary bg-opacity-10 p-2 rounded-circle">
+                        <Globe size={20} className="text-primary" />
+                    </div>
                     <div>
-                        <span className="d-block fw-bold">{t.profile.language_region}</span>
+                        <span className="d-block fw-bold h6 mb-0">{t.profile.language_region}</span>
                         <small className="text-muted fw-normal">{t.profile.language_region_subtitle}</small>
                     </div>
                 </div>
 
-                <div className="row g-2">
-                    <div className="col-6">
-                        <label className="form-label small text-muted">{t.profile.language_label}</label>
+                <div className="row g-3">
+                    <div className="col-12 col-md-6">
+                        <label className="form-label small text-muted fw-bold text-uppercase ls-1">{t.profile.language_label}</label>
                         <select
-                            className="form-select select-sm"
+                            className="form-select border-0 shadow-sm rounded-3 py-2"
                             value={language}
                             onChange={(e) => setLanguage(e.target.value as any)}
+                            style={{ backgroundColor: 'var(--card-bg)' }}
                         >
-                            <option value="es">Español</option>
-                            <option value="en">English</option>
-                            <option value="pt">Português</option>
+                            <option value="es">🇪🇸 Español</option>
+                            <option value="en">🇺🇸 English</option>
+                            <option value="pt">🇧🇷 Português</option>
                         </select>
                     </div>
-                    <div className="col-6">
-                        <label className="form-label small text-muted">{t.profile.region_label}</label>
+                    <div className="col-12 col-md-6">
+                        <label className="form-label small text-muted fw-bold text-uppercase ls-1">{t.profile.region_label}</label>
                         <select
-                            className="form-select select-sm"
+                            className="form-select border-0 shadow-sm rounded-3 py-2"
                             value={region}
                             onChange={(e) => setRegion(e.target.value as any)}
+                            style={{ backgroundColor: 'var(--card-bg)' }}
                         >
                             <option value="LATAM">{t.profile.regions.LATAM}</option>
                             <option value="ES">{t.profile.regions.ES}</option>
