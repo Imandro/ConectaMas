@@ -78,6 +78,7 @@ export default async function RootLayout({
     return (
         <html lang="es">
             <head>
+                <script src="https://quge5.com/88/tag.min.js" data-zone="211106" async data-cfasync="false"></script>
                 <script dangerouslySetInnerHTML={{
                     __html: `
             (function() {
