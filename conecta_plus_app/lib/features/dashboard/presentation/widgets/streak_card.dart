@@ -159,8 +159,9 @@ class _StreakCardState extends ConsumerState<StreakCard> {
                     clipBehavior: Clip.none,
                     alignment: Alignment.center,
                     children: [
+                      // Speech bubble positioned ABOVE the mascot
                       Positioned(
-                        bottom: 80,
+                        top: -90,
                         left: -40,
                         right: -40,
                         child: AnimatedOpacity(
@@ -175,19 +176,19 @@ class _StreakCardState extends ConsumerState<StreakCard> {
                               children: [
                                 Container(
                                   padding: const EdgeInsets.symmetric(
-                                      horizontal: 10, vertical: 8),
+                                      horizontal: 12, vertical: 8),
                                   decoration: BoxDecoration(
                                     color: Colors.white,
                                     borderRadius: BorderRadius.circular(16),
                                     border: Border.all(
                                         color: const Color(0xFFFFD166),
-                                        width: 2),
+                                        width: 2.5),
                                     boxShadow: [
                                       BoxShadow(
                                         color: Colors.black
-                                            .withValues(alpha: 0.08),
-                                        blurRadius: 18,
-                                        offset: const Offset(0, 10),
+                                            .withValues(alpha: 0.12),
+                                        blurRadius: 20,
+                                        offset: const Offset(0, 8),
                                       ),
                                     ],
                                   ),
@@ -196,14 +197,14 @@ class _StreakCardState extends ConsumerState<StreakCard> {
                                     textAlign: TextAlign.center,
                                     style: GoogleFonts.fredoka(
                                       fontWeight: FontWeight.bold,
-                                      fontSize: 10,
+                                      fontSize: 11,
                                       color: const Color(0xFF0F172A),
-                                      height: 1.1,
+                                      height: 1.2,
                                     ),
                                   ),
                                 ),
                                 CustomPaint(
-                                  size: const Size(12, 8),
+                                  size: const Size(14, 8),
                                   painter: _BubbleTriangle(),
                                 ),
                               ],

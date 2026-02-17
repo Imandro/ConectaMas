@@ -68,9 +68,6 @@ model User {
   questionLikes            QuestionLike[]
   sessions                 Session[]
   streak                   Streak?
-  studyMessages            StudyMessage[]
-  hostedStudies            StudyRoom[]            @relation("StudyHost")
-  roomParticipations       StudyRoomParticipant[]
   receivedSupport          SupportMessage[]       @relation("ReceivedSupport")
   sentSupport              SupportMessage[]       @relation("SentSupport")
   completedDevotionals     UserDevotional[]
@@ -606,42 +603,6 @@ model PrayerUpdate {
   createdAt DateTime      @default(now())
   request   PrayerRequest @relation(fields: [requestId], references: [id], onDelete: Cascade)
   user      User          @relation(fields: [userId], references: [id], onDelete: Cascade)
-}
-
-model StudyRoom {
-  id           String                 @id @default(cuid())
-  title        String
-  description  String?
-  theme        String?
-  hostId       String
-  status       String                 @default("OPEN")
-  createdAt    DateTime               @default(now())
-  updatedAt    DateTime               @updatedAt
-  messages     StudyMessage[]
-  host         User                   @relation("StudyHost", fields: [hostId], references: [id])
-  participants StudyRoomParticipant[]
-}
-
-model StudyRoomParticipant {
-  id       String    @id @default(cuid())
-  roomId   String
-  userId   String
-  role     String    @default("MEMBER")
-  joinedAt DateTime  @default(now())
-  room     StudyRoom @relation(fields: [roomId], references: [id], onDelete: Cascade)
-  user     User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@unique([roomId, userId])
-}
-
-model StudyMessage {
-  id        String    @id @default(cuid())
-  roomId    String
-  userId    String
-  content   String
-  createdAt DateTime  @default(now())
-  room      StudyRoom @relation(fields: [roomId], references: [id], onDelete: Cascade)
-  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 // [NEW] Content System for Monetization

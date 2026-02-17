@@ -1,30 +1,53 @@
+import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 
 import '../../../../l10n/app_localizations.dart';
+import '../../data/verse_provider.dart';
 
-class DailyVerse extends StatelessWidget {
+class DailyVerse extends ConsumerWidget {
   const DailyVerse({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context);
-    const backgroundImages = [
-      "https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&q=80&w=1600",
-      "https://images.unsplash.com/photo-1470252649378-9c29740c9fa8?auto=format&fit=crop&q=80&w=1600",
-      "https://images.unsplash.com/photo-1472214103451-9374bd1c798e?auto=format&fit=crop&q=80&w=1600",
-      "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&q=80&w=1600",
-      "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&q=80&w=1600",
-      "https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&q=80&w=1600",
-    ];
-    final now = DateTime.now();
-    final dayOfYear = now.difference(DateTime(now.year, 0, 0)).inDays;
-    final bgImage = backgroundImages[dayOfYear % backgroundImages.length];
-    const verseText = "Entonces no sería yo avergonzado.";
-    const verseRef = "Salmos 119:6";
+    final verseAsync = ref.watch(verseProvider);
 
+    return verseAsync.when(
+      loading: () => _buildShimmer(),
+      error: (err, stack) => _buildError(context),
+      data: (verse) => _buildContent(context, verse, l10n),
+    );
+  }
+
+  Widget _buildShimmer() {
+    return Container(
+      width: double.infinity,
+      height: 200,
+      decoration: BoxDecoration(
+        color: Colors.white.withValues(alpha: 0.05),
+        borderRadius: BorderRadius.circular(24),
+      ),
+    ).animate(onPlay: (c) => c.repeat()).shimmer(duration: 1.5.seconds);
+  }
+
+  Widget _buildError(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      height: 200,
+      decoration: BoxDecoration(
+        color: Colors.red.withValues(alpha: 0.1),
+        borderRadius: BorderRadius.circular(24),
+      ),
+      child: const Center(child: Icon(Icons.error_outline, color: Colors.red)),
+    );
+  }
+
+  Widget _buildContent(
+      BuildContext context, VerseState verse, AppLocalizations l10n) {
     return GestureDetector(
       onTap: () => context.go('/bible'),
       child: Container(
@@ -32,13 +55,32 @@ class DailyVerse extends StatelessWidget {
         height: 200,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(24),
-          image: DecorationImage(
-            image: NetworkImage(bgImage),
-            fit: BoxFit.cover,
+          // Gradient fallback
+          gradient: const LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [
+              Color(0xFF667eea),
+              Color(0xFF764ba2),
+            ],
           ),
         ),
         child: Stack(
           children: [
+            // Try to load network image, fallback to gradient if fails
+            if (verse.imageUrl.isNotEmpty)
+              Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(24),
+                  image: DecorationImage(
+                    image: NetworkImage(verse.imageUrl),
+                    fit: BoxFit.cover,
+                    onError: (exception, stackTrace) {
+                      // Image failed to load, gradient will show
+                    },
+                  ),
+                ),
+              ),
             Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(24),
@@ -46,8 +88,8 @@ class DailyVerse extends StatelessWidget {
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
                   colors: [
-                    Color.fromRGBO(0, 0, 0, 0.50),
-                    Color.fromRGBO(0, 0, 0, 0.70),
+                    Color.fromRGBO(0, 0, 0, 0.40),
+                    Color.fromRGBO(0, 0, 0, 0.75),
                   ],
                 ),
               ),
@@ -76,22 +118,22 @@ class DailyVerse extends StatelessWidget {
               top: 16,
               right: 16,
               child: GestureDetector(
-                onTap: () {},
-                child: Container(
-                  padding: const EdgeInsets.all(8),
-                  decoration: BoxDecoration(
-                    color: Colors.white.withValues(alpha: 0.75),
-                    shape: BoxShape.circle,
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withValues(alpha: 0.15),
-                        blurRadius: 10,
-                        offset: const Offset(0, 6),
+                onTap: () {
+                  // TODO: Implement image sharing/download
+                },
+                child: ClipOval(
+                  child: BackdropFilter(
+                    filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+                    child: Container(
+                      padding: const EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                        color: Colors.white.withValues(alpha: 0.1),
+                        shape: BoxShape.circle,
                       ),
-                    ],
+                      child: const Icon(Icons.share,
+                          color: Colors.white, size: 18),
+                    ),
                   ),
-                  child: const Icon(Icons.download,
-                      color: Color(0xFF0F172A), size: 18),
                 ),
               ),
             ).animate().fadeIn(delay: 400.ms).scale(),
@@ -105,34 +147,35 @@ class DailyVerse extends StatelessWidget {
                   Text(
                     l10n.dailyVerse.toUpperCase(),
                     style: GoogleFonts.fredoka(
-                      color: Colors.white.withValues(alpha: 0.5),
+                      color: Colors.white.withValues(alpha: 0.7),
                       fontWeight: FontWeight.bold,
-                      fontSize: 13,
-                      letterSpacing: 2,
+                      fontSize: 12,
+                      letterSpacing: 2.5,
                     ),
                   ).animate().fadeIn(delay: 200.ms).slideY(begin: -0.2),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: 12),
                   Text(
-                    '"$verseText"',
+                    '"${verse.content}"',
                     textAlign: TextAlign.center,
+                    maxLines: 4,
+                    overflow: TextOverflow.ellipsis,
                     style: GoogleFonts.fredoka(
                       color: Colors.white,
-                      fontSize: 24,
+                      fontSize: 20,
                       fontWeight: FontWeight.bold,
-                      fontStyle: FontStyle.italic,
                       height: 1.3,
                     ),
                   )
                       .animate()
                       .fadeIn(delay: 400.ms)
                       .scale(begin: const Offset(0.9, 0.9)),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: 12),
                   Text(
-                    '— $verseRef',
+                    '— ${verse.reference}',
                     style: GoogleFonts.fredoka(
-                      color: Colors.white,
+                      color: Colors.white.withValues(alpha: 0.9),
                       fontWeight: FontWeight.w600,
-                      fontSize: 16,
+                      fontSize: 15,
                     ),
                   ).animate().fadeIn(delay: 600.ms),
                 ],
@@ -146,9 +189,10 @@ class DailyVerse extends StatelessWidget {
               child: Text(
                 'Conecta+',
                 style: GoogleFonts.fredoka(
-                  color: Colors.white.withValues(alpha: 0.25),
-                  fontSize: 14,
+                  color: Colors.white.withValues(alpha: 0.2),
+                  fontSize: 12,
                   fontWeight: FontWeight.w500,
+                  letterSpacing: 1.0,
                 ),
               ),
             ),
@@ -157,7 +201,7 @@ class DailyVerse extends StatelessWidget {
       )
           .animate()
           .fadeIn(duration: 600.ms)
-          .scale(begin: const Offset(0.95, 0.95), curve: Curves.easeOutBack),
+          .scale(begin: const Offset(0.98, 0.98), curve: Curves.easeOutBack),
     );
   }
 }

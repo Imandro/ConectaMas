@@ -1,18 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import '../../../../config/theme.dart';
 import '../../../../l10n/app_localizations.dart';
+import '../../../../features/auth/data/auth_provider.dart';
+import '../../../profile/data/avatar_repository.dart';
+import '../../../profile/domain/avatar_config.dart';
+import '../../../profile/presentation/widgets/avatar_preview.dart';
+import '../../../profile/presentation/avatar_editor_screen.dart';
 
-class DashboardHeader extends StatelessWidget {
+class DashboardHeader extends ConsumerWidget {
   const DashboardHeader({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context);
     final locale = Localizations.localeOf(context);
+    final user = ref.watch(authProvider).user;
+    final name = user?.name ?? 'Usuario';
+    final initial = name.isNotEmpty ? name[0].toUpperCase() : 'U';
+    final avatarConfigAsync = ref.watch(avatarConfigProvider);
 
     // Dynamic date localized
     final now = DateTime.now();
@@ -35,7 +45,7 @@ class DashboardHeader extends StatelessWidget {
             ),
             const SizedBox(height: 2),
             Text(
-              l10n.hello('Mario'),
+              l10n.hello(name),
               style: GoogleFonts.fredoka(
                 fontSize: 32,
                 fontWeight: FontWeight.bold,
@@ -68,7 +78,7 @@ class DashboardHeader extends StatelessWidget {
               _HeaderIconButton(
                   icon: Icons.group_outlined,
                   onPressed: () => context.go('/dashboard/friends')),
-              const _ProfileAvatar(initial: 'M'),
+              _ProfileAvatar(initial: initial, configAsync: avatarConfigAsync),
             ],
           ),
         ).animate().fadeIn(duration: 400.ms).slideX(begin: 0.2),
@@ -79,26 +89,58 @@ class DashboardHeader extends StatelessWidget {
 
 class _ProfileAvatar extends StatelessWidget {
   final String initial;
-  const _ProfileAvatar({required this.initial});
+  final AsyncValue<AvatarConfig> configAsync;
+
+  const _ProfileAvatar({required this.initial, required this.configAsync});
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => context.go('/profile'),
+      onTap: () {
+        // Navigate to Avatar Editor
+        Navigator.of(context).push(
+          MaterialPageRoute(builder: (_) => const AvatarEditorScreen()),
+        );
+      },
       child: Container(
         height: 48,
         width: 48,
-        decoration: const BoxDecoration(
-          color: AppTheme.accent,
-          shape: BoxShape.circle,
-        ),
-        child: Center(
-          child: Text(
-            initial,
-            style: GoogleFonts.fredoka(
-              fontWeight: FontWeight.bold,
-              color: AppTheme.primary,
-              fontSize: 20,
+        decoration: BoxDecoration(
+            color: AppTheme.accent,
+            shape: BoxShape.circle,
+            border: Border.all(color: Colors.white, width: 2),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withValues(alpha: 0.1),
+                blurRadius: 4,
+                offset: const Offset(0, 2),
+              )
+            ]),
+        child: ClipOval(
+          child: configAsync.when(
+            data: (config) => AvatarPreview(
+              config: config,
+              size: 48,
+            ),
+            loading: () => Center(
+              child: Text(
+                initial,
+                style: GoogleFonts.fredoka(
+                  fontWeight: FontWeight.bold,
+                  color: AppTheme.primary,
+                  fontSize: 20,
+                ),
+              ),
+            ),
+            error: (_, __) => Center(
+              child: Text(
+                initial,
+                style: GoogleFonts.fredoka(
+                  fontWeight: FontWeight.bold,
+                  color: AppTheme.primary,
+                  fontSize: 20,
+                ),
+              ),
             ),
           ),
         ),

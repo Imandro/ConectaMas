@@ -101,10 +101,6 @@ export default function ArticleCard({ article, featured = false }: ArticleCardPr
                                 <Clock size={14} />
                                 <span>{article.readTime} min</span>
                             </div>
-                            <div className="d-flex align-items-center gap-1">
-                                <Eye size={14} />
-                                <span>{article.views}</span>
-                            </div>
                         </div>
                         <div className="d-flex align-items-center gap-1">
                             <Calendar size={14} />

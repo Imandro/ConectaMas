@@ -32,16 +32,15 @@ class _ChallengeScreenState extends ConsumerState<ChallengeScreen> {
   }
 
   void _checkAnswer() {
+    final l10n = AppLocalizations.of(context);
     final challengeState = ref.read(challengeProvider);
     final currentChallenge = challengeState.currentChallenges[_currentIndex];
 
     bool correct = false;
-    if (currentChallenge.type == ChallengeType.verse) {
+    // Normalized validation: check if selected option matches the first missing word (correct answer)
+    // This works for both Verse (fill in blank) and Truth (multiple choice/true-false)
+    if (currentChallenge.missingWords.isNotEmpty) {
       correct = _selectedOption == currentChallenge.missingWords[0];
-    } else {
-      final falseIds = ['t2', 't7', 't9'];
-      final expectedTrue = !falseIds.contains(currentChallenge.id);
-      correct = (_selectedOption == 'Verdadero') == expectedTrue;
     }
 
     setState(() {
@@ -70,6 +69,7 @@ class _ChallengeScreenState extends ConsumerState<ChallengeScreen> {
   }
 
   void _showSuccessDialog() async {
+    final l10n = AppLocalizations.of(context);
     // 1. Save locally
     // ignore: unused_local_variable
     final prefs = await SharedPreferences.getInstance();
@@ -107,7 +107,7 @@ class _ChallengeScreenState extends ConsumerState<ChallengeScreen> {
             ),
             const SizedBox(height: 24),
             Text(
-              '¡META LOGRADA!',
+              l10n.goalAchieved,
               style: GoogleFonts.fredoka(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
@@ -116,7 +116,7 @@ class _ChallengeScreenState extends ConsumerState<ChallengeScreen> {
             ),
             const SizedBox(height: 12),
             Text(
-              'Has completado tus 5 desafíos de hoy. ¡Tu fe se fortalece cada día!',
+              l10n.goalSubtitle,
               textAlign: TextAlign.center,
               style: GoogleFonts.openSans(fontSize: 16),
             ),
@@ -134,7 +134,7 @@ class _ChallengeScreenState extends ConsumerState<ChallengeScreen> {
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(16)),
                 ),
-                child: Text('CONTINUAR',
+                child: Text(l10n.continueButton.toUpperCase(),
                     style: GoogleFonts.fredoka(fontWeight: FontWeight.bold)),
               ),
             ),
@@ -154,7 +154,7 @@ class _ChallengeScreenState extends ConsumerState<ChallengeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var t = AppLocalizations.of(context);
+    final l10n = AppLocalizations.of(context);
     final challengeState = ref.watch(challengeProvider);
     if (challengeState.currentChallenges.isEmpty) {
       return const Scaffold(body: Center(child: CircularProgressIndicator()));
@@ -224,9 +224,9 @@ class _ChallengeScreenState extends ConsumerState<ChallengeScreen> {
                             child: Text(
                               _showingFeedback
                                   ? (_isCorrect!
-                                      ? '¡Excelente trabajo!'
-                                      : '¡Oops! Sigue intentándolo.')
-                                  : '¿Cuál es la palabra correcta?',
+                                      ? l10n.excellentJob
+                                      : l10n.oopsKeepTrying)
+                                  : l10n.whichWordCorrect,
                               style: GoogleFonts.fredoka(fontSize: 14),
                             ),
                           )
@@ -239,8 +239,8 @@ class _ChallengeScreenState extends ConsumerState<ChallengeScreen> {
 
                     Text(
                       currentChallenge.type == ChallengeType.verse
-                          ? 'Completa el versículo:'
-                          : '¿Es esto una verdad bíblica?',
+                          ? l10n.completeVerseLabel
+                          : l10n.isBiblicalTruth,
                       style: GoogleFonts.fredoka(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
@@ -370,7 +370,9 @@ class _ChallengeScreenState extends ConsumerState<ChallengeScreen> {
                         ),
                         const SizedBox(width: 12),
                         Text(
-                          _isCorrect! ? '¡Excelente!' : '¡Puedes mejorar!',
+                          _isCorrect!
+                              ? l10n.excellentFeedback
+                              : l10n.canImproveFeedback,
                           style: GoogleFonts.fredoka(
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
@@ -398,7 +400,9 @@ class _ChallengeScreenState extends ConsumerState<ChallengeScreen> {
                             borderRadius: BorderRadius.circular(16)),
                       ),
                       child: Text(
-                        _showingFeedback ? 'CONTINUAR' : 'COMPROBAR',
+                        _showingFeedback
+                            ? l10n.continueButton.toUpperCase()
+                            : l10n.checkButton,
                         style: GoogleFonts.fredoka(
                             fontWeight: FontWeight.bold, fontSize: 16),
                       ),

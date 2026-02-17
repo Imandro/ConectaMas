@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../data/study_provider.dart';
 import '../../auth/data/auth_provider.dart';
 import 'package:lucide_icons/lucide_icons.dart';
+import '../../../l10n/app_localizations.dart';
 
 class StudyRoomScreen extends ConsumerStatefulWidget {
   final String roomId;
@@ -36,13 +37,16 @@ class _StudyRoomScreenState extends ConsumerState<StudyRoomScreen> {
   Widget build(BuildContext context) {
     final messagesAsync = ref.watch(studyChatProvider(widget.roomId));
     final currentUser = ref.watch(authProvider).user;
+    final l10n = AppLocalizations.of(context);
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Aula de Estudio', style: TextStyle(fontWeight: FontWeight.bold)),
+        title: Text(l10n.studyRoom,
+            style: const TextStyle(fontWeight: FontWeight.bold)),
         actions: [
           IconButton(icon: const Icon(LucideIcons.bookOpen), onPressed: () {}),
-          IconButton(icon: const Icon(LucideIcons.moreVertical), onPressed: () {}),
+          IconButton(
+              icon: const Icon(LucideIcons.moreVertical), onPressed: () {}),
         ],
       ),
       body: Column(
@@ -60,22 +64,25 @@ class _StudyRoomScreenState extends ConsumerState<StudyRoomScreen> {
                 },
               ),
               loading: () => const Center(child: CircularProgressIndicator()),
-              error: (err, stack) => Center(child: Text('Error: $err')),
+              error: (err, stack) =>
+                  Center(child: Text('${l10n.errorLabel}: $err')),
             ),
           ),
-          _buildInputArea(),
+          _buildInputArea(l10n),
         ],
       ),
     );
   }
 
   Widget _buildMessageBubble(dynamic msg, bool isMe) {
+    final l10n = AppLocalizations.of(context);
     return Align(
       alignment: isMe ? Alignment.centerRight : Alignment.centerLeft,
       child: Container(
         margin: const EdgeInsets.only(bottom: 12),
         padding: const EdgeInsets.all(12),
-        constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.75),
+        constraints:
+            BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.75),
         decoration: BoxDecoration(
           color: isMe ? Colors.blue[600] : Colors.grey[200],
           borderRadius: BorderRadius.only(
@@ -89,29 +96,39 @@ class _StudyRoomScreenState extends ConsumerState<StudyRoomScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             if (!isMe)
-              Text(msg.user['name'] ?? 'Usuario', style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: Colors.blue[800])),
-            Text(msg.content, style: TextStyle(color: isMe ? Colors.white : Colors.black87)),
+              Text(msg.user['name'] ?? l10n.anonymous,
+                  style: TextStyle(
+                      fontSize: 10,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.blue[800])),
+            Text(msg.content,
+                style: TextStyle(color: isMe ? Colors.white : Colors.black87)),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildInputArea() {
+  Widget _buildInputArea(AppLocalizations l10n) {
     return Container(
       padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(color: Colors.white, border: Border(top: BorderSide(color: Colors.grey[200]!))),
+      decoration: BoxDecoration(
+          color: Colors.white,
+          border: Border(top: BorderSide(color: Colors.grey[200]!))),
       child: Row(
         children: [
           Expanded(
             child: TextField(
               controller: _messageController,
               decoration: InputDecoration(
-                hintText: 'Escribe un mensaje...',
-                border: OutlineInputBorder(borderRadius: BorderRadius.circular(24), borderSide: BorderSide.none),
+                hintText: l10n.chatHint,
+                border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(24),
+                    borderSide: BorderSide.none),
                 filled: true,
                 fillColor: Colors.grey[100],
-                contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                contentPadding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               ),
             ),
           ),
@@ -127,7 +144,9 @@ class _StudyRoomScreenState extends ConsumerState<StudyRoomScreen> {
 
   void _handleSendMessage() {
     if (_messageController.text.trim().isEmpty) return;
-    ref.read(studyChatProvider(widget.roomId).notifier).sendMessage(_messageController.text.trim());
+    ref
+        .read(studyChatProvider(widget.roomId).notifier)
+        .sendMessage(_messageController.text.trim());
     _messageController.clear();
   }
 }

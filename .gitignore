@@ -51,3 +51,8 @@ scripts/check_sqlite_health.js
 scripts/read_seed_log.js
 prisma/dev.db
 prisma/seed.js
+
+# Android Secrets
+key.properties
+**/*.jks
+**/*.keystore

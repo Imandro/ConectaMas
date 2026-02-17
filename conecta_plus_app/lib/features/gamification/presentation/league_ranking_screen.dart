@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../data/league_provider.dart';
 import '../../auth/data/auth_provider.dart';
 import 'package:lucide_icons/lucide_icons.dart';
+import '../../../l10n/app_localizations.dart';
 
 class LeagueRankingScreen extends ConsumerWidget {
   const LeagueRankingScreen({super.key});
@@ -11,21 +12,24 @@ class LeagueRankingScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final rankingAsync = ref.watch(leagueRankingProvider);
     final currentUser = ref.watch(authProvider).user;
+    final l10n = AppLocalizations.of(context);
 
     return Scaffold(
       backgroundColor: Colors.grey[100],
       appBar: AppBar(
-        title: const Text('Ligas', style: TextStyle(fontWeight: FontWeight.bold)),
+        title: Text(l10n.leaguesTitle,
+            style: const TextStyle(fontWeight: FontWeight.bold)),
         elevation: 0,
         backgroundColor: Colors.white,
         foregroundColor: Colors.blue[900],
       ),
       body: rankingAsync.when(
         data: (players) => RefreshIndicator(
-          onRefresh: () => ref.read(leagueRankingProvider.notifier).fetchRanking(),
+          onRefresh: () =>
+              ref.read(leagueRankingProvider.notifier).fetchRanking(),
           child: Column(
             children: [
-              _buildLeagueHeader(currentUser?.league ?? 'BRONZE'),
+              _buildLeagueHeader(context, currentUser?.league ?? 'BRONZE'),
               Expanded(
                 child: ListView.builder(
                   padding: const EdgeInsets.all(16),
@@ -33,7 +37,8 @@ class LeagueRankingScreen extends ConsumerWidget {
                   itemBuilder: (context, index) {
                     final player = players[index];
                     final isCurrentUser = player.id == currentUser?.id;
-                    return _buildRankingItem(player, index + 1, isCurrentUser);
+                    return _buildRankingItem(
+                        context, player, index + 1, isCurrentUser);
                   },
                 ),
               ),
@@ -41,12 +46,13 @@ class LeagueRankingScreen extends ConsumerWidget {
           ),
         ),
         loading: () => const Center(child: CircularProgressIndicator()),
-        error: (err, stack) => Center(child: Text('Error: $err')),
+        error: (err, stack) => Center(child: Text('${l10n.errorLabel}: $err')),
       ),
     );
   }
 
-  Widget _buildLeagueHeader(String league) {
+  Widget _buildLeagueHeader(BuildContext context, String league) {
+    final l10n = AppLocalizations.of(context);
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(24),
@@ -69,19 +75,21 @@ class LeagueRankingScreen extends ConsumerWidget {
           Icon(LucideIcons.trophy, size: 64, color: _getLeagueColor(league)),
           const SizedBox(height: 12),
           Text(
-            'Liga $league',
+            l10n.leagueLabelText(l10n.getLeagueName(league)),
             style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
           ),
-          const Text(
-            'Termina en 3 días',
-            style: TextStyle(color: Colors.grey),
+          Text(
+            l10n.endsInDays(3),
+            style: const TextStyle(color: Colors.grey),
           ),
         ],
       ),
     );
   }
 
-  Widget _buildRankingItem(dynamic player, int rank, bool isCurrentUser) {
+  Widget _buildRankingItem(
+      BuildContext context, dynamic player, int rank, bool isCurrentUser) {
+    final l10n = AppLocalizations.of(context);
     final bool isPromotion = rank <= 3;
     final bool isDemotion = rank > 15; // Example logic
 
@@ -107,14 +115,20 @@ class LeagueRankingScreen extends ConsumerWidget {
           children: [
             CircleAvatar(
               radius: 18,
-              backgroundImage: player.image != null ? NetworkImage(player.image!) : null,
-              child: player.image == null ? Text(player.name?[0] ?? 'U') : null,
+              backgroundImage: (player as dynamic).image != null
+                  ? NetworkImage((player as dynamic).image!)
+                  : null,
+              child: (player as dynamic).image == null
+                  ? Text((player as dynamic).name?[0] ?? 'U')
+                  : null,
             ),
             const SizedBox(width: 12),
             Expanded(
               child: Text(
-                player.name ?? 'Usuario',
-                style: TextStyle(fontWeight: isCurrentUser ? FontWeight.bold : FontWeight.normal),
+                (player as dynamic).name ?? l10n.anonymous,
+                style: TextStyle(
+                    fontWeight:
+                        isCurrentUser ? FontWeight.bold : FontWeight.normal),
               ),
             ),
           ],
@@ -124,13 +138,22 @@ class LeagueRankingScreen extends ConsumerWidget {
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             Text(
-              '${player.weeklyXP} XP',
-              style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.orange),
+              '${(player as dynamic).weeklyXP} XP',
+              style: const TextStyle(
+                  fontWeight: FontWeight.bold, color: Colors.orange),
             ),
             if (isPromotion)
-              const Text('↑ Ascenso', style: TextStyle(color: Colors.green, fontSize: 10, fontWeight: FontWeight.bold))
+              Text(l10n.promotionLabel,
+                  style: const TextStyle(
+                      color: Colors.green,
+                      fontSize: 10,
+                      fontWeight: FontWeight.bold))
             else if (isDemotion)
-              const Text('↓ Descenso', style: TextStyle(color: Colors.red, fontSize: 10, fontWeight: FontWeight.bold)),
+              Text(l10n.demotionLabel,
+                  style: const TextStyle(
+                      color: Colors.red,
+                      fontSize: 10,
+                      fontWeight: FontWeight.bold)),
           ],
         ),
       ),
@@ -138,12 +161,17 @@ class LeagueRankingScreen extends ConsumerWidget {
   }
 
   Color _getLeagueColor(String league) {
-    switch (league) {
-      case 'BRONZE': return Colors.brown;
-      case 'SILVER': return Colors.grey;
-      case 'GOLD': return Colors.amber;
-      case 'DIAMOND': return Colors.blue;
-      default: return Colors.brown;
+    switch (league.toUpperCase()) {
+      case 'BRONZE':
+        return Colors.brown;
+      case 'SILVER':
+        return Colors.grey;
+      case 'GOLD':
+        return Colors.amber;
+      case 'DIAMOND':
+        return Colors.blue;
+      default:
+        return Colors.brown;
     }
   }
 }

@@ -2,6 +2,7 @@ import 'dart:math';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../data/challenge_data.dart';
+import '../../dashboard/data/mascot_provider.dart';
 
 class ChallengeState {
   final int dailyProgress; // 0 to 5
@@ -32,7 +33,9 @@ class ChallengeState {
 }
 
 class ChallengeNotifier extends StateNotifier<ChallengeState> {
-  ChallengeNotifier() : super(ChallengeState()) {
+  final Ref _ref;
+
+  ChallengeNotifier(this._ref) : super(ChallengeState()) {
     _init();
   }
 
@@ -55,6 +58,23 @@ class ChallengeNotifier extends StateNotifier<ChallengeState> {
         await prefs.setInt('challenge_progress', 0);
         await prefs.setBool('challenge_completed_today', false);
         await prefs.setString('last_challenge_reset', now.toIso8601String());
+
+        // Check streak maintenance - if they didn't complete it yesterday, streak resets to 0
+        final yesterday = now.subtract(const Duration(days: 1));
+        if (lastReset.day != yesterday.day ||
+            lastReset.month != yesterday.month ||
+            lastReset.year != yesterday.year) {
+          // They missed more than one day, reset streak
+          _ref.read(mascotProvider.notifier).updateStreak(0);
+        } else {
+          // They missed yesterday
+          final wasCompletedYesterday =
+              prefs.getBool('challenge_completed_today_backup') ?? false;
+          if (!wasCompletedYesterday) {
+            _ref.read(mascotProvider.notifier).updateStreak(0);
+          }
+        }
+        await prefs.setBool('challenge_completed_today_backup', false);
       }
     } else {
       await prefs.setString('last_challenge_reset', now.toIso8601String());
@@ -73,14 +93,18 @@ class ChallengeNotifier extends StateNotifier<ChallengeState> {
     final List<ChallengeModel> daily = [];
 
     // Pick 3 random verses
-    final shuffledVerses = List<ChallengeModel>.from(ChallengeData.verses)
-      ..shuffle(random);
-    daily.addAll(shuffledVerses.take(3));
+    if (ChallengeData.verses.isNotEmpty) {
+      final shuffledVerses = List<ChallengeModel>.from(ChallengeData.verses)
+        ..shuffle(random);
+      daily.addAll(shuffledVerses.take(3));
+    }
 
     // Pick 2 random truths
-    final shuffledTruths = List<ChallengeModel>.from(ChallengeData.truths)
-      ..shuffle(random);
-    daily.addAll(shuffledTruths.take(2));
+    if (ChallengeData.truths.isNotEmpty) {
+      final shuffledTruths = List<ChallengeModel>.from(ChallengeData.truths)
+        ..shuffle(random);
+      daily.addAll(shuffledTruths.take(2));
+    }
 
     // Shuffle the final 5
     daily.shuffle(random);
@@ -103,11 +127,23 @@ class ChallengeNotifier extends StateNotifier<ChallengeState> {
         dailyProgress: newProgress,
         isCompletedToday: completed,
       );
+
+      if (completed) {
+        // Backup for tomorrow's reset check
+        await prefs.setBool('challenge_completed_today_backup', true);
+
+        // Update mascot streak and xp
+        final mascot = _ref.read(mascotProvider);
+        _ref.read(mascotProvider.notifier).updateStreak(mascot.streak + 1);
+        _ref
+            .read(mascotProvider.notifier)
+            .addExperience(25); // Bonus per daily completion
+      }
     }
   }
 }
 
 final challengeProvider =
     StateNotifierProvider<ChallengeNotifier, ChallengeState>((ref) {
-  return ChallengeNotifier();
+  return ChallengeNotifier(ref);
 });

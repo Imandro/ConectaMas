@@ -7,6 +7,7 @@ import DailyVerse from './components/DailyVerse';
 // import DailyPrayerCard from '../components/DailyPrayerCard';
 import LlamiMascot from '../components/LlamiMascot';
 import FeatureTour from './components/FeatureTour';
+import FeaturedArticleModal from './components/FeaturedArticleModal';
 import AgePrompt from './components/AgePrompt';
 import ChallengeCard from './components/ChallengeCard';
 
@@ -48,6 +49,7 @@ export default function DashboardHome() {
     const [dailyQuestions, setDailyQuestions] = useState<any[]>([]);
     const [showDailyQuestions, setShowDailyQuestions] = useState(false);
     const [featuredArticle, setFeaturedArticle] = useState<any>(null);
+    const [showFeaturedModal, setShowFeaturedModal] = useState(false);
 
     useEffect(() => {
         const localeMap: Record<string, string> = { es: 'es-ES', en: 'en-US', pt: 'pt-BR' };
@@ -59,11 +61,37 @@ export default function DashboardHome() {
 
     const fetchFeaturedArticle = async () => {
         try {
-            const res = await fetch('/api/articles?featured=true&limit=1');
+            const res = await fetch('/api/articles?featured=true&limit=50'); // Fetch a larger set to choose from
             if (res.ok) {
                 const data = await res.json();
                 if (data.articles && data.articles.length > 0) {
-                    setFeaturedArticle(data.articles[0]);
+                    // Deterministically pick an article based on the date
+                    const today = new Date();
+                    const dayOfYear = Math.floor((today.getTime() - new Date(today.getFullYear(), 0, 0).getTime()) / 86400000);
+                    const articleIndex = dayOfYear % data.articles.length;
+                    const article = data.articles[articleIndex];
+
+                    setFeaturedArticle(article);
+
+                    // Logic for showing modal 2 times a day
+                    const dateStr = today.toDateString();
+                    const lastShownDate = localStorage.getItem('featured_article_last_date');
+                    const shownCountStr = localStorage.getItem('featured_article_shown_count');
+                    let shownCount = parseInt(shownCountStr || '0');
+
+                    if (lastShownDate !== dateStr) {
+                        shownCount = 0;
+                        localStorage.setItem('featured_article_last_date', dateStr);
+                        localStorage.setItem('featured_article_shown_count', '0');
+                    }
+
+                    if (shownCount < 2) {
+                        // Show after a delay to allow other things to load
+                        setTimeout(() => {
+                            setShowFeaturedModal(true);
+                            localStorage.setItem('featured_article_shown_count', (shownCount + 1).toString());
+                        }, 5000);
+                    }
                 }
             }
         } catch (e) {
@@ -210,42 +238,6 @@ export default function DashboardHome() {
                 <DailyVerse />
             </section>
 
-            {/* Featured Article of the Day */}
-            {featuredArticle && (
-                <section className="mb-4">
-                    <Link href={`/dashboard/articles/${featuredArticle.slug}`} className="text-decoration-none">
-                        <div className="card border-0 shadow-sm bg-white hover-scale overflow-hidden" style={{ borderRadius: '24px' }}>
-                            {featuredArticle.coverImage && (
-                                <div style={{ height: '180px', overflow: 'hidden' }}>
-                                    <img
-                                        src={featuredArticle.coverImage}
-                                        alt={featuredArticle.title}
-                                        className="w-100 h-100 object-fit-cover"
-                                        style={{ objectFit: 'cover' }}
-                                    />
-                                </div>
-                            )}
-                            <div className="card-body p-4">
-                                <div className="d-flex align-items-center gap-2 mb-2">
-                                    <span className="badge bg-warning text-dark px-3 py-1 rounded-pill">⭐ Artículo Destacado</span>
-                                    <span className="badge bg-primary px-3 py-1 rounded-pill">{featuredArticle.category}</span>
-                                </div>
-                                <h4 className="fw-bold text-dark mb-2">{featuredArticle.title}</h4>
-                                <p className="text-muted mb-3" style={{ display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
-                                    {featuredArticle.excerpt}
-                                </p>
-                                <div className="d-flex align-items-center justify-content-between">
-                                    <div className="d-flex align-items-center gap-3 text-muted small">
-                                        <span>📖 {featuredArticle.readTime} min</span>
-                                        <span>👁️ {featuredArticle.views} vistas</span>
-                                    </div>
-                                    <span className="btn btn-sm btn-primary rounded-pill px-4">Leer ahora →</span>
-                                </div>
-                            </div>
-                        </div>
-                    </Link>
-                </section>
-            )}
 
             {/* Nuevo: Reto Diario Estilo Duolingo */}
             <section className="mb-4">
@@ -390,30 +382,6 @@ export default function DashboardHome() {
                             </div>
                         </Link>
                     </div>
-                    {/* Bible Study Card (Full Width) */}
-                    <div className="col-12">
-                        <Link href="/dashboard/study" className="text-decoration-none">
-                            <div id="tour-study" className="card border-0 shadow-sm bg-white hover-scale overflow-hidden" style={{ borderRadius: '24px' }}>
-                                <div className="card-body p-4 d-flex align-items-center justify-content-between">
-                                    <div className="d-flex align-items-center gap-3">
-                                        <div className="bg-success-subtle text-success p-3 rounded-4">
-                                            <BookOpen size={28} />
-                                        </div>
-                                        <div>
-                                            <h5 className="fw-extrabold text-dark m-0">Estudio Bíblico</h5>
-                                            <p className="text-muted small m-0 fw-bold">Explora la palabra en grupo</p>
-                                        </div>
-                                    </div>
-                                    <div className="text-success bg-light p-2 rounded-circle">
-                                        <ChevronRight size={24} />
-                                    </div>
-                                </div>
-                                <div className="progress" style={{ height: '4px' }}>
-                                    <div className="progress-bar bg-success" role="progressbar" style={{ width: '35%' }} aria-valuenow={35} aria-valuemin={0} aria-valuemax={100}></div>
-                                </div>
-                            </div>
-                        </Link>
-                    </div>
                 </div>
             </section>
 
@@ -478,6 +446,12 @@ export default function DashboardHome() {
                 <>
                     <section className="mb-5 pb-5 mt-5">
                         <SupportFundingAd />
+
+                        <FeaturedArticleModal
+                            article={featuredArticle}
+                            isOpen={showFeaturedModal}
+                            onClose={() => setShowFeaturedModal(false)}
+                        />
                     </section>
 
                     <div className="pb-5"></div>

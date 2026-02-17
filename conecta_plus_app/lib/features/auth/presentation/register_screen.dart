@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../../config/theme.dart';
 import '../../../shared/widgets/custom_button.dart';
 import '../../../shared/widgets/custom_input_field.dart';
+import '../../../l10n/app_localizations.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../data/auth_provider.dart';
@@ -18,7 +19,7 @@ class RegisterScreen extends ConsumerStatefulWidget {
 class _RegisterScreenState extends ConsumerState<RegisterScreen> {
   bool _showPassword = false;
   bool _termsAccepted = false;
-  
+
   final _nameController = TextEditingController();
   final _usernameController = TextEditingController();
   final _emailController = TextEditingController();
@@ -36,9 +37,10 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
   }
 
   Future<void> _handleRegister() async {
+    final l10n = AppLocalizations.of(context);
     if (!_termsAccepted) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Debes aceptar los términos y condiciones')),
+        SnackBar(content: Text(l10n.acceptTermsMsg)),
       );
       return;
     }
@@ -49,9 +51,13 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
     final password = _passwordController.text;
     final securityAnswer = _securityAnswerController.text.trim();
 
-    if (name.isEmpty || username.isEmpty || email.isEmpty || password.isEmpty || securityAnswer.isEmpty) {
+    if (name.isEmpty ||
+        username.isEmpty ||
+        email.isEmpty ||
+        password.isEmpty ||
+        securityAnswer.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Por favor completa todos los campos')),
+        SnackBar(content: Text(l10n.completeFieldsMsg)),
       );
       return;
     }
@@ -71,7 +77,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
         final error = ref.read(authProvider).error;
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(error ?? 'Error al crear la cuenta'),
+            content: Text(error ?? l10n.registerErrorMsg),
             duration: const Duration(seconds: 5),
             backgroundColor: Colors.redAccent,
           ),
@@ -80,7 +86,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error crítico en UI: $e')),
+          SnackBar(content: Text(l10n.criticalError(e.toString()))),
         );
       }
     }
@@ -89,6 +95,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
   @override
   Widget build(BuildContext context) {
     final authState = ref.watch(authProvider);
+    final l10n = AppLocalizations.of(context);
 
     return Scaffold(
       backgroundColor: const Color(0xFFF8FAFC),
@@ -127,7 +134,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                                     size: 60)),
                             const SizedBox(height: 32),
                             Text(
-                              'Únete a Conecta+',
+                              l10n.joinConecta,
                               style: GoogleFonts.fredoka(
                                   fontSize: 28,
                                   fontWeight: FontWeight.bold,
@@ -135,7 +142,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                             ),
                             const SizedBox(height: 8),
                             Text(
-                              'Tu viaje hacia la libertad comienza hoy.',
+                              l10n.registerSubtitle,
                               style: GoogleFonts.fredoka(
                                   color: const Color(0xFF64748B),
                                   fontSize: 16,
@@ -145,52 +152,52 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                         ),
                       ),
                       const SizedBox(height: 48),
-                      Text('  Nombre Completo',
+                      Text('  ${l10n.fullNameLabel}',
                           style: GoogleFonts.fredoka(
                               fontWeight: FontWeight.bold,
                               fontSize: 14,
                               color: AppTheme.primary)),
                       const SizedBox(height: 8),
                       CustomInputField(
-                        label: 'Nombre Completo',
-                        placeholder: 'Tu nombre real',
+                        label: l10n.fullNameLabel,
+                        placeholder: l10n.fullNameHint,
                         controller: _nameController,
                       ),
                       const SizedBox(height: 24),
-                      Text('  Nombre de Usuario',
+                      Text('  ${l10n.usernameLabel}',
                           style: GoogleFonts.fredoka(
                               fontWeight: FontWeight.bold,
                               fontSize: 14,
                               color: AppTheme.primary)),
                       const SizedBox(height: 8),
                       CustomInputField(
-                        label: 'Nombre de Usuario',
-                        placeholder: '@usuario',
+                        label: l10n.usernameLabel,
+                        placeholder: l10n.usernameHint,
                         controller: _usernameController,
                       ),
                       const SizedBox(height: 24),
-                      Text('  Email',
+                      Text('  ${l10n.emailLabel}',
                           style: GoogleFonts.fredoka(
                               fontWeight: FontWeight.bold,
                               fontSize: 14,
                               color: AppTheme.primary)),
                       const SizedBox(height: 8),
                       CustomInputField(
-                        label: 'Email',
-                        placeholder: 'nombre@ejemplo.com',
+                        label: l10n.emailLabel,
+                        placeholder: l10n.emailHint,
                         keyboardType: TextInputType.emailAddress,
                         controller: _emailController,
                       ),
                       const SizedBox(height: 24),
-                      Text('  Contraseña',
+                      Text('  ${l10n.passwordLabel}',
                           style: GoogleFonts.fredoka(
                               fontWeight: FontWeight.bold,
                               fontSize: 14,
                               color: AppTheme.primary)),
                       const SizedBox(height: 8),
                       CustomInputField(
-                        label: 'Contraseña',
-                        placeholder: 'Mínimo 6 caracteres',
+                        label: l10n.passwordLabel,
+                        placeholder: l10n.passwordRegisterHint,
                         obscureText: !_showPassword,
                         controller: _passwordController,
                         suffixIcon: IconButton(
@@ -204,23 +211,23 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                         ),
                       ),
                       const SizedBox(height: 24),
-                      Text('  Pregunta de Seguridad',
+                      Text('  ${l10n.securityQuestionLabel}',
                           style: GoogleFonts.fredoka(
                               fontWeight: FontWeight.bold,
                               fontSize: 14,
                               color: AppTheme.primary)),
-                      Text('  ¿Cómo se llamaba tu primera mascota?',
+                      Text('  ${l10n.securityQuestion}',
                           style: GoogleFonts.fredoka(
                               color: const Color(0xFF64748B), fontSize: 13)),
                       const SizedBox(height: 8),
                       CustomInputField(
-                        label: 'Respuesta de Seguridad',
-                        placeholder: 'Escribe la respuesta aquí',
+                        label: l10n.securityAnswerLabel,
+                        placeholder: l10n.securityAnswerHint,
                         controller: _securityAnswerController,
                       ),
                       const SizedBox(height: 12),
                       Text(
-                        '*Usarás esta respuesta para recuperar tu contraseña.',
+                        l10n.securityNote,
                         style: GoogleFonts.fredoka(
                             color: const Color(0xFF94A3B8), fontSize: 12),
                       ),
@@ -237,7 +244,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                           ),
                           Expanded(
                             child: Text(
-                              'He leído y acepto los Términos y Condiciones.',
+                              l10n.acceptTermsText,
                               style: GoogleFonts.fredoka(
                                   fontSize: 13,
                                   color: const Color(0xFF64748B),
@@ -250,15 +257,18 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                       SizedBox(
                         width: double.infinity,
                         child: CustomButton(
-                          text: authState.isLoading ? 'Cargando...' : 'Crear mi cuenta',
+                          text: authState.isLoading
+                              ? l10n.loading
+                              : l10n.registerButton,
                           backgroundColor: AppTheme.accent,
                           textColor: AppTheme.primary,
-                          onPressed: authState.isLoading ? null : _handleRegister,
+                          onPressed:
+                              authState.isLoading ? null : _handleRegister,
                         ),
                       ),
                       const SizedBox(height: 16),
                       Text(
-                        'Al registrarte, aceptas que este es un espacio de respeto.',
+                        l10n.respectSpaceMsg,
                         textAlign: TextAlign.center,
                         style: GoogleFonts.fredoka(
                             color: const Color(0xFF64748B), fontSize: 12),
@@ -270,14 +280,14 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Text('¿Ya tienes cuenta? ',
+                            Text(l10n.alreadyHaveAccount,
                                 style: GoogleFonts.fredoka(
                                     color: const Color(0xFF64748B),
                                     fontSize: 15)),
                             GestureDetector(
                               onTap: () => context.pop(),
                               child: Text(
-                                'Inicia sesión',
+                                l10n.loginLink,
                                 style: GoogleFonts.fredoka(
                                     color: AppTheme.primary,
                                     fontWeight: FontWeight.bold,
@@ -292,7 +302,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                 ),
                 const SizedBox(height: 40),
                 Text(
-                  '© 2025 Conecta+\nTu espacio seguro.',
+                  l10n.footerText,
                   textAlign: TextAlign.center,
                   style: GoogleFonts.fredoka(
                       color: const Color(0xFF94A3B8), fontSize: 13),

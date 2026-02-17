@@ -6,6 +6,7 @@ import '../../../config/theme.dart';
 import '../../../shared/widgets/custom_button.dart';
 import '../../../shared/widgets/custom_input_field.dart';
 import '../data/auth_provider.dart';
+import '../../../l10n/app_localizations.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
@@ -29,10 +30,11 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   Future<void> _handleLogin() async {
     final identifier = _identifierController.text.trim();
     final password = _passwordController.text;
+    final l10n = AppLocalizations.of(context);
 
     if (identifier.isEmpty || password.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Por favor ingresa tus credenciales')),
+        SnackBar(content: Text(l10n.enterCredentials)),
       );
       return;
     }
@@ -47,7 +49,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
         final error = ref.read(authProvider).error;
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(error ?? 'Error al iniciar sesión'),
+            content: Text(error ?? l10n.loginError),
             duration: const Duration(seconds: 5),
             backgroundColor: Colors.redAccent,
           ),
@@ -56,7 +58,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error crítico en UI: $e')),
+          SnackBar(content: Text(l10n.criticalError(e.toString()))),
         );
       }
     }
@@ -65,6 +67,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     final authState = ref.watch(authProvider);
+    final l10n = AppLocalizations.of(context);
 
     return Scaffold(
       backgroundColor: const Color(0xFFF8FAFC),
@@ -103,7 +106,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                     size: 60)),
                             const SizedBox(height: 32),
                             Text(
-                              'Bienvenido de nuevo',
+                              l10n.welcomeBack,
                               style: GoogleFonts.fredoka(
                                   fontSize: 28,
                                   fontWeight: FontWeight.bold,
@@ -111,7 +114,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                             ),
                             const SizedBox(height: 8),
                             Text(
-                              'Ingresa para continuar tu camino.',
+                              l10n.loginSubtitle,
                               style: GoogleFonts.fredoka(
                                   color: const Color(0xFF64748B),
                                   fontSize: 16,
@@ -121,27 +124,27 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         ),
                       ),
                       const SizedBox(height: 48),
-                      Text('  Email o Usuario',
+                      Text('  ${l10n.emailOrUsername}',
                           style: GoogleFonts.fredoka(
                               fontWeight: FontWeight.bold,
                               fontSize: 14,
                               color: AppTheme.primary)),
                       const SizedBox(height: 8),
                       CustomInputField(
-                        label: 'Email o Usuario',
-                        placeholder: 'usuario o nombre@ejemplo.com',
+                        label: l10n.emailOrUsername,
+                        placeholder: l10n.emailOrUsernameHint,
                         controller: _identifierController,
                       ),
                       const SizedBox(height: 24),
-                      Text('  Contraseña',
+                      Text('  ${l10n.passwordLabel}',
                           style: GoogleFonts.fredoka(
                               fontWeight: FontWeight.bold,
                               fontSize: 14,
                               color: AppTheme.primary)),
                       const SizedBox(height: 8),
                       CustomInputField(
-                        label: 'Contraseña',
-                        placeholder: 'Ingrese su contraseña',
+                        label: l10n.passwordLabel,
+                        placeholder: l10n.passwordHint,
                         controller: _passwordController,
                         obscureText: !_showPassword,
                         suffixIcon: IconButton(
@@ -160,7 +163,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         child: TextButton(
                           onPressed: () {},
                           child: Text(
-                            '¿Olvidaste tu contraseña?',
+                            l10n.forgotPassword,
                             style: GoogleFonts.fredoka(
                                 color: const Color(0xFF64748B),
                                 fontSize: 14,
@@ -173,8 +176,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         width: double.infinity,
                         child: CustomButton(
                           text: authState.isLoading
-                              ? 'Cargando...'
-                              : 'Iniciar Sesión',
+                              ? l10n.loading
+                              : l10n.loginButton,
                           backgroundColor: AppTheme.accent,
                           textColor: AppTheme.primary,
                           onPressed: authState.isLoading ? null : _handleLogin,
@@ -187,14 +190,14 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Text('¿No tienes cuenta? ',
+                            Text(l10n.noAccount,
                                 style: GoogleFonts.fredoka(
                                     color: const Color(0xFF64748B),
                                     fontSize: 15)),
                             GestureDetector(
                               onTap: () => context.push('/register'),
                               child: Text(
-                                'Regístrate aquí',
+                                l10n.registerHere,
                                 style: GoogleFonts.fredoka(
                                     color: AppTheme.primary,
                                     fontWeight: FontWeight.bold,
@@ -209,7 +212,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 ),
                 const SizedBox(height: 40),
                 Text(
-                  '© 2025 Conecta+\nTu espacio seguro.',
+                  l10n.footerText,
                   textAlign: TextAlign.center,
                   style: GoogleFonts.fredoka(
                       color: const Color(0xFF94A3B8),

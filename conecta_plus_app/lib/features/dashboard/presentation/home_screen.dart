@@ -5,17 +5,19 @@ import '../../../../config/theme.dart';
 import 'widgets/streak_card.dart';
 import 'widgets/sos_card.dart';
 import 'widgets/prayer_card.dart';
-import 'widgets/dashboard_header.dart';
-import 'widgets/struggle_summary.dart';
-import 'widgets/daily_verse.dart';
-import 'widgets/social_media_cards.dart';
-import 'widgets/donation_card.dart';
-import 'widgets/challenge_card.dart';
-import '../../community/presentation/widgets/daily_question_modal.dart';
-import 'widgets/group_summary_card.dart';
-import 'widgets/growth_milestone_modal.dart';
-import 'widgets/donation_missions_modal.dart';
+import 'widgets/dashboard_header.dart'; // Re-added
+import 'widgets/struggle_summary.dart'; // Re-added
+import 'widgets/daily_verse.dart'; // Re-added
+import 'widgets/donation_card.dart'; // Re-added
+import 'widgets/challenge_card.dart'; // Re-added
+import '../../community/presentation/widgets/daily_question_modal.dart'; // Re-added
+import 'widgets/group_summary_card.dart'; // Re-added
+import 'widgets/growth_milestone_modal.dart'; // Re-added
+import 'widgets/donation_missions_modal.dart'; // Re-added
+import 'widgets/social_media_modal.dart'; // Re-added
+import 'widgets/youth_zone_card.dart'; // Re-added
 import '../../auth/data/auth_provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
@@ -50,6 +52,32 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     Future.delayed(const Duration(seconds: 15), () {
       if (mounted) DonationMissionsModal.checkAndShow(context);
     });
+
+    // Check Social Media Modal (Daily)
+    _checkSocialMediaModal();
+  }
+
+  Future<void> _checkSocialMediaModal() async {
+    // Wait a bit so it doesn't clash with other modals immediately
+    await Future.delayed(const Duration(seconds: 5));
+    if (!mounted) return;
+
+    final prefs = await SharedPreferences.getInstance();
+    final lastShownStr = prefs.getString('last_social_modal_date');
+    final todayStr = DateTime.now().toIso8601String().split('T')[0];
+
+    if (lastShownStr != todayStr) {
+      // Rotate type
+      final lastTypeIndex = prefs.getInt('last_social_modal_type') ??
+          1; // Default to 1 so next is 0 (WhatsApp)
+      final nextTypeIndex = (lastTypeIndex + 1) % 2;
+      final nextType = SocialMediaType.values[nextTypeIndex];
+
+      SocialMediaModal.show(context, nextType);
+
+      await prefs.setString('last_social_modal_date', todayStr);
+      await prefs.setInt('last_social_modal_type', nextTypeIndex);
+    }
   }
 
   void _checkLevelUp() {
@@ -162,6 +190,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
             const SizedBox(height: 16),
 
+            const YouthZoneCard(),
+            const SizedBox(height: 16),
+
             const ChallengeCard()
                 .animate()
                 .fadeIn(delay: 200.ms, duration: 400.ms)
@@ -175,11 +206,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 .slideY(begin: 0.1),
             const SizedBox(height: 24),
 
-            // 5. Social Media Cards
-            const SocialMediaCards()
-                .animate()
-                .fadeIn(delay: 400.ms, duration: 400.ms)
-                .slideY(begin: 0.1),
             const SizedBox(height: 24),
 
             // 6. Daily Prayer

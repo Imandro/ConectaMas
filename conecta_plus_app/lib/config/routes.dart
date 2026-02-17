@@ -5,6 +5,7 @@ import '../features/dashboard/presentation/luchas_screen.dart';
 import '../features/dashboard/presentation/checkin_screen.dart';
 import '../features/dashboard/presentation/struggle_detail_screen.dart';
 import '../features/dashboard/presentation/tutorials_screen.dart';
+import '../features/dashboard/presentation/youth_resources_screen.dart';
 import '../features/devotionals/presentation/devotionals_screen.dart';
 import '../features/devotionals/presentation/devotional_detail_screen.dart';
 import '../features/community/presentation/community_screen.dart';
@@ -18,7 +19,6 @@ import '../features/auth/presentation/register_screen.dart';
 import '../features/auth/presentation/onboarding_screen.dart';
 import '../features/sos/presentation/sos_screen.dart';
 import '../features/bible/presentation/bible_screen.dart';
-import '../features/trivia/presentation/trivia_screen.dart';
 import '../features/profile/presentation/profile_screen.dart';
 import '../features/challenges/presentation/challenge_screen.dart';
 import '../features/groups/presentation/groups_landing_screen.dart';
@@ -28,9 +28,13 @@ import '../features/groups/presentation/group_detail_screen.dart';
 import '../features/gamification/presentation/league_ranking_screen.dart';
 import '../features/gamification/presentation/games_lobby_screen.dart';
 import '../features/gamification/presentation/potato_game_screen.dart';
+import '../features/gamification/presentation/trivia_screen.dart';
+import '../features/gamification/presentation/verse_scramble_screen.dart';
 import '../features/prayer/presentation/prayer_wall_screen.dart';
-import '../features/study/presentation/study_lobby_screen.dart';
-import '../features/study/presentation/study_room_screen.dart';
+import '../features/spiritual_combat/presentation/spiritual_combat_screen.dart';
+import '../features/spiritual_combat/presentation/sos_panic_screen.dart';
+import '../features/spiritual_combat/presentation/bible_chat_screen.dart';
+import '../features/spiritual_combat/presentation/honesty_checkin_screen.dart';
 import '../shared/navigation/scaffold_with_navbar.dart';
 
 final router = GoRouter(
@@ -76,6 +80,10 @@ final router = GoRouter(
                 GoRoute(
                   path: 'llami',
                   builder: (context, state) => const LlamiRefugeScreen(),
+                ),
+                GoRoute(
+                  path: 'youth-zone',
+                  builder: (context, state) => const YouthResourcesScreen(),
                 ),
                 GoRoute(
                   path: 'luchas',
@@ -143,6 +151,14 @@ final router = GoRouter(
                         return PotatoGameScreen(roomId: id);
                       },
                     ),
+                    GoRoute(
+                      path: 'trivia',
+                      builder: (context, state) => const TriviaScreen(),
+                    ),
+                    GoRoute(
+                      path: 'scramble',
+                      builder: (context, state) => const VerseScrambleScreen(),
+                    ),
                   ],
                 ),
                 GoRoute(
@@ -150,17 +166,20 @@ final router = GoRouter(
                   builder: (context, state) => const PrayerWallScreen(),
                 ),
                 GoRoute(
-                  path: 'study',
-                  builder: (context, state) => const StudyLobbyScreen(),
-                  routes: [
-                    GoRoute(
-                      path: ':roomId',
-                      builder: (context, state) {
-                        final id = state.pathParameters['roomId']!;
-                        return StudyRoomScreen(roomId: id);
-                      },
-                    ),
-                  ],
+                  path: 'sos',
+                  builder: (context, state) => const SpiritualCombatScreen(),
+                ),
+                GoRoute(
+                  path: 'spiritual-combat/panic',
+                  builder: (context, state) => const SosPanicScreen(),
+                ),
+                GoRoute(
+                  path: 'spiritual-combat/chat',
+                  builder: (context, state) => const BibleChatScreen(),
+                ),
+                GoRoute(
+                  path: 'spiritual-combat/honesty',
+                  builder: (context, state) => const HonestyCheckinScreen(),
                 ),
               ],
             ),

@@ -382,12 +382,14 @@ class ChallengeData {
         type: ChallengeType.truth,
         content: '¿Qué dice Dios sobre tu pasado?',
         reference: 'Verdad Bíblica',
+        missingWords: ['Me perdonó'],
         options: ['Me perdonó', 'Me juzga', 'Me condena', 'Me ignora']),
     ChallengeModel(
         id: 't2',
         type: ChallengeType.truth,
         content: '¿Cómo te ve Dios?',
         reference: 'Verdad Bíblica',
+        missingWords: ['Como hijo'],
         options: ['Como hijo', 'Como pecador', 'Como siervo', 'Como extraño']),
     ChallengeModel(
         id: 't3',

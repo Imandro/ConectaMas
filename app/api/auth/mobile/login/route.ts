@@ -22,7 +22,7 @@ export async function POST(req: Request) {
             where: {
                 OR: [
                     { email: identifier.toLowerCase() },
-                    { username: identifier }
+                    { username: { equals: identifier, mode: 'insensitive' } }
                 ]
             },
         });

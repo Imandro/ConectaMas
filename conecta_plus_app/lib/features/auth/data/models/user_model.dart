@@ -7,18 +7,23 @@ class User {
   final String? gender;
   final int? age;
   final String? spiritualStatus;
+  final String? sinsToOvercome;
+  final String? problemsFaced;
+  final String? connectionMethods;
+  final bool hasCompletedOnboarding;
+  final bool hasSeenLlamiTutorial;
   final String? leaderPhone;
   final String role;
-  
+
   // New Fields (Phase 1, 3, 4)
   final String? bio;
   final String? country;
   final String profileType; // 'NORMAL', 'COOPERATOR', 'CHURCH'
   final String? bannerUrl;
-  final String league;      // 'BRONZE', etc.
+  final String league; // 'BRONZE', etc.
   final int weeklyXP;
   final int totalXP;
-  
+
   int get level => (totalXP / 100).floor() + 1;
 
   User({
@@ -30,9 +35,13 @@ class User {
     this.gender,
     this.age,
     this.spiritualStatus,
+    this.sinsToOvercome,
+    this.problemsFaced,
+    this.connectionMethods,
+    this.hasCompletedOnboarding = false,
+    this.hasSeenLlamiTutorial = false,
     this.leaderPhone,
     this.role = 'USER',
-    
     this.bio,
     this.country,
     this.profileType = 'NORMAL',
@@ -52,9 +61,13 @@ class User {
       gender: json['gender'],
       age: json['age'] is String ? int.tryParse(json['age']) : json['age'],
       spiritualStatus: json['spiritualStatus'],
+      sinsToOvercome: json['sinsToOvercome'],
+      problemsFaced: json['problemsFaced'],
+      connectionMethods: json['connectionMethods'],
+      hasCompletedOnboarding: json['hasCompletedOnboarding'] ?? false,
+      hasSeenLlamiTutorial: json['hasSeenLlamiTutorial'] ?? false,
       leaderPhone: json['leaderPhone'],
       role: json['role'] ?? 'USER',
-      
       bio: json['bio'],
       country: json['country'],
       profileType: json['profileType'] ?? 'NORMAL',
@@ -75,9 +88,13 @@ class User {
       'gender': gender,
       'age': age,
       'spiritualStatus': spiritualStatus,
+      'sinsToOvercome': sinsToOvercome,
+      'problemsFaced': problemsFaced,
+      'connectionMethods': connectionMethods,
+      'hasCompletedOnboarding': hasCompletedOnboarding,
+      'hasSeenLlamiTutorial': hasSeenLlamiTutorial,
       'leaderPhone': leaderPhone,
       'role': role,
-      
       'bio': bio,
       'country': country,
       'profileType': profileType,

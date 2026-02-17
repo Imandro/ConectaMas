@@ -1,45 +1,40 @@
-import 'package:bcrypt/bcrypt.dart';
-import 'package:uuid/uuid.dart';
-import '../../../core/repositories/base_repository.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
+import '../../../config/api_config.dart';
 
-class AuthRepository extends BaseRepository {
+class AuthRepository {
+  final String baseUrl = ApiConfig.baseUrl;
+
   Future<Map<String, dynamic>?> login(
       String identifier, String password) async {
-    final conn = await db.connection;
-    final cleanIdentifier = identifier.trim();
-
     try {
-      // Buscar usuario por email o username
-      final result = await conn.execute(
-        r'SELECT * FROM "User" WHERE email = $1 OR username = $2 LIMIT 1',
-        parameters: [cleanIdentifier.toLowerCase(), cleanIdentifier],
+      final response = await http.post(
+        Uri.parse('${baseUrl}auth/mobile/login'),
+        headers: {'Content-Type': 'application/json'},
+        body: json.encode({
+          'identifier': identifier.trim().toLowerCase(),
+          'password': password,
+        }),
       );
 
-      if (result.isEmpty) {
-        print('DEBUG DB: Usuario no encontrado');
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+
+        // Save token
+        final prefs = await SharedPreferences.getInstance();
+        if (data['token'] != null) {
+          await prefs.setString('auth_token', data['token']);
+        }
+
+        return data['user'];
+      } else {
+        print('LOGIN ERROR: ${response.statusCode} - ${response.body}');
         return null;
       }
-
-      final userData = result.first.toColumnMap();
-      final passwordHash = userData['passwordHash'] as String?;
-
-      if (passwordHash == null) {
-        print('DEBUG DB: El usuario no tiene contraseña (social login?)');
-        return null;
-      }
-
-      // Verificar contraseña localmente con BCrypt
-      final isValid = BCrypt.checkpw(password, passwordHash);
-      if (!isValid) {
-        print('DEBUG DB: Contraseña incorrecta');
-        return null;
-      }
-
-      // Convertir a Map compatible
-      return userData;
     } catch (e) {
-      print('ERROR DB LOGIN: $e');
-      rethrow;
+      print('LOGIN ERROR: $e');
+      return null;
     }
   }
 
@@ -50,67 +45,115 @@ class AuthRepository extends BaseRepository {
     required String password,
     required String securityAnswer,
   }) async {
-    final conn = await db.connection;
-
     try {
-      // 1. Verificar si el usuario ya existe (Manual para evitar errores genéricos de constraint)
-      final existing = await conn.execute(
-        r'SELECT id FROM "User" WHERE email = $1 OR username = $2 LIMIT 1',
-        parameters: [email.toLowerCase(), username],
+      // Use the WEB register endpoint because 'mobile/register' might not be deployed yet
+      final response = await http.post(
+        Uri.parse('${baseUrl}auth/register'),
+        headers: {'Content-Type': 'application/json'},
+        body: json.encode({
+          'name': name,
+          'username': username,
+          'email': email.toLowerCase(),
+          'password': password,
+          'securityAnswer': securityAnswer.toLowerCase().trim(),
+        }),
       );
 
-      if (existing.isNotEmpty) {
-        throw Exception('El usuario o email ya existe');
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        // Registration successful, but Web endpoint doesn't return token.
+        // We must login immediately to get the token.
+        final loginResult = await login(username, password);
+
+        if (loginResult != null) {
+          return loginResult;
+        } else {
+          // Fallback if login fails (shouldn't happen directly after register)
+          final data = json.decode(response.body);
+          return data['user'] ?? {};
+        }
+      } else {
+        final error = json.decode(response.body);
+        throw Exception(error['message'] ?? 'Error al registrar usuario');
       }
-
-      // 2. Hashear contraseña con BCrypt (Cuidado: Prisma usa un formato específico, BCrypt de Dart suele ser compatible)
-      final hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
-
-      // 3. Crear ID único (UUID v4)
-      final String userId = const Uuid().v4();
-
-      // 4. Insertar en Neon
-      await conn.execute(
-        r'''INSERT INTO "User" (id, name, username, email, "passwordHash", "securityAnswer", role, "spiritualLevel", "updatedAt", "createdAt") 
-            VALUES ($1, $2, $3, $4, $5, $6, $7, $8, NOW(), NOW())''',
-        parameters: [
-          userId,
-          name,
-          username,
-          email.toLowerCase(),
-          hashedPassword,
-          securityAnswer.toLowerCase().trim(),
-          'USER',
-          'Explorador'
-        ],
-      );
-
-      // Retornar los datos del usuario creado
-      return {
-        'id': userId,
-        'name': name,
-        'username': username,
-        'email': email,
-        'role': 'USER'
-      };
     } catch (e) {
-      print('ERROR DB REGISTER: $e');
+      print('REGISTER ERROR: $e');
       rethrow;
     }
   }
 
   Future<Map<String, dynamic>?> getUserById(String id) async {
-    final conn = await db.connection;
     try {
-      final result = await conn.execute(
-        r'SELECT * FROM "User" WHERE id = $1 LIMIT 1',
-        parameters: [id],
+      final prefs = await SharedPreferences.getInstance();
+      final token = prefs.getString('auth_token');
+
+      final response = await http.get(
+        Uri.parse('${baseUrl}auth/mobile/me'),
+        headers: {
+          'Content-Type': 'application/json',
+          if (token != null) 'Authorization': 'Bearer $token',
+        },
       );
-      if (result.isEmpty) return null;
-      return result.first.toColumnMap();
+
+      if (response.statusCode == 200) {
+        return json.decode(response.body);
+      } else {
+        print('GET USER ERROR: ${response.statusCode}');
+        return null;
+      }
     } catch (e) {
-      print('ERROR DB GETUSER: $e');
+      print('GET USER ERROR: $e');
       return null;
+    }
+  }
+
+  Future<void> updateProfile({
+    required String userId,
+    String? spiritualStatus,
+    String? sinsToOvercome,
+    String? problemsFaced,
+    String? connectionMethods,
+    bool? hasCompletedOnboarding,
+    bool? hasSeenLlamiTutorial,
+    String? leaderPhone,
+    String? gender,
+    int? age,
+  }) async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final token = prefs.getString('auth_token');
+
+      final Map<String, dynamic> updates = {};
+      if (spiritualStatus != null) updates['spiritualStatus'] = spiritualStatus;
+      if (sinsToOvercome != null) updates['sinsToOvercome'] = sinsToOvercome;
+      if (problemsFaced != null) updates['problemsFaced'] = problemsFaced;
+      if (connectionMethods != null)
+        updates['connectionMethods'] = connectionMethods;
+      if (hasCompletedOnboarding != null)
+        updates['hasCompletedOnboarding'] = hasCompletedOnboarding;
+      if (hasSeenLlamiTutorial != null)
+        updates['hasSeenLlamiTutorial'] = hasSeenLlamiTutorial;
+      if (leaderPhone != null) updates['leaderPhone'] = leaderPhone;
+      if (gender != null) updates['gender'] = gender;
+      if (age != null) updates['age'] = age;
+
+      if (updates.isEmpty) return;
+
+      final response = await http.put(
+        Uri.parse('${baseUrl}auth/mobile/profile'),
+        headers: {
+          'Content-Type': 'application/json',
+          if (token != null) 'Authorization': 'Bearer $token',
+        },
+        body: json.encode(updates),
+      );
+
+      if (response.statusCode != 200) {
+        print('UPDATE PROFILE ERROR: ${response.statusCode}');
+        throw Exception('Failed to update profile');
+      }
+    } catch (e) {
+      print('UPDATE PROFILE ERROR: $e');
+      rethrow;
     }
   }
 }

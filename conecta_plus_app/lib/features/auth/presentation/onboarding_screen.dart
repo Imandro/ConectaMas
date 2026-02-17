@@ -1,18 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../config/theme.dart';
 import '../../../shared/widgets/custom_button.dart';
 import '../../dashboard/presentation/widgets/llami_mascot.dart';
+import '../../auth/data/auth_provider.dart';
+import '../../dashboard/data/mascot_provider.dart';
+import '../../../l10n/app_localizations.dart';
 
-class OnboardingScreen extends StatefulWidget {
+class OnboardingScreen extends ConsumerStatefulWidget {
   const OnboardingScreen({super.key});
 
   @override
-  State<OnboardingScreen> createState() => _OnboardingScreenState();
+  ConsumerState<OnboardingScreen> createState() => _OnboardingScreenState();
 }
 
-class _OnboardingScreenState extends State<OnboardingScreen> {
+class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
   int _currentStep = 1;
   final int _totalSteps = 11;
 
@@ -26,16 +30,42 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   String _mascotName = 'Llami';
   String _leaderPhone = '';
 
-  void _nextStep() {
+  Future<void> _nextStep() async {
     if (_currentStep < _totalSteps) {
       setState(() => _currentStep++);
     } else {
-      context.go('/dashboard');
+      // Save data
+      await _saveOnboardingData();
+      if (mounted) {
+        context.go('/dashboard');
+      }
+    }
+  }
+
+  Future<void> _saveOnboardingData() async {
+    final notifier = ref.read(authProvider.notifier);
+
+    // Save profile data
+    await notifier.updateProfile(
+      spiritualStatus: _spiritualStatus,
+      sinsToOvercome: _sins.join(','),
+      problemsFaced: _problems.join(','),
+      connectionMethods: _connectionMethods.join(','),
+      gender: _gender,
+      age: _age,
+      hasCompletedOnboarding: true,
+      leaderPhone: _leaderPhone,
+    );
+
+    // Update mascot name if changed
+    if (_mascotName != 'Llami') {
+      await ref.read(mascotProvider.notifier).updateName(_mascotName);
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return Scaffold(
       backgroundColor: AppTheme.primary,
       body: SafeArea(
@@ -67,7 +97,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 24),
-                child: _buildCurrentStep(),
+                child: _buildCurrentStep(l10n),
               ),
             ),
           ],
@@ -76,41 +106,41 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     );
   }
 
-  Widget _buildCurrentStep() {
+  Widget _buildCurrentStep(AppLocalizations l10n) {
     Widget child;
     switch (_currentStep) {
       case 1:
-        child = _buildSpiritualStatus();
+        child = _buildSpiritualStatus(l10n);
         break;
       case 2:
-        child = _buildSins();
+        child = _buildSins(l10n);
         break;
       case 3:
-        child = _buildProblems();
+        child = _buildProblems(l10n);
         break;
       case 4:
-        child = _buildConnection();
+        child = _buildConnection(l10n);
         break;
       case 5:
-        child = _buildGender();
+        child = _buildGender(l10n);
         break;
       case 6:
-        child = _buildAge();
+        child = _buildAge(l10n);
         break;
       case 7:
-        child = _buildMascot();
+        child = _buildMascot(l10n);
         break;
       case 8:
-        child = _buildLeaderPhone();
+        child = _buildLeaderPhone(l10n);
         break;
       case 9:
-        child = _buildCommunityIntro();
+        child = _buildCommunityIntro(l10n);
         break;
       case 10:
-        child = _buildSupportAd();
+        child = _buildSupportAd(l10n);
         break;
       case 11:
-        child = _buildFinalStep();
+        child = _buildFinalStep(l10n);
         break;
       default:
         child = const SizedBox();
@@ -159,29 +189,17 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     );
   }
 
-  Widget _buildSpiritualStatus() {
+  Widget _buildSpiritualStatus(AppLocalizations l10n) {
     final options = [
-      {
-        'id': 'ACCEPT',
-        'title': 'Aceptar a Jesús por Primera Vez',
-        'icon': Icons.auto_awesome
-      },
-      {
-        'id': 'RENEW',
-        'title': 'Reconciliar y Renovar mi Fe',
-        'icon': Icons.refresh
-      },
-      {
-        'id': 'DEEPEN',
-        'title': 'Conectar Más Profundamente',
-        'icon': Icons.bolt
-      },
+      {'id': 'ACCEPT', 'title': l10n.acceptJesus, 'icon': Icons.auto_awesome},
+      {'id': 'RENEW', 'title': l10n.renewFaith, 'icon': Icons.refresh},
+      {'id': 'DEEPEN', 'title': l10n.deepenConnection, 'icon': Icons.bolt},
     ];
 
     return Column(
       children: [
-        _buildStepHeader(Icons.shield_outlined, 'Bienvenido a Conecta+',
-            '¿Dónde estás espiritualmente?'),
+        _buildStepHeader(Icons.shield_outlined, l10n.welcomeTitle,
+            l10n.spiritualStatusQuest),
         ...options.map((opt) => Padding(
               padding: const EdgeInsets.only(bottom: 12),
               child: _SelectionButton(
@@ -196,7 +214,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         SizedBox(
           width: double.infinity,
           child: CustomButton(
-            text: 'Continuar',
+            text: l10n.continueButton,
             backgroundColor: AppTheme.accent,
             onPressed: _spiritualStatus.isEmpty ? null : () => _nextStep(),
           ),
@@ -206,22 +224,12 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     );
   }
 
-  Widget _buildSins() {
-    final options = [
-      "Pornografía",
-      "Mentira",
-      "Enojo / Ira",
-      "Orgullo",
-      "Envidia",
-      "Adicciones",
-      "Relaciones Tóxicas"
-    ];
+  Widget _buildSins(AppLocalizations l10n) {
+    final options = l10n.sinsList;
     return Column(
       children: [
         _buildStepHeader(
-            Icons.heart_broken_outlined,
-            'Pecados que Quiero Dejar',
-            'Selecciona lo que resuene contigo. Esto es privado.'),
+            Icons.heart_broken_outlined, l10n.sinsTitle, l10n.sinsSubtitle),
         Expanded(
           child: ListView(
             children: options
@@ -241,25 +249,19 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         const SizedBox(height: 16),
         SizedBox(
             width: double.infinity,
-            child: CustomButton(text: 'Continuar', onPressed: () => _nextStep())),
+            child: CustomButton(
+                text: l10n.continueButton, onPressed: () => _nextStep())),
         const SizedBox(height: 24),
       ],
     );
   }
 
-  Widget _buildProblems() {
-    final options = [
-      "Ansiedad / Estrés",
-      "Depresión / Tristeza",
-      "Soledad",
-      "Baja autoestima",
-      "Problemas familiares",
-      "Falta de propósito"
-    ];
+  Widget _buildProblems(AppLocalizations l10n) {
+    final options = l10n.problemsList;
     return Column(
       children: [
-        _buildStepHeader(Icons.psychology_outlined, 'Problemas que Enfrento',
-            '¿Con qué luchas actualmente?'),
+        _buildStepHeader(Icons.psychology_outlined, l10n.problemsTitle,
+            l10n.problemsSubtitle),
         Expanded(
           child: ListView(
             children: options
@@ -279,27 +281,19 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         const SizedBox(height: 16),
         SizedBox(
             width: double.infinity,
-            child: CustomButton(text: 'Continuar', onPressed: () => _nextStep())),
+            child: CustomButton(
+                text: l10n.continueButton, onPressed: () => _nextStep())),
         const SizedBox(height: 24),
       ],
     );
   }
 
-  Widget _buildConnection() {
-    final options = [
-      "Orar más",
-      "Leer la Biblia",
-      "Ayunar",
-      "Unirme a un grupo",
-      "Adorar (música)",
-      "Estudiar la Palabra"
-    ];
+  Widget _buildConnection(AppLocalizations l10n) {
+    final options = l10n.connectionMethodsList;
     return Column(
       children: [
-        _buildStepHeader(
-            Icons.connect_without_contact_outlined,
-            '¿Cómo Quiero Conectar?',
-            '¿De qué formas quieres crecer con Dios?'),
+        _buildStepHeader(Icons.connect_without_contact_outlined,
+            l10n.howToConnectTitle, l10n.howToConnectSubtitle),
         Expanded(
           child: ListView(
             children: options
@@ -320,29 +314,30 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         const SizedBox(height: 16),
         SizedBox(
             width: double.infinity,
-            child: CustomButton(text: 'Continuar', onPressed: () => _nextStep())),
+            child: CustomButton(
+                text: l10n.continueButton, onPressed: () => _nextStep())),
         const SizedBox(height: 24),
       ],
     );
   }
 
-  Widget _buildGender() {
+  Widget _buildGender(AppLocalizations l10n) {
     return Column(
       children: [
-        _buildStepHeader(Icons.person_outline, 'Sobre ti',
-            'Para personalizar tu experiencia, dinos tu género.'),
+        _buildStepHeader(
+            Icons.person_outline, l10n.aboutYouTitle, l10n.genderSubtitle),
         Row(
           children: [
             Expanded(
                 child: _GenderButton(
-                    title: 'Hombre',
+                    title: l10n.male,
                     emoji: '👨',
                     isSelected: _gender == 'MALE',
                     onTap: () => setState(() => _gender = 'MALE'))),
             const SizedBox(width: 16),
             Expanded(
                 child: _GenderButton(
-                    title: 'Mujer',
+                    title: l10n.female,
                     emoji: '👩',
                     isSelected: _gender == 'FEMALE',
                     onTap: () => setState(() => _gender = 'FEMALE'))),
@@ -352,18 +347,18 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         SizedBox(
             width: double.infinity,
             child: CustomButton(
-                text: 'Continuar',
+                text: l10n.continueButton,
                 onPressed: _gender.isEmpty ? null : () => _nextStep())),
         const SizedBox(height: 24),
       ],
     );
   }
 
-  Widget _buildAge() {
+  Widget _buildAge(AppLocalizations l10n) {
     return Column(
       children: [
-        _buildStepHeader(Icons.calendar_today_outlined, 'Tu Edad',
-            'Ayúdanos a personalizar tu experiencia.'),
+        _buildStepHeader(
+            Icons.calendar_today_outlined, l10n.yourAgeTitle, l10n.ageSubtitle),
         const SizedBox(height: 40),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -388,13 +383,14 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         const Spacer(),
         SizedBox(
             width: double.infinity,
-            child: CustomButton(text: 'Continuar', onPressed: () => _nextStep())),
+            child: CustomButton(
+                text: l10n.continueButton, onPressed: () => _nextStep())),
         const SizedBox(height: 24),
       ],
     );
   }
 
-  Widget _buildMascot() {
+  Widget _buildMascot(AppLocalizations l10n) {
     return Column(
       children: [
         const SizedBox(height: 40),
@@ -413,16 +409,16 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   curve: Curves.easeInOut),
         ),
         const SizedBox(height: 32),
-        const Text('Dale nombre a tu compañera',
+        Text(l10n.mascotNameTitle,
             textAlign: TextAlign.center,
-            style: TextStyle(
+            style: const TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
                 color: Colors.white)),
         const SizedBox(height: 8),
-        const Text('Tu mascota te acompañará en cada paso.',
+        Text(l10n.mascotSubtitle,
             textAlign: TextAlign.center,
-            style: TextStyle(color: Colors.white60)),
+            style: const TextStyle(color: Colors.white60)),
         const SizedBox(height: 32),
         TextField(
           textAlign: TextAlign.center,
@@ -439,7 +435,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           Padding(
             padding: const EdgeInsets.only(top: 12),
             child: Text(
-              'Tu mascota se llamará: $_mascotName',
+              l10n.mascotWillBeCalled(_mascotName),
               textAlign: TextAlign.center,
               style: const TextStyle(
                   color: Colors.white60,
@@ -450,17 +446,18 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         const Spacer(),
         SizedBox(
             width: double.infinity,
-            child: CustomButton(text: 'Continuar', onPressed: () => _nextStep())),
+            child: CustomButton(
+                text: l10n.continueButton, onPressed: () => _nextStep())),
         const SizedBox(height: 24),
       ],
     );
   }
 
-  Widget _buildLeaderPhone() {
+  Widget _buildLeaderPhone(AppLocalizations l10n) {
     return Column(
       children: [
-        _buildStepHeader(Icons.phone_outlined, 'Contacto de Emergencia',
-            'Ingresa el WhatsApp de tu líder para tenerlo a mano en caso de SOS.'),
+        _buildStepHeader(Icons.phone_outlined, l10n.emergencyContactTitle,
+            l10n.leaderPhoneSubtitle),
         TextField(
           textAlign: TextAlign.center,
           style: const TextStyle(color: Colors.white, fontSize: 18),
@@ -479,7 +476,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           Padding(
             padding: const EdgeInsets.only(top: 12),
             child: Text(
-              'Contacto guardado: $_leaderPhone',
+              l10n.contactSaved(_leaderPhone),
               textAlign: TextAlign.center,
               style: const TextStyle(
                   color: Colors.white60,
@@ -490,22 +487,23 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         const Spacer(),
         SizedBox(
             width: double.infinity,
-            child: CustomButton(text: 'Continuar', onPressed: () => _nextStep())),
+            child: CustomButton(
+                text: l10n.continueButton, onPressed: () => _nextStep())),
         const SizedBox(height: 8),
         TextButton(
             onPressed: () => _nextStep(),
-            child: const Text('Prefiero omitir',
-                style: TextStyle(color: Colors.white54))),
+            child:
+                Text(l10n.skip, style: const TextStyle(color: Colors.white54))),
         const SizedBox(height: 16),
       ],
     );
   }
 
-  Widget _buildCommunityIntro() {
+  Widget _buildCommunityIntro(AppLocalizations l10n) {
     return Column(
       children: [
-        _buildStepHeader(Icons.people_outline, 'Comunidad de Apoyo',
-            'En Conecta+ no estás solo. Puedes agregar amigos para orar.'),
+        _buildStepHeader(Icons.people_outline, l10n.communityIntroTitle,
+            l10n.communityIntroSubtitle),
         Container(
           padding: const EdgeInsets.all(24),
           decoration: BoxDecoration(
@@ -515,16 +513,16 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             children: [
               const Icon(Icons.favorite, color: AppTheme.accent, size: 40),
               const SizedBox(height: 16),
-              const Text('Apoyo Anónimo y Seguro',
-                  style: TextStyle(
+              Text(l10n.anonymousSupportTitle,
+                  style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       color: Colors.white,
                       fontSize: 18)),
               const SizedBox(height: 8),
-              const Text(
-                'Tus amigos podrán enviarte mensajes de ánimo sin necesidad de ver tus detalles privados.',
+              Text(
+                l10n.communityIntroDesc,
                 textAlign: TextAlign.center,
-                style: TextStyle(color: Colors.white60, height: 1.4),
+                style: const TextStyle(color: Colors.white60, height: 1.4),
               ),
             ],
           ),
@@ -533,19 +531,17 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         SizedBox(
             width: double.infinity,
             child: CustomButton(
-                text: '¡Me encanta! Continuar', onPressed: () => _nextStep())),
+                text: l10n.loveItButton, onPressed: () => _nextStep())),
         const SizedBox(height: 24),
       ],
     );
   }
 
-  Widget _buildSupportAd() {
+  Widget _buildSupportAd(AppLocalizations l10n) {
     return Column(
       children: [
-        _buildStepHeader(
-            Icons.volunteer_activism_outlined,
-            '¡Ayúdanos a Crecer!',
-            'Conecta+ es un proyecto gratuito hecho con amor.'),
+        _buildStepHeader(Icons.volunteer_activism_outlined,
+            l10n.helpUsGrowTitle, l10n.helpUsGrowSubtitle),
         Container(
           padding: const EdgeInsets.all(24),
           decoration: BoxDecoration(
@@ -553,8 +549,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text('Meta: Licencia Play Store (\$25 USD)',
-                  style: TextStyle(
+              Text(l10n.supportGoal,
+                  style: const TextStyle(
                       fontWeight: FontWeight.bold, color: AppTheme.primary)),
               const SizedBox(height: 12),
               LinearProgressIndicator(
@@ -563,9 +559,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   color: AppTheme.accent,
                   minHeight: 12),
               const SizedBox(height: 12),
-              const Text(
-                  'Cada aporte nos acerca a la meta. Si este proyecto bendice tu vida, considera sembrar una semilla.',
-                  style: TextStyle(color: AppTheme.textMuted, fontSize: 12)),
+              Text(l10n.supportDesc,
+                  style:
+                      const TextStyle(color: AppTheme.textMuted, fontSize: 12)),
             ],
           ),
         ),
@@ -573,24 +569,24 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         SizedBox(
             width: double.infinity,
             child: CustomButton(
-                text: 'Quiero Apoyar',
+                text: l10n.wantToSupportButton,
                 backgroundColor: AppTheme.accent,
                 onPressed: () {})),
         const SizedBox(height: 8),
         TextButton(
             onPressed: () => _nextStep(),
-            child: const Text('Continuar por ahora',
-                style: TextStyle(color: Colors.white54))),
+            child: Text(l10n.continueNowButton,
+                style: const TextStyle(color: Colors.white54))),
         const SizedBox(height: 16),
       ],
     );
   }
 
-  Widget _buildFinalStep() {
+  Widget _buildFinalStep(AppLocalizations l10n) {
     return Column(
       children: [
-        _buildStepHeader(Icons.auto_awesome, '¡Todo Listo!',
-            'Has dado el primer paso hacia una vida de mayor conexión con Dios.'),
+        _buildStepHeader(
+            Icons.auto_awesome, l10n.allSetTitle, l10n.allSetSubtitle),
         Container(
           padding: const EdgeInsets.all(24),
           decoration: BoxDecoration(
@@ -619,7 +615,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         SizedBox(
             width: double.infinity,
             child: CustomButton(
-                text: '¡Empezar mi Camino!',
+                text: l10n.startJourneyButton,
                 backgroundColor: AppTheme.accent,
                 onPressed: () => _nextStep())),
         const SizedBox(height: 24),

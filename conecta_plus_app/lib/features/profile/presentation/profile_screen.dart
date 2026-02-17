@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../../config/theme.dart';
 import '../../auth/data/auth_provider.dart';
 import '../../auth/data/models/user_model.dart';
+import '../../../../l10n/app_localizations.dart';
 
 class ProfileScreen extends ConsumerStatefulWidget {
   const ProfileScreen({super.key});
@@ -32,6 +33,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   Widget build(BuildContext context) {
     final authState = ref.watch(authProvider);
     final user = authState.user;
+    final l10n = AppLocalizations.of(context);
 
     if (user == null) {
       return const Scaffold(
@@ -45,7 +47,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
         backgroundColor: Colors.transparent,
         elevation: 0,
         title: Text(
-          'Mi Perfil',
+          l10n.profileTitle,
           style: GoogleFonts.fredoka(
               color: AppTheme.primary, fontWeight: FontWeight.bold),
         ),
@@ -64,7 +66,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
           child:
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             // Profile Header Card (Identical to Web)
-            _buildProfileHeader(user),
+            _buildProfileHeader(user, l10n),
 
             const SizedBox(height: 24),
 
@@ -85,29 +87,30 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  _buildInfoItem('Biografía', user.bio ?? 'Sin biografía'),
-                  const Divider(height: 32),
-                  _buildInfoItem('País', user.country ?? 'Sin especificar'),
-                  const Divider(height: 32),
-                  _buildInfoItem('Tipo de Perfil', user.profileType),
+                  _buildInfoItem(l10n.bioLabel, user.bio ?? l10n.noBio),
                   const Divider(height: 32),
                   _buildInfoItem(
-                      'Género',
+                      l10n.countryLabel, user.country ?? l10n.unspecified),
+                  const Divider(height: 32),
+                  _buildInfoItem(l10n.profileTypeLabel, user.profileType),
+                  const Divider(height: 32),
+                  _buildInfoItem(
+                      l10n.genderLabel,
                       user.gender != null
-                          ? (user.gender == 'MALE' ? 'Hombre 👨' : 'Mujer 👩')
-                          : 'No especificado'),
+                          ? (user.gender == 'MALE' ? l10n.male : l10n.female)
+                          : l10n.unspecified),
                   const Divider(height: 32),
                   _buildInfoItem(
-                      'Edad',
+                      l10n.ageLabel,
                       user.age != null
-                          ? '${user.age} años'
-                          : 'No especificada'),
+                          ? '${user.age} ${l10n.yearsOld}'
+                          : l10n.unspecified),
                   const Divider(height: 32),
-                  _buildInfoItem('Estado Espiritual',
-                      user.spiritualStatus ?? 'No especificado'),
+                  _buildInfoItem(l10n.spiritualStatusLabel,
+                      user.spiritualStatus ?? l10n.unspecified),
                   const Divider(height: 32),
-                  _buildInfoItem(
-                      'Teléfono de Líder', user.leaderPhone ?? 'No asignado'),
+                  _buildInfoItem(l10n.leaderPhoneLabel,
+                      user.leaderPhone ?? l10n.notAssigned),
                 ],
               ),
             ),
@@ -131,15 +134,15 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                 children: [
                   _buildSettingTile(
                     icon: Icons.language,
-                    title: 'Cambiar Idioma',
+                    title: l10n.changeLanguage,
                     color: Colors.blue,
                     onTap: () {
-                      _showLanguageDialog();
+                      _showLanguageDialog(l10n);
                     },
                   ),
                   _buildSettingTile(
                     icon: Icons.logout,
-                    title: 'Cerrar Sesión',
+                    title: l10n.logout,
                     color: Colors.red,
                     onTap: () async {
                       await ref.read(authProvider.notifier).logout();
@@ -155,11 +158,11 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
     );
   }
 
-  void _showLanguageDialog() {
+  void _showLanguageDialog(AppLocalizations l10n) {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Seleccionar Idioma'),
+        title: Text(l10n.selectLanguage),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -205,7 +208,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
     );
   }
 
-  Widget _buildProfileHeader(User user) {
+  Widget _buildProfileHeader(User user, AppLocalizations l10n) {
     return Container(
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
@@ -233,7 +236,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  user.name ?? 'Usuario',
+                  user.name ?? l10n.userLabel,
                   style: GoogleFonts.fredoka(
                     color: Colors.white,
                     fontSize: 22,
@@ -241,7 +244,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                   ),
                 ),
                 Text(
-                  '@${user.username ?? 'usuario'}',
+                  '@${user.username ?? l10n.userLabel.toLowerCase()}',
                   style: GoogleFonts.fredoka(
                     color: Colors.white70,
                     fontSize: 14,

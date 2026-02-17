@@ -133,4 +133,36 @@ class AuthNotifier extends StateNotifier<AuthState> {
     await prefs.remove('user_id');
     state = AuthState();
   }
+
+  Future<void> updateProfile({
+    String? spiritualStatus,
+    String? sinsToOvercome,
+    String? problemsFaced,
+    String? connectionMethods,
+    bool? hasCompletedOnboarding,
+    bool? hasSeenLlamiTutorial,
+    String? leaderPhone,
+    String? gender,
+    int? age,
+  }) async {
+    if (state.user == null) return;
+    try {
+      await _repository.updateProfile(
+        userId: state.user!.id,
+        spiritualStatus: spiritualStatus,
+        sinsToOvercome: sinsToOvercome,
+        problemsFaced: problemsFaced,
+        connectionMethods: connectionMethods,
+        hasCompletedOnboarding: hasCompletedOnboarding,
+        hasSeenLlamiTutorial: hasSeenLlamiTutorial,
+        leaderPhone: leaderPhone,
+        gender: gender,
+        age: age,
+      );
+      await refreshProfile();
+    } catch (e) {
+      print('ERROR UPDATING PROFILE IN NOTIFIER: $e');
+      state = state.copyWith(error: 'No se pudo actualizar el perfil');
+    }
+  }
 }

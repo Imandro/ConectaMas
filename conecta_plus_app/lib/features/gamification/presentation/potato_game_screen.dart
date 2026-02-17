@@ -4,6 +4,7 @@ import '../data/potato_provider.dart';
 import '../../auth/data/auth_provider.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:go_router/go_router.dart';
+import '../../../l10n/app_localizations.dart';
 
 class PotatoGameScreen extends ConsumerStatefulWidget {
   final String roomId;
@@ -20,11 +21,13 @@ class _PotatoGameScreenState extends ConsumerState<PotatoGameScreen> {
   Widget build(BuildContext context) {
     final gameAsync = ref.watch(potatoGameProvider(widget.roomId));
     final currentUser = ref.watch(authProvider).user;
+    final l10n = AppLocalizations.of(context);
 
     return Scaffold(
       backgroundColor: Colors.grey[900],
       appBar: AppBar(
-        title: const Text('Papa Caliente', style: TextStyle(color: Colors.white)),
+        title: Text(l10n.potatoGameTitle,
+            style: const TextStyle(color: Colors.white)),
         backgroundColor: Colors.transparent,
         elevation: 0,
         leading: IconButton(
@@ -35,18 +38,20 @@ class _PotatoGameScreenState extends ConsumerState<PotatoGameScreen> {
       body: gameAsync.when(
         data: (room) => _buildGameContent(room, currentUser?.id),
         loading: () => const Center(child: CircularProgressIndicator()),
-        error: (err, stack) => Center(child: Text('Error: $err', style: const TextStyle(color: Colors.white))),
+        error: (err, stack) => Center(
+            child: Text('${l10n.errorLabel}: $err',
+                style: const TextStyle(color: Colors.white))),
       ),
     );
   }
 
   Widget _buildGameContent(dynamic room, String? currentUserId) {
+    final l10n = AppLocalizations.of(context);
     if (room.status == 'WAITING') {
       return _buildLobby(room, currentUserId);
     }
 
     final isMyTurn = room.currentTurnUserId == currentUserId;
-    final bool exploded = room.status == 'FINISHED'; // Simplified
 
     return Container(
       width: double.infinity,
@@ -59,11 +64,14 @@ class _PotatoGameScreenState extends ConsumerState<PotatoGameScreen> {
           const Spacer(),
           if (room.status == 'PLAYING') ...[
             if (isMyTurn)
-              _buildTurnInput()
+              _buildTurnInput(l10n)
             else
-              const Text(
-                'Esperando tu turno...',
-                style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
+              Text(
+                l10n.waitingTurn,
+                style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold),
               ),
           ] else if (room.status == 'FINISHED')
             _buildGameOver(room),
@@ -73,39 +81,58 @@ class _PotatoGameScreenState extends ConsumerState<PotatoGameScreen> {
   }
 
   Widget _buildLobby(dynamic room, String? currentUserId) {
-    final isHost = room.players.isNotEmpty && room.players[0].userId == currentUserId;
+    final isHost =
+        room.players.isNotEmpty && room.players[0].userId == currentUserId;
+    final l10n = AppLocalizations.of(context);
 
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const Text('Código de Sala:', style: TextStyle(color: Colors.white, fontSize: 18)),
-          Text(room.code, style: const TextStyle(color: Colors.orange, fontSize: 48, fontWeight: FontWeight.bold)),
+          Text(l10n.roomCodeLabel,
+              style: const TextStyle(color: Colors.white, fontSize: 18)),
+          Text(room.code,
+              style: const TextStyle(
+                  color: Colors.orange,
+                  fontSize: 48,
+                  fontWeight: FontWeight.bold)),
           const SizedBox(height: 32),
-          Text('${room.players.length} Jugadores Unidos', style: const TextStyle(color: Colors.white70)),
+          Text(l10n.playersJoined(room.players.length),
+              style: const TextStyle(color: Colors.white70)),
           const SizedBox(height: 16),
           Wrap(
             spacing: 8,
-            children: room.players.map<Widget>((p) => CircleAvatar(
-              backgroundImage: p.image != null ? NetworkImage(p.image!) : null,
-              child: p.image == null ? Text(p.name[0]) : null,
-            )).toList(),
+            children: room.players
+                .map<Widget>((p) => CircleAvatar(
+                      backgroundImage: (p as dynamic).image != null
+                          ? NetworkImage((p as dynamic).image!)
+                          : null,
+                      child: (p as dynamic).image == null
+                          ? Text((p as dynamic).name[0])
+                          : null,
+                    ))
+                .toList(),
           ),
           const SizedBox(height: 48),
           if (isHost)
             ElevatedButton(
-              onPressed: room.players.length >= 2 
-                  ? () => ref.read(potatoGameProvider(widget.roomId).notifier).start()
+              onPressed: room.players.length >= 2
+                  ? () => ref
+                      .read(potatoGameProvider(widget.roomId).notifier)
+                      .start()
                   : null,
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.orange,
-                padding: const EdgeInsets.symmetric(horizontal: 48, vertical: 16),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(32)),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 48, vertical: 16),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(32)),
               ),
-              child: const Text('INICIAR JUEGO', style: TextStyle(fontWeight: FontWeight.bold)),
+              child: Text(l10n.startGame,
+                  style: const TextStyle(fontWeight: FontWeight.bold)),
             )
           else
-            const Text('Esperando al anfitrión...', style: TextStyle(color: Colors.grey)),
+            Text(l10n.waitingHost, style: const TextStyle(color: Colors.grey)),
         ],
       ),
     );
@@ -133,14 +160,18 @@ class _PotatoGameScreenState extends ConsumerState<PotatoGameScreen> {
                 opacity: isDead ? 0.3 : 1.0,
                 child: CircleAvatar(
                   radius: 24,
-                  backgroundImage: p.image != null ? NetworkImage(p.image!) : null,
-                  child: p.image == null ? Text(p.name[0]) : null,
+                  backgroundImage: (p as dynamic).image != null
+                      ? NetworkImage((p as dynamic).image!)
+                      : null,
+                  child: (p as dynamic).image == null
+                      ? Text((p as dynamic).name[0])
+                      : null,
                 ),
               ),
             ),
             const SizedBox(height: 4),
             Text(
-              p.name,
+              (p as dynamic).name,
               style: TextStyle(
                 color: isTurn ? Colors.orange : Colors.white,
                 fontSize: 10,
@@ -161,7 +192,7 @@ class _PotatoGameScreenState extends ConsumerState<PotatoGameScreen> {
     );
   }
 
-  Widget _buildTurnInput() {
+  Widget _buildTurnInput(AppLocalizations l10n) {
     return Row(
       children: [
         Expanded(
@@ -169,18 +200,22 @@ class _PotatoGameScreenState extends ConsumerState<PotatoGameScreen> {
             controller: _answerController,
             style: const TextStyle(color: Colors.white),
             decoration: InputDecoration(
-              hintText: '¡Pasa la papa!',
+              hintText: l10n.passPotato,
               hintStyle: const TextStyle(color: Colors.grey),
               filled: true,
               fillColor: Colors.white.withOpacity(0.1),
-              border: OutlineInputBorder(borderRadius: BorderRadius.circular(32), borderSide: BorderSide.none),
+              border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(32),
+                  borderSide: BorderSide.none),
             ),
           ),
         ),
         const SizedBox(width: 12),
         IconButton(
           onPressed: () {
-            ref.read(potatoGameProvider(widget.roomId).notifier).pass(_answerController.text);
+            ref
+                .read(potatoGameProvider(widget.roomId).notifier)
+                .pass(_answerController.text);
             _answerController.clear();
           },
           icon: const Icon(LucideIcons.send, color: Colors.orange, size: 32),
@@ -190,16 +225,24 @@ class _PotatoGameScreenState extends ConsumerState<PotatoGameScreen> {
   }
 
   Widget _buildGameOver(dynamic room) {
-    final winner = room.players.firstWhere((p) => p.status == 'WINNER', orElse: () => room.players[0]);
+    final l10n = AppLocalizations.of(context);
+    final winner = room.players.firstWhere(
+        (p) => (p as dynamic).status == 'WINNER',
+        orElse: () => room.players[0]);
     return Column(
       children: [
-        const Text('¡FIN DEL JUEGO!', style: TextStyle(color: Colors.orange, fontSize: 32, fontWeight: FontWeight.bold)),
+        Text(l10n.gameOver,
+            style: const TextStyle(
+                color: Colors.orange,
+                fontSize: 32,
+                fontWeight: FontWeight.bold)),
         const SizedBox(height: 16),
-        Text('Ganador: ${winner.name}', style: const TextStyle(color: Colors.white, fontSize: 24)),
+        Text(l10n.winnerLabel((winner as dynamic).name),
+            style: const TextStyle(color: Colors.white, fontSize: 24)),
         const SizedBox(height: 32),
         ElevatedButton(
           onPressed: () => context.pop(),
-          child: const Text('Volver al Lobby'),
+          child: Text(l10n.backLobby),
         ),
       ],
     );

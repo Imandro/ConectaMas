@@ -139,10 +139,6 @@ export default function ArticlePage() {
                         <Clock size={16} />
                         <span>{article.readTime} min de lectura</span>
                     </div>
-                    <div className="d-flex align-items-center gap-1 no-print">
-                        <Eye size={16} />
-                        <span>{article.views} vistas</span>
-                    </div>
                     <div className="d-flex align-items-center gap-1">
                         <Calendar size={16} />
                         <span>
