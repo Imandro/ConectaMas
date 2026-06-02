@@ -76,7 +76,6 @@ model User {
   watchedVideos            UserVideo[]
   friends                  User[]                 @relation("UserFriends")
   symmetricFriends         User[]                 @relation("UserFriends")
-  readArticles             UserArticleRead[]
 }
 
 model SupportMessage {
@@ -446,7 +445,6 @@ model Group {
   leader      User            @relation("GroupLeader", fields: [leaderId], references: [id])
   members     GroupMember[]
   needs       GroupNeed[]
-  resources   GroupResource[]
   tasks       GroupTask[]
 }
 
@@ -462,15 +460,6 @@ model GroupMember {
   @@unique([groupId, userId])
 }
 
-model GroupResource {
-  id        String   @id @default(cuid())
-  groupId   String
-  title     String
-  content   String
-  type      String
-  createdAt DateTime @default(now())
-  group     Group    @relation(fields: [groupId], references: [id], onDelete: Cascade)
-}
 
 model GroupTask {
   id          String                @id @default(cuid())
@@ -605,55 +594,3 @@ model PrayerUpdate {
   user      User          @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
-// [NEW] Content System for Monetization
-model Article {
-  id         String  @id @default(cuid())
-  title      String
-  slug       String  @unique
-  excerpt    String // Resumen corto
-  content    String  @db.Text // Contenido completo en markdown
-  coverImage String? // URL de imagen de portada
-
-  category String // Categorías: "Vida Cristiana", "Relaciones", "Salud Mental", etc.
-  tags     String? // Tags separados por comas
-
-  author   String @default("Equipo ConectaMas")
-  readTime Int    @default(5) // Minutos estimados de lectura
-  views    Int    @default(0)
-
-  isFeatured  Boolean @default(false)
-  isPublished Boolean @default(true)
-
-  publishedAt DateTime @default(now())
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-
-  userReads UserArticleRead[]
-}
-
-model UserArticleRead {
-  id        String   @id @default(cuid())
-  userId    String
-  articleId String
-  progress  Int      @default(100)
-  completed Boolean  @default(true)
-  readAt    DateTime @default(now())
-
-  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
-  article Article @relation(fields: [articleId], references: [id], onDelete: Cascade)
-
-  @@unique([userId, articleId])
-}
-
-model Resource {
-  id            String   @id @default(cuid())
-  title         String
-  description   String?
-  type          String // PDF, VIDEO, AUDIO, GUIDE, WORKSHEET
-  url           String // Link de descarga o visualización
-  category      String // Categorías: "Estudio Bíblico", "Oración", etc.
-  downloadCount Int      @default(0)
-  isPremium     Boolean  @default(false)
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
-}

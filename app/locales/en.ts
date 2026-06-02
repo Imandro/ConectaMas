@@ -215,6 +215,8 @@ export const en = {
         recommended_title: "Recommended for you",
         categories: {
             for_you: "For you",
+            wisdom: "Wisdom",
+            holy_spirit: "Holy Spirit",
             anxiety: "Anxiety",
             identity: "Identity",
             integrity: "Integrity",

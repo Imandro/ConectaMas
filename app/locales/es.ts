@@ -215,6 +215,8 @@ export const es = {
         recommended_title: "Recomendados para ti",
         categories: {
             for_you: "Para ti",
+            wisdom: "Sabiduría",
+            holy_spirit: "Espíritu Santo",
             anxiety: "Ansiedad",
             identity: "Identidad",
             integrity: "Integridad",

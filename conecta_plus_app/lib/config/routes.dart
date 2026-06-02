@@ -5,7 +5,6 @@ import '../features/dashboard/presentation/luchas_screen.dart';
 import '../features/dashboard/presentation/checkin_screen.dart';
 import '../features/dashboard/presentation/struggle_detail_screen.dart';
 import '../features/dashboard/presentation/tutorials_screen.dart';
-import '../features/dashboard/presentation/youth_resources_screen.dart';
 import '../features/devotionals/presentation/devotionals_screen.dart';
 import '../features/devotionals/presentation/devotional_detail_screen.dart';
 import '../features/community/presentation/community_screen.dart';
@@ -80,10 +79,6 @@ final router = GoRouter(
                 GoRoute(
                   path: 'llami',
                   builder: (context, state) => const LlamiRefugeScreen(),
-                ),
-                GoRoute(
-                  path: 'youth-zone',
-                  builder: (context, state) => const YouthResourcesScreen(),
                 ),
                 GoRoute(
                   path: 'luchas',

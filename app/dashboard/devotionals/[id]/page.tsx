@@ -66,6 +66,15 @@ export default async function DevotionalDetailPage({ params }: { params: { id: s
                 <small>{dev.time} lectura</small>
             </div>
 
+            {/* Featured Image */}
+            {dev.image && (
+                <div className="rounded-4 overflow-hidden mb-4 shadow-sm" style={{ height: '240px', backgroundImage: `url(${dev.image}&w=800)`, backgroundSize: 'cover', backgroundPosition: 'center' }}>
+                    <div className="w-100 h-100 d-flex align-items-end p-4" style={{ background: 'linear-gradient(transparent 50%, rgba(0,0,0,0.6))' }}>
+                        <span className="badge bg-white text-dark rounded-pill fw-bold shadow-sm">{dev.category}</span>
+                    </div>
+                </div>
+            )}
+
             {/* Content */}
             <article className="typography-article mb-5 text-secondary">
                 <p className="lead text-dark fw-medium">

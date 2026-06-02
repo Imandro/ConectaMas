@@ -387,4 +387,126 @@ export const verses: Verse[] = [
     { text: "No me dejes enteramente.", reference: "Salmos 119:8" },
     { text: "No temas, manada pequeña.", reference: "Lucas 12:32" },
     { text: "Más que en toda riqueza.", reference: "Salmos 119:14" },
+
+    // ===== VERSÍCULOS NTV PARA JÓVENES =====
+    {
+        text: "Ya te lo he ordenado: ¡Sé fuerte y valiente! No tengas miedo ni te desanimes, porque el Señor tu Dios está contigo dondequiera que vayas.",
+        reference: "Josué 1:9 (NTV)",
+        text_en: "This is my command—be strong and courageous! Do not be afraid or discouraged. For the Lord your God is with you wherever you go.",
+        reference_en: "Joshua 1:9 (NLT)",
+        text_pt: "Não foi isso que eu ordenei? Seja forte e corajoso! Não se apavore nem desanime, pois o Senhor, o seu Deus, estará com você por onde você andar.",
+        reference_pt: "Josué 1:9 (NVT)"
+    },
+    {
+        text: "¿Cómo puede un joven mantenerse puro? Obedeciendo tu palabra.",
+        reference: "Salmos 119:9 (NTV)",
+        text_en: "How can a young person stay pure? By obeying your word.",
+        reference_en: "Psalm 119:9 (NLT)",
+        text_pt: "Como pode um jovem manter pura a sua vida? Obedecendo à tua palavra.",
+        reference_pt: "Salmos 119:9 (NVT)"
+    },
+    {
+        text: "Sobre todas las cosas, cuida tu corazón, porque este determina el rumbo de tu vida.",
+        reference: "Proverbios 4:23 (NTV)",
+        text_en: "Guard your heart above all else, for it determines the course of your life.",
+        reference_en: "Proverbs 4:23 (NLT)",
+        text_pt: "Acima de tudo, guarde o seu coração, pois dele depende toda a sua vida.",
+        reference_pt: "Provérbios 4:23 (NVT)"
+    },
+    {
+        text: "Pues todo lo puedo hacer por medio de Cristo, quien me da las fuerzas.",
+        reference: "Filipenses 4:13 (NTV)",
+        text_en: "For I can do everything through Christ, who gives me strength.",
+        reference_en: "Philippians 4:13 (NLT)",
+        text_pt: "Tudo posso naquele que me fortalece.",
+        reference_pt: "Filipenses 4:13 (NVT)"
+    },
+    {
+        text: "Pues somos la obra maestra de Dios. Él nos creó de nuevo en Cristo Jesús para que hagamos las cosas buenas que preparó para nosotros tiempo atrás.",
+        reference: "Efesios 2:10 (NTV)",
+        text_en: "For we are God's masterpiece. He has created us anew in Christ Jesus, so we can do the good things he planned for us long ago.",
+        reference_en: "Ephesians 2:10 (NLT)",
+        text_pt: "Pois somos criação de Deus, realizados em Cristo Jesus para fazermos boas obras, as quais Deus preparou antes para nós as praticarmos.",
+        reference_pt: "Efésios 2:10 (NVT)"
+    },
+    {
+        text: "No imiten las conductas ni las costumbres de este mundo, más bien dejen que Dios los transforme en personas nuevas al cambiarles la manera de pensar.",
+        reference: "Romanos 12:2 (NTV)",
+        text_en: "Don't copy the behavior and customs of this world, but let God transform you into a new person by changing the way you think.",
+        reference_en: "Romans 12:2 (NLT)",
+        text_pt: "Não se amoldem ao padrão deste mundo, mas transformem-se pela renovação da sua mente.",
+        reference_pt: "Romanos 12:2 (NVT)"
+    },
+    {
+        text: "Te alabo porque soy una creación maravillosa; ¡tus obras son portentosas, y esto lo sé muy bien!",
+        reference: "Salmos 139:14 (NTV)",
+        text_en: "Thank you for making me so wonderfully complex! Your workmanship is marvelous—how well I know it.",
+        reference_en: "Psalm 139:14 (NLT)",
+        text_pt: "Eu te louvo porque me fizeste de modo especial e admirável. Tuas obras são maravilhosas! Disso tenho plena certeza.",
+        reference_pt: "Salmos 139:14 (NVT)"
+    },
+    {
+        text: "No digas: 'Soy demasiado joven'. Ve a donde yo te envíe y di lo que yo te ordene. Y no tengas miedo, porque yo estoy contigo y te protegeré.",
+        reference: "Jeremías 1:7-8 (NTV)",
+        text_en: "Don't say, 'I'm too young.' Go where I send you and say what I tell you. And don't be afraid, for I will be with you and protect you.",
+        reference_en: "Jeremiah 1:7-8 (NLT)",
+        text_pt: "Não diga: 'Sou muito jovem'. Vá aonde eu o enviar e diga tudo o que eu lhe ordenar. Não tenha medo, pois estou com você para protegê-lo.",
+        reference_pt: "Jeremias 1:7-8 (NVT)"
+    },
+    {
+        text: "Huye de los deseos pecaminosos propios de la juventud; persigue la justicia, la fe, el amor y la paz, junto con los que de corazón limpio invocan al Señor.",
+        reference: "2 Timoteo 2:22 (NTV)",
+        text_en: "Run from anything that stimulates youthful lusts. Instead, pursue righteous living, faithfulness, love, and peace. Enjoy the companionship of those who call on the Lord with pure hearts.",
+        reference_en: "2 Timothy 2:22 (NLT)",
+        text_pt: "Fuja dos desejos malignos da juventude e siga a justiça, a fé, o amor e a paz, com aqueles que de coração puro invocam o Senhor.",
+        reference_pt: "2 Timóteo 2:22 (NVT)"
+    },
+    {
+        text: "Pues estoy a punto de hacer algo nuevo. Ya está empezando a suceder. ¿No se dan cuenta? Estoy abriendo un camino en el desierto y ríos en lugares solitarios.",
+        reference: "Isaías 43:19 (NTV)",
+        text_en: "For I am about to do something new. See, I have already begun! Do you not see it? I will make a pathway through the wilderness and create rivers in the dry wasteland.",
+        reference_en: "Isaiah 43:19 (NLT)",
+        text_pt: "Eis que estou fazendo uma coisa nova! Ela já está surgindo! Vocês não a veem? Até no deserto vou abrir um caminho e riachos no ermo.",
+        reference_pt: "Isaías 43:19 (NVT)"
+    },
+    {
+        text: "Ustedes son la luz del mundo. Así que brillen con luz delante de todos, para que ellos puedan ver las buenas obras de ustedes y alaben al Padre que está en el cielo.",
+        reference: "Mateo 5:14-16 (NTV)",
+        text_en: "You are the light of the world. Let your good deeds shine out for all to see, so that everyone will praise your heavenly Father.",
+        reference_en: "Matthew 5:14-16 (NLT)",
+        text_pt: "Vocês são a luz do mundo. Assim brilhe a luz de vocês diante dos homens, para que vejam as suas boas obras e glorifiquem ao Pai de vocês, que está nos céus.",
+        reference_pt: "Mateus 5:14-16 (NVT)"
+    },
+    {
+        text: "Mi antiguo yo ha sido crucificado con Cristo. Ya no vivo yo, sino que Cristo vive en mí. Así que vivo en este cuerpo terrenal confiando en el Hijo de Dios, quien me amó y se entregó a sí mismo por mí.",
+        reference: "Gálatas 2:20 (NTV)",
+        text_en: "My old self has been crucified with Christ. It is no longer I who live, but Christ lives in me. So I live in this earthly body by trusting in the Son of God, who loved me and gave himself for me.",
+        reference_en: "Galatians 2:20 (NLT)",
+        text_pt: "Fui crucificado com Cristo. Assim, já não sou eu quem vive, mas Cristo vive em mim. A vida que agora vivo no corpo, vivo-a pela fé no Filho de Deus, que me amou e se entregou por mim.",
+        reference_pt: "Gálatas 2:20 (NVT)"
+    },
+    {
+        text: "Y sabemos que Dios hace que todas las cosas cooperen para el bien de quienes lo aman y son llamados según el propósito que él tiene para ellos.",
+        reference: "Romanos 8:28 (NTV)",
+        text_en: "And we know that God causes everything to work together for the good of those who love God and are called according to his purpose for them.",
+        reference_en: "Romans 8:28 (NLT)",
+        text_pt: "Sabemos que Deus age em todas as coisas para o bem daqueles que o amam, dos que foram chamados de acordo com o seu propósito.",
+        reference_pt: "Romanos 8:28 (NVT)"
+    },
+    {
+        text: "No juzguen a otros por su apariencia exterior, sino juzguen con justicia.",
+        reference: "Juan 7:24 (NTV)",
+        text_en: "Look beneath the surface so you can judge correctly.",
+        reference_en: "John 7:24 (NLT)",
+        text_pt: "Não julguem pela aparência, mas julguem com justiça.",
+        reference_pt: "João 7:24 (NVT)"
+    },
+    {
+        text: "Que nadie te quite el gozo de servir al Señor. El Señor está cerca.",
+        reference: "Filipenses 4:5 (NTV)",
+        text_en: "Let everyone see that you are considerate in all you do. Remember, the Lord is coming soon.",
+        reference_en: "Philippians 4:5 (NLT)",
+        text_pt: "Seja conhecida de todos a sua amabilidade. Perto está o Senhor.",
+        reference_pt: "Filipenses 4:5 (NVT)"
+    },
 ];

@@ -8,7 +8,7 @@ import { usePathname } from 'next/navigation';
 // For now I'm using text/emoji placeholders or basic SVGs if needed to be standalone without running npm install.
 // Assuming lucide-react IS in package.json, we can try to use it, but if it fails to compile without install, we'll fall back.
 // Since user hasn't installed node_modules, imports might partial fail in IDE but let's write code assuming they will install.
-import { Home, BookOpen, HeartPulse, User, Menu, Book, MessageCircle, Zap, Trophy, Gamepad2, HeartHandshake, FileText, FolderOpen, Globe } from 'lucide-react';
+import { Home, BookOpen, HeartPulse, User, Menu, Book, MessageCircle, Zap, Trophy, Gamepad2, HeartHandshake, Globe } from 'lucide-react';
 import { signOut } from "next-auth/react";
 import { useLanguage } from '@/app/LanguageContext';
 
@@ -19,8 +19,6 @@ export default function DashboardNav() {
 
     const navItems = [
         { name: t.nav.home, href: '/dashboard', icon: Home },
-        { name: "Artículos", href: '/dashboard/articles', icon: FileText },
-        { name: "Recursos", href: '/dashboard/resources', icon: FolderOpen },
         { name: t.nav.devotionals, href: '/dashboard/devotionals', icon: BookOpen },
         { name: t.nav.bible, href: '/dashboard/bible', icon: Book },
         { name: "Pregunta", href: '/dashboard/qa', icon: MessageCircle, showBadge: true }, // Was Community

@@ -10,10 +10,12 @@ import { useSession } from 'next-auth/react';
 
 import { useLanguage } from '@/app/LanguageContext';
 
-const categories = ['Para ti', 'Ansiedad', 'Identidad', 'Integridad', 'Fe', 'Relaciones', 'Oración', 'Soledad', 'Culpa', 'Ira', 'Envidia', 'Comunidad'];
+const categories = ['Para ti', 'Sabiduría', 'Espíritu Santo', 'Ansiedad', 'Identidad', 'Integridad', 'Fe', 'Relaciones', 'Oración', 'Soledad', 'Culpa', 'Ira', 'Envidia', 'Comunidad'];
 
 const categoryKeys: Record<string, string> = {
     'Para ti': 'for_you',
+    'Sabiduría': 'wisdom',
+    'Espíritu Santo': 'holy_spirit',
     'Ansiedad': 'anxiety',
     'Identidad': 'identity',
     'Integridad': 'integrity',
@@ -25,6 +27,11 @@ const categoryKeys: Record<string, string> = {
     'Ira': 'anger',
     'Envidia': 'envy',
     'Comunidad': 'community',
+};
+
+const getOptimizedImageUrl = (url: string) => {
+    if (url.includes('&w=') || url.includes('?w=')) return url;
+    return url + '&w=500';
 };
 
 export default function DevotionalsPage() {
@@ -112,8 +119,10 @@ export default function DevotionalsPage() {
                             <div key={dev.id} className="col-12 col-md-6">
                                 <Link href={`/dashboard/devotionals/${dev.id}`} className="card border-primary border-2 shadow-sm text-decoration-none hover-scale h-100">
                                     <div className="d-flex h-100">
-                                        <div className={`rounded-start py-5 px-4 d-flex align-items-center justify-content-center ${dev.image}`} style={{ width: '100px', backgroundColor: '#f8f9fa' }}>
-                                            <BookOpen className="text-secondary opacity-50" size={32} />
+                                        <div style={{ width: '100px', minHeight: '140px', backgroundImage: `url(${getOptimizedImageUrl(dev.image)})`, backgroundSize: 'cover', backgroundPosition: 'center' }} className="rounded-start d-flex align-items-center justify-content-center">
+                                            <div className="bg-dark bg-opacity-25 w-100 h-100 d-flex align-items-center justify-content-center">
+                                                <BookOpen className="text-white opacity-75" size={32} />
+                                            </div>
                                         </div>
                                         <div className="card-body py-3">
                                             <div className="d-flex justify-content-between align-items-start mb-1">
@@ -177,8 +186,10 @@ export default function DevotionalsPage() {
                             <div key={dev.id} className="col-12 col-md-6">
                                 <Link href={`/dashboard/devotionals/${dev.id}`} className="card border-0 shadow-sm text-decoration-none hover-scale h-100">
                                     <div className="d-flex h-100">
-                                        <div className={`rounded-start py-5 px-4 d-flex align-items-center justify-content-center ${dev.image}`} style={{ width: '100px', backgroundColor: '#f8f9fa' }}>
-                                            <BookOpen className="text-secondary opacity-50" size={32} />
+                                        <div style={{ width: '100px', minHeight: '140px', backgroundImage: `url(${getOptimizedImageUrl(dev.image)})`, backgroundSize: 'cover', backgroundPosition: 'center' }} className="rounded-start d-flex align-items-center justify-content-center">
+                                            <div className="bg-dark bg-opacity-25 w-100 h-100 d-flex align-items-center justify-content-center">
+                                                <BookOpen className="text-white opacity-75" size={32} />
+                                            </div>
                                         </div>
                                         <div className="card-body py-3">
                                             <div className="d-flex justify-content-between align-items-start mb-1">

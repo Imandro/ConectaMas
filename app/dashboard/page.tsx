@@ -7,7 +7,6 @@ import DailyVerse from './components/DailyVerse';
 // import DailyPrayerCard from '../components/DailyPrayerCard';
 import LlamiMascot from '../components/LlamiMascot';
 import FeatureTour from './components/FeatureTour';
-import FeaturedArticleModal from './components/FeaturedArticleModal';
 import AgePrompt from './components/AgePrompt';
 import ChallengeCard from './components/ChallengeCard';
 
@@ -48,56 +47,12 @@ export default function DashboardHome() {
     const [currentDate, setCurrentDate] = useState("");
     const [dailyQuestions, setDailyQuestions] = useState<any[]>([]);
     const [showDailyQuestions, setShowDailyQuestions] = useState(false);
-    const [featuredArticle, setFeaturedArticle] = useState<any>(null);
-    const [showFeaturedModal, setShowFeaturedModal] = useState(false);
-
     useEffect(() => {
         const localeMap: Record<string, string> = { es: 'es-ES', en: 'en-US', pt: 'pt-BR' };
         setCurrentDate(new Date().toLocaleDateString(localeMap[language] || 'es-ES', { day: 'numeric', month: 'long' }));
         fetchStats();
         fetchDailyQuestions();
-        fetchFeaturedArticle();
     }, [language]);
-
-    const fetchFeaturedArticle = async () => {
-        try {
-            const res = await fetch('/api/articles?featured=true&limit=50'); // Fetch a larger set to choose from
-            if (res.ok) {
-                const data = await res.json();
-                if (data.articles && data.articles.length > 0) {
-                    // Deterministically pick an article based on the date
-                    const today = new Date();
-                    const dayOfYear = Math.floor((today.getTime() - new Date(today.getFullYear(), 0, 0).getTime()) / 86400000);
-                    const articleIndex = dayOfYear % data.articles.length;
-                    const article = data.articles[articleIndex];
-
-                    setFeaturedArticle(article);
-
-                    // Logic for showing modal 2 times a day
-                    const dateStr = today.toDateString();
-                    const lastShownDate = localStorage.getItem('featured_article_last_date');
-                    const shownCountStr = localStorage.getItem('featured_article_shown_count');
-                    let shownCount = parseInt(shownCountStr || '0');
-
-                    if (lastShownDate !== dateStr) {
-                        shownCount = 0;
-                        localStorage.setItem('featured_article_last_date', dateStr);
-                        localStorage.setItem('featured_article_shown_count', '0');
-                    }
-
-                    if (shownCount < 2) {
-                        // Show after a delay to allow other things to load
-                        setTimeout(() => {
-                            setShowFeaturedModal(true);
-                            localStorage.setItem('featured_article_shown_count', (shownCount + 1).toString());
-                        }, 5000);
-                    }
-                }
-            }
-        } catch (e) {
-            console.error("Error fetching featured article", e);
-        }
-    };
 
     const fetchDailyQuestions = async () => {
         try {
@@ -446,12 +401,6 @@ export default function DashboardHome() {
                 <>
                     <section className="mb-5 pb-5 mt-5">
                         <SupportFundingAd />
-
-                        <FeaturedArticleModal
-                            article={featuredArticle}
-                            isOpen={showFeaturedModal}
-                            onClose={() => setShowFeaturedModal(false)}
-                        />
                     </section>
 
                     <div className="pb-5"></div>
