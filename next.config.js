@@ -1,5 +1,6 @@
 const withPWA = require('next-pwa')({
     dest: 'public',
+    // PWA is only enabled in production (build time)
     disable: process.env.NODE_ENV === 'development',
     register: true,
     skipWaiting: true,
