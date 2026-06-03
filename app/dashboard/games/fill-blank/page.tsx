@@ -79,7 +79,8 @@ export default function FillBlankGame() {
                             </div>
                             <h2 className="fw-bold text-white mb-2">¡Completa el Verso!</h2>
                             <p className="text-white/80 mb-1">Elige la palabra correcta para completar el versículo bíblico.</p>
-                            <p className="text-white/60 small mb-4">{ROUNDS} versículos para completar</p>
+                            <p className="text-white/60 small mb-1">{ROUNDS} versículos para completar</p>
+                            <p className="text-white/50 small mb-4 fst-italic">📖 Tip: Ten tu Biblia a mano para consultarla mientras juegas — así memorizas mejor cada versículo.</p>
                             {bestScore > 0 && (
                                 <p className="text-warning small mb-3">🏆 Mejor puntaje: {bestScore}/{ROUNDS}</p>
                             )}
