@@ -8,7 +8,7 @@ import toast from "react-hot-toast";
 
 const soloGames = [
     {
-        name: "Ordena el Verso",
+        name: "Ordena el Versículo",
         desc: "Toca las palabras en el orden correcto",
         href: "/dashboard/games/verse-order",
         gradient: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",

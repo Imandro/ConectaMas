@@ -97,7 +97,7 @@ export default function VerseOrderGame() {
                     <Link href="/dashboard/games" className="btn btn-white bg-white text-dark rounded-circle p-2 shadow-sm border-0">
                         <ArrowLeft size={22} />
                     </Link>
-                    <h1 className="h3 mb-0 fw-bold text-white">Ordena el Verso</h1>
+                    <h1 className="h3 mb-0 fw-bold text-white">Ordena el Versículo</h1>
                 </div>
 
                 {phase === "start" && (
@@ -106,9 +106,10 @@ export default function VerseOrderGame() {
                             <div className="bg-white/20 d-inline-flex p-4 rounded-circle mb-3">
                                 <Trophy size={48} className="text-warning" />
                             </div>
-                            <h2 className="fw-bold text-white mb-2">¡Ordena el Verso!</h2>
+                            <h2 className="fw-bold text-white mb-2">¡Ordena el Versículo!</h2>
                             <p className="text-white/80 mb-1">Toca las palabras en el orden correcto para formar el versículo.</p>
-                            <p className="text-white/60 small mb-4">{ROUNDS} versículos para completar</p>
+                            <p className="text-white/60 small mb-1">{ROUNDS} versículos para completar</p>
+                            <p className="text-white/50 small mb-4 fst-italic">📖 Tip: Ten tu Biblia a mano para consultarla mientras juegas — así aprendes el orden correcto de cada verso.</p>
                             {bestScore > 0 && (
                                 <p className="text-warning small mb-3">🏆 Mejor puntaje: {bestScore}/{ROUNDS}</p>
                             )}
