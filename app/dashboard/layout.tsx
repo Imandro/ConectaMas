@@ -14,18 +14,10 @@ export default function DashboardLayout({
 
             {/* Main Content Area */}
             <main className="min-vh-100">
-                {/* Desktop: Add margin left to accommodate fixed sidebar */}
-                <div className="d-none d-md-block" style={{ width: '240px' }}></div>
-
-                <div className="container-fluid py-4 px-3 px-md-4">
-                    <div className="row">
-                        <div className="col-12 col-md-auto d-none d-md-block" style={{ width: '240px' }}>
-                            {/* Placeholder for sidebar space if we wanted static, but sidebar is fixed. 
-                                So we just need to push content. 
-                            */}
-                        </div>
-                        <div className="col p-0 ps-md-4">
-                            <div className="d-md-block ms-md-sidebar pb-mobile-nav" style={{ transition: 'margin 0.3s' }}>
+                <div className="container-fluid py-4 px-3 px-md-4 px-lg-5">
+                    <div className="row justify-content-center">
+                        <div className="col-12 col-lg p-0" style={{ maxWidth: '1200px' }}>
+                            <div className="ms-lg-sidebar pb-mobile-nav">
                                 <div className="content-wrapper">
                                     {children}
                                 </div>

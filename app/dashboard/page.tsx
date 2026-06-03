@@ -206,10 +206,10 @@ export default function DashboardHome() {
             </section>
 
             {/* Estado y SOS con Llami */}
-            <section className="row g-2 mb-4">
-                <div className="col-7">
+            <section className="row g-2 g-md-3 mb-4">
+                <div className="col-sm-7 col-12">
                     <div id="tour-checkin" className="card border-0 shadow-sm h-100 bg-white overflow-visible" style={{ borderRadius: '24px' }}>
-                        <div className="card-body p-3">
+                        <div className="card-body p-3 p-md-4">
                             <div className="row align-items-between h-100">
                                 <div className="col-7 d-flex flex-column justify-content-center">
                                     <p className="text-muted fw-bold mb-1" style={{ fontSize: '0.8rem', color: '#94A3B8' }}>{t.dashboard.streak_label}</p>
@@ -247,9 +247,9 @@ export default function DashboardHome() {
                         </div>
                     </div>
                 </div>
-                <div className="col-5">
+                <div className="col-sm-5 col-12">
                     <Link href="/dashboard/sos" className="card border-0 shadow-sm h-100 bg-danger text-white text-decoration-none hover-scale overflow-hidden" style={{ borderRadius: '24px' }}>
-                        <div className="card-body p-2 d-flex flex-column align-items-center justify-content-center text-center">
+                        <div className="card-body p-3 d-flex flex-column align-items-center justify-content-center text-center">
                             <div className="mb-2 d-flex align-items-center justify-content-center">
                                 <Shield size={72} className="text-white" fill="white" fillOpacity={0.2} />
                             </div>

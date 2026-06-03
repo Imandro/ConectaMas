@@ -47,9 +47,9 @@ export default function DashboardNav() {
 
     return (
         <>
-            {/* Mobile Bottom Nav */}
+            {/* Mobile + Tablet Bottom Nav */}
             <nav
-                className="navbar fixed-bottom navbar-light bg-white border-top d-md-none safe-area-bottom shadow-lg p-0"
+                className="navbar fixed-bottom navbar-light bg-white border-top d-lg-none safe-area-bottom shadow-lg p-0"
                 style={{ borderRadius: '20px 20px 0 0', borderTopColor: 'var(--border-color)', height: '70px' }}
             >
                 <div className="container-fluid d-flex px-0 justify-content-between align-items-center h-100">
@@ -78,8 +78,8 @@ export default function DashboardNav() {
                 </div>
             </nav>
 
-            {/* Desktop Sidebar (Hidden on Mobile) */}
-            <div className="d-none d-md-flex flex-column bg-primary border-end h-100 p-3 position-fixed top-0 start-0 text-white" style={{ width: '240px' }}>
+            {/* Desktop Sidebar (Hidden on Mobile/Tablet) */}
+            <div className="d-none d-lg-flex flex-column bg-primary border-end h-100 p-3 position-fixed top-0 start-0 text-white" style={{ width: '240px' }}>
                 <div className="mb-5 px-2 mt-2">
                     <h4 className="fw-bold text-white mb-0">Conecta<span className="text-secondary">+</span></h4>
                     <small className="text-white-50 small">{t.nav.safe_space}</small>

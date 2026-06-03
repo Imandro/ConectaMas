@@ -124,7 +124,7 @@ export default function GamesDashboard() {
             </div>
             <div className="row g-3 mb-5">
                 {soloGames.map((game) => (
-                    <div key={game.href} className="col-12 col-sm-6 col-lg-4">
+                    <div key={game.href} className="col-12 col-sm-6 col-lg-4 col-xl-3">
                         <div className="card border-0 shadow-sm overflow-hidden hover-scale h-100" onClick={() => router.push(game.href)} style={{ cursor: 'pointer', borderRadius: '24px', background: game.gradient }}>
                             <div className="card-body p-4 position-relative">
                                 <div className="position-absolute top-0 end-0 p-2 opacity-15" style={{ fontSize: '3.5rem' }}>

@@ -38,13 +38,13 @@
 }
 
 // Dashboard Layout Utilities
-@include media-breakpoint-up(md) {
-    .ms-md-sidebar {
+@include media-breakpoint-up(lg) {
+    .ms-lg-sidebar {
         margin-left: 240px !important;
     }
 }
 
-@include media-breakpoint-down(md) {
+@include media-breakpoint-down(lg) {
     .pb-mobile-nav {
         padding-bottom: 100px !important;
     }
