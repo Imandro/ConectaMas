@@ -126,7 +126,7 @@ export default function VerseOrderGame() {
                                 <span className="badge bg-primary rounded-pill">Ronda {round + 1}/{ROUNDS}</span>
                                 <span className="fw-bold text-primary">⭐ {score}</span>
                             </div>
-                            <div className="progress mb-4" style={{ height: "6px", borderRadius: "3px" }}>
+                            <div className="progress mb-4">
                                 <div className="progress-bar bg-warning" style={{ width: `${((round + 1) / ROUNDS) * 100}%` }} />
                             </div>
 
@@ -204,8 +204,41 @@ export default function VerseOrderGame() {
             <style jsx>{`
                 .max-w-4xl { max-width: 900px; }
                 .max-w-md { max-width: 450px; margin: 0 auto; }
-                .min-h-100 { min-height: 100px; }
+                .min-h-100 { min-height: 80px; }
                 .backdrop-blur-sm { backdrop-filter: blur(8px); }
+                .btn:focus:not(:focus-visible) {
+                    outline: none !important;
+                    box-shadow: none !important;
+                }
+                .btn {
+                    transition: transform 0.15s ease, box-shadow 0.15s ease;
+                }
+                .btn:hover:not(:disabled) {
+                    transform: translateY(-2px);
+                    box-shadow: 0 4px 12px rgba(0,0,0,0.15) !important;
+                }
+                .btn:active:not(:disabled) {
+                    transform: translateY(0px);
+                }
+                .btn:disabled {
+                    cursor: not-allowed;
+                    opacity: 0.6;
+                }
+                .progress {
+                    height: 8px !important;
+                    border-radius: 8px !important;
+                    background: rgba(255,255,255,0.25) !important;
+                    overflow: hidden;
+                }
+                .progress-bar {
+                    border-radius: 8px !important;
+                    transition: width 0.4s ease !important;
+                    background-image: linear-gradient(90deg, #f59e0b, #f97316) !important;
+                }
+                .badge.bg-primary {
+                    padding: 0.5rem 1rem !important;
+                    font-size: 0.9rem !important;
+                }
             `}</style>
         </div>
     );

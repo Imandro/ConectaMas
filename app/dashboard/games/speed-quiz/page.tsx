@@ -124,13 +124,13 @@ export default function SpeedQuizGame() {
                     <AnimatePresence mode="wait">
                         <motion.div key={round} initial={{ opacity: 0, x: 50 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -50 }} className="bg-white rounded-5 shadow-sm p-4">
                             <div className="d-flex justify-content-between align-items-center mb-3">
-                                <span className="badge bg-danger rounded-pill">
+                                <span className={`badge rounded-pill ${timeLeft <= 10 ? "bg-danger timer-low" : "bg-danger"}`}>
                                     <Clock size={14} className="me-1" />{timeLeft}s
                                 </span>
                                 <span className="fw-bold text-primary">⭐ {score}</span>
                                 <span className="badge bg-secondary rounded-pill">{round + 1}/{TOTAL_QUESTIONS}</span>
                             </div>
-                            <div className="progress mb-4" style={{ height: "6px", borderRadius: "3px" }}>
+                            <div className="progress mb-4">
                                 <div className="progress-bar bg-danger" style={{ width: `${progress}%` }} />
                             </div>
 
@@ -193,6 +193,41 @@ export default function SpeedQuizGame() {
                 .max-w-4xl { max-width: 900px; }
                 .max-w-md { max-width: 450px; margin: 0 auto; }
                 .backdrop-blur-sm { backdrop-filter: blur(8px); }
+                .btn:focus:not(:focus-visible) {
+                    outline: none !important;
+                    box-shadow: none !important;
+                }
+                .btn {
+                    transition: transform 0.15s ease, box-shadow 0.15s ease;
+                }
+                .btn:hover:not(:disabled) {
+                    transform: translateY(-2px);
+                    box-shadow: 0 4px 12px rgba(0,0,0,0.15) !important;
+                }
+                .btn:active:not(:disabled) {
+                    transform: translateY(0px);
+                }
+                .btn:disabled {
+                    cursor: not-allowed;
+                    opacity: 0.6;
+                }
+                .progress {
+                    height: 8px !important;
+                    border-radius: 8px !important;
+                    background: rgba(255,255,255,0.25) !important;
+                    overflow: hidden;
+                }
+                .progress-bar {
+                    border-radius: 8px !important;
+                    transition: width 0.4s ease !important;
+                }
+                .timer-low {
+                    animation: pulse 0.5s ease-in-out infinite;
+                }
+                @keyframes pulse {
+                    0%, 100% { transform: scale(1); }
+                    50% { transform: scale(1.05); }
+                }
             `}</style>
         </div>
     );

@@ -119,13 +119,15 @@ export default function GamesDashboard() {
             </header>
 
             {/* Solo Games */}
-            <h5 className="fw-bold text-secondary mb-3">🎯 Juegos Individuales</h5>
+            <div className="section-header">
+                <PlayCircle size={18} /> Juegos Individuales
+            </div>
             <div className="row g-3 mb-5">
                 {soloGames.map((game) => (
                     <div key={game.href} className="col-12 col-sm-6 col-lg-4">
                         <div className="card border-0 shadow-sm overflow-hidden hover-scale h-100" onClick={() => router.push(game.href)} style={{ cursor: 'pointer', borderRadius: '24px', background: game.gradient }}>
                             <div className="card-body p-4 position-relative">
-                                <div className="position-absolute top-0 end-0 p-3 opacity-20" style={{ fontSize: '4rem' }}>
+                                <div className="position-absolute top-0 end-0 p-2 opacity-15" style={{ fontSize: '3.5rem' }}>
                                     {game.emoji}
                                 </div>
                                 <div className="position-relative z-10">
@@ -142,7 +144,9 @@ export default function GamesDashboard() {
             </div>
 
             {/* Multiplayer Games */}
-            <h5 className="fw-bold text-secondary mb-3">👥 Juegos en Vivo</h5>
+            <div className="section-header">
+                <Globe size={18} /> Juegos en Vivo
+            </div>
             <div className="row g-3 mb-5">
                 {/* Trivia Card */}
                 <div className="col-12 col-md-6">
@@ -265,6 +269,42 @@ export default function GamesDashboard() {
                     </div>
                 </div>
             )}
+            <style jsx>{`
+                .btn:focus:not(:focus-visible) {
+                    outline: none !important;
+                    box-shadow: none !important;
+                }
+                .card {
+                    transition: transform 0.2s ease, box-shadow 0.2s ease;
+                }
+                .card:hover {
+                    transform: translateY(-4px);
+                    box-shadow: 0 12px 24px rgba(0,0,0,0.12) !important;
+                }
+                .card:active {
+                    transform: translateY(-1px);
+                }
+                .section-header {
+                    display: flex;
+                    align-items: center;
+                    gap: 0.5rem;
+                    font-weight: 700;
+                    color: #6c757d;
+                    margin-bottom: 0.75rem;
+                    padding-bottom: 0.5rem;
+                    border-bottom: 2px solid #e9ecef;
+                }
+                .section-header svg {
+                    opacity: 0.7;
+                }
+                @keyframes fadeIn {
+                    from { opacity: 0; transform: translateY(10px); }
+                    to { opacity: 1; transform: translateY(0); }
+                }
+                .animate-fade-in {
+                    animation: fadeIn 0.3s ease forwards;
+                }
+            `}</style>
         </div>
     );
 }

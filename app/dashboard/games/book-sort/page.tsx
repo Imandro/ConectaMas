@@ -102,7 +102,7 @@ export default function BookSortGame() {
                                 <span className="badge bg-dark rounded-pill">{round + 1}/{ROUNDS}</span>
                                 <span className="fw-bold">⭐ {score}</span>
                             </div>
-                            <div className="progress mb-4" style={{ height: "6px", borderRadius: "3px" }}>
+                            <div className="progress mb-4">
                                 <div className="progress-bar bg-warning" style={{ width: `${((round + 1) / ROUNDS) * 100}%` }} />
                             </div>
 
@@ -111,17 +111,17 @@ export default function BookSortGame() {
                                     <h2 className="display-5 fw-bold text-white mb-0">{questions[round].book}</h2>
                                 </div>
 
-                                <div className="d-flex gap-3 justify-content-center">
+                                <div className="d-flex flex-column flex-sm-row gap-3 justify-content-center">
                                     <button onClick={() => handleAnswer("AT")} disabled={feedback !== null}
-                                        className={`btn btn-lg rounded-4 px-5 py-4 fw-bold shadow-lg ${feedback ? (questions[round].testament === "AT" ? "btn-success" : "btn-outline-light opacity-50") : "btn-outline-light"}`}
-                                        style={{ minWidth: "160px", fontSize: "1.3rem" }}
+                                        className={`btn btn-lg rounded-4 px-5 py-4 fw-bold shadow-lg w-100 w-sm-auto ${feedback ? (questions[round].testament === "AT" ? "btn-success" : "btn-outline-light opacity-50") : "btn-outline-light"}`}
+                                        style={{ fontSize: "1.3rem" }}
                                     >
                                         📜 AT
                                         <br /><small className="fw-normal">Antiguo Testamento</small>
                                     </button>
                                     <button onClick={() => handleAnswer("NT")} disabled={feedback !== null}
-                                        className={`btn btn-lg rounded-4 px-5 py-4 fw-bold shadow-lg ${feedback ? (questions[round].testament === "NT" ? "btn-success" : "btn-outline-light opacity-50") : "btn-outline-light"}`}
-                                        style={{ minWidth: "160px", fontSize: "1.3rem" }}
+                                        className={`btn btn-lg rounded-4 px-5 py-4 fw-bold shadow-lg w-100 w-sm-auto ${feedback ? (questions[round].testament === "NT" ? "btn-success" : "btn-outline-light opacity-50") : "btn-outline-light"}`}
+                                        style={{ fontSize: "1.3rem" }}
                                     >
                                         ✝️ NT
                                         <br /><small className="fw-normal">Nuevo Testamento</small>
@@ -170,6 +170,35 @@ export default function BookSortGame() {
                 .max-w-4xl { max-width: 900px; }
                 .max-w-md { max-width: 450px; margin: 0 auto; }
                 .backdrop-blur-sm { backdrop-filter: blur(8px); }
+                .btn:focus:not(:focus-visible) {
+                    outline: none !important;
+                    box-shadow: none !important;
+                }
+                .btn {
+                    transition: transform 0.15s ease, box-shadow 0.15s ease;
+                }
+                .btn:hover:not(:disabled) {
+                    transform: translateY(-2px);
+                    box-shadow: 0 4px 12px rgba(0,0,0,0.15) !important;
+                }
+                .btn:active:not(:disabled) {
+                    transform: translateY(0px);
+                }
+                .btn:disabled {
+                    cursor: not-allowed;
+                    opacity: 0.6;
+                }
+                .progress {
+                    height: 8px !important;
+                    border-radius: 8px !important;
+                    background: rgba(255,255,255,0.25) !important;
+                    overflow: hidden;
+                }
+                .progress-bar {
+                    border-radius: 8px !important;
+                    transition: width 0.4s ease !important;
+                    background-image: linear-gradient(90deg, #f59e0b, #f97316) !important;
+                }
             `}</style>
         </div>
     );

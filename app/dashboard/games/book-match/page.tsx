@@ -103,7 +103,7 @@ export default function BookMatchGame() {
                                 <span className="badge bg-primary rounded-pill">Ronda {round + 1}/{ROUNDS}</span>
                                 <span className="fw-bold text-primary">⭐ {score}</span>
                             </div>
-                            <div className="progress mb-4" style={{ height: "6px", borderRadius: "3px" }}>
+                            <div className="progress mb-4">
                                 <div className="progress-bar bg-warning" style={{ width: `${((round + 1) / ROUNDS) * 100}%` }} />
                             </div>
 
@@ -112,16 +112,17 @@ export default function BookMatchGame() {
                             <div className="d-flex flex-column gap-2 mb-4">
                                 {questions[round].books.map((book) => {
                                     const assigned = assignments[book.id];
-                                    let cardClass = "bg-light rounded-3 p-3 d-flex justify-content-between align-items-center";
+                                    let cardClass = "bg-light rounded-3 p-3";
                                     if (feedback) {
                                         if (assigned === book.category) cardClass += " border border-success";
                                         else if (assigned) cardClass += " border border-danger";
                                     }
                                     return (
                                         <div key={book.id} className={cardClass}>
-                                            <span className="fw-bold">{book.book}</span>
-                                            <div className="d-flex gap-1">
-                                                {questions[round].options.map((cat) => {
+                                            <div className="d-flex flex-column flex-sm-row align-items-start align-items-sm-center justify-content-between gap-2">
+                                                <span className="fw-bold flex-shrink-0">{book.book}</span>
+                                                <div className="d-flex flex-wrap gap-1 justify-content-start justify-content-sm-end w-100 w-sm-auto">
+                                                    {questions[round].options.map((cat) => {
                                                     const isSelected = assigned === cat;
                                                     let btnClass = "btn btn-sm rounded-pill";
                                                     if (feedback && isSelected) {
@@ -142,6 +143,7 @@ export default function BookMatchGame() {
                                                 })}
                                             </div>
                                         </div>
+                                    </div>
                                     );
                                 })}
                             </div>
@@ -187,6 +189,41 @@ export default function BookMatchGame() {
                 .max-w-4xl { max-width: 900px; }
                 .max-w-md { max-width: 450px; margin: 0 auto; }
                 .backdrop-blur-sm { backdrop-filter: blur(8px); }
+                .btn:focus:not(:focus-visible) {
+                    outline: none !important;
+                    box-shadow: none !important;
+                }
+                .btn {
+                    transition: transform 0.15s ease, box-shadow 0.15s ease;
+                }
+                .btn:hover:not(:disabled) {
+                    transform: translateY(-2px);
+                    box-shadow: 0 4px 12px rgba(0,0,0,0.15) !important;
+                }
+                .btn:active:not(:disabled) {
+                    transform: translateY(0px);
+                }
+                .btn:disabled {
+                    cursor: not-allowed;
+                    opacity: 0.6;
+                }
+                .progress {
+                    height: 8px !important;
+                    border-radius: 8px !important;
+                    background: rgba(255,255,255,0.25) !important;
+                    overflow: hidden;
+                }
+                .progress-bar {
+                    border-radius: 8px !important;
+                    transition: width 0.4s ease !important;
+                    background-image: linear-gradient(90deg, #f59e0b, #f97316) !important;
+                }
+                @media (max-width: 575px) {
+                    .btn-sm.rounded-pill {
+                        font-size: 0.7rem;
+                        padding: 0.25rem 0.5rem;
+                    }
+                }
             `}</style>
         </div>
     );
