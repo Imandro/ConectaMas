@@ -55,6 +55,7 @@ model User {
   receivedRequests         Friendship[]           @relation("ReceivedRequests")
   sentRequests             Friendship[]           @relation("SentRequests")
   gameParticipations       GamePlayer[]
+  gameScores               GameScore[]
   ledGroups                Group[]                @relation("GroupLeader")
   groupMemberships         GroupMember[]
   groupTaskCompletions     GroupTaskCompletion[]
@@ -560,6 +561,20 @@ model GamePlayer {
   user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([roomId, userId])
+}
+
+model GameScore {
+  id        String   @id @default(cuid())
+  userId    String
+  gameType  String
+  score     Int
+  maxScore  Int?
+  timeSpent Int?
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, gameType])
+  @@index([gameType, score])
 }
 
 model GroupNeed {

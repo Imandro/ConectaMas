@@ -2,10 +2,52 @@
 
 import { useEffect, useState } from "react";
 import { getGameRooms, createGameRoom, joinGameRoom } from "./actions";
-import { Loader2, Plus, Users, Lock, Globe, Zap, PlayCircle, RefreshCw } from "lucide-react";
+import { Loader2, Plus, Users, Lock, Globe, Zap, PlayCircle, RefreshCw, BookOpen, Timer, Book, Puzzle, ListOrdered } from "lucide-react";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
-import Image from "next/image";
+
+const soloGames = [
+    {
+        name: "Ordena el Verso",
+        desc: "Toca las palabras en el orden correcto",
+        href: "/dashboard/games/verse-order",
+        gradient: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+        emoji: "📖",
+        icon: ListOrdered,
+    },
+    {
+        name: "Pregunta Relámpago",
+        desc: "Responde rápido antes del tiempo",
+        href: "/dashboard/games/speed-quiz",
+        gradient: "linear-gradient(135deg, #f093fb 0%, #f5576c 100%)",
+        emoji: "⚡",
+        icon: Timer,
+    },
+    {
+        name: "Empareja Libros",
+        desc: "Clasifica libros por categoría",
+        href: "/dashboard/games/book-match",
+        gradient: "linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%)",
+        emoji: "📚",
+        icon: Book,
+    },
+    {
+        name: "Completa el Verso",
+        desc: "Elige la palabra que falta",
+        href: "/dashboard/games/fill-blank",
+        gradient: "linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)",
+        emoji: "✏️",
+        icon: Puzzle,
+    },
+    {
+        name: "Clasifica el Libro",
+        desc: "AT o NT? Elige rápido",
+        href: "/dashboard/games/book-sort",
+        gradient: "linear-gradient(135deg, #fa709a 0%, #fee140 100%)",
+        emoji: "📜",
+        icon: BookOpen,
+    },
+];
 
 export default function GamesDashboard() {
     const [rooms, setRooms] = useState<any[]>([]);
@@ -76,7 +118,31 @@ export default function GamesDashboard() {
                 </button>
             </header>
 
-            {/* Games Selection */}
+            {/* Solo Games */}
+            <h5 className="fw-bold text-secondary mb-3">🎯 Juegos Individuales</h5>
+            <div className="row g-3 mb-5">
+                {soloGames.map((game) => (
+                    <div key={game.href} className="col-12 col-sm-6 col-lg-4">
+                        <div className="card border-0 shadow-sm overflow-hidden hover-scale h-100" onClick={() => router.push(game.href)} style={{ cursor: 'pointer', borderRadius: '24px', background: game.gradient }}>
+                            <div className="card-body p-4 position-relative">
+                                <div className="position-absolute top-0 end-0 p-3 opacity-20" style={{ fontSize: '4rem' }}>
+                                    {game.emoji}
+                                </div>
+                                <div className="position-relative z-10">
+                                    <div className="bg-white bg-opacity-25 p-2 rounded-3 d-inline-flex mb-3 shadow-sm text-white">
+                                        <game.icon size={24} />
+                                    </div>
+                                    <h4 className="fw-bold text-white mb-1">{game.name}</h4>
+                                    <p className="text-white text-opacity-75 small mb-0 fw-medium">{game.desc}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                ))}
+            </div>
+
+            {/* Multiplayer Games */}
+            <h5 className="fw-bold text-secondary mb-3">👥 Juegos en Vivo</h5>
             <div className="row g-3 mb-5">
                 {/* Trivia Card */}
                 <div className="col-12 col-md-6">
@@ -100,9 +166,7 @@ export default function GamesDashboard() {
                 <div className="col-12 col-md-6">
                     <div className="card border-0 shadow-sm bg-danger bg-opacity-10 overflow-hidden hover-scale h-100" onClick={() => setShowCreateModal(true)} style={{ cursor: 'pointer', borderRadius: '24px' }}>
                         <div className="card-body p-4 position-relative">
-                            {/* Decorative Emoji background */}
                             <div className="position-absolute top-50 end-0 translate-middle-y me-3 opacity-25" style={{ fontSize: '5rem' }}>🥔</div>
-
                             <div className="position-relative z-10">
                                 <div className="bg-white p-2 rounded-3 d-inline-flex mb-3 shadow-sm text-danger">
                                     <PlayCircle size={24} />

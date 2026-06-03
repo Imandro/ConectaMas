@@ -26,6 +26,7 @@ export const pt = {
         safe_space: "Seu espaço seguro",
         tutorials: "Tutoriais",
         friends: "Amigos",
+        games: "Jogos",
     },
     onboarding: {
         welcome: "Bem-vindo ao Conecta+",

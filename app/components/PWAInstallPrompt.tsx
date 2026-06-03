@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Share, PlusSquare, MoreVertical, Download, X } from 'lucide-react';
+import { Share, PlusSquare, MoreVertical, Download, X, Smartphone } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useLanguage } from '@/app/LanguageContext';
 
@@ -9,37 +9,70 @@ export default function PWAInstallPrompt() {
     const { t } = useLanguage();
     const [showPrompt, setShowPrompt] = useState(false);
     const [platform, setPlatform] = useState<"ios" | "android" | "other" | null>(null);
+    const [installPrompt, setInstallPrompt] = useState<any>(null);
+    const [isInstalled, setIsInstalled] = useState(false);
 
     useEffect(() => {
-        // 1. Detect platform
         const userAgent = window.navigator.userAgent.toLowerCase();
         const isIos = /iphone|ipad|ipod/.test(userAgent);
         const isAndroid = /android/.test(userAgent);
-
-        // 2. Check if already in standalone mode
         const isStandalone =
             (window.navigator as any).standalone ||
             window.matchMedia('(display-mode: standalone)').matches;
 
-        // 3. Logic to show prompt
-        const hasDismissed = localStorage.getItem("pwaPromptDismissed");
-
-        if (!isStandalone && (isIos || isAndroid) && !hasDismissed) {
-            setPlatform(isIos ? "ios" : "android");
-            // Delay a bit to not overwhelm the user immediately
-            const timer = setTimeout(() => setShowPrompt(true), 3000);
-            return () => clearTimeout(timer);
+        if (isStandalone) {
+            setIsInstalled(true);
+            return;
         }
+
+        // Listen for beforeinstallprompt (Android Chrome)
+        const handleBeforeInstall = (e: Event) => {
+            e.preventDefault();
+            setInstallPrompt(e);
+            (window as any).__pwaInstallPrompt = e;
+            setPlatform("android");
+            if (!localStorage.getItem("pwaPromptDismissed")) {
+                setTimeout(() => setShowPrompt(true), 3000);
+            }
+        };
+
+        window.addEventListener('beforeinstallprompt', handleBeforeInstall);
+
+        // Fallback for iOS / non-Chrome Android
+        const hasDismissed = localStorage.getItem("pwaPromptDismissed");
+        if (!isStandalone && (isIos || isAndroid) && !hasDismissed && !installPrompt) {
+            setPlatform(isIos ? "ios" : "android");
+            const timer = setTimeout(() => setShowPrompt(true), 3000);
+            return () => {
+                clearTimeout(timer);
+                window.removeEventListener('beforeinstallprompt', handleBeforeInstall);
+            };
+        }
+
+        return () => window.removeEventListener('beforeinstallprompt', handleBeforeInstall);
     }, []);
+
+    const handleInstall = async () => {
+        if (installPrompt) {
+            installPrompt.prompt();
+            const result = await installPrompt.userChoice;
+            if (result.outcome === 'accepted') {
+                setIsInstalled(true);
+                setShowPrompt(false);
+            }
+            setInstallPrompt(null);
+            localStorage.setItem("pwaPromptDismissed", "true");
+        } else {
+            handleClose();
+        }
+    };
 
     const handleClose = () => {
         setShowPrompt(false);
-        // We'll show it again after some time or just never again? 
-        // Let's hide it for this session/browsing
         localStorage.setItem("pwaPromptDismissed", "true");
     };
 
-    if (!showPrompt) return null;
+    if (!showPrompt || isInstalled) return null;
 
     return (
         <div className="fixed-bottom p-3 z-5 d-flex justify-content-center justify-content-md-end" style={{ zIndex: 9999, bottom: '160px' }}>
@@ -60,7 +93,13 @@ export default function PWAInstallPrompt() {
                                 {t.pwa_prompt.description}
                             </p>
 
-                            {platform === "ios" ? (
+                            {installPrompt ? (
+                                <div className="android-steps extra-small text-primary fw-bold mb-3 d-flex flex-column gap-1">
+                                    <div className="d-flex align-items-center gap-2">
+                                        <Smartphone size={14} /> {t.pwa_prompt.android_step1 || "Instalar aplicación"}
+                                    </div>
+                                </div>
+                            ) : platform === "ios" ? (
                                 <div className="ios-steps extra-small text-primary fw-bold mb-3 d-flex flex-column gap-1">
                                     <div className="d-flex align-items-center gap-2">
                                         <Share size={14} /> {t.pwa_prompt.ios_step1}
@@ -80,13 +119,23 @@ export default function PWAInstallPrompt() {
                                 </div>
                             )}
 
-                            <button
-                                onClick={handleClose}
-                                className="btn btn-primary btn-sm w-100 rounded-pill fw-bold"
-                                style={{ fontSize: '0.75rem' }}
-                            >
-                                {t.pwa_prompt.button}
-                            </button>
+                            {installPrompt ? (
+                                <button
+                                    onClick={handleInstall}
+                                    className="btn btn-success btn-sm w-100 rounded-pill fw-bold"
+                                    style={{ fontSize: '0.75rem' }}
+                                >
+                                    <Download size={14} className="me-1" /> Instalar App
+                                </button>
+                            ) : (
+                                <button
+                                    onClick={handleClose}
+                                    className="btn btn-primary btn-sm w-100 rounded-pill fw-bold"
+                                    style={{ fontSize: '0.75rem' }}
+                                >
+                                    {t.pwa_prompt.button}
+                                </button>
+                            )}
                         </div>
                         <button onClick={handleClose} className="btn btn-link p-0 text-muted opacity-50 hover-opacity-100">
                             <X size={16} />

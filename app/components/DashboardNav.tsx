@@ -8,7 +8,7 @@ import { usePathname } from 'next/navigation';
 // For now I'm using text/emoji placeholders or basic SVGs if needed to be standalone without running npm install.
 // Assuming lucide-react IS in package.json, we can try to use it, but if it fails to compile without install, we'll fall back.
 // Since user hasn't installed node_modules, imports might partial fail in IDE but let's write code assuming they will install.
-import { Home, BookOpen, HeartPulse, User, Menu, Book, MessageCircle, Zap, Trophy, Gamepad2, HeartHandshake, Globe } from 'lucide-react';
+import { Home, BookOpen, HeartPulse, User, Menu, Book, MessageCircle, Zap, Trophy, Gamepad2, HeartHandshake, Globe, Download } from 'lucide-react';
 import { signOut } from "next-auth/react";
 import { useLanguage } from '@/app/LanguageContext';
 
@@ -23,6 +23,7 @@ export default function DashboardNav() {
         { name: t.nav.bible, href: '/dashboard/bible', icon: Book },
         { name: "Pregunta", href: '/dashboard/qa', icon: MessageCircle, showBadge: true }, // Was Community
         { name: "Oración", href: '/dashboard/prayer', icon: HeartHandshake },
+        { name: t.nav.games, href: '/dashboard/games', icon: Gamepad2 },
     ];
 
     useEffect(() => {
@@ -108,7 +109,26 @@ export default function DashboardNav() {
                     })}
                 </nav>
 
-                <div className="mt-auto px-2 d-flex flex-column gap-3">
+                <div className="mt-auto px-2 d-flex flex-column gap-2">
+                    <button
+                        onClick={async () => {
+                            const event = new Event('beforeinstallprompt');
+                            window.dispatchEvent(event);
+                            if ((window as any).__pwaInstallPrompt) {
+                                (window as any).__pwaInstallPrompt.prompt();
+                                const r = await (window as any).__pwaInstallPrompt.userChoice;
+                                if (r.outcome === 'accepted') {
+                                    (window as any).__pwaInstallPrompt = null;
+                                }
+                            } else {
+                                alert('Abre Chrome en tu celular, toca el menú ⋮ y selecciona "Instalar aplicación"');
+                            }
+                        }}
+                        className="btn btn-outline-light w-100 rounded-pill btn-sm fw-bold shadow-sm mb-1"
+                        style={{ fontSize: '0.75rem' }}
+                    >
+                        <Download size={14} className="me-1" /> Descargar App
+                    </button>
                     <button
                         onClick={async () => {
                             await signOut({ redirect: false });
