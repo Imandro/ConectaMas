@@ -1,9 +1,11 @@
 const withPWA = require('next-pwa')({
     dest: 'public',
-    // PWA is only enabled in production (build time)
     disable: process.env.NODE_ENV === 'development',
     register: true,
     skipWaiting: true,
+    fallbacks: {
+        document: '/offline',
+    },
     runtimeCaching: [
         {
             urlPattern: /^https:\/\/images\.unsplash\.com\/.*/i,
@@ -25,6 +27,22 @@ const withPWA = require('next-pwa')({
             urlPattern: /^https:\/\/fonts\.googleapis\.com\/.*/i,
             handler: 'StaleWhileRevalidate',
             options: { cacheName: 'google-fonts', expiration: { maxEntries: 10, maxAgeSeconds: 30 * 24 * 60 * 60 } },
+        },
+        {
+            urlPattern: /\/api\/bible/,
+            handler: 'CacheFirst',
+            options: {
+                cacheName: 'bible-api',
+                expiration: { maxEntries: 200, maxAgeSeconds: 365 * 24 * 60 * 60 },
+            },
+        },
+        {
+            urlPattern: /\.(?:js|css)$/i,
+            handler: 'StaleWhileRevalidate',
+            options: {
+                cacheName: 'static-assets',
+                expiration: { maxEntries: 200, maxAgeSeconds: 30 * 24 * 60 * 60 },
+            },
         },
     ],
 });
