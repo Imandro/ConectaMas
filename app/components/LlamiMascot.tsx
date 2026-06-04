@@ -516,7 +516,7 @@ export default function LlamiMascot({
                         <motion.ellipse
                             cx="50" cy="45" rx="10" ry="14"
                             fill="white"
-                            opacity={[0.35, 0.6, 0.35]}
+                            initial={{ opacity: 0.35 }}
                             animate={{ scale: [1, 1.15, 1], opacity: [0.35, 0.6, 0.35] }}
                             transition={{ duration: 0.4, repeat: Infinity }}
                         />
