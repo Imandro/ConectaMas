@@ -1,7 +1,7 @@
 "use client";
 
 import Link from 'next/link';
-import { Sun, AlertTriangle, Loader2, HelpCircle, ChevronRight, Shield, Users, BookOpen, Trophy, Gamepad2 } from 'lucide-react';
+import { Sun, AlertTriangle, Loader2, HelpCircle, ChevronRight, Shield, Users, BookOpen, Trophy, Gamepad2, Heart } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import DailyVerse from './components/DailyVerse';
 // import DailyPrayerCard from '../components/DailyPrayerCard';
@@ -310,7 +310,7 @@ export default function DashboardHome() {
             <section className="mb-4 animate-fade-in delay-100">
                 <div className="row g-3">
                     {/* Games Card */}
-                    <div className="col-6">
+                    <div className="col-6 col-md-3">
                         <Link href="/dashboard/games" className="text-decoration-none">
                             <div id="tour-games" className="card border-0 shadow-sm h-100 bg-white hover-scale" style={{ borderRadius: '24px' }}>
                                 <div className="card-body p-3 d-flex flex-column align-items-center justify-content-center text-center" style={{ minHeight: '140px' }}>
@@ -324,7 +324,7 @@ export default function DashboardHome() {
                         </Link>
                     </div>
                     {/* Leagues Card */}
-                    <div className="col-6">
+                    <div className="col-6 col-md-3">
                         <Link href="/dashboard/leagues" className="text-decoration-none">
                             <div id="tour-leagues" className="card border-0 shadow-sm h-100 bg-white hover-scale" style={{ borderRadius: '24px' }}>
                                 <div className="card-body p-3 d-flex flex-column align-items-center justify-content-center text-center" style={{ minHeight: '140px' }}>
@@ -333,6 +333,20 @@ export default function DashboardHome() {
                                     </div>
                                     <h5 className="fw-extrabold text-dark m-0">{t.leagues.title}</h5>
                                     <small className="text-muted fw-bold">{stats?.league || "Bronce"}</small>
+                                </div>
+                            </div>
+                        </Link>
+                    </div>
+                    {/* Support Card */}
+                    <div className="col-6 col-md-3">
+                        <Link href="/dashboard/support" className="text-decoration-none">
+                            <div className="card border-0 shadow-sm h-100 bg-white hover-scale" style={{ borderRadius: '24px' }}>
+                                <div className="card-body p-3 d-flex flex-column align-items-center justify-content-center text-center" style={{ minHeight: '140px' }}>
+                                    <div className="bg-danger-subtle text-danger p-3 rounded-circle mb-3">
+                                        <Heart size={32} />
+                                    </div>
+                                    <h5 className="fw-extrabold text-dark m-0">Apoyar</h5>
+                                    <small className="text-muted fw-bold">Donar al proyecto</small>
                                 </div>
                             </div>
                         </Link>
