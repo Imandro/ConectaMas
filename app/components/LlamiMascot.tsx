@@ -41,6 +41,7 @@ export default function LlamiMascot({
     const [particles, setParticles] = useState<Particle[]>([]);
     const [localExpression, setLocalExpression] = useState<"neutral" | "happy" | "sad" | "excited" | "sleepy">("neutral");
     const [isBouncing, setIsBouncing] = useState(false);
+    const [isLit, setIsLit] = useState(false);
     const idleTimerRef = useRef<NodeJS.Timeout | null>(null);
     const inactivityRef = useRef<NodeJS.Timeout | null>(null);
     const particleIdRef = useRef(0);
@@ -153,32 +154,33 @@ export default function LlamiMascot({
         setShowMessage(false);
     }, []);
 
-    // Click handler with particles
+    // Click handler — bursts into fire for 3s
     const handleClick = () => {
         const clickMsg = getLlamiMessage(t, streak, true);
         setMessage(clickMsg);
         setShowMessage(true);
         setLocalExpression("happy");
+        setIsLit(true);
         setTimeout(() => {
             setShowMessage(false);
             setLocalExpression("neutral");
-        }, 3500);
+            setIsLit(false);
+        }, 3000);
 
-        // Spawn heart particles
         const newParticles: Particle[] = [];
-        for (let i = 0; i < 8; i++) {
+        for (let i = 0; i < 12; i++) {
             particleIdRef.current++;
             newParticles.push({
                 id: particleIdRef.current,
-                x: 30 + Math.random() * 40,
-                y: 30 + Math.random() * 20,
-                type: "heart",
-                delay: Math.random() * 0.2,
-                size: 6 + Math.random() * 8,
+                x: 10 + Math.random() * 80,
+                y: 10 + Math.random() * 80,
+                type: "spark",
+                delay: Math.random() * 0.3,
+                size: 8 + Math.random() * 14,
             });
         }
         setParticles((prev) => [...prev, ...newParticles]);
-        setTimeout(() => setParticles((prev) => prev.filter(p => !newParticles.find(n => n.id === p.id))), 1500);
+        setTimeout(() => setParticles((prev) => prev.filter(p => !newParticles.find(n => n.id === p.id))), 2000);
     };
 
     // Feeding reaction animation
@@ -449,17 +451,26 @@ export default function LlamiMascot({
                         </radialGradient>
                     </defs>
 
-                    {/* Aura/Glow */}
+                    {/* Aura/Glow — bigger when lit */}
                     <motion.circle
                         cx="50" cy="50" r="42"
                         fill={`url(#grad-llami-${stage})`}
-                        opacity={isNear ? 0.35 : 0.2}
+                        opacity={isLit ? 0.7 : isNear ? 0.35 : 0.2}
                         animate={{
-                            scale: [1, 1.12, 1],
-                            opacity: isNear ? [0.35, 0.5, 0.35] : [0.2, 0.3, 0.2],
+                            scale: isLit ? [1.1, 1.35, 1.1] : [1, 1.12, 1],
+                            opacity: isLit ? [0.7, 0.9, 0.7] : isNear ? [0.35, 0.5, 0.35] : [0.2, 0.3, 0.2],
                         }}
-                        transition={{ duration: 2, repeat: Infinity }}
+                        transition={isLit ? { duration: 0.8, repeat: Infinity } : { duration: 2, repeat: Infinity }}
                     />
+
+                    {/* Outer flame ring when lit */}
+                    {isLit && (
+                        <motion.circle cx="50" cy="50" r="46" fill="none" stroke={c.p} strokeWidth="3"
+                            initial={{ opacity: 0, scale: 0.8 }}
+                            animate={{ opacity: [0.6, 1, 0.6], scale: [1, 1.08, 1] }}
+                            transition={{ duration: 0.6, repeat: Infinity }}
+                        />
+                    )}
 
                     {/* Body */}
                     <motion.path
@@ -467,27 +478,29 @@ export default function LlamiMascot({
                         fill={`url(#grad-llami-${stage})`}
                         filter="url(#soft-glow-llami)"
                         animate={{
-                            d: [
-                                "M 50 2 Q 65 15, 75 35 Q 82 50, 80 65 Q 75 85, 50 90 Q 25 85, 20 65 Q 18 50, 25 35 Q 35 15, 50 2 Z",
-                                "M 50 0 Q 68 12, 78 34 Q 85 48, 83 64 Q 78 88, 50 92 Q 22 88, 17 64 Q 15 48, 22 34 Q 32 12, 50 0 Z",
-                                "M 50 2 Q 65 15, 75 35 Q 82 50, 80 65 Q 75 85, 50 90 Q 25 85, 20 65 Q 18 50, 25 35 Q 35 15, 50 2 Z",
-                            ]
+                            d: isLit
+                                ? ["M 48 0 Q 68 12, 78 32 Q 84 50, 82 68 Q 76 90, 50 94 Q 24 90, 18 68 Q 16 50, 22 32 Q 32 12, 48 0 Z",
+                                   "M 52 0 Q 68 14, 78 36 Q 84 50, 82 66 Q 76 88, 50 92 Q 24 88, 18 66 Q 16 50, 22 36 Q 32 14, 52 0 Z"]
+                                : [
+                                    "M 50 2 Q 65 15, 75 35 Q 82 50, 80 65 Q 75 85, 50 90 Q 25 85, 20 65 Q 18 50, 25 35 Q 35 15, 50 2 Z",
+                                    "M 50 0 Q 68 12, 78 34 Q 85 48, 83 64 Q 78 88, 50 92 Q 22 88, 17 64 Q 15 48, 22 34 Q 32 12, 50 0 Z",
+                                    "M 50 2 Q 65 15, 75 35 Q 82 50, 80 65 Q 75 85, 50 90 Q 25 85, 20 65 Q 18 50, 25 35 Q 35 15, 50 2 Z",
+                                ],
                         }}
-                        transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
+                        transition={isLit ? { duration: 0.4, repeat: Infinity } : { duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
                     />
 
-                    {/* Inner glow */}
+                    {/* Inner glow — brighter when lit */}
                     <motion.ellipse
                         cx="50" cy="45" rx="18" ry="22"
                         fill={c.t}
-                        opacity={0.4 + level * 0.02}
-                        animate={{ scale: [1, 1.06, 1], opacity: [0.4 + level * 0.02, 0.55 + level * 0.02, 0.4 + level * 0.02] }}
-                        transition={{ duration: 2, repeat: Infinity }}
+                        opacity={isLit ? 0.9 : 0.4 + level * 0.02}
+                        animate={isLit
+                            ? { scale: [1.05, 1.2, 1.05], opacity: [0.9, 1, 0.9] }
+                            : { scale: [1, 1.06, 1], opacity: [0.4 + level * 0.02, 0.55 + level * 0.02, 0.4 + level * 0.02] }
+                        }
+                        transition={isLit ? { duration: 0.5, repeat: Infinity } : { duration: 2, repeat: Infinity }}
                     />
-
-                    {/* Ears (small bumps) */}
-                    <ellipse cx="30" cy="12" rx="6" ry="4" fill={c.p} opacity={0.6} />
-                    <ellipse cx="70" cy="12" rx="6" ry="4" fill={c.p} opacity={0.6} />
 
                     {/* Face */}
                     <g>
@@ -498,19 +511,45 @@ export default function LlamiMascot({
 
                     {renderCosmetic()}
 
-                    {/* Sparkles/Fire particles */}
-                    <motion.circle cx="25" cy="22" r={1.8 + level * 0.15} fill={c.s}
-                        animate={{ y: [-8, -22], x: [0, -4, 2], opacity: [1, 0], scale: [1, 0.3] }}
-                        transition={{ duration: 1.8, repeat: Infinity, delay: 0 }}
+                    {/* Sparkles/Fire particles — more when lit */}
+                    <motion.circle cx="25" cy="22" r={isLit ? 3 + level * 0.2 : 1.8 + level * 0.15} fill={c.s}
+                        animate={{ y: isLit ? [-8, -35] : [-8, -22], x: [0, -4, 2], opacity: [1, 0], scale: [1, 0.3] }}
+                        transition={isLit ? { duration: 0.5, repeat: Infinity, delay: 0 } : { duration: 1.8, repeat: Infinity, delay: 0 }}
                     />
-                    <motion.circle cx="75" cy="20" r={1.8 + level * 0.15} fill={c.s}
-                        animate={{ y: [-8, -24], x: [0, 4, -2], opacity: [1, 0], scale: [1, 0.3] }}
-                        transition={{ duration: 2, repeat: Infinity, delay: 0.6 }}
+                    <motion.circle cx="75" cy="20" r={isLit ? 3 + level * 0.2 : 1.8 + level * 0.15} fill={c.s}
+                        animate={{ y: isLit ? [-8, -38] : [-8, -24], x: [0, 4, -2], opacity: [1, 0], scale: [1, 0.3] }}
+                        transition={isLit ? { duration: 0.5, repeat: Infinity, delay: 0.15 } : { duration: 2, repeat: Infinity, delay: 0.6 }}
                     />
-                    <motion.circle cx="50" cy="12" r={2 + level * 0.15} fill="white"
-                        animate={{ y: [-5, -20], opacity: [0.9, 0], scale: [1, 0.4] }}
-                        transition={{ duration: 1.5, repeat: Infinity, delay: 0.3 }}
+                    <motion.circle cx="50" cy="12" r={isLit ? 3 + level * 0.2 : 2 + level * 0.15} fill="white"
+                        animate={{ y: isLit ? [-5, -40] : [-5, -20], opacity: [1, 0], scale: [1, 0.4] }}
+                        transition={isLit ? { duration: 0.4, repeat: Infinity, delay: 0.3 } : { duration: 1.5, repeat: Infinity, delay: 0.3 }}
                     />
+
+                    {/* Extra fire particles when lit */}
+                    {isLit && (
+                        <>
+                            <motion.circle cx="15" cy="40" r="2.5" fill="#fbbf24"
+                                animate={{ y: [0, -30, -50], x: [0, -10, -5], opacity: [1, 0.8, 0], scale: [1, 0.4, 0] }}
+                                transition={{ duration: 0.6, repeat: Infinity, delay: 0.1 }}
+                            />
+                            <motion.circle cx="85" cy="35" r="2.5" fill="#f97316"
+                                animate={{ y: [0, -30, -50], x: [0, 10, 5], opacity: [1, 0.8, 0], scale: [1, 0.4, 0] }}
+                                transition={{ duration: 0.6, repeat: Infinity, delay: 0.3 }}
+                            />
+                            <motion.circle cx="50" cy="5" r="3" fill="#fde047"
+                                animate={{ y: [0, -25, -45], opacity: [1, 0.6, 0], scale: [1, 0.3, 0] }}
+                                transition={{ duration: 0.5, repeat: Infinity, delay: 0.2 }}
+                            />
+                            <motion.circle cx="35" cy="10" r="2" fill="#fcd34d"
+                                animate={{ y: [0, -28, -48], x: [0, -6, -3], opacity: [1, 0.5, 0], scale: [1, 0.3, 0] }}
+                                transition={{ duration: 0.55, repeat: Infinity, delay: 0.4 }}
+                            />
+                            <motion.circle cx="65" cy="10" r="2" fill="#fbbf24"
+                                animate={{ y: [0, -28, -48], x: [0, 6, 3], opacity: [1, 0.5, 0], scale: [1, 0.3, 0] }}
+                                transition={{ duration: 0.55, repeat: Infinity, delay: 0 }}
+                            />
+                        </>
+                    )}
                 </svg>
             </motion.div>
         </div>
