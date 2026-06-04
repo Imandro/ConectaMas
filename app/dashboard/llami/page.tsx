@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Flame, Sparkles, Heart, Zap, ChevronLeft, Edit2, Check, X, Trophy } from "lucide-react";
+import { Flame, Sparkles, Zap, ChevronLeft, Edit2, Check, X, Trophy, Star, Moon, Sun, Book, MessageCircle, Clock } from "lucide-react";
 import Link from "next/link";
 import LlamiMascot from "@/app/components/LlamiMascot";
 import { getOrCreateMascot, feedMascot, updateMascotName } from "./actions";
@@ -14,6 +14,13 @@ import { completeLlamiTutorial } from "./actions";
 import { useLanguage } from "@/app/LanguageContext";
 
 export const dynamic = 'force-dynamic';
+
+const STAR_POSITIONS = [
+    { x: "15%", y: "10%" }, { x: "45%", y: "5%" }, { x: "75%", y: "12%" },
+    { x: "30%", y: "25%" }, { x: "65%", y: "20%" }, { x: "85%", y: "8%" },
+    { x: "10%", y: "22%" }, { x: "55%", y: "15%" }, { x: "90%", y: "18%" },
+    { x: "22%", y: "18%" }, { x: "70%", y: "28%" }, { x: "40%", y: "8%" },
+];
 
 export default function LlamiPage() {
     const { t } = useLanguage();
@@ -27,7 +34,12 @@ export default function LlamiPage() {
     const [isDarkMode, setIsDarkMode] = useState(false);
     const [prevLevel, setPrevLevel] = useState<number | null>(null);
     const [showLevelUp, setShowLevelUp] = useState(false);
+    const [currentTime, setCurrentTime] = useState("");
 
+    useEffect(() => {
+        const now = new Date();
+        setCurrentTime(now.toLocaleTimeString("es-NI", { hour: "2-digit", minute: "2-digit" }));
+    }, []);
 
     const loadMascot = async () => {
         try {
@@ -93,6 +105,27 @@ export default function LlamiPage() {
         }
     };
 
+    const getStageKey = (streak: number) => {
+        if (streak <= 7) return "spark";
+        if (streak <= 30) return "flame";
+        if (streak <= 90) return "torch";
+        if (streak <= 365) return "sun";
+        return "star";
+    };
+
+    const stageNames = { spark: "Chispa", flame: "Llama", torch: "Antorcha", sun: "Sol", star: "Estrella" };
+    const stageIcons = { spark: "🔥", flame: "🔥", torch: "✨", sun: "☀️", star: "⭐" };
+
+    const getAchievedMilestones = () => {
+        if (!mascot?.streak) return [];
+        const achieved: number[] = [];
+        const targets = [7, 30, 50, 100, 365];
+        for (const t of targets) {
+            if (mascot.streak >= t) achieved.push(t);
+        }
+        return achieved;
+    };
+
     if (loading) {
         return (
             <div className="min-vh-100 d-flex align-items-center justify-content-center bg-midnight text-white">
@@ -106,7 +139,6 @@ export default function LlamiPage() {
         );
     }
 
-    // Safety check if mascot failed to load
     if (!mascot) {
         return (
             <div className="container py-5 text-center">
@@ -118,9 +150,12 @@ export default function LlamiPage() {
         );
     }
 
+    const stage = getStageKey(mascot.streak || 0);
+    const achievedMilestones = getAchievedMilestones();
+    const nextMilestone = [7, 30, 50, 100, 365].find(m => !achievedMilestones.includes(m)) || 365;
+
     return (
         <div className="container-fluid py-4 min-vh-100 bg-light text-primary">
-            {/* Header */}
             <div className="d-flex align-items-center justify-content-between mb-5">
                 <div className="d-flex align-items-center gap-3">
                     <Link href="/dashboard" className="btn btn-white bg-white text-primary rounded-circle p-2 shadow-sm border-0">
@@ -128,13 +163,19 @@ export default function LlamiPage() {
                     </Link>
                     <h1 className="h2 mb-0 fw-bold">{t.llami.title}</h1>
                 </div>
-                <button
-                    onClick={() => setShowTutorial(true)}
-                    className="btn btn-white bg-white text-warning rounded-pill px-3 py-2 shadow-sm border-0 d-flex align-items-center gap-2 fw-bold"
-                >
-                    <HelpCircle size={20} />
-                    <span className="d-none d-md-inline">{t.llami.help}</span>
-                </button>
+                <div className="d-flex gap-2">
+                    <div className="bg-white rounded-pill px-3 py-2 shadow-sm d-flex align-items-center gap-2 small text-muted">
+                        <Clock size={14} />
+                        {currentTime}
+                    </div>
+                    <button
+                        onClick={() => setShowTutorial(true)}
+                        className="btn btn-white bg-white text-warning rounded-pill px-3 py-2 shadow-sm border-0 d-flex align-items-center gap-2 fw-bold"
+                    >
+                        <HelpCircle size={20} />
+                        <span className="d-none d-md-inline">{t.llami.help}</span>
+                    </button>
+                </div>
             </div>
 
             <AnimatePresence>
@@ -157,8 +198,6 @@ export default function LlamiPage() {
                         </motion.div>
                         <h1 className="display-3 fw-bold text-primary mb-0">¡NIVEL {mascot?.level}!</h1>
                         <p className="lead fw-bold text-muted">¡{mascot?.name} está evolucionando!</p>
-
-                        {/* Fake Confetti using particles */}
                         {[...Array(20)].map((_, i) => (
                             <motion.div
                                 key={i}
@@ -190,127 +229,191 @@ export default function LlamiPage() {
                 </div>
             ) : (
                 <div className="row justify-content-center">
-                    <div className="col-lg-7 text-center">
-                        {/* Mascot Container - Optimized Cozy Room Illustration */}
-                        <div className="position-relative py-3 mb-4">
+
+                    {/* Main column: Room + Stats */}
+                    <div className="col-lg-8">
+                        {/* --- COZY ROOM --- */}
+                        <div className="position-relative py-2 mb-4">
                             <motion.div
-                                className="mx-auto position-relative shadow-lg rounded-5 overflow-visible"
+                                className="mx-auto position-relative shadow-lg rounded-5 overflow-hidden"
                                 animate={{
                                     background: isDarkMode ? '#1a1c2c' : '#f5f1ed',
                                     borderColor: isDarkMode ? '#0f172a' : '#fff'
                                 }}
                                 transition={{ duration: 0.7 }}
                                 style={{
-                                    width: '90vw',
-                                    maxWidth: '450px',
-                                    height: '400px',
-                                    border: '10px solid',
-                                    boxShadow: isDarkMode ? '0 0 40px rgba(255,165,0,0.2)' : '0 10px 25px rgba(0,0,0,0.1)'
+                                    width: '100%',
+                                    maxWidth: '520px',
+                                    height: '420px',
+                                    border: '8px solid',
+                                    boxShadow: isDarkMode ? '0 0 50px rgba(255,165,0,0.15)' : '0 10px 30px rgba(0,0,0,0.1)'
                                 }}
                             >
-                                {/* Wall Decoration */}
+                                {/* WALL */}
                                 <motion.div
                                     className="position-absolute top-0 start-0 w-100"
                                     animate={{
-                                        background: isDarkMode ? 'linear-gradient(to bottom, #1e293b, #1a1c2c)' : 'linear-gradient(to bottom, #fdfbf7, #f5f1ed)'
+                                        background: isDarkMode ? 'linear-gradient(180deg, #0f172a 0%, #1e293b 70%, #1a1c2c 100%)' : 'linear-gradient(180deg, #fdfbf7 0%, #f5f1ed 70%, #eee7db 100%)'
                                     }}
                                     transition={{ duration: 0.7 }}
                                     style={{ height: '70%' }}
                                 >
-                                    {/* Light Switch (Picture) - Shrink and move right */}
+                                    {/* ★ WINDOW (day/night) */}
+                                    <motion.div
+                                        className="position-absolute rounded-3 overflow-hidden shadow-inner"
+                                        animate={{
+                                            background: isDarkMode ? 'linear-gradient(180deg, #0c1445 0%, #1a237e 100%)' : 'linear-gradient(180deg, #87CEEB 0%, #b8e1f5 100%)'
+                                        }}
+                                        transition={{ duration: 0.7 }}
+                                        style={{ width: '90px', height: '100px', left: '20px', top: '25px', border: '4px solid #8B7355' }}
+                                    >
+                                        {/* Window cross */}
+                                        <div className="position-absolute top-50 start-0 w-100" style={{ height: '2px', background: '#8B7355', zIndex: 2 }} />
+                                        <div className="position-absolute top-0 start-50 h-100" style={{ width: '2px', background: '#8B7355', zIndex: 2 }} />
+                                        {/* Sun or Moon */}
+                                        {isDarkMode ? (
+                                            <motion.div
+                                                className="position-absolute rounded-circle"
+                                                style={{ width: '20px', height: '20px', background: '#e2e8f0', top: '15px', right: '12px', zIndex: 1 }}
+                                                animate={{ boxShadow: ['0 0 4px #e2e8f0', '0 0 10px #e2e8f0', '0 0 4px #e2e8f0'] }}
+                                                transition={{ duration: 2, repeat: Infinity }}
+                                            >
+                                                <div className="position-absolute" style={{ width: '8px', height: '8px', background: '#1a1c2c', borderRadius: '50%', top: '-2px', right: '-3px' }} />
+                                            </motion.div>
+                                        ) : (
+                                            <motion.div
+                                                className="position-absolute rounded-circle"
+                                                style={{ width: '24px', height: '24px', background: '#FDB813', top: '12px', right: '10px', zIndex: 1 }}
+                                                animate={{ boxShadow: ['0 0 6px #FDB813', '0 0 14px #FDB813', '0 0 6px #FDB813'] }}
+                                                transition={{ duration: 2, repeat: Infinity }}
+                                            />
+                                        )}
+                                        {/* Stars at night */}
+                                        {isDarkMode && STAR_POSITIONS.map((s, i) => (
+                                            <motion.div
+                                                key={i}
+                                                className="position-absolute rounded-circle bg-white"
+                                                style={{ width: '2px', height: '2px', top: s.y, left: s.x, zIndex: 0 }}
+                                                animate={{ opacity: [0.3, 1, 0.3] }}
+                                                transition={{ duration: 1.5 + Math.random(), repeat: Infinity, delay: Math.random() }}
+                                            />
+                                        ))}
+                                    </motion.div>
+
+                                    {/* Picture frame 1 */}
+                                    <motion.div
+                                        className="position-absolute rounded-1 shadow-sm overflow-hidden"
+                                        animate={{ opacity: isDarkMode ? 0.3 : 1 }}
+                                        style={{ width: '55px', height: '45px', right: '90px', top: '50px', border: '3px solid #8B7355' }}
+                                    >
+                                        <div style={{ width: '100%', height: '100%', background: 'linear-gradient(135deg, #fbbf24, #f59e0b)' }} />
+                                    </motion.div>
+
+                                    {/* Picture frame 2 */}
+                                    <motion.div
+                                        className="position-absolute rounded-1 shadow-sm overflow-hidden"
+                                        animate={{ opacity: isDarkMode ? 0.3 : 1 }}
+                                        style={{ width: '45px', height: '55px', right: '20px', top: '40px', border: '3px solid #8B7355' }}
+                                    >
+                                        <div style={{ width: '100%', height: '100%', background: 'linear-gradient(135deg, #34d399, #10b981)' }} />
+                                    </motion.div>
+
+                                    {/* Light Switch */}
                                     <motion.button
                                         whileTap={{ scale: 0.9 }}
                                         onClick={() => setIsDarkMode(!isDarkMode)}
                                         className="position-absolute rounded-2 shadow-sm border-0 p-1"
-                                        animate={{
-                                            background: isDarkMode ? '#fde68a' : '#fff'
-                                        }}
+                                        animate={{ background: isDarkMode ? '#fde68a' : '#fff' }}
                                         style={{
-                                            width: '50px',
-                                            height: '40px',
-                                            border: '2px solid #e2e8f0',
-                                            right: '25px',
-                                            top: '40px',
-                                            zIndex: 20,
-                                            cursor: 'pointer'
+                                            width: '50px', height: '40px', border: '2px solid #e2e8f0',
+                                            right: '20px', top: '100px', zIndex: 20, cursor: 'pointer'
                                         }}
                                     >
                                         <div className="w-100 h-100 bg-info opacity-20 rounded-1 d-flex align-items-center justify-content-center">
-                                            <Sparkles size={16} className={isDarkMode ? "text-primary" : "text-warning"} />
+                                            {isDarkMode ? <Moon size={16} className="text-primary" /> : <Sun size={16} className="text-warning" />}
                                         </div>
                                     </motion.button>
 
                                     {/* Floating Shelf with Bibles */}
                                     <motion.div
-                                        className="position-absolute start-0"
+                                        className="position-absolute"
                                         animate={{ opacity: isDarkMode ? 0.3 : 1 }}
-                                        transition={{ duration: 0.5 }}
-                                        style={{ top: '140px', left: '40px' }}
+                                        style={{ top: '140px', left: '35px' }}
                                     >
-                                        <div className="bg-secondary opacity-20 rounded-pill" style={{ width: '100px', height: '10px' }}></div>
-                                        <div className="d-flex gap-2 mt-[-22px] ms-3">
-                                            <div className="bg-primary rounded-1 shadow-sm" style={{ width: '12px', height: '25px' }}></div>
-                                            <div className="bg-warning rounded-1 shadow-sm" style={{ width: '12px', height: '30px' }}></div>
-                                            <div className="bg-danger rounded-1 shadow-sm" style={{ width: '12px', height: '20px' }}></div>
+                                        <div className="bg-secondary opacity-20 rounded-pill" style={{ width: '110px', height: '8px' }}></div>
+                                        <div className="d-flex gap-2 mt-[-18px] ms-4">
+                                            <div className="bg-primary rounded-1 shadow-sm" style={{ width: '10px', height: '22px' }}></div>
+                                            <div className="bg-warning rounded-1 shadow-sm" style={{ width: '10px', height: '28px' }}></div>
+                                            <div className="bg-danger rounded-1 shadow-sm" style={{ width: '10px', height: '18px' }}></div>
+                                            <div className="bg-success rounded-1 shadow-sm" style={{ width: '10px', height: '24px' }}></div>
                                         </div>
                                     </motion.div>
                                 </motion.div>
 
-                                {/* Floor */}
+                                {/* FLOOR with rug */}
                                 <motion.div
                                     className="position-absolute bottom-0 start-0 w-100"
                                     animate={{
-                                        background: isDarkMode ? '#0f172a' : '#e5ddd5',
-                                        boxShadow: isDarkMode ? 'inset 0 10px 20px rgba(0,0,0,0.4)' : 'inset 0 10px 20px rgba(0,0,0,0.05)'
+                                        background: isDarkMode ? '#0f172a' : '#d4c9b8',
+                                        boxShadow: isDarkMode ? 'inset 0 10px 20px rgba(0,0,0,0.5)' : 'inset 0 8px 16px rgba(0,0,0,0.06)'
                                     }}
                                     transition={{ duration: 0.7 }}
                                     style={{ height: '30%' }}
                                 >
-                                    {/* Wood Pattern Lines */}
+                                    {/* Wood planks */}
                                     {[...Array(5)].map((_, i) => (
-                                        <div key={i} className="w-100 border-bottom border-dark opacity-5" style={{ height: '20%' }}></div>
+                                        <div key={i} className="w-100 border-bottom" style={{ height: '20%', borderColor: isDarkMode ? 'rgba(255,255,255,0.04)' : 'rgba(0,0,0,0.06)' }}></div>
                                     ))}
+
+                                    {/* Rug */}
+                                    <motion.div
+                                        className="position-absolute start-50 translate-middle-x rounded-3"
+                                        animate={{
+                                            background: isDarkMode
+                                                ? 'linear-gradient(135deg, #7c3aed, #a78bfa, #7c3aed)'
+                                                : 'linear-gradient(135deg, #c084fc, #e9d5ff, #c084fc)'
+                                        }}
+                                        style={{
+                                            bottom: '15%',
+                                            width: '100px',
+                                            height: '40px',
+                                            background: 'linear-gradient(135deg, #c084fc, #e9d5ff, #c084fc)',
+                                            opacity: 0.7
+                                        }}
+                                    >
+                                        {/* Rug pattern */}
+                                        <div className="w-100 h-100 d-flex align-items-center justify-content-center" style={{ border: '2px solid rgba(255,255,255,0.3)', borderRadius: '12px' }}>
+                                            <div style={{ width: '70%', height: '60%', border: '2px solid rgba(255,255,255,0.4)', borderRadius: '8px' }} />
+                                        </div>
+                                    </motion.div>
                                 </motion.div>
 
                                 {/* Shadow under mascot */}
                                 <motion.div
                                     className="position-absolute start-50 translate-middle-x"
                                     animate={{
-                                        background: isDarkMode ? 'rgba(0,0,0,0.4)' : 'rgba(0,0,0,0.1)'
+                                        background: isDarkMode ? 'rgba(0,0,0,0.5)' : 'rgba(0,0,0,0.12)',
+                                        width: isFeeding ? '140px' : '120px'
                                     }}
-                                    style={{ bottom: '25%', width: '120px', height: '25px', borderRadius: '50%', filter: 'blur(5px)' }}
+                                    style={{ bottom: '25%', height: '25px', borderRadius: '50%', filter: 'blur(6px)' }}
                                 />
 
-                                {/* Mascot Area */}
+                                {/* Mascot */}
                                 <div className="position-absolute top-50 start-50 translate-middle" style={{ zIndex: 5 }}>
-                                    {/* Light effect when dark - Animated glow */}
-                                    <AnimatePresence>
-                                        {isDarkMode && (
-                                            <motion.div
-                                                initial={{ opacity: 0, scale: 0.5 }}
-                                                animate={{
-                                                    opacity: [0.4, 0.7, 0.4],
-                                                    scale: [1, 1.2, 1],
-                                                }}
-                                                exit={{ opacity: 0, scale: 0.5 }}
-                                                transition={{
-                                                    duration: 3,
-                                                    repeat: Infinity,
-                                                    ease: "easeInOut"
-                                                }}
-                                                className="position-absolute start-50 top-50 translate-middle rounded-circle"
-                                                style={{
-                                                    width: '300px',
-                                                    height: '300px',
-                                                    background: 'radial-gradient(circle, rgba(255,215,0,0.3) 0%, rgba(255,165,0,0.1) 50%, transparent 70%)',
-                                                    filter: 'blur(20px)',
-                                                    zIndex: -1,
-                                                    pointerEvents: 'none'
-                                                }}
-                                            />
-                                        )}
-                                    </AnimatePresence>
-
+                                    {isDarkMode && (
+                                        <motion.div
+                                            initial={{ opacity: 0, scale: 0.5 }}
+                                            animate={{ opacity: [0.4, 0.7, 0.4], scale: [1, 1.2, 1] }}
+                                            exit={{ opacity: 0, scale: 0.5 }}
+                                            transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                                            className="position-absolute start-50 top-50 translate-middle rounded-circle"
+                                            style={{
+                                                width: '300px', height: '300px',
+                                                background: 'radial-gradient(circle, rgba(255,215,0,0.3) 0%, rgba(255,165,0,0.1) 50%, transparent 70%)',
+                                                filter: 'blur(20px)', zIndex: -1, pointerEvents: 'none'
+                                            }}
+                                        />
+                                    )}
                                     <AnimatePresence>
                                         {isFeeding && (
                                             <motion.div
@@ -324,22 +427,25 @@ export default function LlamiPage() {
                                             </motion.div>
                                         )}
                                     </AnimatePresence>
-
                                     <div className="transform-scale-room">
-                                        <LlamiMascot streak={1} lastMood={mascot?.mood || 'FELIZ'} name={mascot?.name || 'Llami'} />
+                                        <LlamiMascot
+                                            streak={mascot.streak || 1}
+                                            lastMood={mascot?.mood || 'FELIZ'}
+                                            level={mascot?.level || 1}
+                                            name={mascot?.name || 'Llami'}
+                                            isFeeding={isFeeding}
+                                        />
                                     </div>
                                 </div>
                             </motion.div>
 
-                            {/* Rename Interaction */}
+                            {/* Name */}
                             <div className="d-flex justify-content-center align-items-center gap-2 mt-4">
                                 <span className="h4 fw-bold text-primary mb-0 me-2">{mascot?.name}</span>
                                 {isEditingName ? (
                                     <div className="d-flex gap-2 bg-white p-2 rounded-pill shadow-sm animate-fade-in border">
                                         <input
-                                            autoFocus
-                                            type="text"
-                                            value={newName}
+                                            autoFocus type="text" value={newName}
                                             onChange={(e) => setNewName(e.target.value)}
                                             className="form-control form-control-sm border-0 bg-transparent text-primary fw-bold text-center"
                                             style={{ width: '120px', boxShadow: 'none' }}
@@ -354,10 +460,7 @@ export default function LlamiPage() {
                                     </div>
                                 ) : (
                                     <button
-                                        onClick={() => {
-                                            setNewName(mascot.name);
-                                            setIsEditingName(true);
-                                        }}
+                                        onClick={() => { setNewName(mascot.name); setIsEditingName(true); }}
                                         className="btn btn-link text-muted text-decoration-none d-flex align-items-center gap-2 small opacity-75 hover-opacity-100"
                                     >
                                         <span className="small">{t.llami.rename}</span>
@@ -365,13 +468,20 @@ export default function LlamiPage() {
                                     </button>
                                 )}
                             </div>
+
+                            {/* Stage badge */}
+                            <div className="text-center mt-1">
+                                <span className="badge bg-warning bg-opacity-10 text-warning rounded-pill px-3 py-2 small fw-bold">
+                                    {stageIcons[stage as keyof typeof stageIcons]} {stageNames[stage as keyof typeof stageNames]}
+                                </span>
+                            </div>
                         </div>
 
-                        {/* Status Card */}
+                        {/* --- MAIN STATS CARD (col-12) --- */}
                         <div className="card bg-white border-0 shadow-sm rounded-5 p-4 mb-4">
                             <div className="row g-3">
-                                <div className="col-6">
-                                    <div className="p-3">
+                                <div className="col-4">
+                                    <div className="p-3 text-center">
                                         <div className="d-flex align-items-center justify-content-center gap-2 mb-1">
                                             <Zap size={18} className="text-warning" />
                                             <span className="small fw-bold text-muted">{t.llami.level_label}</span>
@@ -379,9 +489,8 @@ export default function LlamiPage() {
                                         <div className="h1 mb-0 fw-bold">{mascot.level}</div>
                                     </div>
                                 </div>
-
-                                <div className="col-6">
-                                    <div className="p-3">
+                                <div className="col-4">
+                                    <div className="p-3 text-center">
                                         <div className="d-flex align-items-center justify-content-center gap-2 mb-1">
                                             <Flame size={18} className="text-warning" />
                                             <span className="small fw-bold text-muted">{t.llami.flame_label}</span>
@@ -389,12 +498,21 @@ export default function LlamiPage() {
                                         <div className="h1 mb-0 fw-bold text-warning">{mascot.flamePoints}</div>
                                     </div>
                                 </div>
+                                <div className="col-4">
+                                    <div className="p-3 text-center">
+                                        <div className="d-flex align-items-center justify-content-center gap-2 mb-1">
+                                            <Star size={18} className="text-warning" />
+                                            <span className="small fw-bold text-muted">RACHA</span>
+                                        </div>
+                                        <div className="h1 mb-0 fw-bold text-primary">{mascot.streak || 0}<span className="h6 text-muted ms-1">días</span></div>
+                                    </div>
+                                </div>
                             </div>
-
-                            {/* XP Progress Bar */}
-                            <div className="mt-4 text-start px-2">
-                                <div className="d-flex justify-content-between mb-3">
-                                    <span className="small fw-bold text-muted">{t.llami.next_level.replace('{level}', (mascot.level + 1).toString())}</span>
+                            <div className="mt-3 text-start px-2">
+                                <div className="d-flex justify-content-between mb-2">
+                                    <span className="small fw-bold text-muted">
+                                        {t.llami.next_level.replace('{level}', (mascot.level + 1).toString())}
+                                    </span>
                                     <span className="small fw-bold text-warning">{mascot.experience}/100 XP</span>
                                 </div>
                                 <div className="progress bg-light rounded-pill" style={{ height: '10px' }}>
@@ -408,7 +526,59 @@ export default function LlamiPage() {
                             </div>
                         </div>
 
-                        {/* Actions */}
+                        {/* --- ACHIEVEMENTS / MILESTONES CARD --- */}
+                        <div className="card bg-white border-0 shadow-sm rounded-5 p-4 mb-4">
+                            <h5 className="fw-bold mb-3 d-flex align-items-center gap-2">
+                                <Trophy size={20} className="text-warning" />
+                                Logros de Racha
+                            </h5>
+                            <div className="d-flex flex-wrap gap-2">
+                                {[7, 30, 50, 100, 365].map((target) => {
+                                    const unlocked = achievedMilestones.includes(target);
+                                    return (
+                                        <motion.div
+                                            key={target}
+                                            className={`rounded-4 p-3 d-flex align-items-center gap-3 flex-grow-1 ${unlocked ? 'bg-warning bg-opacity-10' : 'bg-light'}`}
+                                            style={{ minWidth: '170px', flex: '1 0 auto' }}
+                                            whileHover={{ scale: 1.02 }}
+                                        >
+                                            <div className={`rounded-circle d-flex align-items-center justify-content-center ${unlocked ? 'bg-warning text-white' : 'bg-secondary bg-opacity-10 text-muted'}`}
+                                                style={{ width: '40px', height: '40px', fontSize: '1.2rem' }}>
+                                                {unlocked ? '🏆' : '🔒'}
+                                            </div>
+                                            <div>
+                                                <div className={`fw-bold small ${unlocked ? 'text-dark' : 'text-muted'}`}>
+                                                    {target} {target === 365 ? 'año' : 'días'}
+                                                </div>
+                                                <div className="small text-muted">
+                                                    {unlocked ? '✓ Desbloqueado' : mascot.streak >= target ? '¡Completado!' : `${mascot.streak || 0}/${target}`}
+                                                </div>
+                                            </div>
+                                        </motion.div>
+                                    );
+                                })}
+                            </div>
+
+                            {/* Next milestone progress */}
+                            {nextMilestone && !achievedMilestones.includes(nextMilestone) && (
+                                <div className="mt-3 px-1">
+                                    <div className="d-flex justify-content-between small text-muted mb-1">
+                                        <span>Próximo logro: {nextMilestone} días</span>
+                                        <span>{mascot.streak || 0}/{nextMilestone}</span>
+                                    </div>
+                                    <div className="progress bg-light rounded-pill" style={{ height: '6px' }}>
+                                        <motion.div
+                                            className="progress-bar bg-warning rounded-pill"
+                                            initial={{ width: 0 }}
+                                            animate={{ width: `${Math.min(100, ((mascot.streak || 0) / nextMilestone) * 100)}%` }}
+                                            transition={{ duration: 1, delay: 0.3 }}
+                                        />
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+
+                        {/* --- ACTIONS --- */}
                         <div className="d-grid gap-3">
                             <button
                                 onClick={handleFeed}
@@ -423,11 +593,9 @@ export default function LlamiPage() {
                                 <Flame size={24} />
                                 {t.llami.feed_button}
                             </button>
-
-                            <div className="small text-muted mb-4">
+                            <div className="small text-muted mb-4 text-center">
                                 {t.llami.feed_hint}
                             </div>
-
                             <button
                                 onClick={() => setIsPlayingTrivia(true)}
                                 className="btn btn-outline-primary btn-lg rounded-pill py-3 fw-bold d-flex align-items-center justify-content-center gap-2 border-2"
@@ -438,14 +606,13 @@ export default function LlamiPage() {
                         </div>
                     </div>
 
-                    {/* Info Sidebar */}
+                    {/* --- RIGHT SIDEBAR: Guide + Tips --- */}
                     <div className="col-lg-4 mt-5 mt-lg-0">
                         <div className="card bg-white border-0 shadow-sm rounded-5 p-4 h-100">
                             <h4 className="fw-bold mb-4 d-flex align-items-center gap-2 text-warning">
                                 <Sparkles size={24} />
                                 {t.llami.guide_title}
                             </h4>
-
                             <div className="d-flex flex-column gap-4 text-start">
                                 <div className="d-flex gap-3 align-items-start">
                                     <div className="bg-light p-3 rounded-4">
@@ -456,7 +623,6 @@ export default function LlamiPage() {
                                         <p className="small mb-0 text-muted">{t.llami.guide_bible_desc}</p>
                                     </div>
                                 </div>
-
                                 <div className="d-flex gap-3 align-items-start">
                                     <div className="bg-light p-3 rounded-4">
                                         <Sparkles className="text-warning" size={24} />
@@ -466,7 +632,6 @@ export default function LlamiPage() {
                                         <p className="small mb-0 text-muted">{t.llami.guide_devotionals_desc}</p>
                                     </div>
                                 </div>
-
                                 <div className="d-flex gap-3 align-items-start">
                                     <div className="bg-light p-3 rounded-4">
                                         <Flame className="text-warning" size={24} />
@@ -476,7 +641,6 @@ export default function LlamiPage() {
                                         <p className="small mb-0 text-muted">{t.llami.guide_evolution_desc}</p>
                                     </div>
                                 </div>
-
                                 <div className="d-flex gap-3 align-items-start">
                                     <div className="bg-light p-3 rounded-4">
                                         <Gamepad2 className="text-warning" size={24} />
@@ -484,6 +648,21 @@ export default function LlamiPage() {
                                     <div className="pt-1">
                                         <h6 className="fw-bold mb-1">{t.llami.guide_trivia_title}</h6>
                                         <p className="small mb-0 text-muted">{t.llami.guide_trivia_desc}</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Quick tip */}
+                            <div className="bg-warning bg-opacity-10 rounded-4 p-3 mt-4">
+                                <div className="d-flex align-items-start gap-2">
+                                    <MessageCircle size={18} className="text-warning mt-1 flex-shrink-0" />
+                                    <div>
+                                        <h6 className="fw-bold mb-1 small text-warning">Consejo del día</h6>
+                                        <p className="small mb-0 text-muted">
+                                            {mascot.flamePoints < 5
+                                                ? "Lee la Biblia o completa devocionales para ganar puntos de fuego y alimentar a Llami."
+                                                : "¡Tienes suficientes puntos! Aviva el fuego de Llami para ganar XP y subir de nivel."}
+                                        </p>
                                     </div>
                                 </div>
                             </div>
@@ -496,27 +675,12 @@ export default function LlamiPage() {
                 .transform-scale-room {
                     transform: scale(1.8);
                 }
+                @media (max-width: 576px) {
+                    .transform-scale-room {
+                        transform: scale(1.4);
+                    }
+                }
             `}</style>
         </div >
     );
-}
-
-// Missing icon fix
-function Book({ className, size }: { className?: string, size?: number }) {
-    return (
-        <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width={size}
-            height={size}
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            className={className}
-        >
-            <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20" />
-        </svg>
-    )
 }

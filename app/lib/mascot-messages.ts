@@ -1,46 +1,41 @@
 export const llamiMessages = {
-    // Mensajes de bienvenida
     welcome: [
         "¡Hola! Soy Llami, tu compañero espiritual 🔥",
         "¡Qué alegría verte! Estoy aquí para animarte",
         "¡Bienvenido de vuelta! Sigamos creciendo juntos"
     ],
-
-    // Mensajes por racha (días)
     streakMessages: {
-        spark: [ // 0-7 días
+        spark: [
             "¡Cada gran fuego comienza con una chispa!",
             "¡Vas muy bien! Sigue así",
             "Un día a la vez, campeón",
             "¡La constancia es clave! 💪"
         ],
-        flame: [ // 8-30 días
+        flame: [
             "¡Mira cómo creces! Estoy orgulloso de ti",
             "¡Tu llama está creciendo! 🔥",
             "¡Increíble progreso! No te detengas",
             "¡Eres imparable! Sigue adelante"
         ],
-        torch: [ // 31-90 días
+        torch: [
             "¡Eres una antorcha brillante! ✨",
             "¡Tu luz inspira a otros!",
             "¡Qué disciplina! Dios está contento",
             "¡Eres un guerrero espiritual! ⚔️"
         ],
-        sun: [ // 91-365 días
+        sun: [
             "¡Brillas como el sol! ☀️",
             "¡Eres un ejemplo para muchos!",
             "¡Tu constancia es admirable!",
             "¡Dios está haciendo algo grande en ti!"
         ],
-        star: [ // 365+ días
+        star: [
             "¡Eres una estrella! ⭐",
             "¡Un año completo! ¡Eres un campeón!",
             "¡Tu testimonio es poderoso!",
             "¡Leyenda espiritual! 👑"
         ]
     },
-
-    // Mensajes según el estado de ánimo del check-in
     moodMessages: {
         sad: [
             "Está bien sentirse así. Dios está contigo 💙",
@@ -63,8 +58,6 @@ export const llamiMessages = {
             "¡Dios está haciendo maravillas en ti!"
         ]
     },
-
-    // Mensajes de hitos especiales
     milestones: {
         7: "¡7 días! ¡Tu primera semana completa! 🎊",
         30: "¡UN MES! ¡Eres increíble! 🏆",
@@ -72,16 +65,12 @@ export const llamiMessages = {
         100: "¡100 DÍAS! ¡ERES UNA LEYENDA! 👑",
         365: "¡UN AÑO COMPLETO! ¡CAMPEÓN ABSOLUTO! 🌟"
     },
-
-    // Mensajes de ánimo cuando se pierde la racha
     encouragement: [
         "No pasa nada. Empecemos de nuevo juntos 💙",
         "Caer es humano, levantarse es de campeones",
         "Dios te da una nueva oportunidad cada día",
         "¡Vamos! Tú puedes hacerlo de nuevo"
     ],
-
-    // Mensajes aleatorios al hacer click
     randomClicks: [
         "¡Hola! 👋",
         "¿Necesitas ánimo? ¡Aquí estoy!",
@@ -91,30 +80,80 @@ export const llamiMessages = {
         "¡No te rindas!",
         "¡Eres más fuerte de lo que crees!",
         "¡Hoy es un buen día para crecer!",
-        "¡Confía en el proceso! 🙏"
-    ]
+        "¡Confía en el proceso! 🙏",
+        "¡Eres una bendición!",
+        "¡Sonríe, Dios te ama!",
+        "¡Sigue adelante, campeón!",
+        "¡Cada día es una nueva oportunidad!",
+        "¡Tú puedes con todo! 💪",
+        "¡Qué bonito es verte!",
+    ],
+    feeding: [
+        "🔥 ¡Ñam! ¡Delicioso!",
+        "🔥 ¡Eso es fuego puro!",
+        "🔥 ¡Mmm, qué rico! +20 XP",
+        "🔥 ¡Gracias por alimentarme!",
+        "🔥 ¡Me encanta cuando haces eso!",
+    ],
+    inactive: [
+        "zzz... ¿dormido?",
+        "zzz... te espero...",
+        "zzz... cuando quieras jugar...",
+    ],
+    timeGreetings: {
+        morning: "☀️ Buenos días",
+        afternoon: "🌤️ Buenas tardes",
+        evening: "🌙 Buenas noches",
+    }
 };
 
 export function getLlamiMessage(
     t: any,
     streak: number,
-    isClick: boolean = false
+    isClick: boolean = false,
+    context?: "feed" | "inactive" | "welcome"
 ): string {
     const messages = t.llami;
 
-    // Mensajes de hitos tienen prioridad
+    if (context === "feed") {
+        const feedMsgs = [
+            "🔥 ¡Ñam! ¡Delicioso!",
+            "🔥 ¡Eso es fuego puro!",
+            "🔥 ¡Mmm, qué rico! +20 XP",
+            "🔥 ¡Gracias por alimentarme!",
+            "🔥 ¡Me encanta cuando haces eso!",
+        ];
+        return feedMsgs[Math.floor(Math.random() * feedMsgs.length)];
+    }
+
+    if (context === "inactive") {
+        const sleepMsgs = [
+            "zzz... ¿dormido?",
+            "zzz... te espero...",
+            "zzz... cuando quieras jugar...",
+        ];
+        return sleepMsgs[Math.floor(Math.random() * sleepMsgs.length)];
+    }
+
+    if (context === "welcome") {
+        const h = new Date().getHours();
+        let greeting: string;
+        if (h < 12) greeting = "☀️ Buenos días";
+        else if (h < 18) greeting = "🌤️ Buenas tardes";
+        else greeting = "🌙 Buenas noches";
+        return `${greeting}! ${messages.random[Math.floor(Math.random() * messages.random.length)]}`;
+    }
+
     if (messages.milestones[streak as keyof typeof messages.milestones]) {
         return messages.milestones[streak as keyof typeof messages.milestones];
     }
 
-    // Si es un click aleatorio
     if (isClick) {
         return messages.random[
             Math.floor(Math.random() * messages.random.length)
         ];
     }
 
-    // Determinar etapa según racha
     let stage: keyof typeof messages.streak;
     if (streak <= 7) stage = 'spark';
     else if (streak <= 30) stage = 'flame';
