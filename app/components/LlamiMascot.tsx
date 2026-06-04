@@ -254,12 +254,18 @@ export default function LlamiMascot({
     const eyeDx = ((cursorPos.x - 50) / 50) * 3;
     const eyeDy = ((cursorPos.y - 50) / 50) * 2;
 
-    // Eye and mouth rendering based on expression
+    // Eye rendering based on expression
     const renderEyes = () => {
         const baseEyeProps = { stroke: "#1a1a1a", strokeWidth: 2, fill: "#1a1a1a" };
 
         switch (expression) {
             case "happy":
+                return (
+                    <g>
+                        <motion.path d={`M 37 ${36 + eyeDy} Q 42 ${40 + eyeDy}, 47 ${36 + eyeDy}`} stroke="#1a1a1a" strokeWidth="2.5" fill="none" strokeLinecap="round" />
+                        <motion.path d={`M 53 ${36 + eyeDy} Q 58 ${40 + eyeDy}, 63 ${36 + eyeDy}`} stroke="#1a1a1a" strokeWidth="2.5" fill="none" strokeLinecap="round" />
+                    </g>
+                );
             case "excited":
                 return (
                     <g>
@@ -305,25 +311,16 @@ export default function LlamiMascot({
                     </g>
                 );
         }
-        }
     };
 
     const renderMouth = () => {
         switch (expression) {
             case "happy":
                 return (
-                    <g>
-                        <motion.ellipse cx={42 + eyeDx} cy={38 + eyeDy} rx={5} ry={7} {...baseEyeProps}
-                            animate={{ scaleY: [1, 0.1, 1] }} transition={{ repeat: Infinity, duration: 4, times: [0, 0.48, 0.52, 1] }}
-                        />
-                        <circle cx={43 + eyeDx} cy={36 + eyeDy} r={2.5} fill="white" />
-                        <circle cx={44 + eyeDx} cy={39 + eyeDy} r={1.2} fill="white" opacity={0.6} />
-                        <motion.ellipse cx={58 + eyeDx} cy={38 + eyeDy} rx={5} ry={7} {...baseEyeProps}
-                            animate={{ scaleY: [1, 0.1, 1] }} transition={{ repeat: Infinity, duration: 4, times: [0, 0.48, 0.52, 1] }}
-                        />
-                        <circle cx={59 + eyeDx} cy={36 + eyeDy} r={2.5} fill="white" />
-                        <circle cx={60 + eyeDx} cy={39 + eyeDy} r={1.2} fill="white" opacity={0.6} />
-                    </g>
+                    <motion.path d="M 42 50 Q 50 56, 58 50" stroke="#1a1a1a" strokeWidth="2.5" fill="none" strokeLinecap="round"
+                        animate={{ d: ["M 42 50 Q 50 56, 58 50", "M 42 48 Q 50 58, 58 48", "M 42 50 Q 50 56, 58 50"] }}
+                        transition={{ duration: 2, repeat: Infinity }}
+                    />
                 );
             case "excited":
                 return (
