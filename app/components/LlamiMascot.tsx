@@ -451,24 +451,33 @@ export default function LlamiMascot({
                         </radialGradient>
                     </defs>
 
-                    {/* Aura/Glow — bigger when lit */}
+                    {/* Aura/Glow — incandescent when lit */}
                     <motion.circle
                         cx="50" cy="50" r="42"
                         fill={`url(#grad-llami-${stage})`}
-                        opacity={isLit ? 0.7 : isNear ? 0.35 : 0.2}
+                        opacity={isLit ? 0.45 : isNear ? 0.35 : 0.2}
                         animate={{
-                            scale: isLit ? [1.1, 1.35, 1.1] : [1, 1.12, 1],
-                            opacity: isLit ? [0.7, 0.9, 0.7] : isNear ? [0.35, 0.5, 0.35] : [0.2, 0.3, 0.2],
+                            scale: isLit ? [1.15, 1.5, 1.15] : [1, 1.12, 1],
+                            opacity: isLit ? [0.45, 0.7, 0.45] : isNear ? [0.35, 0.5, 0.35] : [0.2, 0.3, 0.2],
                         }}
-                        transition={isLit ? { duration: 0.8, repeat: Infinity } : { duration: 2, repeat: Infinity }}
+                        transition={isLit ? { duration: 0.6, repeat: Infinity } : { duration: 2, repeat: Infinity }}
                     />
+
+                    {/* Second outer glow ring — translucent when lit */}
+                    {isLit && (
+                        <motion.circle cx="50" cy="50" r="44" fill="none" stroke={c.s} strokeWidth="4"
+                            initial={{ opacity: 0, scale: 0.8 }}
+                            animate={{ opacity: [0.3, 0.6, 0.3], scale: [1, 1.12, 1] }}
+                            transition={{ duration: 0.5, repeat: Infinity }}
+                        />
+                    )}
 
                     {/* Outer flame ring when lit */}
                     {isLit && (
-                        <motion.circle cx="50" cy="50" r="46" fill="none" stroke={c.p} strokeWidth="3"
+                        <motion.circle cx="50" cy="50" r="48" fill="none" stroke={c.p} strokeWidth="2"
                             initial={{ opacity: 0, scale: 0.8 }}
-                            animate={{ opacity: [0.6, 1, 0.6], scale: [1, 1.08, 1] }}
-                            transition={{ duration: 0.6, repeat: Infinity }}
+                            animate={{ opacity: [0.25, 0.5, 0.25], scale: [1, 1.06, 1] }}
+                            transition={{ duration: 0.7, repeat: Infinity }}
                         />
                     )}
 
@@ -490,17 +499,28 @@ export default function LlamiMascot({
                         transition={isLit ? { duration: 0.4, repeat: Infinity } : { duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
                     />
 
-                    {/* Inner glow — brighter when lit */}
+                    {/* Inner glow — incandescent when lit */}
                     <motion.ellipse
                         cx="50" cy="45" rx="18" ry="22"
                         fill={c.t}
-                        opacity={isLit ? 0.9 : 0.4 + level * 0.02}
+                        opacity={isLit ? 0.65 : 0.4 + level * 0.02}
                         animate={isLit
-                            ? { scale: [1.05, 1.2, 1.05], opacity: [0.9, 1, 0.9] }
+                            ? { scale: [1.08, 1.25, 1.08], opacity: [0.65, 0.85, 0.65] }
                             : { scale: [1, 1.06, 1], opacity: [0.4 + level * 0.02, 0.55 + level * 0.02, 0.4 + level * 0.02] }
                         }
-                        transition={isLit ? { duration: 0.5, repeat: Infinity } : { duration: 2, repeat: Infinity }}
+                        transition={isLit ? { duration: 0.4, repeat: Infinity } : { duration: 2, repeat: Infinity }}
                     />
+
+                    {/* Center white-hot core when lit */}
+                    {isLit && (
+                        <motion.ellipse
+                            cx="50" cy="45" rx="10" ry="14"
+                            fill="white"
+                            opacity={[0.35, 0.6, 0.35]}
+                            animate={{ scale: [1, 1.15, 1], opacity: [0.35, 0.6, 0.35] }}
+                            transition={{ duration: 0.4, repeat: Infinity }}
+                        />
+                    )}
 
                     {/* Face */}
                     <g>
@@ -511,42 +531,50 @@ export default function LlamiMascot({
 
                     {renderCosmetic()}
 
-                    {/* Sparkles/Fire particles — more when lit */}
-                    <motion.circle cx="25" cy="22" r={isLit ? 3 + level * 0.2 : 1.8 + level * 0.15} fill={c.s}
-                        animate={{ y: isLit ? [-8, -35] : [-8, -22], x: [0, -4, 2], opacity: [1, 0], scale: [1, 0.3] }}
-                        transition={isLit ? { duration: 0.5, repeat: Infinity, delay: 0 } : { duration: 1.8, repeat: Infinity, delay: 0 }}
+                    {/* Sparkles/Fire particles — translucent incandescent when lit */}
+                    <motion.circle cx="25" cy="22" r={isLit ? 3.5 + level * 0.2 : 1.8 + level * 0.15} fill={c.s}
+                        animate={{ y: isLit ? [-6, -40] : [-8, -22], x: [0, -4, 2], opacity: isLit ? [0.6, 0] : [1, 0], scale: [1, 0.2] }}
+                        transition={isLit ? { duration: 0.4, repeat: Infinity, delay: 0 } : { duration: 1.8, repeat: Infinity, delay: 0 }}
                     />
-                    <motion.circle cx="75" cy="20" r={isLit ? 3 + level * 0.2 : 1.8 + level * 0.15} fill={c.s}
-                        animate={{ y: isLit ? [-8, -38] : [-8, -24], x: [0, 4, -2], opacity: [1, 0], scale: [1, 0.3] }}
-                        transition={isLit ? { duration: 0.5, repeat: Infinity, delay: 0.15 } : { duration: 2, repeat: Infinity, delay: 0.6 }}
+                    <motion.circle cx="75" cy="20" r={isLit ? 3.5 + level * 0.2 : 1.8 + level * 0.15} fill={c.s}
+                        animate={{ y: isLit ? [-6, -42] : [-8, -24], x: [0, 4, -2], opacity: isLit ? [0.6, 0] : [1, 0], scale: [1, 0.2] }}
+                        transition={isLit ? { duration: 0.4, repeat: Infinity, delay: 0.12 } : { duration: 2, repeat: Infinity, delay: 0.6 }}
                     />
-                    <motion.circle cx="50" cy="12" r={isLit ? 3 + level * 0.2 : 2 + level * 0.15} fill="white"
-                        animate={{ y: isLit ? [-5, -40] : [-5, -20], opacity: [1, 0], scale: [1, 0.4] }}
-                        transition={isLit ? { duration: 0.4, repeat: Infinity, delay: 0.3 } : { duration: 1.5, repeat: Infinity, delay: 0.3 }}
+                    <motion.circle cx="50" cy="12" r={isLit ? 3.5 + level * 0.2 : 2 + level * 0.15} fill="white"
+                        animate={{ y: isLit ? [-4, -45] : [-5, -20], opacity: isLit ? [0.5, 0] : [0.9, 0], scale: [1, 0.2] }}
+                        transition={isLit ? { duration: 0.35, repeat: Infinity, delay: 0.25 } : { duration: 1.5, repeat: Infinity, delay: 0.3 }}
                     />
 
-                    {/* Extra fire particles when lit */}
+                    {/* Extra incandescent fire particles when lit */}
                     {isLit && (
                         <>
-                            <motion.circle cx="15" cy="40" r="2.5" fill="#fbbf24"
-                                animate={{ y: [0, -30, -50], x: [0, -10, -5], opacity: [1, 0.8, 0], scale: [1, 0.4, 0] }}
-                                transition={{ duration: 0.6, repeat: Infinity, delay: 0.1 }}
+                            <motion.circle cx="15" cy="40" r="3" fill="#fbbf24"
+                                animate={{ y: [0, -35, -55], x: [0, -12, -6], opacity: [0.5, 0.3, 0], scale: [1, 0.3, 0] }}
+                                transition={{ duration: 0.5, repeat: Infinity, delay: 0.1 }}
                             />
-                            <motion.circle cx="85" cy="35" r="2.5" fill="#f97316"
-                                animate={{ y: [0, -30, -50], x: [0, 10, 5], opacity: [1, 0.8, 0], scale: [1, 0.4, 0] }}
-                                transition={{ duration: 0.6, repeat: Infinity, delay: 0.3 }}
+                            <motion.circle cx="85" cy="35" r="3" fill="#f97316"
+                                animate={{ y: [0, -35, -55], x: [0, 12, 6], opacity: [0.5, 0.3, 0], scale: [1, 0.3, 0] }}
+                                transition={{ duration: 0.5, repeat: Infinity, delay: 0.3 }}
                             />
-                            <motion.circle cx="50" cy="5" r="3" fill="#fde047"
-                                animate={{ y: [0, -25, -45], opacity: [1, 0.6, 0], scale: [1, 0.3, 0] }}
-                                transition={{ duration: 0.5, repeat: Infinity, delay: 0.2 }}
+                            <motion.circle cx="50" cy="5" r="3.5" fill="#fde047"
+                                animate={{ y: [0, -30, -50], opacity: [0.5, 0.25, 0], scale: [1, 0.25, 0] }}
+                                transition={{ duration: 0.45, repeat: Infinity, delay: 0.2 }}
                             />
-                            <motion.circle cx="35" cy="10" r="2" fill="#fcd34d"
-                                animate={{ y: [0, -28, -48], x: [0, -6, -3], opacity: [1, 0.5, 0], scale: [1, 0.3, 0] }}
-                                transition={{ duration: 0.55, repeat: Infinity, delay: 0.4 }}
+                            <motion.circle cx="30" cy="8" r="2.5" fill="#fcd34d"
+                                animate={{ y: [0, -32, -52], x: [0, -8, -4], opacity: [0.45, 0.2, 0], scale: [1, 0.25, 0] }}
+                                transition={{ duration: 0.5, repeat: Infinity, delay: 0.4 }}
                             />
-                            <motion.circle cx="65" cy="10" r="2" fill="#fbbf24"
-                                animate={{ y: [0, -28, -48], x: [0, 6, 3], opacity: [1, 0.5, 0], scale: [1, 0.3, 0] }}
-                                transition={{ duration: 0.55, repeat: Infinity, delay: 0 }}
+                            <motion.circle cx="70" cy="8" r="2.5" fill="#fbbf24"
+                                animate={{ y: [0, -32, -52], x: [0, 8, 4], opacity: [0.45, 0.2, 0], scale: [1, 0.25, 0] }}
+                                transition={{ duration: 0.5, repeat: Infinity, delay: 0 }}
+                            />
+                            <motion.circle cx="10" cy="50" r="2" fill="#f97316"
+                                animate={{ y: [0, -28, -48], x: [0, -15, -8], opacity: [0.4, 0.15, 0], scale: [1, 0.2, 0] }}
+                                transition={{ duration: 0.55, repeat: Infinity, delay: 0.15 }}
+                            />
+                            <motion.circle cx="90" cy="50" r="2" fill="#fbbf24"
+                                animate={{ y: [0, -28, -48], x: [0, 15, 8], opacity: [0.4, 0.15, 0], scale: [1, 0.2, 0] }}
+                                transition={{ duration: 0.55, repeat: Infinity, delay: 0.35 }}
                             />
                         </>
                     )}
