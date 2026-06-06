@@ -1,8 +1,9 @@
 "use client";
 
 import Link from 'next/link';
-import { Sun, AlertTriangle, Loader2, HelpCircle, ChevronRight, Shield, Users, BookOpen, Trophy, Gamepad2, Heart } from 'lucide-react';
+import { Sun, AlertTriangle, Loader2, HelpCircle, ChevronRight, Shield, Users, BookOpen, Trophy, Gamepad2, Heart, Sparkles } from 'lucide-react';
 import { useEffect, useState } from 'react';
+import { motion } from 'framer-motion';
 import DailyVerse from './components/DailyVerse';
 // import DailyPrayerCard from '../components/DailyPrayerCard';
 import LlamiMascot from '../components/LlamiMascot';
@@ -165,13 +166,21 @@ export default function DashboardHome() {
 
     return (
         <div className="animate-fade-in">
-            {/* Header */}
-            <header className="d-flex justify-content-between align-items-center mb-4">
+            {/* Header — glass effect */}
+            <motion.header
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4 }}
+                className="d-flex justify-content-between align-items-center mb-4 p-3 rounded-4 glass-strong shadow-sm"
+            >
                 <div>
-                    <h3 className="text-secondary fw-bold text-capitalize mb-1" style={{ fontSize: '1.1rem' }}>{currentDate}</h3>
+                    <div className="d-flex align-items-center gap-2 mb-1">
+                        <Sparkles size={14} className="text-warning" />
+                        <h3 className="text-secondary fw-bold text-capitalize m-0" style={{ fontSize: '0.95rem' }}>{currentDate}</h3>
+                    </div>
                     <h1 className="fw-extrabold text-warning m-0" style={{ fontSize: '2.5rem' }}>{t.dashboard.greeting}, {stats?.name || 'Mario'}</h1>
                 </div>
-                <div className="bg-white rounded-pill shadow-sm p-1 d-flex align-items-center gap-1 border">
+                <div className="glass rounded-pill shadow-sm p-1 d-flex align-items-center gap-1" style={{ border: '1px solid rgba(255,255,255,0.4)' }}>
                     <Link href="/dashboard/tutorials" className="btn btn-light bg-transparent border-0 rounded-circle p-1 text-dark hover-scale" title={t.nav.tutorials}>
                         <HelpCircle size={32} />
                     </Link>
@@ -184,18 +193,25 @@ export default function DashboardHome() {
                         </div>
                     </Link>
                 </div>
-            </header>
+            </motion.header>
 
 
 
-            {/* Versículo del día */}
-            <section className="mb-4" id="tour-verse">
+            <motion.section
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4, delay: 0.05 }}
+                className="mb-4" id="tour-verse"
+            >
                 <DailyVerse />
-            </section>
+            </motion.section>
 
-
-            {/* Nuevo: Reto Diario Estilo Duolingo */}
-            <section className="mb-4">
+            <motion.section
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4, delay: 0.1 }}
+                className="mb-4"
+            >
                 <ChallengeCard
                     isCompleted={
                         stats?.lastChallengeCompleted
@@ -203,12 +219,17 @@ export default function DashboardHome() {
                             : false
                     }
                 />
-            </section>
+            </motion.section>
 
             {/* Estado y SOS con Llami */}
-            <section className="row g-2 g-md-3 mb-4">
+            <motion.section
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4, delay: 0.15 }}
+                className="row g-2 g-md-3 mb-4"
+            >
                 <div className="col-sm-7 col-12">
-                    <div id="tour-checkin" className="card border-0 shadow-sm h-100 bg-white overflow-visible" style={{ borderRadius: '24px' }}>
+                    <div id="tour-checkin" className="card border-0 shadow-sm h-100 bg-white overflow-visible hover-lift" style={{ borderRadius: '24px' }}>
                         <div className="card-body p-3 p-md-4">
                             <div className="row align-items-between h-100">
                                 <div className="col-7 d-flex flex-column justify-content-center">
@@ -224,11 +245,10 @@ export default function DashboardHome() {
                                     <h2 className="fw-black text-dark m-0" style={{ fontSize: '1.8rem', marginLeft: '35px' }}>{t.dashboard.days}</h2>
                                 </div>
                                 <div className="col-5 text-center position-relative d-flex flex-column align-items-center justify-content-center pe-3">
-                                    {/* Llami Mascot Link with Speech Bubble */}
                                     <Link href="/dashboard/llami" className="text-decoration-none group mb-1">
                                         <div className="position-relative d-inline-block">
                                             <div className="hover-scale transition-all">
-                                                <div className="bg-warning-subtle rounded-circle p-2" style={{ width: '100px', height: '100px' }}>
+                                                <div className="bg-warning-subtle rounded-circle p-2 animate-float" style={{ width: '100px', height: '100px' }}>
                                                     <LlamiMascot
                                                         streak={stats?.streak || 10}
                                                         lastMood={stats?.lastCheckin?.mood}
@@ -248,8 +268,10 @@ export default function DashboardHome() {
                     </div>
                 </div>
                 <div className="col-sm-5 col-12">
-                    <Link href="/dashboard/sos" className="card border-0 shadow-sm h-100 bg-danger text-white text-decoration-none hover-scale overflow-hidden" style={{ borderRadius: '24px' }}>
-                        <div className="card-body p-3 d-flex flex-column align-items-center justify-content-center text-center">
+                    <Link href="/dashboard/sos" className="card border-0 shadow-sm h-100 bg-danger text-white text-decoration-none hover-lift overflow-hidden position-relative" style={{ borderRadius: '24px' }}>
+                        {/* Decorative gradient overlay */}
+                        <div className="position-absolute top-0 start-0 w-100 h-100" style={{ background: 'linear-gradient(135deg, rgba(255,255,255,0.1) 0%, transparent 100%)' }} />
+                        <div className="card-body p-3 d-flex flex-column align-items-center justify-content-center text-center position-relative">
                             <div className="mb-2 d-flex align-items-center justify-content-center">
                                 <Shield size={72} className="text-white" fill="white" fillOpacity={0.2} />
                             </div>
@@ -257,12 +279,17 @@ export default function DashboardHome() {
                         </div>
                     </Link>
                 </div>
-            </section>
+            </motion.section>
 
             {/* Mi Seguimiento - Resumen Premium */}
-            <section className="mb-4" id="tour-struggles">
+            <motion.section
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4, delay: 0.2 }}
+                className="mb-4" id="tour-struggles"
+            >
                 <Link href="/dashboard/luchas" className="text-decoration-none">
-                    <div className="card border-0 shadow-sm bg-white overflow-hidden hover-scale transition-all" style={{ borderRadius: '24px' }}>
+                    <div className="card border-0 shadow-sm bg-white overflow-hidden hover-lift transition-all" style={{ borderRadius: '24px' }}>
                         <div className="card-body p-4">
                             <div className="d-flex align-items-center justify-content-between mb-3">
                                 <div className="d-flex align-items-center gap-3">
@@ -298,21 +325,25 @@ export default function DashboardHome() {
                                 </div>
                             </div>
                         </div>
-                        {/* Decorative bar */}
-                        <div className="bg-primary" style={{ height: '4px', width: '100%' }}></div>
+                        {/* Decorative bar with gradient */}
+                        <div className="bg-warning" style={{ height: '4px', width: '100%' }}></div>
                     </div>
                 </Link>
-            </section>
+            </motion.section>
 
 
 
-            {/* Main Action Grid (New Navigation) */}
-            <section className="mb-4 animate-fade-in delay-100">
+            {/* Main Action Grid */}
+            <motion.section
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4, delay: 0.25 }}
+                className="mb-4"
+            >
                 <div className="row g-3">
-                    {/* Games Card */}
                     <div className="col-6 col-md-3">
                         <Link href="/dashboard/games" className="text-decoration-none">
-                            <div id="tour-games" className="card border-0 shadow-sm h-100 bg-white hover-scale" style={{ borderRadius: '24px' }}>
+                            <div id="tour-games" className="card border-0 shadow-sm h-100 bg-white hover-lift" style={{ borderRadius: '24px' }}>
                                 <div className="card-body p-3 d-flex flex-column align-items-center justify-content-center text-center" style={{ minHeight: '140px' }}>
                                     <div className="bg-primary-subtle text-primary p-3 rounded-circle mb-3">
                                         <Gamepad2 size={32} />
@@ -323,10 +354,9 @@ export default function DashboardHome() {
                             </div>
                         </Link>
                     </div>
-                    {/* Leagues Card */}
                     <div className="col-6 col-md-3">
                         <Link href="/dashboard/leagues" className="text-decoration-none">
-                            <div id="tour-leagues" className="card border-0 shadow-sm h-100 bg-white hover-scale" style={{ borderRadius: '24px' }}>
+                            <div id="tour-leagues" className="card border-0 shadow-sm h-100 bg-white hover-lift" style={{ borderRadius: '24px' }}>
                                 <div className="card-body p-3 d-flex flex-column align-items-center justify-content-center text-center" style={{ minHeight: '140px' }}>
                                     <div className="bg-warning-subtle text-warning p-3 rounded-circle mb-3">
                                         <Trophy size={32} />
@@ -337,10 +367,9 @@ export default function DashboardHome() {
                             </div>
                         </Link>
                     </div>
-                    {/* Support Card */}
                     <div className="col-6 col-md-3">
                         <Link href="/dashboard/support" className="text-decoration-none">
-                            <div className="card border-0 shadow-sm h-100 bg-white hover-scale" style={{ borderRadius: '24px' }}>
+                            <div className="card border-0 shadow-sm h-100 bg-white hover-lift" style={{ borderRadius: '24px' }}>
                                 <div className="card-body p-3 d-flex flex-column align-items-center justify-content-center text-center" style={{ minHeight: '140px' }}>
                                     <div className="bg-danger-subtle text-danger p-3 rounded-circle mb-3">
                                         <Heart size={32} />
@@ -352,19 +381,26 @@ export default function DashboardHome() {
                         </Link>
                     </div>
                 </div>
-            </section>
+            </motion.section>
 
-            {/* Spiritual Insights Value Add Section */}
-            <section className="mb-4">
+            {/* Spiritual Insights */}
+            <motion.section
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4, delay: 0.3 }}
+                className="mb-4"
+            >
                 <div className="card border-0 shadow-sm bg-white p-4" style={{ borderRadius: '24px' }}>
                     <div className="d-flex align-items-center gap-3 mb-3">
-                        <div className="bg-warning-subtle text-warning p-2 rounded-3">
+                        <div className="bg-warning-subtle text-warning p-2 rounded-3 animate-float">
                             <Sun size={24} />
                         </div>
                         <h5 className="fw-bold text-secondary m-0">Sabiduría para hoy</h5>
                     </div>
-                    <div className="bg-light p-3 rounded-4 mb-3 border-start border-warning border-4">
-                        <p className="small text-muted mb-0 lh-base">
+                    <div className="bg-light p-3 rounded-4 mb-3 border-start border-warning border-4 position-relative overflow-hidden">
+                        {/* Subtle shimmer */}
+                        <div className="shimmer-bg position-absolute top-0 start-0 w-100 h-100" />
+                        <p className="small text-muted mb-0 lh-base position-relative">
                             <strong>¿Sabías que?</strong> La palabra &quot;Selah&quot; aparece 74 veces en la Biblia y es una invitación a hacer una pausa, respirar y meditar en lo que acabas de leer. Hoy, tómate un momento Selah.
                         </p>
                     </div>
@@ -388,10 +424,15 @@ export default function DashboardHome() {
                         </div>
                     </div>
                 </div>
-            </section>
+            </motion.section>
 
             {/* Social Media Cards */}
-            <section className="mb-4 animate-fade-in delay-200">
+            <motion.section
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4, delay: 0.35 }}
+                className="mb-4"
+            >
                 <div className="row g-3">
                     <div className="col-12 col-md-6">
                         <WhatsappCard />
@@ -400,7 +441,7 @@ export default function DashboardHome() {
                         <InstagramCard />
                     </div>
                 </div>
-            </section>
+            </motion.section>
 
             {/* Feature Tour (Proactive Tutorial) */}
             {stats && (!stats.hasSeenTutorialTour || localStorage.getItem('tour_version') !== '2026-01-new-dashboard') && (

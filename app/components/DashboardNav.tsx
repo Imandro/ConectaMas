@@ -62,9 +62,12 @@ export default function DashboardNav() {
                                 key={item.href}
                                 href={item.href}
                                 className={`nav-link d-flex flex-column align-items-center justify-content-center small flex-grow-1 text-center h-100 ${isActive ? 'text-primary' : 'text-muted'}`}
-                                style={{ transition: 'all 0.2s ease' }}
+                                style={{ transition: 'all 0.2s ease', position: 'relative' }}
                             >
-                                <div className="position-relative">
+                                {isActive && (
+                                    <span className="position-absolute top-0 start-50 translate-middle-x bg-warning rounded-pill" style={{ width: '24px', height: '3px', top: '2px!important' }} />
+                                )}
+                                <div className={`position-relative rounded-3 p-1 ${isActive ? 'bg-warning-subtle' : ''}`} style={{ transition: 'all 0.2s ease' }}>
                                     <Icon size={24} strokeWidth={isActive ? 2.5 : 2} />
                                     {item.showBadge && notificationCount > 0 && (
                                         <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style={{ fontSize: '0.6rem', padding: '0.25em 0.4em' }}>
@@ -86,7 +89,7 @@ export default function DashboardNav() {
                     <small className="text-white-50 small">{t.nav.safe_space}</small>
                 </div>
 
-                <nav className="nav flex-column gap-2">
+                <nav className="nav flex-column gap-1">
                     {navItems.map((item) => {
                         const Icon = item.icon;
                         const isActive = pathname === item.href;
@@ -94,11 +97,14 @@ export default function DashboardNav() {
                             <Link
                                 key={item.href}
                                 href={item.href}
-                                className={`nav-link d-flex align-items-center gap-3 rounded-pill px-3 py-2 transition-all ${isActive ? 'bg-secondary text-primary shadow-sm fw-bold' : 'text-white-50 hover-text-white hover-bg-white-10'}`}
+                                className={`nav-link d-flex align-items-center gap-3 rounded-pill px-3 py-2 transition-all ${isActive
+                                    ? 'bg-secondary text-primary shadow-sm fw-bold animate-pulse-glow'
+                                    : 'text-white-50 hover-text-white hover-bg-white-10'}`}
+                                style={{ transition: 'all 0.25s ease' }}
                             >
                                 <div className="position-relative d-flex align-items-center">
                                     <Icon size={20} />
-                                    {item.name === t.nav.community && notificationCount > 0 && (
+                                    {item.showBadge && notificationCount > 0 && (
                                         <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style={{ fontSize: '0.55rem', marginLeft: '-5px' }}>
                                             {notificationCount > 9 ? '9+' : notificationCount}
                                         </span>
