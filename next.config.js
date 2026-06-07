@@ -37,6 +37,14 @@ const withPWA = require('next-pwa')({
             },
         },
         {
+            urlPattern: /\/bible\/es_rvr\.json$/i,
+            handler: 'CacheFirst',
+            options: {
+                cacheName: 'bible-static-file',
+                expiration: { maxEntries: 5, maxAgeSeconds: 365 * 24 * 60 * 60 },
+            },
+        },
+        {
             urlPattern: /\.(?:js|css)$/i,
             handler: 'StaleWhileRevalidate',
             options: {

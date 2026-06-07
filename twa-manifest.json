@@ -1,0 +1,46 @@
+{
+  "packageId": "com.conecta_plus.app",
+  "host": "conectaplus.app",
+  "name": "Conecta+",
+  "launcherName": "Conecta+",
+  "display": "standalone",
+  "themeColor": "#0d6efd",
+  "navigationColor": "#0d6efd",
+  "navigationColorDark": "#0a58ca",
+  "navigationDividerColor": "#0d6efd",
+  "navigationDividerColorDark": "#0a58ca",
+  "backgroundColor": "#ffffff",
+  "enableNotifications": true,
+  "startUrl": "/",
+  "iconUrl": "https://conectaplus.app/logo.png",
+  "maskableIconUrl": "https://conectaplus.app/logo.png",
+  "monochromeIconUrl": "https://conectaplus.app/logo.png",
+  "appVersion": "1.0.1",
+  "appVersionCode": 2,
+  "signingKey": {
+    "path": "conectaplus.keystore",
+    "alias": "conectaplus"
+  },
+  "splashScreenFadeOutDuration": 300,
+  "enableSiteSettingsShortcut": true,
+  "isChromeOSOnly": false,
+  "isMetaQuest": false,
+  "fullScopeUrl": "https://conectaplus.app/",
+  "minSdkVersion": 21,
+  "orientation": "portrait",
+  "shortcuts": [],
+  "features": {
+    "locationDelegation": {
+      "enabled": false
+    },
+    "playBilling": {
+      "enabled": false
+    }
+  },
+  "alphaDependencies": {
+    "enabled": false
+  },
+  "enableCrashReporting": false,
+  "isSplashScreenEnabled": true,
+  "splashScreenImageFadeInDuration": 300
+}

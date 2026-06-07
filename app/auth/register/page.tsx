@@ -2,11 +2,12 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { signIn } from 'next-auth/react';
-import { Eye, EyeOff, Loader2 } from 'lucide-react';
+import { Eye, EyeOff, Loader2, Cloud } from 'lucide-react';
 import { useLanguage } from "@/app/LanguageContext";
+import { getGuestStats, migrateGuestDataToAccount } from '@/app/lib/guest';
 
 export default function RegisterPage() {
     const router = useRouter();
@@ -14,6 +15,18 @@ export default function RegisterPage() {
     const [loading, setLoading] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
     const [error, setError] = useState('');
+    const [guestFound, setGuestFound] = useState(false);
+    const [guestData, setGuestData] = useState<any>(null);
+    const [migrateData, setMigrateData] = useState(true);
+
+    useEffect(() => {
+        const gs = getGuestStats();
+        if (gs.streak > 0 || gs.mascot.experience > 0 || gs.mascot.level > 1) {
+            setGuestFound(true);
+            setGuestData(gs);
+            setFormData(prev => ({ ...prev, name: gs.name !== 'Invitado' ? gs.name : prev.name }));
+        }
+    }, []);
 
     const [formData, setFormData] = useState({
         name: '',

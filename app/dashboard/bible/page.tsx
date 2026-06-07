@@ -9,12 +9,54 @@ import { useSearchParams } from 'next/navigation';
 import { useLanguage } from "@/app/LanguageContext";
 import { BIBLE_BOOKS, getBibleBookName } from '@/app/lib/bibleData';
 
+const BOOK_MAPPING: { [key: string]: number } = {
+    "Génesis": 0, "Éxodo": 1, "Levítico": 2, "Números": 3, "Deuteronomio": 4,
+    "Josué": 5, "Jueces": 6, "Rut": 7, "1 Samuel": 8, "2 Samuel": 9,
+    "1 Reyes": 10, "2 Reyes": 11, "1 Crónicas": 12, "2 Crónicas": 13,
+    "Esdras": 14, "Nehemías": 15, "Ester": 16, "Job": 17, "Salmos": 18,
+    "Proverbios": 19, "Eclesiastés": 20, "Cantares": 21, "Isaías": 22,
+    "Jeremías": 23, "Lamentaciones": 24, "Ezequiel": 25, "Daniel": 26,
+    "Oseas": 27, "Joel": 28, "Amós": 29, "Abdías": 30, "Jonás": 31,
+    "Miqueas": 32, "Nahúm": 33, "Habacuc": 34, "Sofonías": 35, "Hageo": 36,
+    "Zacarías": 37, "Malaquías": 38, "Mateo": 39, "Marcos": 40, "Lucas": 41,
+    "Juan": 42, "Hechos": 43, "Romanos": 44, "1 Corintios": 45, "2 Corintios": 46,
+    "Gálatas": 47, "Efesios": 48, "Filipenses": 49, "Colosenses": 50,
+    "1 Tesalonicenses": 51, "2 Tesalonicenses": 52, "1 Timoteo": 53,
+    "2 Timoteo": 54, "Tito": 55, "Filemón": 56, "Hebreos": 57, "Santiago": 58,
+    "1 Pedro": 59, "2 Pedro": 60, "1 Juan": 61, "2 Juan": 62, "3 Juan": 63,
+    "Judas": 64, "Apocalipsis": 65
+};
+
+let cachedBibleData: any = null;
+
 interface BibleVerse {
     id: string;
     reference: string;
     text: string;
-    tags: string;
+    tags?: string;
 }
+
+
+const FALLBACK_VERSES: BibleVerse[] = [
+    {
+        id: "fb1",
+        reference: "1 Pedro 5:7",
+        text: "Echad toda vuestra ansiedad sobre él, porque él tiene cuidado de vosotros.",
+        tags: "ansiedad, paz, confianza"
+    },
+    {
+        id: "fb2",
+        reference: "Filipenses 4:13",
+        text: "Todo lo puedo en Cristo que me fortalece.",
+        tags: "fortaleza, fe, ánimo"
+    },
+    {
+        id: "fb3",
+        reference: "Salmos 23:1",
+        text: "Jehová es mi pastor; nada me faltará.",
+        tags: "paz, provisión, consuelo"
+    }
+];
 
 export default function BiblePage() {
     const { t, language } = useLanguage();
@@ -25,9 +67,6 @@ export default function BiblePage() {
     // Find book by matching any language name ideally, but for now exact match on Spanish name works as default,
     // or we should logic to find book by ID/Name across languages.
     // For simplicity, we assume the URL might have Spanish name OR we default to first book.
-    // Ideally URLs should use a stable ID (e.g. genesis), but the app uses names.
-    // Only "Display Name" needs to change unless we want to break URLs. 
-    // We will keep internal "value" as Spanish name for API compatibility if backend expects Spanish.
     // Assuming backend/API expects Spanish names for folders/data.
     const initialBook = BIBLE_BOOKS.find(b => b.name === initialBookName) || BIBLE_BOOKS[0];
     const initialChapterNum = initialChapter ? parseInt(initialChapter) : 1;
@@ -65,28 +104,69 @@ export default function BiblePage() {
         if (!selectedBook || !selectedChapter) return;
 
         setLoading(true);
-        // Note: We might need to pass language to API if text needs to be translated.
-        // Assuming API might only have Spanish text for now unless we update it.
-        // If we want EN/PT text, the backend needs to support it. 
-        // For now, we localize the UI.
-        fetch(`/api/bible?book=${encodeURIComponent(selectedBook.name)}&chapter=${selectedChapter}`)
-            .then(res => res.json())
-            .then(data => {
+        
+        const loadBibleChapter = async () => {
+            try {
+                const res = await fetch(`/api/bible?book=${encodeURIComponent(selectedBook.name)}&chapter=${selectedChapter}`);
+                if (!res.ok) throw new Error("API failed");
+                const data = await res.json();
+                if (data.error) throw new Error(data.error);
                 setChapterText(data);
+            } catch (err) {
+                console.warn("API failed, trying local static bible file:", err);
+                try {
+                    if (!cachedBibleData) {
+                        const staticRes = await fetch('/bible/es_rvr.json');
+                        if (!staticRes.ok) throw new Error("Static bible not available");
+                        cachedBibleData = await staticRes.json();
+                    }
+                    const bookIdx = BOOK_MAPPING[selectedBook.name];
+                    if (bookIdx === undefined) throw new Error("Book index not found");
+                    const bookData = cachedBibleData[bookIdx];
+                    if (!bookData) throw new Error("Book data not found");
+                    const chapterIdx = selectedChapter - 1;
+                    const chapterData = bookData.chapters[chapterIdx];
+                    if (!chapterData) throw new Error("Chapter data not found");
+                    
+                    const verses = chapterData.map((v: string, index: number) => ({
+                        verse: index + 1,
+                        text: v
+                    }));
+                    
+                    setChapterText({
+                        reference: `${selectedBook.name} ${selectedChapter}`,
+                        verses: verses,
+                        text: verses.map((v: any) => `${v.verse} ${v.text}`).join(' ')
+                    });
+                } catch (staticErr: any) {
+                    console.error("Local Bible parsing failed:", staticErr);
+                    setChapterText({
+                        error: "Offline",
+                        reference: `${selectedBook.name} ${selectedChapter}`,
+                        verses: [],
+                        text: "No se pudo cargar la Biblia en modo offline. Asegúrate de haberla abierto al menos una vez online."
+                    });
+                }
+            } finally {
                 setLoading(false);
-            })
-            .catch(err => {
-                console.error("Error fetching Bible chapter:", err);
-                setLoading(false);
-            });
+            }
+        };
+
+        loadBibleChapter();
     }, [selectedBook, selectedChapter]);
 
     // Fetch helpful verses (could be personalized based on user struggles)
     useEffect(() => {
         fetch('/api/verses')
-            .then(res => res.json())
+            .then(res => {
+                if (!res.ok) throw new Error("Failed to fetch verses");
+                return res.json();
+            })
             .then(data => setHelpfulVerses(data))
-            .catch(err => console.error("Error fetching verses:", err));
+            .catch(err => {
+                console.warn("Error fetching verses, using local fallback:", err);
+                setHelpfulVerses(FALLBACK_VERSES);
+            });
     }, []);
 
     const handlePrevChapter = () => {
@@ -222,7 +302,7 @@ export default function BiblePage() {
                                             <p className="small fw-bold text-primary mb-1">{verse.reference}</p>
                                             <p className="small mb-1">{verse.text}</p>
                                             <div className="d-flex gap-1 flex-wrap">
-                                                {verse.tags.split(',').map((tag, idx) => (
+                                                {(verse.tags ?? '').split(',').filter(Boolean).map((tag, idx) => (
                                                     <span key={idx} className="badge bg-light text-dark small">
                                                         {tag.trim()}
                                                     </span>

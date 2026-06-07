@@ -52,7 +52,6 @@ export async function POST(req: Request) {
                 spiritualLevel: 'Explorador',
                 hasCompletedOnboarding: false,
                 hasSeenLlamiTutorial: false,
-                initial: name.substring(0, 1).toUpperCase(),
             },
         });
 

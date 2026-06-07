@@ -25,6 +25,8 @@
         "next": "^14.2.21",
         "next-auth": "5.0.0-beta.25",
         "next-pwa": "^5.6.0",
+        "pwabuilder-android": "^2.0.0-rc.3",
+        "pwabuilder-lib": "^2.1.12",
         "react": "^18.2.0",
         "react-dom": "^18.2.0",
         "react-easy-crop": "^5.5.6",
@@ -33,6 +35,8 @@
         "web-push": "^3.6.7"
     },
     "devDependencies": {
+        "@bubblewrap/core": "^1.24.1",
+        "@pwabuilder/cli": "^0.0.17",
         "@types/bcryptjs": "^2.4.6",
         "@types/downloadjs": "^1.4.6",
         "@types/node": "^20.10.6",
@@ -42,6 +46,7 @@
         "eslint": "^8.56.0",
         "eslint-config-next": "^14.2.21",
         "prisma": "^5.22.0",
+        "protobufjs": "^8.6.1",
         "ts-node": "^10.9.2",
         "typescript": "^5.3.3"
     }

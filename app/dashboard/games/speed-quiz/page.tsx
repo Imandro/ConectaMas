@@ -5,7 +5,7 @@ import Link from "next/link";
 import { ArrowLeft, Zap, Clock, Trophy, Star } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { speedQuizData, SpeedQuizQuestion } from "@/app/data/games/speedQuizData";
-import { saveGameScore, getBestScores } from "@/app/actions/gameScore";
+import { saveGameScore, getBestScores } from "../clientGameScore";
 import { Check, X } from "lucide-react";
 
 const TOTAL_QUESTIONS = 10;

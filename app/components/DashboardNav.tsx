@@ -8,12 +8,15 @@ import { usePathname } from 'next/navigation';
 // For now I'm using text/emoji placeholders or basic SVGs if needed to be standalone without running npm install.
 // Assuming lucide-react IS in package.json, we can try to use it, but if it fails to compile without install, we'll fall back.
 // Since user hasn't installed node_modules, imports might partial fail in IDE but let's write code assuming they will install.
-import { Home, BookOpen, HeartPulse, User, Menu, Book, MessageCircle, Zap, Trophy, Gamepad2, HeartHandshake, Globe, Download, Heart } from 'lucide-react';
-import { signOut } from "next-auth/react";
+import { Home, BookOpen, HeartPulse, User, Menu, Book, MessageCircle, Zap, Trophy, Gamepad2, HeartHandshake, Globe, Download, Heart, LogIn } from 'lucide-react';
+import { signOut, useSession } from "next-auth/react";
 import { useLanguage } from '@/app/LanguageContext';
+import { useGuest } from '@/app/components/GuestProvider';
 
 export default function DashboardNav() {
     const { t } = useLanguage();
+    const { data: session } = useSession();
+    const { isGuest } = useGuest();
     const pathname = usePathname();
     const [notificationCount, setNotificationCount] = useState(0);
 
@@ -83,7 +86,7 @@ export default function DashboardNav() {
             </nav>
 
             {/* Desktop Sidebar (Hidden on Mobile/Tablet) */}
-            <div className="d-none d-lg-flex flex-column bg-primary border-end h-100 p-3 position-fixed top-0 start-0 text-white" style={{ width: '240px' }}>
+            <div className="d-none d-lg-flex flex-column bg-primary border-end h-100 p-3 position-fixed top-0 start-0 text-white" style={{ width: '240px', zIndex: 2 }}>
                 <div className="mb-5 px-2 mt-2">
                     <h4 className="fw-bold text-white mb-0">Conecta<span className="text-secondary">+</span></h4>
                     <small className="text-white-50 small">{t.nav.safe_space}</small>
@@ -136,15 +139,25 @@ export default function DashboardNav() {
                     >
                         <Download size={14} className="me-1" /> Descargar App
                     </button>
-                    <button
-                        onClick={async () => {
-                            await signOut({ redirect: false });
-                            window.location.href = "/auth/login";
-                        }}
-                        className="btn btn-danger w-100 rounded-pill btn-sm fw-bold text-white shadow-sm"
-                    >
-                        {t.nav.logout}
-                    </button>
+                    {isGuest ? (
+                        <Link
+                            href="/auth/login"
+                            className="btn btn-success w-100 rounded-pill btn-sm fw-bold text-white shadow-sm d-flex align-items-center justify-content-center gap-1"
+                            style={{ fontSize: '0.75rem' }}
+                        >
+                            <LogIn size={14} /> Iniciar sesión
+                        </Link>
+                    ) : (
+                        <button
+                            onClick={async () => {
+                                await signOut({ redirect: false });
+                                window.location.href = "/auth/login";
+                            }}
+                            className="btn btn-danger w-100 rounded-pill btn-sm fw-bold text-white shadow-sm"
+                        >
+                            {t.nav.logout}
+                        </button>
+                    )}
                 </div>
             </div>
         </>

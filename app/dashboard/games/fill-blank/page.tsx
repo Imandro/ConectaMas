@@ -5,7 +5,7 @@ import Link from "next/link";
 import { ArrowLeft, Trophy, Star } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { fillBlankData, FillBlankQuestion } from "@/app/data/games/fillBlankData";
-import { saveGameScore, getBestScores } from "@/app/actions/gameScore";
+import { saveGameScore, getBestScores } from "../clientGameScore";
 import { Check, X } from "lucide-react";
 
 const ROUNDS = 10;

@@ -38,9 +38,12 @@ interface DashboardStats {
 }
 
 import { useLanguage } from '@/app/LanguageContext';
+import { useGuest } from '@/app/components/GuestProvider';
+import { getGuestStats, saveGuestStats, updateGuestStreak } from '@/app/lib/guest';
 
 export default function DashboardHome() {
     const { t, language } = useLanguage();
+    const { isGuest, stats: guestStats, refreshStats } = useGuest();
     const [stats, setStats] = useState<DashboardStats | null>(null);
     const [loading, setLoading] = useState(true);
     const [checkinLoading, setCheckinLoading] = useState(false);
@@ -51,9 +54,32 @@ export default function DashboardHome() {
     useEffect(() => {
         const localeMap: Record<string, string> = { es: 'es-ES', en: 'en-US', pt: 'pt-BR' };
         setCurrentDate(new Date().toLocaleDateString(localeMap[language] || 'es-ES', { day: 'numeric', month: 'long' }));
-        fetchStats();
-        fetchDailyQuestions();
-    }, [language]);
+        if (isGuest) {
+            loadGuestStats();
+        } else {
+            fetchStats();
+            fetchDailyQuestions();
+        }
+    }, [language, isGuest]);
+
+    const loadGuestStats = () => {
+        const gs = getGuestStats();
+        setStats({
+            name: gs.name,
+            streak: gs.streak,
+            lastCheckin: gs.lastCheckin,
+            struggles: [],
+            mascot: gs.mascot,
+            hasSeenTutorialTour: true,
+            hasJoinedWhatsapp: false,
+            hasFollowedInstagram: false,
+            country: undefined,
+            age: undefined,
+            lastChallengeCompleted: undefined,
+        });
+        if (gs.hasCheckedInToday) setHasCheckedIn(true);
+        setLoading(false);
+    };
 
     const fetchDailyQuestions = async () => {
         try {
@@ -127,6 +153,16 @@ export default function DashboardHome() {
     const handleCheckin = async (mood: string) => {
         if (checkinLoading || hasCheckedIn) return;
         setCheckinLoading(true);
+
+        if (isGuest) {
+            // Guest check-in: store locally
+            const updated = updateGuestStreak();
+            refreshStats();
+            setHasCheckedIn(true);
+            loadGuestStats();
+            setCheckinLoading(false);
+            return;
+        }
 
         try {
             const res = await fetch('/api/checkin', {

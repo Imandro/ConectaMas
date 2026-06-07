@@ -26,9 +26,24 @@ export default auth((req) => {
     const isLoggedIn = !!req.auth;
     const isAuthPage = req.nextUrl.pathname.startsWith('/auth');
     const isPublicPage = req.nextUrl.pathname === '/';
+    const isDashboardPage = req.nextUrl.pathname.startsWith('/dashboard');
+    const isGuestCookie = req.cookies.get('conectaplus_guest')?.value === 'true';
+
+    // Allow guests to access dashboard (their ID is stored in localStorage, checked client-side)
+    if (isDashboardPage && !isLoggedIn && isGuestCookie) {
+        // Guest access granted — continue
+        const response = NextResponse.next();
+        // Secondary Cleanup to keep headers small
+        req.cookies.getAll().forEach(cookie => {
+            if (cookie.name.includes('next-auth.callback-url') || cookie.name.includes('next-auth.csrf-token')) {
+                response.cookies.delete(cookie.name);
+            }
+        });
+        return response;
+    }
 
     // Protect Dashboard and Onboarding
-    if (req.nextUrl.pathname.startsWith('/dashboard') || req.nextUrl.pathname.startsWith('/onboarding')) {
+    if (isDashboardPage || req.nextUrl.pathname.startsWith('/onboarding')) {
         if (!isLoggedIn) {
             return NextResponse.redirect(new URL('/auth/login', req.url));
         }

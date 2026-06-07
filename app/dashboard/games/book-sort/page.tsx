@@ -5,7 +5,7 @@ import Link from "next/link";
 import { ArrowLeft, Trophy, Book } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { bookSortData, BookSortQuestion } from "@/app/data/games/bookSortData";
-import { saveGameScore, getBestScores } from "@/app/actions/gameScore";
+import { saveGameScore, getBestScores } from "@/app/dashboard/games/clientGameScore";
 
 const ROUNDS = 15;
 

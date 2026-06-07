@@ -182,6 +182,22 @@ export default function LoginPage() {
                         <p className="small text-muted mb-2">
                             {t.auth.no_account} <Link href="/auth/register" className="text-primary fw-bold text-decoration-none">{t.auth.register_link}</Link>
                         </p>
+                        <div className="d-flex align-items-center gap-2 mb-2">
+                            <hr className="flex-grow-1 m-0" />
+                            <span className="text-muted small">o</span>
+                            <hr className="flex-grow-1 m-0" />
+                        </div>
+                        <button
+                            type="button"
+                            onClick={() => {
+                                document.cookie = "conectaplus_guest=true; path=/; max-age=86400";
+                                window.location.href = '/dashboard';
+                            }}
+                            className="btn btn-outline-secondary btn-sm rounded-pill w-100 mb-2 d-flex align-items-center justify-content-center gap-2"
+                        >
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 1 0-16 0"/></svg>
+                            Continuar como invitado
+                        </button>
                         <button
                             type="button"
                             onClick={() => {

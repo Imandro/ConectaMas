@@ -5,7 +5,7 @@ import Link from "next/link";
 import { ArrowLeft, Trophy, Check, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { bookMatchData, BookMatchQuestion, BookMatchItem } from "@/app/data/games/bookMatchData";
-import { saveGameScore, getBestScores } from "@/app/actions/gameScore";
+import { saveGameScore, getBestScores } from "@/app/dashboard/games/clientGameScore";
 
 const ROUNDS = 12;
 
