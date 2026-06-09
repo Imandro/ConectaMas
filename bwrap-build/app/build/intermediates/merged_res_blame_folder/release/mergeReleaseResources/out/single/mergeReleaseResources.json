@@ -1,0 +1,18 @@
+[
+    {
+        "merged": "com.conecta_plus.app-release-25:/mipmap-anydpi-v26_ic_launcher.xml.flat",
+        "source": "com.conecta_plus.app-main-26:/mipmap-anydpi-v26/ic_launcher.xml"
+    },
+    {
+        "merged": "com.conecta_plus.app-release-25:/xml_filepaths.xml.flat",
+        "source": "com.conecta_plus.app-main-26:/xml/filepaths.xml"
+    },
+    {
+        "merged": "com.conecta_plus.app-release-25:/drawable-anydpi_shortcut_legacy_background.xml.flat",
+        "source": "com.conecta_plus.app-main-26:/drawable-anydpi/shortcut_legacy_background.xml"
+    },
+    {
+        "merged": "com.conecta_plus.app-release-25:/xml_shortcuts.xml.flat",
+        "source": "com.conecta_plus.app-main-26:/xml/shortcuts.xml"
+    }
+]

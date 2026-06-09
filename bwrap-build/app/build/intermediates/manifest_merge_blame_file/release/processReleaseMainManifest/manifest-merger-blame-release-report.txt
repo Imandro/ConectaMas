@@ -1,0 +1,379 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<!--
+3    Copyright 2019 Google Inc. All Rights Reserved.
+4
+5     Licensed under the Apache License, Version 2.0 (the "License");
+6     you may not use this file except in compliance with the License.
+7     You may obtain a copy of the License at
+8
+9         http://www.apache.org/licenses/LICENSE-2.0
+10
+11     Unless required by applicable law or agreed to in writing, software
+12     distributed under the License is distributed on an "AS IS" BASIS,
+13     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+14     See the License for the specific language governing permissions and
+15     limitations under the License.
+16-->
+17<!--
+18 The "package" attribute is rewritten by the Gradle build with the value of applicationId.
+19     It is still required here, as it is used to derive paths, for instance when referring
+20     to an Activity by ".MyActivity" instead of the full name. If more Activities are added to the
+21     application, the package attribute will need to reflect the correct path in order to use
+22     the abbreviated format.
+23-->
+24<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+25    package="com.conecta_plus.app"
+26    android:versionCode="2"
+27    android:versionName="1.0.1" >
+28
+29    <uses-sdk
+30        android:minSdkVersion="21"
+31        android:targetSdkVersion="35" />
+32
+33    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+33-->C:\Users\nanef\AppData\Local\Temp\opencode\ConectaMas\bwrap-build\app\src\main\AndroidManifest.xml:26:9-80
+33-->C:\Users\nanef\AppData\Local\Temp\opencode\ConectaMas\bwrap-build\app\src\main\AndroidManifest.xml:26:26-78
+34
+35    <queries>
+35-->[com.google.androidbrowserhelper:androidbrowserhelper:2.6.2] C:\Users\nanef\.gradle\caches\8.11.1\transforms\5053e02be90783e54992393be394bb70\transformed\androidbrowserhelper-2.6.2\AndroidManifest.xml:22:5-30:15
+36        <intent>
+36-->[com.google.androidbrowserhelper:androidbrowserhelper:2.6.2] C:\Users\nanef\.gradle\caches\8.11.1\transforms\5053e02be90783e54992393be394bb70\transformed\androidbrowserhelper-2.6.2\AndroidManifest.xml:23:9-29:18
+37            <action android:name="android.intent.action.VIEW" />
+37-->C:\Users\nanef\AppData\Local\Temp\opencode\ConectaMas\bwrap-build\app\src\main\AndroidManifest.xml:144:17-68
+37-->C:\Users\nanef\AppData\Local\Temp\opencode\ConectaMas\bwrap-build\app\src\main\AndroidManifest.xml:144:25-66
+38
+39            <category android:name="android.intent.category.BROWSABLE" />
+39-->C:\Users\nanef\AppData\Local\Temp\opencode\ConectaMas\bwrap-build\app\src\main\AndroidManifest.xml:146:17-77
+39-->C:\Users\nanef\AppData\Local\Temp\opencode\ConectaMas\bwrap-build\app\src\main\AndroidManifest.xml:146:27-75
+40
+41            <data android:scheme="https" />
+41-->C:\Users\nanef\AppData\Local\Temp\opencode\ConectaMas\bwrap-build\app\src\main\AndroidManifest.xml:147:17-150:19
+41-->C:\Users\nanef\AppData\Local\Temp\opencode\ConectaMas\bwrap-build\app\src\main\AndroidManifest.xml:147:23-45
+42        </intent>
+43    </queries>
+44
+45    <permission
+45-->[androidx.core:core:1.13.0] C:\Users\nanef\.gradle\caches\8.11.1\transforms\a5429f7b20c607b890f08b5283ad4ec0\transformed\core-1.13.0\AndroidManifest.xml:22:5-24:47
+46        android:name="com.conecta_plus.app.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
+46-->[androidx.core:core:1.13.0] C:\Users\nanef\.gradle\caches\8.11.1\transforms\a5429f7b20c607b890f08b5283ad4ec0\transformed\core-1.13.0\AndroidManifest.xml:23:9-81
+47        android:protectionLevel="signature" />
+47-->[androidx.core:core:1.13.0] C:\Users\nanef\.gradle\caches\8.11.1\transforms\a5429f7b20c607b890f08b5283ad4ec0\transformed\core-1.13.0\AndroidManifest.xml:24:9-44
+48
+49    <uses-permission android:name="com.conecta_plus.app.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION" />
+49-->[androidx.core:core:1.13.0] C:\Users\nanef\.gradle\caches\8.11.1\transforms\a5429f7b20c607b890f08b5283ad4ec0\transformed\core-1.13.0\AndroidManifest.xml:26:5-97
+49-->[androidx.core:core:1.13.0] C:\Users\nanef\.gradle\caches\8.11.1\transforms\a5429f7b20c607b890f08b5283ad4ec0\transformed\core-1.13.0\AndroidManifest.xml:26:22-94
+50
+51    <application
+51-->C:\Users\nanef\AppData\Local\Temp\opencode\ConectaMas\bwrap-build\app\src\main\AndroidManifest.xml:35:5-195:19
+52        android:name="com.conecta_plus.app.Application"
+52-->C:\Users\nanef\AppData\Local\Temp\opencode\ConectaMas\bwrap-build\app\src\main\AndroidManifest.xml:36:9-35
+53        android:allowBackup="true"
+53-->C:\Users\nanef\AppData\Local\Temp\opencode\ConectaMas\bwrap-build\app\src\main\AndroidManifest.xml:37:9-35
+54        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
+54-->[androidx.core:core:1.13.0] C:\Users\nanef\.gradle\caches\8.11.1\transforms\a5429f7b20c607b890f08b5283ad4ec0\transformed\core-1.13.0\AndroidManifest.xml:28:18-86
+55        android:extractNativeLibs="true"
+56        android:icon="@mipmap/ic_launcher"
+56-->C:\Users\nanef\AppData\Local\Temp\opencode\ConectaMas\bwrap-build\app\src\main\AndroidManifest.xml:38:9-43
+57        android:label="@string/appName"
+57-->C:\Users\nanef\AppData\Local\Temp\opencode\ConectaMas\bwrap-build\app\src\main\AndroidManifest.xml:39:9-40
+58        android:manageSpaceActivity="com.google.androidbrowserhelper.trusted.ManageDataLauncherActivity"
+58-->C:\Users\nanef\AppData\Local\Temp\opencode\ConectaMas\bwrap-build\app\src\main\AndroidManifest.xml:41:9-105
+59        android:supportsRtl="true"
+59-->C:\Users\nanef\AppData\Local\Temp\opencode\ConectaMas\bwrap-build\app\src\main\AndroidManifest.xml:43:9-35
+60        android:theme="@android:style/Theme.Translucent.NoTitleBar" >
+60-->C:\Users\nanef\AppData\Local\Temp\opencode\ConectaMas\bwrap-build\app\src\main\AndroidManifest.xml:44:9-68
+61        <meta-data
+61-->C:\Users\nanef\AppData\Local\Temp\opencode\ConectaMas\bwrap-build\app\src\main\AndroidManifest.xml:46:9-48:58
+62            android:name="asset_statements"
+62-->C:\Users\nanef\AppData\Local\Temp\opencode\ConectaMas\bwrap-build\app\src\main\AndroidManifest.xml:47:13-44
+63            android:resource="@string/assetStatements" />
+63-->C:\Users\nanef\AppData\Local\Temp\opencode\ConectaMas\bwrap-build\app\src\main\AndroidManifest.xml:48:13-55
+64        <meta-data
+64-->C:\Users\nanef\AppData\Local\Temp\opencode\ConectaMas\bwrap-build\app\src\main\AndroidManifest.xml:52:9-54:52
+65            android:name="twa_generator"
+65-->C:\Users\nanef\AppData\Local\Temp\opencode\ConectaMas\bwrap-build\app\src\main\AndroidManifest.xml:53:13-41
+66            android:value="@string/generatorApp" />
+66-->C:\Users\nanef\AppData\Local\Temp\opencode\ConectaMas\bwrap-build\app\src\main\AndroidManifest.xml:54:13-49
+67
+68        <activity
+68-->C:\Users\nanef\AppData\Local\Temp\opencode\ConectaMas\bwrap-build\app\src\main\AndroidManifest.xml:61:13-72:24
+69            android:name="com.google.androidbrowserhelper.trusted.ManageDataLauncherActivity"
+69-->C:\Users\nanef\AppData\Local\Temp\opencode\ConectaMas\bwrap-build\app\src\main\AndroidManifest.xml:61:23-104
+70            android:enabled="true"
+70-->C:\Users\nanef\AppData\Local\Temp\opencode\ConectaMas\bwrap-build\app\src\main\AndroidManifest.xml:63:17-39
+71            android:excludeFromRecents="true"
+71-->C:\Users\nanef\AppData\Local\Temp\opencode\ConectaMas\bwrap-build\app\src\main\AndroidManifest.xml:64:17-50
+72            android:exported="false" >
+72-->C:\Users\nanef\AppData\Local\Temp\opencode\ConectaMas\bwrap-build\app\src\main\AndroidManifest.xml:62:17-41
+73            <meta-data
+73-->C:\Users\nanef\AppData\Local\Temp\opencode\ConectaMas\bwrap-build\app\src\main\AndroidManifest.xml:65:17-67:57
+74                android:name="android.support.customtabs.trusted.MANAGE_SPACE_URL"
+74-->C:\Users\nanef\AppData\Local\Temp\opencode\ConectaMas\bwrap-build\app\src\main\AndroidManifest.xml:66:21-87
+75                android:value="@string/launchUrl" />
+75-->C:\Users\nanef\AppData\Local\Temp\opencode\ConectaMas\bwrap-build\app\src\main\AndroidManifest.xml:67:21-54
+76
+77            <intent-filter>
+77-->C:\Users\nanef\AppData\Local\Temp\opencode\ConectaMas\bwrap-build\app\src\main\AndroidManifest.xml:68:17-71:33
+78                <action android:name="android.intent.action.APPLICATION_PREFERENCES" />
+78-->C:\Users\nanef\AppData\Local\Temp\opencode\ConectaMas\bwrap-build\app\src\main\AndroidManifest.xml:69:21-92
+78-->C:\Users\nanef\AppData\Local\Temp\opencode\ConectaMas\bwrap-build\app\src\main\AndroidManifest.xml:69:29-89
+79
+80                <category android:name="android.intent.category.DEFAULT" />
+80-->C:\Users\nanef\AppData\Local\Temp\opencode\ConectaMas\bwrap-build\app\src\main\AndroidManifest.xml:70:21-80
+80-->C:\Users\nanef\AppData\Local\Temp\opencode\ConectaMas\bwrap-build\app\src\main\AndroidManifest.xml:70:31-77
+81            </intent-filter>
+82        </activity>
+83        <activity
+83-->C:\Users\nanef\AppData\Local\Temp\opencode\ConectaMas\bwrap-build\app\src\main\AndroidManifest.xml:75:9-156:20
+84            android:name="com.conecta_plus.app.LauncherActivity"
+84-->C:\Users\nanef\AppData\Local\Temp\opencode\ConectaMas\bwrap-build\app\src\main\AndroidManifest.xml:75:19-50
+85            android:alwaysRetainTaskState="true"
+85-->C:\Users\nanef\AppData\Local\Temp\opencode\ConectaMas\bwrap-build\app\src\main\AndroidManifest.xml:76:13-49
+86            android:exported="true"
+86-->C:\Users\nanef\AppData\Local\Temp\opencode\ConectaMas\bwrap-build\app\src\main\AndroidManifest.xml:78:13-36
+87            android:label="@string/launcherName" >
+87-->C:\Users\nanef\AppData\Local\Temp\opencode\ConectaMas\bwrap-build\app\src\main\AndroidManifest.xml:77:13-49
+88            <meta-data
+88-->C:\Users\nanef\AppData\Local\Temp\opencode\ConectaMas\bwrap-build\app\src\main\AndroidManifest.xml:79:13-80:53
+89                android:name="android.support.customtabs.trusted.DEFAULT_URL"
+89-->C:\Users\nanef\AppData\Local\Temp\opencode\ConectaMas\bwrap-build\app\src\main\AndroidManifest.xml:79:24-85
+90                android:value="@string/launchUrl" />
+90-->C:\Users\nanef\AppData\Local\Temp\opencode\ConectaMas\bwrap-build\app\src\main\AndroidManifest.xml:80:17-50
+91            <meta-data
+91-->C:\Users\nanef\AppData\Local\Temp\opencode\ConectaMas\bwrap-build\app\src\main\AndroidManifest.xml:82:13-84:58
+92                android:name="android.support.customtabs.trusted.STATUS_BAR_COLOR"
+92-->C:\Users\nanef\AppData\Local\Temp\opencode\ConectaMas\bwrap-build\app\src\main\AndroidManifest.xml:83:17-83
+93                android:resource="@color/colorPrimary" />
+93-->C:\Users\nanef\AppData\Local\Temp\opencode\ConectaMas\bwrap-build\app\src\main\AndroidManifest.xml:84:17-55
+94            <meta-data
+94-->C:\Users\nanef\AppData\Local\Temp\opencode\ConectaMas\bwrap-build\app\src\main\AndroidManifest.xml:88:13-90:62
+95                android:name="android.support.customtabs.trusted.STATUS_BAR_COLOR_DARK"
+95-->C:\Users\nanef\AppData\Local\Temp\opencode\ConectaMas\bwrap-build\app\src\main\AndroidManifest.xml:89:17-88
+96                android:resource="@color/colorPrimaryDark" />
+96-->C:\Users\nanef\AppData\Local\Temp\opencode\ConectaMas\bwrap-build\app\src\main\AndroidManifest.xml:90:17-59
+97            <meta-data
+97-->C:\Users\nanef\AppData\Local\Temp\opencode\ConectaMas\bwrap-build\app\src\main\AndroidManifest.xml:92:13-94:61
+98                android:name="android.support.customtabs.trusted.NAVIGATION_BAR_COLOR"
+98-->C:\Users\nanef\AppData\Local\Temp\opencode\ConectaMas\bwrap-build\app\src\main\AndroidManifest.xml:93:17-87
+99                android:resource="@color/navigationColor" />
+99-->C:\Users\nanef\AppData\Local\Temp\opencode\ConectaMas\bwrap-build\app\src\main\AndroidManifest.xml:94:17-58
+100            <meta-data
+100-->C:\Users\nanef\AppData\Local\Temp\opencode\ConectaMas\bwrap-build\app\src\main\AndroidManifest.xml:96:13-98:65
+101                android:name="android.support.customtabs.trusted.NAVIGATION_BAR_COLOR_DARK"
+101-->C:\Users\nanef\AppData\Local\Temp\opencode\ConectaMas\bwrap-build\app\src\main\AndroidManifest.xml:97:17-92
+102                android:resource="@color/navigationColorDark" />
+102-->C:\Users\nanef\AppData\Local\Temp\opencode\ConectaMas\bwrap-build\app\src\main\AndroidManifest.xml:98:17-62
+103            <meta-data
+103-->C:\Users\nanef\AppData\Local\Temp\opencode\ConectaMas\bwrap-build\app\src\main\AndroidManifest.xml:100:13-102:68
+104                android:name="androix.browser.trusted.NAVIGATION_BAR_DIVIDER_COLOR"
+104-->C:\Users\nanef\AppData\Local\Temp\opencode\ConectaMas\bwrap-build\app\src\main\AndroidManifest.xml:101:17-84
+105                android:resource="@color/navigationDividerColor" />
+105-->C:\Users\nanef\AppData\Local\Temp\opencode\ConectaMas\bwrap-build\app\src\main\AndroidManifest.xml:102:17-65
+106            <meta-data
+106-->C:\Users\nanef\AppData\Local\Temp\opencode\ConectaMas\bwrap-build\app\src\main\AndroidManifest.xml:104:13-106:72
+107                android:name="androix.browser.trusted.NAVIGATION_BAR_DIVIDER_COLOR_DARK"
+107-->C:\Users\nanef\AppData\Local\Temp\opencode\ConectaMas\bwrap-build\app\src\main\AndroidManifest.xml:105:17-89
+108                android:resource="@color/navigationDividerColorDark" />
+108-->C:\Users\nanef\AppData\Local\Temp\opencode\ConectaMas\bwrap-build\app\src\main\AndroidManifest.xml:106:17-69
+109            <meta-data
+109-->C:\Users\nanef\AppData\Local\Temp\opencode\ConectaMas\bwrap-build\app\src\main\AndroidManifest.xml:108:13-109:54
+110                android:name="android.support.customtabs.trusted.SPLASH_IMAGE_DRAWABLE"
+110-->C:\Users\nanef\AppData\Local\Temp\opencode\ConectaMas\bwrap-build\app\src\main\AndroidManifest.xml:108:24-95
+111                android:resource="@drawable/splash" />
+111-->C:\Users\nanef\AppData\Local\Temp\opencode\ConectaMas\bwrap-build\app\src\main\AndroidManifest.xml:109:17-52
+112            <meta-data
+112-->C:\Users\nanef\AppData\Local\Temp\opencode\ConectaMas\bwrap-build\app\src\main\AndroidManifest.xml:111:13-112:60
+113                android:name="android.support.customtabs.trusted.SPLASH_SCREEN_BACKGROUND_COLOR"
+113-->C:\Users\nanef\AppData\Local\Temp\opencode\ConectaMas\bwrap-build\app\src\main\AndroidManifest.xml:111:24-104
+114                android:resource="@color/backgroundColor" />
+114-->C:\Users\nanef\AppData\Local\Temp\opencode\ConectaMas\bwrap-build\app\src\main\AndroidManifest.xml:112:17-58
+115            <meta-data
+115-->C:\Users\nanef\AppData\Local\Temp\opencode\ConectaMas\bwrap-build\app\src\main\AndroidManifest.xml:114:13-115:71
+116                android:name="android.support.customtabs.trusted.SPLASH_SCREEN_FADE_OUT_DURATION"
+116-->C:\Users\nanef\AppData\Local\Temp\opencode\ConectaMas\bwrap-build\app\src\main\AndroidManifest.xml:114:24-105
+117                android:value="@integer/splashScreenFadeOutDuration" />
+117-->C:\Users\nanef\AppData\Local\Temp\opencode\ConectaMas\bwrap-build\app\src\main\AndroidManifest.xml:115:17-69
+118            <meta-data
+118-->C:\Users\nanef\AppData\Local\Temp\opencode\ConectaMas\bwrap-build\app\src\main\AndroidManifest.xml:117:13-118:60
+119                android:name="android.support.customtabs.trusted.FILE_PROVIDER_AUTHORITY"
+119-->C:\Users\nanef\AppData\Local\Temp\opencode\ConectaMas\bwrap-build\app\src\main\AndroidManifest.xml:117:24-97
+120                android:value="@string/providerAuthority" />
+120-->C:\Users\nanef\AppData\Local\Temp\opencode\ConectaMas\bwrap-build\app\src\main\AndroidManifest.xml:118:17-58
+121            <meta-data
+121-->C:\Users\nanef\AppData\Local\Temp\opencode\ConectaMas\bwrap-build\app\src\main\AndroidManifest.xml:120:13-97
+122                android:name="android.app.shortcuts"
+122-->C:\Users\nanef\AppData\Local\Temp\opencode\ConectaMas\bwrap-build\app\src\main\AndroidManifest.xml:120:24-60
+123                android:resource="@xml/shortcuts" />
+123-->C:\Users\nanef\AppData\Local\Temp\opencode\ConectaMas\bwrap-build\app\src\main\AndroidManifest.xml:120:61-94
+124            <meta-data
+124-->C:\Users\nanef\AppData\Local\Temp\opencode\ConectaMas\bwrap-build\app\src\main\AndroidManifest.xml:122:13-123:56
+125                android:name="android.support.customtabs.trusted.FALLBACK_STRATEGY"
+125-->C:\Users\nanef\AppData\Local\Temp\opencode\ConectaMas\bwrap-build\app\src\main\AndroidManifest.xml:122:24-91
+126                android:value="@string/fallbackType" />
+126-->C:\Users\nanef\AppData\Local\Temp\opencode\ConectaMas\bwrap-build\app\src\main\AndroidManifest.xml:123:17-53
+127            <meta-data
+127-->C:\Users\nanef\AppData\Local\Temp\opencode\ConectaMas\bwrap-build\app\src\main\AndroidManifest.xml:129:13-130:54
+128                android:name="android.support.customtabs.trusted.SCREEN_ORIENTATION"
+128-->C:\Users\nanef\AppData\Local\Temp\opencode\ConectaMas\bwrap-build\app\src\main\AndroidManifest.xml:129:24-92
+129                android:value="@string/orientation" />
+129-->C:\Users\nanef\AppData\Local\Temp\opencode\ConectaMas\bwrap-build\app\src\main\AndroidManifest.xml:130:17-52
+130
+131            <intent-filter>
+131-->C:\Users\nanef\AppData\Local\Temp\opencode\ConectaMas\bwrap-build\app\src\main\AndroidManifest.xml:138:13-141:29
+132                <action android:name="android.intent.action.MAIN" />
+132-->C:\Users\nanef\AppData\Local\Temp\opencode\ConectaMas\bwrap-build\app\src\main\AndroidManifest.xml:139:17-69
+132-->C:\Users\nanef\AppData\Local\Temp\opencode\ConectaMas\bwrap-build\app\src\main\AndroidManifest.xml:139:25-66
+133
+134                <category android:name="android.intent.category.LAUNCHER" />
+134-->C:\Users\nanef\AppData\Local\Temp\opencode\ConectaMas\bwrap-build\app\src\main\AndroidManifest.xml:140:17-77
+134-->C:\Users\nanef\AppData\Local\Temp\opencode\ConectaMas\bwrap-build\app\src\main\AndroidManifest.xml:140:27-74
+135            </intent-filter>
+136            <intent-filter android:autoVerify="true" >
+136-->C:\Users\nanef\AppData\Local\Temp\opencode\ConectaMas\bwrap-build\app\src\main\AndroidManifest.xml:143:13-151:29
+136-->C:\Users\nanef\AppData\Local\Temp\opencode\ConectaMas\bwrap-build\app\src\main\AndroidManifest.xml:143:28-53
+137                <action android:name="android.intent.action.VIEW" />
+137-->C:\Users\nanef\AppData\Local\Temp\opencode\ConectaMas\bwrap-build\app\src\main\AndroidManifest.xml:144:17-68
+137-->C:\Users\nanef\AppData\Local\Temp\opencode\ConectaMas\bwrap-build\app\src\main\AndroidManifest.xml:144:25-66
+138
+139                <category android:name="android.intent.category.DEFAULT" />
+139-->C:\Users\nanef\AppData\Local\Temp\opencode\ConectaMas\bwrap-build\app\src\main\AndroidManifest.xml:70:21-80
+139-->C:\Users\nanef\AppData\Local\Temp\opencode\ConectaMas\bwrap-build\app\src\main\AndroidManifest.xml:70:31-77
+140                <category android:name="android.intent.category.BROWSABLE" />
+140-->C:\Users\nanef\AppData\Local\Temp\opencode\ConectaMas\bwrap-build\app\src\main\AndroidManifest.xml:146:17-77
+140-->C:\Users\nanef\AppData\Local\Temp\opencode\ConectaMas\bwrap-build\app\src\main\AndroidManifest.xml:146:27-75
+141
+142                <data
+142-->C:\Users\nanef\AppData\Local\Temp\opencode\ConectaMas\bwrap-build\app\src\main\AndroidManifest.xml:147:17-150:19
+143                    android:host="@string/hostName"
+143-->C:\Users\nanef\AppData\Local\Temp\opencode\ConectaMas\bwrap-build\app\src\main\AndroidManifest.xml:148:21-52
+144                    android:scheme="https" />
+144-->C:\Users\nanef\AppData\Local\Temp\opencode\ConectaMas\bwrap-build\app\src\main\AndroidManifest.xml:147:23-45
+145            </intent-filter>
+146        </activity>
+147        <activity android:name="com.google.androidbrowserhelper.trusted.FocusActivity" />
+147-->C:\Users\nanef\AppData\Local\Temp\opencode\ConectaMas\bwrap-build\app\src\main\AndroidManifest.xml:158:9-90
+147-->C:\Users\nanef\AppData\Local\Temp\opencode\ConectaMas\bwrap-build\app\src\main\AndroidManifest.xml:158:19-87
+148        <activity
+148-->C:\Users\nanef\AppData\Local\Temp\opencode\ConectaMas\bwrap-build\app\src\main\AndroidManifest.xml:160:9-161:62
+149            android:name="com.google.androidbrowserhelper.trusted.WebViewFallbackActivity"
+149-->C:\Users\nanef\AppData\Local\Temp\opencode\ConectaMas\bwrap-build\app\src\main\AndroidManifest.xml:160:19-97
+150            android:configChanges="orientation|screenSize" />
+150-->C:\Users\nanef\AppData\Local\Temp\opencode\ConectaMas\bwrap-build\app\src\main\AndroidManifest.xml:161:13-59
+151
+152        <provider
+152-->C:\Users\nanef\AppData\Local\Temp\opencode\ConectaMas\bwrap-build\app\src\main\AndroidManifest.xml:163:9-171:20
+153            android:name="androidx.core.content.FileProvider"
+153-->C:\Users\nanef\AppData\Local\Temp\opencode\ConectaMas\bwrap-build\app\src\main\AndroidManifest.xml:164:13-62
+154            android:authorities="@string/providerAuthority"
+154-->C:\Users\nanef\AppData\Local\Temp\opencode\ConectaMas\bwrap-build\app\src\main\AndroidManifest.xml:165:13-60
+155            android:exported="false"
+155-->C:\Users\nanef\AppData\Local\Temp\opencode\ConectaMas\bwrap-build\app\src\main\AndroidManifest.xml:167:13-37
+156            android:grantUriPermissions="true" >
+156-->C:\Users\nanef\AppData\Local\Temp\opencode\ConectaMas\bwrap-build\app\src\main\AndroidManifest.xml:166:13-47
+157            <meta-data
+157-->C:\Users\nanef\AppData\Local\Temp\opencode\ConectaMas\bwrap-build\app\src\main\AndroidManifest.xml:168:13-170:53
+158                android:name="android.support.FILE_PROVIDER_PATHS"
+158-->C:\Users\nanef\AppData\Local\Temp\opencode\ConectaMas\bwrap-build\app\src\main\AndroidManifest.xml:169:17-67
+159                android:resource="@xml/filepaths" />
+159-->C:\Users\nanef\AppData\Local\Temp\opencode\ConectaMas\bwrap-build\app\src\main\AndroidManifest.xml:170:17-50
+160        </provider>
+161
+162        <service
+162-->C:\Users\nanef\AppData\Local\Temp\opencode\ConectaMas\bwrap-build\app\src\main\AndroidManifest.xml:173:9-188:19
+163            android:name="com.conecta_plus.app.DelegationService"
+163-->C:\Users\nanef\AppData\Local\Temp\opencode\ConectaMas\bwrap-build\app\src\main\AndroidManifest.xml:174:13-46
+164            android:enabled="@bool/enableNotification"
+164-->C:\Users\nanef\AppData\Local\Temp\opencode\ConectaMas\bwrap-build\app\src\main\AndroidManifest.xml:175:13-55
+165            android:exported="@bool/enableNotification" >
+165-->C:\Users\nanef\AppData\Local\Temp\opencode\ConectaMas\bwrap-build\app\src\main\AndroidManifest.xml:176:13-56
+166            <meta-data
+166-->C:\Users\nanef\AppData\Local\Temp\opencode\ConectaMas\bwrap-build\app\src\main\AndroidManifest.xml:179:17-181:73
+167                android:name="android.support.customtabs.trusted.SMALL_ICON"
+167-->C:\Users\nanef\AppData\Local\Temp\opencode\ConectaMas\bwrap-build\app\src\main\AndroidManifest.xml:180:21-81
+168                android:resource="@drawable/ic_notification_icon" />
+168-->C:\Users\nanef\AppData\Local\Temp\opencode\ConectaMas\bwrap-build\app\src\main\AndroidManifest.xml:181:21-70
+169
+170            <intent-filter>
+170-->C:\Users\nanef\AppData\Local\Temp\opencode\ConectaMas\bwrap-build\app\src\main\AndroidManifest.xml:184:13-187:29
+171                <action android:name="android.support.customtabs.trusted.TRUSTED_WEB_ACTIVITY_SERVICE" />
+171-->C:\Users\nanef\AppData\Local\Temp\opencode\ConectaMas\bwrap-build\app\src\main\AndroidManifest.xml:185:17-105
+171-->C:\Users\nanef\AppData\Local\Temp\opencode\ConectaMas\bwrap-build\app\src\main\AndroidManifest.xml:185:25-103
+172
+173                <category android:name="android.intent.category.DEFAULT" />
+173-->C:\Users\nanef\AppData\Local\Temp\opencode\ConectaMas\bwrap-build\app\src\main\AndroidManifest.xml:70:21-80
+173-->C:\Users\nanef\AppData\Local\Temp\opencode\ConectaMas\bwrap-build\app\src\main\AndroidManifest.xml:70:31-77
+174            </intent-filter>
+175        </service>
+176
+177        <activity android:name="com.google.androidbrowserhelper.trusted.NotificationPermissionRequestActivity" />
+177-->C:\Users\nanef\AppData\Local\Temp\opencode\ConectaMas\bwrap-build\app\src\main\AndroidManifest.xml:191:13-118
+177-->C:\Users\nanef\AppData\Local\Temp\opencode\ConectaMas\bwrap-build\app\src\main\AndroidManifest.xml:191:23-115
+178
+179        <provider
+179-->[androidx.emoji2:emoji2:1.3.0] C:\Users\nanef\.gradle\caches\8.11.1\transforms\5cb7738f5242d8c4e38c8ffa2b265b31\transformed\emoji2-1.3.0\AndroidManifest.xml:24:9-32:20
+180            android:name="androidx.startup.InitializationProvider"
+180-->[androidx.emoji2:emoji2:1.3.0] C:\Users\nanef\.gradle\caches\8.11.1\transforms\5cb7738f5242d8c4e38c8ffa2b265b31\transformed\emoji2-1.3.0\AndroidManifest.xml:25:13-67
+181            android:authorities="com.conecta_plus.app.androidx-startup"
+181-->[androidx.emoji2:emoji2:1.3.0] C:\Users\nanef\.gradle\caches\8.11.1\transforms\5cb7738f5242d8c4e38c8ffa2b265b31\transformed\emoji2-1.3.0\AndroidManifest.xml:26:13-68
+182            android:exported="false" >
+182-->[androidx.emoji2:emoji2:1.3.0] C:\Users\nanef\.gradle\caches\8.11.1\transforms\5cb7738f5242d8c4e38c8ffa2b265b31\transformed\emoji2-1.3.0\AndroidManifest.xml:27:13-37
+183            <meta-data
+183-->[androidx.emoji2:emoji2:1.3.0] C:\Users\nanef\.gradle\caches\8.11.1\transforms\5cb7738f5242d8c4e38c8ffa2b265b31\transformed\emoji2-1.3.0\AndroidManifest.xml:29:13-31:52
+184                android:name="androidx.emoji2.text.EmojiCompatInitializer"
+184-->[androidx.emoji2:emoji2:1.3.0] C:\Users\nanef\.gradle\caches\8.11.1\transforms\5cb7738f5242d8c4e38c8ffa2b265b31\transformed\emoji2-1.3.0\AndroidManifest.xml:30:17-75
+185                android:value="androidx.startup" />
+185-->[androidx.emoji2:emoji2:1.3.0] C:\Users\nanef\.gradle\caches\8.11.1\transforms\5cb7738f5242d8c4e38c8ffa2b265b31\transformed\emoji2-1.3.0\AndroidManifest.xml:31:17-49
+186            <meta-data
+186-->[androidx.lifecycle:lifecycle-process:2.6.2] C:\Users\nanef\.gradle\caches\8.11.1\transforms\4bc52031417e9743197e36b704fe409f\transformed\lifecycle-process-2.6.2\AndroidManifest.xml:29:13-31:52
+187                android:name="androidx.lifecycle.ProcessLifecycleInitializer"
+187-->[androidx.lifecycle:lifecycle-process:2.6.2] C:\Users\nanef\.gradle\caches\8.11.1\transforms\4bc52031417e9743197e36b704fe409f\transformed\lifecycle-process-2.6.2\AndroidManifest.xml:30:17-78
+188                android:value="androidx.startup" />
+188-->[androidx.lifecycle:lifecycle-process:2.6.2] C:\Users\nanef\.gradle\caches\8.11.1\transforms\4bc52031417e9743197e36b704fe409f\transformed\lifecycle-process-2.6.2\AndroidManifest.xml:31:17-49
+189            <meta-data
+189-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\nanef\.gradle\caches\8.11.1\transforms\bb4a0d32d1b17a1dcea0cf71d2bde5e0\transformed\profileinstaller-1.3.1\AndroidManifest.xml:29:13-31:52
+190                android:name="androidx.profileinstaller.ProfileInstallerInitializer"
+190-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\nanef\.gradle\caches\8.11.1\transforms\bb4a0d32d1b17a1dcea0cf71d2bde5e0\transformed\profileinstaller-1.3.1\AndroidManifest.xml:30:17-85
+191                android:value="androidx.startup" />
+191-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\nanef\.gradle\caches\8.11.1\transforms\bb4a0d32d1b17a1dcea0cf71d2bde5e0\transformed\profileinstaller-1.3.1\AndroidManifest.xml:31:17-49
+192        </provider>
+193
+194        <receiver
+194-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\nanef\.gradle\caches\8.11.1\transforms\bb4a0d32d1b17a1dcea0cf71d2bde5e0\transformed\profileinstaller-1.3.1\AndroidManifest.xml:34:9-52:20
+195            android:name="androidx.profileinstaller.ProfileInstallReceiver"
+195-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\nanef\.gradle\caches\8.11.1\transforms\bb4a0d32d1b17a1dcea0cf71d2bde5e0\transformed\profileinstaller-1.3.1\AndroidManifest.xml:35:13-76
+196            android:directBootAware="false"
+196-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\nanef\.gradle\caches\8.11.1\transforms\bb4a0d32d1b17a1dcea0cf71d2bde5e0\transformed\profileinstaller-1.3.1\AndroidManifest.xml:36:13-44
+197            android:enabled="true"
+197-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\nanef\.gradle\caches\8.11.1\transforms\bb4a0d32d1b17a1dcea0cf71d2bde5e0\transformed\profileinstaller-1.3.1\AndroidManifest.xml:37:13-35
+198            android:exported="true"
+198-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\nanef\.gradle\caches\8.11.1\transforms\bb4a0d32d1b17a1dcea0cf71d2bde5e0\transformed\profileinstaller-1.3.1\AndroidManifest.xml:38:13-36
+199            android:permission="android.permission.DUMP" >
+199-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\nanef\.gradle\caches\8.11.1\transforms\bb4a0d32d1b17a1dcea0cf71d2bde5e0\transformed\profileinstaller-1.3.1\AndroidManifest.xml:39:13-57
+200            <intent-filter>
+200-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\nanef\.gradle\caches\8.11.1\transforms\bb4a0d32d1b17a1dcea0cf71d2bde5e0\transformed\profileinstaller-1.3.1\AndroidManifest.xml:40:13-42:29
+201                <action android:name="androidx.profileinstaller.action.INSTALL_PROFILE" />
+201-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\nanef\.gradle\caches\8.11.1\transforms\bb4a0d32d1b17a1dcea0cf71d2bde5e0\transformed\profileinstaller-1.3.1\AndroidManifest.xml:41:17-91
+201-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\nanef\.gradle\caches\8.11.1\transforms\bb4a0d32d1b17a1dcea0cf71d2bde5e0\transformed\profileinstaller-1.3.1\AndroidManifest.xml:41:25-88
+202            </intent-filter>
+203            <intent-filter>
+203-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\nanef\.gradle\caches\8.11.1\transforms\bb4a0d32d1b17a1dcea0cf71d2bde5e0\transformed\profileinstaller-1.3.1\AndroidManifest.xml:43:13-45:29
+204                <action android:name="androidx.profileinstaller.action.SKIP_FILE" />
+204-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\nanef\.gradle\caches\8.11.1\transforms\bb4a0d32d1b17a1dcea0cf71d2bde5e0\transformed\profileinstaller-1.3.1\AndroidManifest.xml:44:17-85
+204-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\nanef\.gradle\caches\8.11.1\transforms\bb4a0d32d1b17a1dcea0cf71d2bde5e0\transformed\profileinstaller-1.3.1\AndroidManifest.xml:44:25-82
+205            </intent-filter>
+206            <intent-filter>
+206-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\nanef\.gradle\caches\8.11.1\transforms\bb4a0d32d1b17a1dcea0cf71d2bde5e0\transformed\profileinstaller-1.3.1\AndroidManifest.xml:46:13-48:29
+207                <action android:name="androidx.profileinstaller.action.SAVE_PROFILE" />
+207-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\nanef\.gradle\caches\8.11.1\transforms\bb4a0d32d1b17a1dcea0cf71d2bde5e0\transformed\profileinstaller-1.3.1\AndroidManifest.xml:47:17-88
+207-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\nanef\.gradle\caches\8.11.1\transforms\bb4a0d32d1b17a1dcea0cf71d2bde5e0\transformed\profileinstaller-1.3.1\AndroidManifest.xml:47:25-85
+208            </intent-filter>
+209            <intent-filter>
+209-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\nanef\.gradle\caches\8.11.1\transforms\bb4a0d32d1b17a1dcea0cf71d2bde5e0\transformed\profileinstaller-1.3.1\AndroidManifest.xml:49:13-51:29
+210                <action android:name="androidx.profileinstaller.action.BENCHMARK_OPERATION" />
+210-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\nanef\.gradle\caches\8.11.1\transforms\bb4a0d32d1b17a1dcea0cf71d2bde5e0\transformed\profileinstaller-1.3.1\AndroidManifest.xml:50:17-95
+210-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\nanef\.gradle\caches\8.11.1\transforms\bb4a0d32d1b17a1dcea0cf71d2bde5e0\transformed\profileinstaller-1.3.1\AndroidManifest.xml:50:25-92
+211            </intent-filter>
+212        </receiver>
+213    </application>
+214
+215</manifest>

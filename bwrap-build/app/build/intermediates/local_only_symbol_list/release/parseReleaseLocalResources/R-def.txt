@@ -1,0 +1,27 @@
+R_DEF: Internal format may change without notice
+local
+bool enableNotification
+bool enableSiteSettingsShortcut
+color backgroundColor
+color colorPrimary
+color colorPrimaryDark
+color navigationColor
+color navigationColorDark
+color navigationDividerColor
+color navigationDividerColorDark
+color shortcut_background
+drawable shortcut_legacy_background
+integer splashScreenFadeOutDuration
+mipmap ic_launcher
+string appName
+string assetStatements
+string fallbackType
+string fullScopeUrl
+string generatorApp
+string hostName
+string launchUrl
+string launcherName
+string orientation
+string providerAuthority
+xml filepaths
+xml shortcuts

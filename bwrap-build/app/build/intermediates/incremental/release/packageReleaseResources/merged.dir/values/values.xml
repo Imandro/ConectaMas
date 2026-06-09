@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <bool name="enableNotification">true</bool>
+    <bool name="enableSiteSettingsShortcut">true</bool>
+    <color name="backgroundColor">#FFFFFF</color>
+    <color name="colorPrimary">#0D6EFD</color>
+    <color name="colorPrimaryDark">#000000</color>
+    <color name="navigationColor">#0D6EFD</color>
+    <color name="navigationColorDark">#0A58CA</color>
+    <color name="navigationDividerColor">#0D6EFD</color>
+    <color name="navigationDividerColorDark">#0A58CA</color>
+    <color name="shortcut_background">#F5F5F5</color>
+    <integer name="splashScreenFadeOutDuration">300</integer>
+    <string name="appName" translatable="false">Conecta+</string>
+    <string name="assetStatements">
+    [{
+        \"relation\": [\"delegate_permission/common.handle_all_urls\"],
+        \"target\": {
+            \"namespace\": \"web\",
+            \"site\": \"https://conectaplus.app\"
+        }
+    }]
+    
+  </string>
+    <string name="fallbackType" translatable="false">customtabs</string>
+    <string name="fullScopeUrl" translatable="false">https://conectaplus.app/</string>
+    <string name="generatorApp" translatable="false">unknown</string>
+    <string name="hostName" translatable="false">conectaplus.app</string>
+    <string name="launchUrl" translatable="false">https://conectaplus.app/</string>
+    <string name="launcherName" translatable="false">Conecta+</string>
+    <string name="orientation" translatable="false">portrait</string>
+    <string name="providerAuthority" translatable="false">com.conecta_plus.app.fileprovider</string>
+</resources>
