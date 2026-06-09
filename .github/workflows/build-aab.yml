@@ -1,8 +1,6 @@
 name: Build AAB
 
 on:
-  push:
-    branches: [master]
   workflow_dispatch:
 
 jobs:
@@ -11,34 +9,17 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-
       - name: Setup Java 17
         uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: 17
 
-      - name: Restore keystore
-        run: |
-          echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 -d > conectaplus.keystore
-
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
 
-      - name: Install bubblewrap
-        run: npm install -g @pwabuilder/cli
-
-      - name: Generate Android project
-        run: npx @pwabuilder/cli build --signing "none" --directory "."
-        env:
-          CI: true
-
-      - name: Copy keystore to project
-        run: cp conectaplus.keystore bwrap-build/conectaplus.keystore
+      - name: Restore keystore
+        run: echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 -d > conectaplus.keystore
 
       - name: Build AAB
         run: |
@@ -56,9 +37,7 @@ jobs:
             "${{ secrets.KEY_ALIAS }}"
 
       - name: Rename AAB
-        run: |
-          mv bwrap-build/app/build/outputs/bundle/release/app-release.aab \
-             ConectaPlus-signed.aab
+        run: mv bwrap-build/app/build/outputs/bundle/release/app-release.aab ConectaPlus-signed.aab
 
       - name: Upload AAB
         uses: actions/upload-artifact@v4
