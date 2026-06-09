@@ -21,6 +21,14 @@ jobs:
       - name: Restore keystore
         run: echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 -d > conectaplus.keystore
 
+      - name: Sync version from twa-manifest.json
+        run: |
+          CODE=$(grep -oP '"appVersionCode":\s*\K\d+' twa-manifest.json)
+          NAME=$(grep -oP '"appVersion":\s*"\K[^"]+' twa-manifest.json)
+          sed -i "s/versionCode [0-9]*/versionCode $CODE/" bwrap-build/app/build.gradle
+          sed -i "s/versionName \"[^\"]*\"/versionName \"$NAME\"/" bwrap-build/app/build.gradle
+          echo "Set versionCode=$CODE versionName=$NAME"
+
       - name: Build AAB
         run: |
           cd bwrap-build
