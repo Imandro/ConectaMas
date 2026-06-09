@@ -16,7 +16,7 @@
   "maskableIconUrl": "https://conectaplus.app/logo.png",
   "monochromeIconUrl": "https://conectaplus.app/logo.png",
   "appVersion": "1.5",
-  "appVersionCode": 5,
+  "appVersionCode": 6,
   "signingKey": {
     "path": "conectaplus.keystore",
     "alias": "conectaplus"
