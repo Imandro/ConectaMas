@@ -8,7 +8,8 @@ import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { useLanguage } from "@/app/LanguageContext";
 import { BIBLE_BOOKS, getBibleBookName } from '@/app/lib/bibleData';
-import { getLastReadingLocal, saveLastReadingLocal, saveLastReadingServer, getLastReadingServer } from './actions';
+import { saveLastReadingServer, getLastReadingServer } from './actions';
+import { getLastReadingLocal, saveLastReadingLocal } from '@/app/lib/bibleReading';
 
 const BOOK_MAPPING: { [key: string]: number } = {
     "Génesis": 0, "Éxodo": 1, "Levítico": 2, "Números": 3, "Deuteronomio": 4,
