@@ -2,17 +2,14 @@
 
 import Link from 'next/link';
 import { Sun, AlertTriangle, Loader2, HelpCircle, ChevronRight, Shield, Users, BookOpen, Trophy, Gamepad2, Heart, Sparkles } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback, useRef } from 'react';
 import { motion } from 'framer-motion';
 import DailyVerse from './components/DailyVerse';
-// import DailyPrayerCard from '../components/DailyPrayerCard';
 import LlamiMascot from '../components/LlamiMascot';
 import FeatureTour from './components/FeatureTour';
 import AgePrompt from './components/AgePrompt';
 import ChallengeCard from './components/ChallengeCard';
-
 import SupportFundingAd from './components/SupportFundingAd';
-import SupportAdModal from './components/SupportAdModal';
 import WhatsappModal from '../components/WhatsappModal';
 import WhatsappCard from '../components/WhatsappCard';
 import InstagramModal from '../components/InstagramModal';
@@ -27,7 +24,6 @@ interface DashboardStats {
     lastCheckin: any;
     struggles: any[];
     mascot: any;
-
     hasSeenTutorialTour: boolean;
     hasJoinedWhatsapp: boolean;
     hasFollowedInstagram: boolean;
@@ -39,7 +35,24 @@ interface DashboardStats {
 
 import { useLanguage } from '@/app/LanguageContext';
 import { useGuest } from '@/app/components/GuestProvider';
-import { getGuestStats, saveGuestStats, updateGuestStreak } from '@/app/lib/guest';
+import { getGuestStats, updateGuestStreak } from '@/app/lib/guest';
+
+const MODAL_QUEUE = ['checkin', 'age', 'country', 'whatsapp', 'instagram', 'support', 'dailyQuestions'] as const;
+type ModalId = typeof MODAL_QUEUE[number];
+const SEEN_KEY = 'conectaplus_seen_modals';
+
+function getSeenModals(): string[] {
+    try { return JSON.parse(localStorage.getItem(SEEN_KEY) || '[]'); }
+    catch { return []; }
+}
+
+function markModalSeen(id: string) {
+    const seen = getSeenModals();
+    if (!seen.includes(id)) {
+        seen.push(id);
+        localStorage.setItem(SEEN_KEY, JSON.stringify(seen));
+    }
+}
 
 export default function DashboardHome() {
     const { t, language } = useLanguage();
@@ -51,6 +64,9 @@ export default function DashboardHome() {
     const [currentDate, setCurrentDate] = useState("");
     const [dailyQuestions, setDailyQuestions] = useState<any[]>([]);
     const [showDailyQuestions, setShowDailyQuestions] = useState(false);
+    const [activeModal, setActiveModal] = useState<ModalId | null>(null);
+    const modalRef = useRef<HTMLDivElement>(null);
+
     useEffect(() => {
         const localeMap: Record<string, string> = { es: 'es-ES', en: 'en-US', pt: 'pt-BR' };
         setCurrentDate(new Date().toLocaleDateString(localeMap[language] || 'es-ES', { day: 'numeric', month: 'long' }));
@@ -61,6 +77,34 @@ export default function DashboardHome() {
             fetchDailyQuestions();
         }
     }, [language, isGuest]);
+
+    const advanceModal = useCallback(() => {
+        if (!activeModal) return;
+        markModalSeen(activeModal);
+        const seen = getSeenModals();
+        const next = MODAL_QUEUE.find(id => !seen.includes(id)) || null;
+        setActiveModal(next);
+    }, [activeModal]);
+
+    useEffect(() => {
+        if (!activeModal) return;
+        const timer = setTimeout(advanceModal, 12000);
+        return () => clearTimeout(timer);
+    }, [activeModal, advanceModal]);
+
+    useEffect(() => {
+        if (isGuest) return;
+        const completedTour = stats?.hasSeenTutorialTour &&
+            localStorage.getItem('tour_version') === '2026-01-new-dashboard';
+        if (completedTour && !activeModal) {
+            const seen = getSeenModals();
+            const next = MODAL_QUEUE.find(id => !seen.includes(id)) || null;
+            if (next) {
+                const t = setTimeout(() => setActiveModal(next), 2000);
+                return () => clearTimeout(t);
+            }
+        }
+    }, [stats, isGuest, activeModal]);
 
     const loadGuestStats = () => {
         const gs = getGuestStats();
@@ -83,7 +127,6 @@ export default function DashboardHome() {
 
     const fetchDailyQuestions = async () => {
         try {
-            // Check if seen today
             const today = new Date().toDateString();
             const lastSeen = localStorage.getItem('seen_daily_questions_date');
             if (lastSeen === today) return;
@@ -462,55 +505,68 @@ export default function DashboardHome() {
                 </div>
             </motion.section>
 
-            {/* Social Media Cards */}
-            <motion.section
-                initial={{ opacity: 0, y: 16 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.4, delay: 0.35 }}
-                className="mb-4"
-            >
-                <div className="row g-3">
-                    <div className="col-12 col-md-6">
-                        <WhatsappCard />
+            {/* Social Media Cards - hidden for guests */}
+            {!isGuest && (
+                <motion.section
+                    initial={{ opacity: 0, y: 16 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.4, delay: 0.35 }}
+                    className="mb-4"
+                >
+                    <div className="row g-3">
+                        <div className="col-12 col-md-6">
+                            <WhatsappCard />
+                        </div>
+                        <div className="col-12 col-md-6">
+                            <InstagramCard />
+                        </div>
                     </div>
-                    <div className="col-12 col-md-6">
-                        <InstagramCard />
-                    </div>
-                </div>
-            </motion.section>
+                </motion.section>
+            )}
 
-            {/* Feature Tour (Proactive Tutorial) */}
-            {stats && (!stats.hasSeenTutorialTour || localStorage.getItem('tour_version') !== '2026-01-new-dashboard') && (
+            {/* Feature Tour - only for logged-in users */}
+            {!isGuest && stats && (!stats.hasSeenTutorialTour || localStorage.getItem('tour_version') !== '2026-01-new-dashboard') && (
                 <FeatureTour onComplete={() => {
                     setStats((prev: DashboardStats | null) => prev ? { ...prev, hasSeenTutorialTour: true } : null);
                     localStorage.setItem('tour_version', '2026-01-new-dashboard');
                 }} />
             )}
 
-            {/* Support Ad - Only show if not in tour */}
-            {stats && (stats.hasSeenTutorialTour && localStorage.getItem('tour_version') === '2026-01-new-dashboard') && (
-                <>
-                    <section className="mb-5 pb-5 mt-5">
-                        <SupportFundingAd />
-                    </section>
-
-                    <div className="pb-5"></div>
-
-                    <AgePrompt missingAge={!stats.age} />
-                    <WhatsappModal hasJoined={stats.hasJoinedWhatsapp} />
-                    <InstagramModal hasFollowed={stats.hasFollowedInstagram} />
-                    <CheckinModal
-                        hasCheckedIn={hasCheckedIn}
-                        onCheckin={handleCheckin}
-                        isLoading={checkinLoading}
-                    />
-                    <CountryModal hasSelectedCountry={!!stats.country} />
-                    <DailyQuestionModal
-                        questions={dailyQuestions}
-                        isOpen={showDailyQuestions}
-                        onClose={() => setShowDailyQuestions(false)}
-                    />
-                </>
+            {/* Progressive modals - one at a time for logged-in users */}
+            {!isGuest && stats && stats.hasSeenTutorialTour && (
+                <div ref={modalRef}>
+                    {activeModal === 'checkin' && (
+                        <CheckinModal
+                            hasCheckedIn={hasCheckedIn}
+                            onCheckin={handleCheckin}
+                            isLoading={checkinLoading}
+                        />
+                    )}
+                    {activeModal === 'age' && (
+                        <AgePrompt missingAge={!stats.age} />
+                    )}
+                    {activeModal === 'country' && (
+                        <CountryModal hasSelectedCountry={!!stats.country} />
+                    )}
+                    {activeModal === 'whatsapp' && (
+                        <WhatsappModal hasJoined={stats.hasJoinedWhatsapp} />
+                    )}
+                    {activeModal === 'instagram' && (
+                        <InstagramModal hasFollowed={stats.hasFollowedInstagram} />
+                    )}
+                    {activeModal === 'support' && (
+                        <section className="mb-5 pb-5 mt-5">
+                            <SupportFundingAd />
+                        </section>
+                    )}
+                    {activeModal === 'dailyQuestions' && (
+                        <DailyQuestionModal
+                            questions={dailyQuestions}
+                            isOpen={showDailyQuestions}
+                            onClose={() => setShowDailyQuestions(false)}
+                        />
+                    )}
+                </div>
             )}
         </div>
     );
