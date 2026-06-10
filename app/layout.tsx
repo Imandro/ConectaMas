@@ -6,6 +6,7 @@ import NotificationPrompt from './components/NotificationPrompt';
 import { Analytics } from '@vercel/analytics/next';
 import { Toaster } from 'react-hot-toast';
 import OfflineAlert from '@/components/OfflineAlert';
+import CacheCleanup from './components/CacheCleanup';
 
 const fredoka = Fredoka({
     subsets: ['latin'],
@@ -111,6 +112,7 @@ export default async function RootLayout({
 
                         <PWAInstallPrompt />
                         <NotificationPrompt />
+                        <CacheCleanup />
                         <Analytics />
                         <Toaster position="top-center" />
                     </Providers>
