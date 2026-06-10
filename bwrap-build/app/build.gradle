@@ -141,8 +141,6 @@ versionName "1.5"
         resValue "string", "fallbackType", twaManifest.fallbackType
 
         resValue "bool", "enableSiteSettingsShortcut", twaManifest.enableSiteSettingsShortcut
-        resValue "string", "orientation", twaManifest.orientation
-
         
     }
     buildTypes {
@@ -203,6 +201,6 @@ repositories {
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     
-        implementation 'com.google.androidbrowserhelper:androidbrowserhelper:2.6.2'
+        implementation 'com.google.androidbrowserhelper:androidbrowserhelper:2.7.1'
     
 }
