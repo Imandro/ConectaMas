@@ -70,10 +70,9 @@ export default function LoginPage() {
 
             if (res?.error) {
                 setError(t.auth.invalid_credentials);
+                setLoading(false);
             } else {
                 // Force a hard navigation to ensure clean state and avoid caching issues
-                // router.push('/dashboard'); 
-                // router.refresh();
                 window.location.href = '/dashboard';
             }
         } catch (err) {
@@ -81,9 +80,6 @@ export default function LoginPage() {
             setError(t.auth.login_error);
             setLoading(false);
         }
-        // Don't set loading to false here if successful, because we are navigating away
-        // and we want to keep the button disabled/spinning until the page unloads.
-        if (error) setLoading(false);
     };
 
     return (
