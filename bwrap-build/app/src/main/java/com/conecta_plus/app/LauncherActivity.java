@@ -27,15 +27,10 @@ public class LauncherActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
-    }
 
     @Override
     protected Uri getLaunchingUrl() {
-        // Get the original launch Url.
         Uri uri = super.getLaunchingUrl();
-
-        
-
         return uri;
     }
 }
