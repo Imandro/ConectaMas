@@ -55,7 +55,7 @@ android {
     namespace "com.conecta_plus.app"
     defaultConfig {
         applicationId "com.conecta_plus.app"
-        minSdkVersion 21
+        minSdkVersion 23
         targetSdkVersion 35
 versionCode 6
 versionName "1.5"
