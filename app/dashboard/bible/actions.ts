@@ -72,3 +72,51 @@ export async function updateBibleReadingProgress(providedUserId?: string) {
 
     revalidatePath("/dashboard");
 }
+
+const LAST_READING_KEY = "conectaplus_bible_last_reading";
+
+export interface LastReading {
+  bookIndex: number;
+  chapter: number;
+  bookName: string;
+  updatedAt: string;
+}
+
+export function getLastReadingLocal(): LastReading | null {
+  if (typeof window === "undefined") return null;
+  try {
+    const stored = localStorage.getItem(LAST_READING_KEY);
+    if (stored) return JSON.parse(stored);
+  } catch {}
+  return null;
+}
+
+export function saveLastReadingLocal(bookIndex: number, chapter: number, bookName: string): void {
+  if (typeof window === "undefined") return;
+  const data: LastReading = {
+    bookIndex,
+    chapter,
+    bookName,
+    updatedAt: new Date().toISOString(),
+  };
+  localStorage.setItem(LAST_READING_KEY, JSON.stringify(data));
+}
+
+export async function getLastReadingServer() {
+  const session = await auth();
+  if (!session?.user?.id) return null;
+  const userId = (session.user as { id: string }).id;
+  const progress = await prisma.readingProgress.findUnique({ where: { userId } });
+  return progress ? JSON.parse(JSON.stringify(progress)) : null;
+}
+
+export async function saveLastReadingServer(bookIndex: number, chapter: number) {
+  const session = await auth();
+  if (!session?.user?.id) return null;
+  const userId = (session.user as { id: string }).id;
+  return prisma.readingProgress.upsert({
+    where: { userId },
+    update: { bookIndex, chapter },
+    create: { userId, bookIndex, chapter },
+  });
+}

@@ -73,6 +73,7 @@ model User {
   sentSupport              SupportMessage[]       @relation("SentSupport")
   completedDevotionals     UserDevotional[]
   struggles                UserStruggle[]
+  readingProgress          ReadingProgress?
   triviaAttempts           UserTriviaAttempt[]
   watchedVideos            UserVideo[]
   friends                  User[]                 @relation("UserFriends")
@@ -607,5 +608,14 @@ model PrayerUpdate {
   createdAt DateTime      @default(now())
   request   PrayerRequest @relation(fields: [requestId], references: [id], onDelete: Cascade)
   user      User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model ReadingProgress {
+  id        String   @id @default(cuid())
+  userId    String   @unique
+  bookIndex Int
+  chapter   Int
+  updatedAt DateTime @updatedAt
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 

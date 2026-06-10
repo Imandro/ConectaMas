@@ -223,6 +223,7 @@ export const en = {
         helpful_verses: "Helpful Verses",
         helpful_desc: "Specific verses for your struggles",
         loading_verses: "Loading verses...",
+        continue_reading: "Continuing from {position}",
     },
     devotionals: {
         title: "Devotionals",

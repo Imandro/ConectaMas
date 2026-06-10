@@ -2,12 +2,13 @@
 
 // Metadata removed for client component
 
-import { useState, useEffect } from 'react';
-import { Book, ChevronLeft, ChevronRight, Heart } from 'lucide-react';
+import { useState, useEffect, useRef } from 'react';
+import { Book, ChevronLeft, ChevronRight, Heart, BookOpen } from 'lucide-react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { useLanguage } from "@/app/LanguageContext";
 import { BIBLE_BOOKS, getBibleBookName } from '@/app/lib/bibleData';
+import { getLastReadingLocal, saveLastReadingLocal, saveLastReadingServer, getLastReadingServer } from './actions';
 
 const BOOK_MAPPING: { [key: string]: number } = {
     "Génesis": 0, "Éxodo": 1, "Levítico": 2, "Números": 3, "Deuteronomio": 4,
@@ -76,6 +77,8 @@ export default function BiblePage() {
     const [chapterText, setChapterText] = useState<any>(null);
     const [loading, setLoading] = useState(false);
     const [helpfulVerses, setHelpfulVerses] = useState<BibleVerse[]>([]);
+    const [restoredLabel, setRestoredLabel] = useState<string | null>(null);
+    const savedRef = useRef<string>("");
 
     // Mascot Heartbeat (Bible Reading)
     useEffect(() => {
@@ -155,6 +158,47 @@ export default function BiblePage() {
         loadBibleChapter();
     }, [selectedBook, selectedChapter]);
 
+    // Restore last reading position on mount (if no URL params)
+    useEffect(() => {
+        if (initialBookName) return;
+
+        const restore = async () => {
+            let last: { bookIndex: number; chapter: number; bookName: string } | null = null;
+            try {
+                const server = await getLastReadingServer();
+                if (server) {
+                    last = { bookIndex: server.bookIndex, chapter: server.chapter, bookName: BIBLE_BOOKS[server.bookIndex]?.name || "" };
+                }
+            } catch { }
+            if (!last) last = getLastReadingLocal();
+            if (!last) return;
+
+            const book = BIBLE_BOOKS[last.bookIndex];
+            if (!book || last.chapter < 1 || last.chapter > book.chapters) return;
+
+            setSelectedBook(book);
+            setSelectedChapter(last.chapter);
+            setRestoredLabel(`${getBibleBookName(book, language)} ${last.chapter}`);
+        };
+
+        restore();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [initialBookName]);
+
+    // Save last reading position on book/chapter change
+    useEffect(() => {
+        if (!selectedBook || !selectedChapter) return;
+        const bookIdx = BOOK_MAPPING[selectedBook.name];
+        if (bookIdx === undefined) return;
+
+        const key = `${bookIdx}:${selectedChapter}`;
+        if (savedRef.current === key) return;
+        savedRef.current = key;
+
+        saveLastReadingLocal(bookIdx, selectedChapter, selectedBook.name);
+        saveLastReadingServer(bookIdx, selectedChapter).catch(() => { });
+    }, [selectedBook, selectedChapter]);
+
     // Fetch helpful verses (could be personalized based on user struggles)
     useEffect(() => {
         fetch('/api/verses')
@@ -197,6 +241,12 @@ export default function BiblePage() {
                                     {t.bible.back}
                                 </Link>
                             </div>
+                            {restoredLabel && (
+                                <div className="alert alert-info py-2 px-3 mb-3 d-flex align-items-center gap-2 small">
+                                    <BookOpen size={16} />
+                                    {t.bible.continue_reading?.replace("{position}", restoredLabel) || `Continuando desde ${restoredLabel}`}
+                                </div>
+                            )}
 
                             {/* Book Selector */}
                             <div className="mb-3">
