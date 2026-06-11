@@ -52,6 +52,23 @@ scripts/read_seed_log.js
 prisma/dev.db
 prisma/seed.js
 
+# Flutter
+flutter-app/build/
+flutter-app/.dart_tool/
+flutter-app/.packages
+flutter-app/.pub/
+flutter-app/.flutter-plugins
+flutter-app/.flutter-plugins-dependencies
+flutter-app/ios/Pods/
+flutter-app/ios/.symlinks/
+flutter-app/ios/Flutter/App.framework/
+flutter-app/ios/Flutter/Flutter.framework/
+flutter-app/ios/Runner/GeneratedPluginRegistrant.*
+flutter-app/android/.gradle/
+flutter-app/android/app/.cxx/
+flutter-app/android/local.properties
+flutter-app/.idea/
+
 # Android Secrets
 key.properties
 **/*.jks
