@@ -10,7 +10,7 @@ on:
       version_code:
         description: 'Version code (e.g. 7)'
         required: false
-        default: '7'
+        default: '8'
 
 jobs:
   build:
