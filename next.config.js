@@ -52,6 +52,15 @@ const withPWA = require('next-pwa')({
                 expiration: { maxEntries: 200, maxAgeSeconds: 30 * 24 * 60 * 60 },
             },
         },
+        {
+            urlPattern: /\/.*/,
+            handler: 'NetworkFirst',
+            options: {
+                cacheName: 'pages',
+                expiration: { maxEntries: 50, maxAgeSeconds: 30 * 24 * 60 * 60 },
+                networkTimeoutSeconds: 10,
+            },
+        },
     ],
 });
 

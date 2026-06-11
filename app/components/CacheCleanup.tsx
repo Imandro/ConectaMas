@@ -2,7 +2,7 @@
 
 import { useEffect } from 'react';
 
-const APP_VERSION = '2026-06-09-v2';
+const APP_VERSION = '2026-06-10-v3';
 const VERSION_KEY = 'conectaplus_cache_version';
 
 export default function CacheCleanup() {
