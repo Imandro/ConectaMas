@@ -1,4 +1,4 @@
-name: Build Flutter APK
+name: Build Flutter AAB (signed)
 
 on:
   workflow_dispatch:
@@ -42,8 +42,16 @@ jobs:
       - name: Get dependencies
         run: flutter pub get
 
+      - name: Decode keystore
+        run: echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 -d > android/app/release.keystore
+
       - name: Build AAB
         run: flutter build appbundle --release
+        env:
+          KEYSTORE_PATH: release.keystore
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
 
       - name: Rename AAB
         run: |
