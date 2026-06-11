@@ -42,15 +42,15 @@ jobs:
       - name: Get dependencies
         run: flutter pub get
 
-      - name: Build APK
-        run: flutter build apk --release
+      - name: Build AAB
+        run: flutter build appbundle --release
 
-      - name: Rename APK
+      - name: Rename AAB
         run: |
-          mv build/app/outputs/flutter-apk/app-release.apk build/app/outputs/flutter-apk/ConectaPlus-${{ github.event.inputs.version }}.apk
+          mv build/app/outputs/bundle/release/app-release.aab build/app/outputs/bundle/release/ConectaPlus-${{ github.event.inputs.version }}.aab
 
-      - name: Upload APK
+      - name: Upload AAB
         uses: actions/upload-artifact@v4
         with:
-          name: ConectaPlus-APK
-          path: flutter-app/build/app/outputs/flutter-apk/ConectaPlus-*.apk
+          name: ConectaPlus-AAB
+          path: flutter-app/build/app/outputs/bundle/release/ConectaPlus-*.aab
