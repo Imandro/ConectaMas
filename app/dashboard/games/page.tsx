@@ -263,7 +263,7 @@ export default function GamesDashboard() {
             {/* Create Room Modal */}
             {showCreateModal && (
                 <div className="position-fixed top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center" style={{ zIndex: 1080, backgroundColor: 'rgba(0,0,0,0.5)' }} onClick={() => setShowCreateModal(false)}>
-                    <div className="bg-white rounded-4 p-4 w-100 mx-3 shadow-lg animate-fade-in" style={{ maxWidth: '400px' }} onClick={e => e.stopPropagation()}>
+                    <div className="bg-white rounded-4 p-4 w-100 shadow-lg animate-fade-in" style={{ maxWidth: '400px' }} onClick={e => e.stopPropagation()}>
                         <h4 className="fw-bold mb-3">Crear Sala de Juego</h4>
                         <form onSubmit={handleCreateRoom}>
                             <div className="mb-3">
@@ -319,10 +319,10 @@ export default function GamesDashboard() {
                     align-items: center;
                     gap: 0.5rem;
                     font-weight: 700;
-                    color: #6c757d;
+                    color: var(--text-muted);
                     margin-bottom: 0.75rem;
                     padding-bottom: 0.5rem;
-                    border-bottom: 2px solid #e9ecef;
+                    border-bottom: 2px solid var(--border-color);
                 }
                 .section-header svg {
                     opacity: 0.7;

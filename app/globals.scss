@@ -96,7 +96,7 @@ textarea {
 
 // Theme-aware styles for generic components
 // We use classes that should be transparently themed
-.card:not([class*="bg-"]):not([class*="text-"]) {
+.card:not([class*="bg-"]):not([class*="text-"]):not(.ui-surface):not(.ui-surface-elevated):not(.ui-surface-glass):not(.ui-page-header):not(.ui-state):not(.ui-game-shell) {
     background-color: var(--card-bg);
     border-color: var(--border-color);
     color: var(--text-color);
@@ -152,7 +152,7 @@ header h2 {
 // Dashboard Specific Adjustments
 
 
-.bg-light {
+.bg-light:not([class*="bg-opacity-"]) {
     background-color: var(--light-bg) !important;
 }
 
