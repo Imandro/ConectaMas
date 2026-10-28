@@ -1,5 +1,5 @@
-mobile/
-android/
+/mobile/
+/android/
 node_modules/
 .next/
 out/

@@ -39,6 +39,8 @@
         "node_modules",
         "mobile",
         "android",
-        "conecta-native"
+        "conecta-native",
+        "conecta-plus-native",
+        "bwrap-build"
     ]
 }
