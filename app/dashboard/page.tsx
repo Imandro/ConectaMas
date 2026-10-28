@@ -1,7 +1,7 @@
 "use client";
 
 import Link from 'next/link';
-import { Sun, Loader2, HelpCircle, ChevronRight, Shield, Users, Trophy, Gamepad2, Heart, Sparkles } from 'lucide-react';
+import { Sun, Loader2, HelpCircle, ChevronRight, Shield, Users, Trophy, Gamepad2, Heart, Sparkles, MessageCircle } from 'lucide-react';
 import { useEffect, useState, useCallback, useRef } from 'react';
 import DailyVerse from './components/DailyVerse';
 import LlamiMascot from '../components/LlamiMascot';
@@ -466,6 +466,19 @@ export default function DashboardHome() {
             </section>
 
 
+
+            <section className="mb-3" aria-labelledby="dashboard-ai-chat">
+                <Link href="/dashboard/chat" className="dashboard-ai-entry ui-surface-glass d-flex align-items-center gap-3 p-3 text-decoration-none">
+                    <span className="bg-warning-subtle text-warning rounded-3 d-flex align-items-center justify-content-center flex-shrink-0" style={{ width: '42px', height: '42px' }}>
+                        <MessageCircle size={22} aria-hidden="true" />
+                    </span>
+                    <span className="flex-grow-1 min-w-0">
+                        <strong id="dashboard-ai-chat" className="d-block text-primary">Habla con Llami</strong>
+                        <span className="d-block small text-muted text-wrap">Un espacio privado para ordenar lo que llevas dentro.</span>
+                    </span>
+                    <ChevronRight size={20} className="text-muted flex-shrink-0" aria-hidden="true" />
+                </Link>
+            </section>
 
             {/* Secondary actions stay compact so they do not compete with the daily path. */}
             <section className="mb-3" aria-labelledby="dashboard-secondary-actions">

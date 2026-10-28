@@ -31,12 +31,13 @@ export function sanitizePaymentRecord(record: {
 }
 
 export async function exportUserData(userId: string): Promise<Record<string, unknown>> {
-  const [profile, checkins, journalEntries, forumPosts, forumReplies, questions, answers, prayerRequests, prayerUpdates, devotionals, struggles, readingProgress, triviaAttempts, watchedVideos, gameScores, gameParticipations, groupMemberships, ledGroups, taskCompletions, friendships, supportMessages, forumNotifications, questionLikes, answerLikes, streak, legalConsents, pushSubscriptions, billingTransactions, billingSubscriptions, mascot, leaderApplications] = await prisma.$transaction([
+  const [profile, checkins, journalEntries, forumPosts, forumReplies, questions, answers, prayerRequests, prayerUpdates, devotionals, struggles, readingProgress, triviaAttempts, watchedVideos, gameScores, gameParticipations, groupMemberships, ledGroups, taskCompletions, friendships, supportMessages, forumNotifications, questionLikes, answerLikes, streak, legalConsents, pushSubscriptions, billingTransactions, billingSubscriptions, mascot, leaderApplications, aiChatMessages] = await prisma.$transaction([
     prisma.user.findUnique({ where: { id: userId }, select: {
       id: true, email: true, name: true, username: true, role: true, isAnonymous: true, gender: true,
       spiritualStatus: true, sinsToOvercome: true, problemsFaced: true, connectionMethods: true,
       spiritualLevel: true, hasCompletedOnboarding: true, leaderPhone: true, age: true, country: true,
       preferredLanguage: true, region: true, bio: true, profileType: true, totalXP: true, weeklyXP: true,
+      aiContextEnabled: true, aiContextConsentAt: true,
       createdAt: true, updatedAt: true, isPremium: true,
     } }),
     prisma.dailyCheckin.findMany({ where: { userId }, orderBy: { createdAt: 'asc' } }),
@@ -69,13 +70,14 @@ export async function exportUserData(userId: string): Promise<Record<string, unk
     prisma.billingSubscription.findMany({ where: { userId }, select: { provider: true, productCode: true, status: true, currentPeriodStart: true, currentPeriodEnd: true, cancelAtPeriodEnd: true, createdAt: true } }),
     prisma.mascot.findUnique({ where: { userId }, select: { level: true, experience: true, flamePoints: true, name: true, mood: true, createdAt: true, updatedAt: true } }),
     prisma.leaderApplication.findMany({ where: { userId }, orderBy: { createdAt: 'asc' } }),
+    prisma.aiChatMessage.findMany({ where: { userId }, orderBy: { createdAt: 'asc' } }),
   ]);
 
   if (!profile) throw new Error('User not found');
   return {
     exportedAt: new Date().toISOString(),
     profile,
-    data: { checkins, journalEntries, forumPosts, forumReplies, questions, answers, prayerRequests, prayerUpdates, devotionals, struggles, readingProgress, triviaAttempts, watchedVideos, gameScores, gameParticipations, groupMemberships, ledGroups, taskCompletions, friendships, supportMessages, forumNotifications, questionLikes, answerLikes, streak, legalConsents, pushSubscriptions, mascot, leaderApplications },
+    data: { checkins, journalEntries, forumPosts, forumReplies, questions, answers, prayerRequests, prayerUpdates, devotionals, struggles, readingProgress, triviaAttempts, watchedVideos, gameScores, gameParticipations, groupMemberships, ledGroups, taskCompletions, friendships, supportMessages, forumNotifications, questionLikes, answerLikes, streak, legalConsents, pushSubscriptions, mascot, leaderApplications, aiChatMessages },
     payments: {
       transactions: billingTransactions.map(sanitizePaymentRecord),
       subscriptions: billingSubscriptions,
@@ -94,6 +96,7 @@ export async function deleteUserAccount(userId: string): Promise<void> {
     await tx.group.deleteMany({ where: { leaderId: userId } });
     await tx.groupNeed.updateMany({ where: { userId }, data: { userId: null } });
     await tx.supportMessage.deleteMany({ where: { OR: [{ senderId: userId }, { receiverId: userId }] } });
+    await tx.aiChatMessage.deleteMany({ where: { userId } });
     if (account.email) {
       await tx.resetToken.deleteMany({ where: { identifier: account.email } });
       await tx.verificationToken.deleteMany({ where: { identifier: account.email } });

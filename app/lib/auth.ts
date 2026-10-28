@@ -5,6 +5,7 @@ import { prisma } from "@/app/lib/prisma";
 import { User, Session } from "next-auth";
 import { JWT } from "next-auth/jwt";
 import bcrypt from "bcryptjs";
+import { isAllowedEmail, isEmailIdentifier } from '@/app/lib/email-validation';
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
     ...authConfig,
@@ -16,12 +17,14 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
                 password: { label: "Password", type: "password" }
             },
             async authorize(credentials) {
-                const identifier = (credentials.identifier as string || (credentials as { email?: string }).email) as string;
-                const password = credentials.password as string;
+                const rawIdentifier = credentials.identifier || (credentials as { email?: string }).email;
+                const identifier = typeof rawIdentifier === 'string' ? rawIdentifier : '';
+                const password = typeof credentials.password === 'string' ? credentials.password : '';
 
                 if (!identifier || !password) return null;
 
                 const normalizedIdentifier = identifier.trim().toLowerCase();
+                if (isEmailIdentifier(normalizedIdentifier) && !isAllowedEmail(normalizedIdentifier)) return null;
                 // Find user by email OR username (both lowercase)
                 const user = await prisma.user.findFirst({
                     where: {

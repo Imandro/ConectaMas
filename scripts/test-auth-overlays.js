@@ -10,6 +10,7 @@ const files = [
   'app/legal/privacy/page.tsx',
   'app/legal/cookies/page.tsx',
   'app/onboarding/OnboardingSteps.tsx',
+  'app/onboarding/loading.tsx',
   'app/components/NotificationPrompt.tsx',
   'app/components/PWAInstallPrompt.tsx',
   'app/components/CheckinModal.tsx',
@@ -30,6 +31,7 @@ for (const file of files.slice(4, 7)) {
   assert.match(source[file], /LegalDocumentPage/, `${file} needs shared legal document surface`);
 }
 assert.match(source['app/onboarding/OnboardingSteps.tsx'], /ui-surface-glass/, 'onboarding panel needs shared functional surface');
+assert.match(source['app/onboarding/loading.tsx'], /bg-primary[\s\S]*ui-surface-glass/, 'onboarding loading must keep the dark surface shell');
 for (const file of files.slice(8)) {
   assert.match(source[file], /ui-surface-glass/, `${file} needs shared glass overlay surface`);
 }

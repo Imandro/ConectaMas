@@ -196,7 +196,7 @@
 [data-design] {
     color: var(--text-color);
 
-    .bg-light {
+    .bg-light:not([class*="bg-opacity-"]) {
         background-color: var(--light-bg) !important;
     }
 
@@ -207,38 +207,38 @@
     }
 
     .bg-white,
-    .card:not(.bg-transparent) {
-        background-color: var(--card-bg) !important;
+    .card:not(.bg-transparent):not(.ui-surface):not(.ui-surface-elevated):not(.ui-surface-glass):not(.ui-page-header):not(.ui-state):not(.ui-game-shell) {
+        background-color: var(--card-bg);
     }
 
-    .bg-primary {
+    .bg-primary:not([class*="bg-opacity-"]) {
         background-color: var(--brand-primary) !important;
     }
 
-    .bg-secondary,
-    .bg-warning {
+    .bg-secondary:not([class*="bg-opacity-"]),
+    .bg-warning:not([class*="bg-opacity-"]) {
         background-color: var(--accent-soft) !important;
         color: var(--text-accent) !important;
     }
 
-    .bg-success {
+    .bg-success:not([class*="bg-opacity-"]) {
         background-color: var(--success-color) !important;
     }
 
-    .bg-danger {
+    .bg-danger:not([class*="bg-opacity-"]) {
         background-color: var(--danger-color) !important;
     }
 
-    .bg-primary-subtle {
+    .bg-primary-subtle:not([class*="bg-opacity-"]) {
         background-color: color-mix(in srgb, var(--brand-primary) 12%, transparent) !important;
     }
 
-    .bg-secondary-subtle,
-    .bg-warning-subtle {
+    .bg-secondary-subtle:not([class*="bg-opacity-"]),
+    .bg-warning-subtle:not([class*="bg-opacity-"]) {
         background-color: var(--accent-soft) !important;
     }
 
-    .bg-success-subtle {
+    .bg-success-subtle:not([class*="bg-opacity-"]) {
         background-color: color-mix(in srgb, var(--success-color) 14%, transparent) !important;
     }
 
@@ -1056,6 +1056,15 @@
     background: var(--game-shell-bg);
 }
 
+.ui-game-shell .bg-white,
+.ui-game-shell .game-card {
+    color: #0B1B32;
+}
+
+.ui-game-shell .game-card .text-muted {
+    color: #5F6F82 !important;
+}
+
 .ui-game-shell.game-gradient,
 .ui-game-shell[class*="game-surface-"],
 .ui-game-shell.trivia-container {
@@ -1068,6 +1077,24 @@
     --glass-bg: color-mix(in srgb, var(--brand-primary, #0B1B32) 88%, transparent);
     --glass-border: rgba(255, 255, 255, 0.14);
     color: #fff;
+}
+
+.onboarding-panel .btn-warning {
+    background-color: #f3b33e !important;
+    border-color: #f3b33e !important;
+    color: #0B1B32 !important;
+}
+
+.onboarding-panel .btn-link {
+    min-height: 44px;
+}
+
+.onboarding-panel .bg-white {
+    color: #0B1B32 !important;
+}
+
+.onboarding-panel .bg-white .text-muted {
+    color: #5F6F82 !important;
 }
 
 .glass-surface {

@@ -3,6 +3,7 @@ import { prisma } from '@/app/lib/prisma';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { getJwtSecret } from '@/app/lib/jwt-secret';
+import { ALLOWED_EMAIL_ERROR, isAllowedEmail, isEmailIdentifier } from '@/app/lib/email-validation';
 
 export const dynamic = 'force-dynamic';
 
@@ -10,19 +11,23 @@ export async function POST(req: Request) {
     try {
         const body = await req.json().catch(() => ({}));
         const { identifier, password } = body;
+        const normalizedIdentifier = typeof identifier === 'string' ? identifier.trim().toLowerCase() : '';
 
-        if (!identifier) {
+        if (!normalizedIdentifier) {
             return NextResponse.json({ message: 'El email o usuario es requerido' }, { status: 400 });
         }
         if (!password) {
             return NextResponse.json({ message: 'La contraseña es requerida' }, { status: 400 });
         }
+        if (isEmailIdentifier(normalizedIdentifier) && !isAllowedEmail(normalizedIdentifier)) {
+            return NextResponse.json({ message: ALLOWED_EMAIL_ERROR }, { status: 400 });
+        }
 
         const user = await prisma.user.findFirst({
             where: {
                 OR: [
-                    { email: identifier.toLowerCase() },
-                    { username: { equals: identifier, mode: 'insensitive' } }
+                    { email: normalizedIdentifier },
+                    { username: { equals: normalizedIdentifier, mode: 'insensitive' } }
                 ]
             },
         });
