@@ -86,3 +86,4 @@ flutter-app/.idea/
 key.properties
 **/*.jks
 **/*.keystore
+.env*
