@@ -13,11 +13,12 @@ const { publicKey: vapidPublicKey, privateKey: vapidPrivateKey, subject: vapidSu
 
 if (vapidPublicKey && vapidPrivateKey) {
     try {
-        webpush.setVapidDetails(vapidSubject, vapidPublicKey, vapidPrivateKey);
-    } catch (error) {
-        if (error instanceof Error) {
-            console.error("VAPID Configuration Error:", error.message);
+        const decoded = Buffer.from(vapidPublicKey.replace(/-/g, '+').replace(/_/g, '/'), 'base64');
+        if (decoded.length === 65) {
+            webpush.setVapidDetails(vapidSubject, vapidPublicKey, vapidPrivateKey);
         }
+    } catch {
+        // Silenciar: env var no configurada o inválida
     }
 }
 
