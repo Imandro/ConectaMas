@@ -1,9 +1,9 @@
 -- AlterTable
-ALTER TABLE "User" DROP COLUMN IF EXISTS "image";
-ALTER TABLE "User" DROP COLUMN IF EXISTS "bannerUrl";
+ALTER TABLE "User" DROP COLUMN "image";
+ALTER TABLE "User" DROP COLUMN "bannerUrl";
 
 -- AlterTable
-ALTER TABLE "Group" DROP COLUMN IF EXISTS "image";
+ALTER TABLE "Group" DROP COLUMN "image";
 
 -- AlterTable
-ALTER TABLE "Video" DROP COLUMN IF EXISTS "thumbnailUrl";
+ALTER TABLE "Video" DROP COLUMN "thumbnailUrl";

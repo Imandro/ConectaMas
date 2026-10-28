@@ -13,16 +13,10 @@ const { publicKey: vapidPublicKey, privateKey: vapidPrivateKey, subject: vapidSu
 
 if (vapidPublicKey && vapidPrivateKey) {
     try {
-        // Validar longitud de la clave pública VAPID (65 bytes decodificada) antes de configurar
-        const decoded = Buffer.from(vapidPublicKey.replace(/-/g, '+').replace(/_/g, '/'), 'base64');
-        if (decoded.length !== 65) {
-            // Clave inválida o no configurada: omitir configuración silenciosamente
-        } else {
-            webpush.setVapidDetails(vapidSubject, vapidPublicKey, vapidPrivateKey);
-        }
+        webpush.setVapidDetails(vapidSubject, vapidPublicKey, vapidPrivateKey);
     } catch (error) {
         if (error instanceof Error) {
-            console.warn("VAPID Configuration Error:", error.message);
+            console.error("VAPID Configuration Error:", error.message);
         }
     }
 }

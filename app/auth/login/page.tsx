@@ -7,7 +7,6 @@ import { useSearchParams } from 'next/navigation';
 import { Eye, EyeOff, Loader2 } from 'lucide-react';
 
 import { useLanguage } from "@/app/LanguageContext";
-import { ALLOWED_EMAIL_ERROR, isAllowedEmail, isEmailIdentifier } from '@/app/lib/email-validation';
 
 export default function LoginPage() {
     const { t } = useLanguage();
@@ -56,10 +55,6 @@ export default function LoginPage() {
         e.preventDefault();
         if (!navigator.onLine) {
             setError(t.auth.offline_login);
-            return;
-        }
-        if (isEmailIdentifier(formData.identifier) && !isAllowedEmail(formData.identifier)) {
-            setError(ALLOWED_EMAIL_ERROR);
             return;
         }
         setLoading(true);

@@ -7,7 +7,6 @@ import { Eye, EyeOff, Loader2 } from 'lucide-react';
 import { useLanguage } from "@/app/LanguageContext";
 import { getGuestStats } from '@/app/lib/guest';
 import { SUPPORTED_COUNTRY_OPTIONS } from '@/app/lib/legal/policy';
-import { ALLOWED_EMAIL_ERROR, isAllowedEmail } from '@/app/lib/email-validation';
 
 export default function RegisterPage() {
     const { t, language } = useLanguage();
@@ -46,10 +45,6 @@ export default function RegisterPage() {
             return;
         }
         setError('');
-        if (!isAllowedEmail(formData.email)) {
-            setError(ALLOWED_EMAIL_ERROR);
-            return;
-        }
         setLoading(true);
 
         try {

@@ -80,13 +80,13 @@ export default function BookSortGame() {
 
                 {phase === "start" && (
                     <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center py-5">
-                        <div className="bg-white-10 rounded-5 p-5 backdrop-blur-sm max-w-md mx-auto">
-                            <div className="bg-white-20 d-inline-flex p-4 rounded-circle mb-3">
+                        <div className="bg-white/10 rounded-5 p-5 backdrop-blur-sm max-w-md mx-auto">
+                            <div className="bg-white/20 d-inline-flex p-4 rounded-circle mb-3">
                                 <Book size={48} className="text-warning" />
                             </div>
                             <h2 className="fw-bold text-white mb-2">¡Clasifica el Libro!</h2>
-                            <p className="text-white-80 mb-1">¿Es del Antiguo Testamento (AT) o Nuevo Testamento (NT)?</p>
-                            <p className="text-white-60 small mb-4">{ROUNDS} libros para clasificar</p>
+                            <p className="text-white/80 mb-1">¿Es del Antiguo Testamento (AT) o Nuevo Testamento (NT)?</p>
+                            <p className="text-white/60 small mb-4">{ROUNDS} libros para clasificar</p>
                             {bestScore > 0 && (
                                 <p className="text-warning small mb-3">🏆 Mejor puntaje: {bestScore}/{ROUNDS}</p>
                             )}
@@ -109,7 +109,7 @@ export default function BookSortGame() {
                             </div>
 
                             <div className="text-center mb-4">
-                                <div className="bg-white-10 backdrop-blur-sm rounded-5 p-5 mb-4">
+                                <div className="bg-white/10 backdrop-blur-sm rounded-5 p-5 mb-4">
                                     <h2 className="display-5 fw-bold text-white mb-0">{questions[round].book}</h2>
                                 </div>
 
@@ -142,9 +142,9 @@ export default function BookSortGame() {
 
                 {phase === "result" && (
                     <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="text-center py-5">
-                        <div className="bg-white-10 backdrop-blur-sm rounded-5 p-5 max-w-md mx-auto">
+                        <div className="bg-white/10 backdrop-blur-sm rounded-5 p-5 max-w-md mx-auto">
                             <div className="mb-4">
-                                <div className="bg-warning-30 d-inline-flex p-4 rounded-circle mb-3">
+                                <div className="bg-warning/30 d-inline-flex p-4 rounded-circle mb-3">
                                     <Trophy size={64} className="text-warning" />
                                 </div>
                                 <h2 className="fw-bold text-white mb-2">¡Juego Terminado!</h2>
@@ -153,7 +153,7 @@ export default function BookSortGame() {
                                 {score >= 11 && score < ROUNDS && <p className="text-white fw-bold">¡Muy bien! 🙌</p>}
                                 {score < 11 && <p className="text-white fw-bold">¡Sigue practicando! 💪</p>}
                                 {bestScore >= score && bestScore > score && (
-                                    <p className="text-white-70 small">🏆 Tu récord: {bestScore}/{ROUNDS}</p>
+                                    <p className="text-white/70 small">🏆 Tu récord: {bestScore}/{ROUNDS}</p>
                                 )}
                             </div>
                             <div className="d-flex justify-content-center gap-3 flex-column flex-sm-row">

@@ -3,18 +3,16 @@ export const dynamic = 'force-dynamic';
 import { prisma } from '@/app/lib/prisma';
 import bcrypt from 'bcryptjs';
 import { evaluateLegalAccess, normalizeCountry, isLegalLocale, CURRENT_LEGAL_VERSIONS, REQUIRED_CONSENT_DOCUMENTS } from '@/app/lib/legal';
-import { ALLOWED_EMAIL_ERROR, isAllowedEmail } from '@/app/lib/email-validation';
 
 export async function POST(req: Request) {
     try {
         const body = await req.json().catch(() => ({}));
 
         const { name, password, username, securityAnswer, age, country, termsAccepted, privacyAccepted, locale = 'es' } = body;
-        const email = typeof body?.email === 'string' ? body.email.trim().toLowerCase() : '';
+        const email = body.email?.toLowerCase();
 
         // Validation
         if (!email) return NextResponse.json({ message: 'El email es requerido' }, { status: 400 });
-        if (!isAllowedEmail(email)) return NextResponse.json({ message: ALLOWED_EMAIL_ERROR }, { status: 400 });
         if (!password) return NextResponse.json({ message: 'La contraseña es requerida' }, { status: 400 });
         if (!name) return NextResponse.json({ message: 'El nombre es requerido' }, { status: 400 });
         if (!username) return NextResponse.json({ message: 'El nombre de usuario es requerido' }, { status: 400 });
