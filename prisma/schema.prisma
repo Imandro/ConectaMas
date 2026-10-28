@@ -45,6 +45,8 @@ model User {
   profileType              String                 @default("NORMAL")
   totalXP                  Int                    @default(0)
   weeklyXP                 Int                    @default(0)
+  aiContextEnabled         Boolean                @default(false)
+  aiContextConsentAt       DateTime?
   accounts                 Account[]
   answers                  Answer[]
   answerLikes              AnswerLike[]
@@ -83,6 +85,7 @@ model User {
   billingSubscriptions     BillingSubscription[]
   billingPurchaseClaims    BillingPurchaseClaim[]
   legalConsents            LegalConsent[]
+  aiChatMessages           AiChatMessage[]
 }
 
 model LegalConsent {
@@ -718,4 +721,17 @@ model BillingPurchaseClaim {
   user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId, expiresAt])
+}
+
+model AiChatMessage {
+  id        String   @id @default(cuid())
+  userId    String
+  role      String
+  mode      String?
+  content   String   @db.Text
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, createdAt])
+  @@index([userId, role, createdAt])
 }
