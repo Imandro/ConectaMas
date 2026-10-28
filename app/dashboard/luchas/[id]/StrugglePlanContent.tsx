@@ -1,8 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
-    X,
     CheckCircle2,
     BookOpen,
     Lightbulb,
@@ -17,7 +16,12 @@ import {
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
-import { advanceStruggleDay, markStruggleAsOvercome, startStrugglePlan } from "../../actions";
+import { useSession } from 'next-auth/react';
+import {
+    createIdempotencyKey,
+    enqueueOfflineMutation,
+} from '@/app/lib/syncQueueProcessor';
+import { getSnapshot, saveSnapshot } from '@/app/lib/offlineStore';
 
 interface StrugglePlanDay {
     dayNumber: number;
@@ -53,48 +57,115 @@ export default function StrugglePlanContent({
     userStruggle: UserStruggle;
     plan: StrugglePlan | null;
 }) {
-    const [selectedDay, setSelectedDay] = useState(userStruggle.currentDay);
+    const { data: session } = useSession();
+    const userId = (session?.user as { id?: string; email?: string } | undefined)?.id || session?.user?.email || null;
+    const [offlineData, setOfflineData] = useState({ userStruggle, plan });
+    const activeStruggle = offlineData.userStruggle;
+    const activePlan = offlineData.plan;
+    const loadedOfflineSnapshot = useRef(false);
+    const [selectedDay, setSelectedDay] = useState(activeStruggle.currentDay);
     const [completing, setCompleting] = useState(false);
-    const [showVictory, setShowVictory] = useState(userStruggle.status === "vencido");
-    const [isStarted, setIsStarted] = useState(userStruggle.isStarted);
+    const [showVictory, setShowVictory] = useState(activeStruggle.status === "vencido");
+    const [isStarted, setIsStarted] = useState(activeStruggle.isStarted);
+    const [currentDay, setCurrentDay] = useState(activeStruggle.currentDay);
+    const [completedDaysArray, setCompletedDaysArray] = useState<number[]>(
+        activeStruggle.completedDays ? activeStruggle.completedDays.split(',').map(Number).filter(Number.isInteger) : [],
+    );
 
-    const totalDays = plan?.days.length || 7;
-    const completedDaysArray = userStruggle.completedDays ? userStruggle.completedDays.split(',').map(Number) : [];
+    const totalDays = activePlan?.days.length || 7;
+
+    useEffect(() => {
+        if (!userId) return;
+        const snapshotPath = `/dashboard/luchas/${activeStruggle.id}`;
+        if (navigator.onLine) {
+            void saveSnapshot(snapshotPath, userId, offlineData);
+            return;
+        }
+        if (loadedOfflineSnapshot.current) return;
+        loadedOfflineSnapshot.current = true;
+
+        void getSnapshot<typeof offlineData>(snapshotPath, userId).then((snapshot) => {
+            if (!snapshot?.payload) return;
+            setOfflineData(snapshot.payload);
+            setSelectedDay(snapshot.payload.userStruggle.currentDay);
+            setCurrentDay(snapshot.payload.userStruggle.currentDay);
+            setIsStarted(snapshot.payload.userStruggle.isStarted);
+            setShowVictory(snapshot.payload.userStruggle.status === 'vencido');
+            setCompletedDaysArray(snapshot.payload.userStruggle.completedDays
+                ? snapshot.payload.userStruggle.completedDays.split(',').map(Number).filter(Number.isInteger)
+                : []);
+        });
+    }, [activeStruggle.id, offlineData, userId]);
+
+    async function sendProgress(action: 'START' | 'ADVANCE' | 'OVERCOME', dayNumber?: number) {
+        const idempotencyKey = createIdempotencyKey();
+        const payload = { id: activeStruggle.id, action, ...(dayNumber === undefined ? {} : { dayNumber }) };
+
+        try {
+            if (navigator.onLine === false) {
+                if (action === 'START' || !userId) {
+                    alert('Sin conexión. Iniciar el plan requiere internet.');
+                    return false;
+                }
+                await enqueueOfflineMutation({
+                    userId,
+                    operation: 'STRUGGLE_PROGRESS',
+                    route: '/api/struggles/progress',
+                    payload,
+                    idempotencyKey,
+                });
+                return true;
+            }
+
+            const response = await fetch('/api/struggles/progress', {
+                method: 'PATCH',
+                headers: { 'Content-Type': 'application/json', 'Idempotency-Key': idempotencyKey },
+                body: JSON.stringify({ ...payload, idempotencyKey }),
+            });
+            if (response.ok) return true;
+            const body = await response.json().catch(() => null);
+            alert(body?.message || 'No se pudo guardar el progreso.');
+            return false;
+        } catch (error) {
+            console.error('Progress sync failed:', error);
+            alert('No se pudo guardar el progreso.');
+            return false;
+        }
+    }
 
     async function handleStartPlan() {
-        setCompleting(true);
-        const res = await startStrugglePlan(userStruggle.id);
-        if (res.success) {
-            setIsStarted(true);
+        if (!navigator.onLine) {
+            alert('Sin conexión. Iniciar el plan requiere internet.');
+            return;
         }
-        setCompleting(false);
+        setCompleting(true);
+        try {
+            if (await sendProgress('START')) setIsStarted(true);
+        } finally {
+            setCompleting(false);
+        }
     }
 
     async function handleCompleteDay(dayNum: number) {
         setCompleting(true);
-        const res = await advanceStruggleDay(userStruggle.id, dayNum, totalDays);
-        if (res.success) {
-            if (dayNum === totalDays) {
-                setShowVictory(true);
-            } else {
-                setSelectedDay(Math.min(dayNum + 1, totalDays));
+        try {
+            if (await sendProgress('ADVANCE', dayNum)) {
+                setCompletedDaysArray((days) => days.includes(dayNum) ? days : [...days, dayNum].sort((a, b) => a - b));
+                setCurrentDay((day) => Math.max(day, Math.min(dayNum + 1, totalDays)));
+                if (dayNum === totalDays) {
+                    setShowVictory(true);
+                } else {
+                    setSelectedDay(Math.min(dayNum + 1, totalDays));
+                }
             }
+        } finally {
+            setCompleting(false);
         }
-        setCompleting(false);
     }
 
-    async function handleMarkAsOvercome() {
-        setCompleting(true);
-        const res = await markStruggleAsOvercome(userStruggle.id, totalDays);
-        if (res.success) {
-            setShowVictory(true);
-        }
-        setCompleting(false);
-    }
-
-    const currentPlanDay = plan?.days.find(d => d.dayNumber === selectedDay);
+    const currentPlanDay = activePlan?.days.find(d => d.dayNumber === selectedDay);
     const isDayCompleted = completedDaysArray.includes(selectedDay);
-    const isDayLocked = selectedDay > userStruggle.currentDay || !isStarted;
+    const isDayLocked = selectedDay > currentDay || !isStarted;
 
     return (
         <div className="max-w-4xl mx-auto pb-5">
@@ -104,7 +175,7 @@ export default function StrugglePlanContent({
                     <ArrowLeft size={24} className="text-secondary" />
                 </Link>
                 <div className="bg-primary-subtle text-primary px-3 py-1 rounded-pill small fw-bold">
-                    {isStarted ? `Día ${userStruggle.currentDay} en curso` : 'Sin iniciar'}
+                    {isStarted ? `Día ${currentDay} en curso` : 'Sin iniciar'}
                 </div>
             </nav>
 
@@ -116,8 +187,8 @@ export default function StrugglePlanContent({
                             <Flame size={32} className="text-warning" />
                         </div>
                         <div>
-                            <h1 className="fw-bold m-0 text-white display-6">{userStruggle.title}</h1>
-                            <p className="text-white-50 m-0 lead">{plan?.description || `Plan de transformación de ${totalDays} días`}</p>
+                            <h1 className="fw-bold m-0 text-white display-6">{activeStruggle.title}</h1>
+                            <p className="text-white-50 m-0 lead">{activePlan?.description || `Plan de transformación de ${totalDays} días`}</p>
                         </div>
                     </div>
 
@@ -133,7 +204,7 @@ export default function StrugglePlanContent({
                                     minWidth: '60px',
                                     background: completedDaysArray.includes(d) ? '#d4af37' : (selectedDay === d ? '#3b82f6' : '#334155'),
                                     boxShadow: selectedDay === d ? '0 0 20px rgba(59, 130, 246, 0.4)' : 'none',
-                                    opacity: (d > userStruggle.currentDay || !isStarted) && d !== selectedDay ? 0.4 : 1,
+                                    opacity: (d > currentDay || !isStarted) && d !== selectedDay ? 0.4 : 1,
                                     transform: selectedDay === d ? 'translateY(-5px)' : 'none',
                                     scrollSnapAlign: 'start'
                                 }}
@@ -146,7 +217,7 @@ export default function StrugglePlanContent({
                                     )}
                                     <span className="text-white-50 d-none d-md-block" style={{ fontSize: '0.7rem' }}>DÍA</span>
                                 </div>
-                                {(d > userStruggle.currentDay || !isStarted) && (
+                                {(d > currentDay || !isStarted) && (
                                     <div className="position-absolute bottom-0 end-0 p-1">
                                         <Lock size={12} className="text-white-25" />
                                     </div>

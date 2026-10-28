@@ -1,13 +1,13 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/app/lib/prisma';
-import { getApiUser } from '@/app/lib/api-auth';
+import { getApiUserId } from '@/app/lib/api-auth';
 export const dynamic = 'force-dynamic';
 
 export async function POST(req: Request) {
     try {
-        const user = await getApiUser(req);
+        const userId = await getApiUserId(req);
 
-        if (!user) {
+        if (!userId) {
             return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
         }
 
@@ -21,7 +21,7 @@ export async function POST(req: Request) {
         if (title.length > 50) return NextResponse.json({ message: 'Título demasiado largo (máx 50)' }, { status: 400 });
 
         const count = await prisma.userStruggle.count({
-            where: { userId: user.id, status: 'ACTIVE' }
+            where: { userId, status: 'ACTIVE' }
         });
 
         if (count >= 10) {
@@ -31,7 +31,7 @@ export async function POST(req: Request) {
 
         const struggle = await prisma.userStruggle.create({
             data: {
-                userId: user.id,
+                userId,
                 title,
                 status: 'ACTIVE',
                 startDate: new Date(),

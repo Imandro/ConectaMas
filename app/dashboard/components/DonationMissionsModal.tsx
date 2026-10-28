@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { X, Heart, Globe, CreditCard, ChevronRight, MessageCircle } from "lucide-react";
+import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { useLanguage } from "@/app/LanguageContext";
 
@@ -84,7 +85,7 @@ export default function DonationMissionsModal() {
                         className="position-relative mx-3 w-100"
                         style={{ maxWidth: '320px' }}
                     >
-                        <div className="bg-white rounded-4 overflow-hidden shadow-2xl border border-warning border-opacity-25 pb-2" style={{ maxHeight: '85vh', overflowY: 'auto' }}>
+                        <div className="bg-white rounded-4 overflow-hidden shadow-2xl border border-warning border-opacity-25 pb-2 mobile-scroll-container" style={{ maxHeight: '85vh', overflowY: 'auto' }}>
                             {/* Header Image / Gradient */}
                             <div className="bg-warning text-dark p-3 text-center position-relative overflow-hidden" style={{ background: 'linear-gradient(135deg, #FFC107 0%, #FF9800 100%)' }}>
                                 <div className="position-relative z-10 pt-1">
@@ -116,41 +117,10 @@ export default function DonationMissionsModal() {
                                     </div>
                                 </div>
 
-                                {/* Bank Details Compact */}
-                                <div className="bg-light p-2 rounded-3 border border-light-subtle mb-2 position-relative overflow-hidden">
-                                    <div className="d-flex align-items-center justify-content-between mb-1">
-                                        <span className="extra-small fw-bold text-muted text-uppercase d-flex align-items-center gap-1" style={{ fontSize: '0.65rem' }}><CreditCard size={10} /> {t.donation_modal.bank_details}</span>
-                                        <span className="badge bg-dark text-white rounded-pill px-2 py-0" style={{ fontSize: '0.65rem' }}>Lafise</span>
-                                    </div>
-                                    <div className="d-flex align-items-center justify-content-between">
-                                        <p className="m-0 fw-black tracking-tighter text-dark font-monospace" style={{ fontSize: '0.9rem' }}>{t.donation_modal.bank_account}</p>
-                                        <button className="btn btn-sm btn-link text-primary p-0" style={{ fontSize: '0.75rem' }} onClick={() => { navigator.clipboard.writeText(t.donation_modal.bank_account); alert('Copiado!') }}>Copiar</button>
-                                    </div>
-                                </div>
-
-                                {/* PayPal Details Compact */}
-                                <div className="bg-light p-2 rounded-3 border border-light-subtle mb-3 position-relative overflow-hidden">
-                                    <div className="d-flex align-items-center justify-content-between mb-1">
-                                        <span className="extra-small fw-bold text-muted text-uppercase d-flex align-items-center gap-1" style={{ fontSize: '0.65rem' }}>
-                                            <Heart size={10} /> PayPal
-                                        </span>
-                                    </div>
-                                    <div className="d-flex align-items-center justify-content-between">
-                                        <p className="m-0 fw-black tracking-tighter text-dark font-monospace" style={{ fontSize: '0.9rem' }}>@Imandrox</p>
-                                        <a href="https://www.paypal.me/Imandrox/1" target="_blank" rel="noopener noreferrer" className="btn btn-sm btn-primary rounded-pill px-3 py-0 fw-bold" style={{ fontSize: '0.7rem' }}>Donar</a>
-                                    </div>
-                                </div>
+                                <div className="bg-light p-3 rounded-3 border border-light-subtle mb-3 text-center"><p className="small text-muted mb-2">Apoya mediante un checkout seguro. El método depende de tu país.</p><Link href="/dashboard/support" onClick={handleClose} className="btn btn-primary rounded-pill w-100">Ver métodos de pago</Link></div>
 
                                 <div className="d-grid gap-2">
-                                    <a
-                                        href="https://www.paypal.me/Imandrox/1"
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="btn btn-warning w-100 rounded-pill py-2 fw-black d-flex align-items-center justify-content-center gap-2 hover-scale shadow-sm text-dark"
-                                        style={{ fontSize: '0.9rem' }}
-                                    >
-                                        <Heart size={16} fill="currentColor" className="text-danger" /> {t.donation_modal.button_support}
-                                    </a>
+                                    <Link href="/dashboard/support" onClick={handleClose} className="btn btn-warning w-100 rounded-pill py-2 fw-black d-flex align-items-center justify-content-center gap-2 hover-scale shadow-sm text-dark" style={{ fontSize: '0.9rem' }}><Heart size={16} fill="currentColor" className="text-danger" /> {t.donation_modal.button_support}</Link>
                                     <button
                                         onClick={handleClose}
                                         className="btn btn-light w-100 rounded-pill py-2 fw-bold text-muted small"

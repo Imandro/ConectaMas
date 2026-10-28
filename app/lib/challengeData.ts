@@ -205,7 +205,9 @@ const challengesPT: Challenge[] = [
     { id: 't12', type: 'TRUTH', question: 'A Bíblia é apenas um livro antigo.', options: ['Verdadeiro', 'Falso'], answer: 'Falso' },
 ];
 
-export const getChallenges = (lang: 'es' | 'en' | 'pt'): Challenge[] => {
+import type { Language } from './languages';
+
+export const getChallenges = (lang: Language): Challenge[] => {
     switch (lang) {
         case 'en': return challengesEN;
         case 'pt': return challengesPT;

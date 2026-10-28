@@ -35,7 +35,7 @@ export default function LeagueRankingView({ initialRanking, userLeague, currentU
 
     return (
         <div className="league-ranking-view animate-fade-in">
-            <div className="text-center mb-5">
+            <div className="ui-page-header mb-5 flex-column align-items-center text-center">
                 <div className="d-inline-flex align-items-center justify-content-center bg-white shadow-sm rounded-circle p-4 mb-3" style={{ border: `4px solid ${getLeagueColor(userLeague)}` }}>
                     <Trophy size={48} color={getLeagueColor(userLeague)} />
                 </div>
@@ -43,7 +43,7 @@ export default function LeagueRankingView({ initialRanking, userLeague, currentU
                 <p className="text-muted">{t.leagues.league_ranking}: <span className="fw-bold text-primary">{leagueName}</span></p>
             </div>
 
-            <div className="card border-0 shadow-sm rounded-4 overflow-hidden mb-4">
+            <div className="ui-surface border-0 shadow-sm rounded-4 overflow-hidden mb-4">
                 <div className="card-header bg-white border-bottom-0 py-3 d-flex align-items-center justify-content-between">
                     <h5 className="mb-0 fw-bold">{t.leagues.league_ranking}</h5>
                     <div className="dropdown">

@@ -1,14 +1,15 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/app/lib/prisma';
-import { getApiUser } from '@/app/lib/api-auth';
+import { getApiUserId } from '@/app/lib/api-auth';
 
 export const dynamic = 'force-dynamic';
 
-const prismaClient = prisma as any;
+const prismaClient = prisma;
 
 // GET /api/forums/posts - List posts (with optional categoryId filter)
 export async function GET(request: NextRequest) {
     try {
+        if (!await getApiUserId(request)) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
         const { searchParams } = new URL(request.url);
         const categoryId = searchParams.get('categoryId');
 
@@ -43,7 +44,7 @@ export async function GET(request: NextRequest) {
         });
 
         // Hide user info for anonymous posts
-        const sanitizedPosts = posts.map((post: any) => ({
+        const sanitizedPosts = posts.map((post) => ({
             ...post,
             user: post.isAnonymous ? null : post.user,
         }));
@@ -58,19 +59,18 @@ export async function GET(request: NextRequest) {
 // POST /api/forums/posts - Create new post
 export async function POST(request: NextRequest) {
     try {
-        const user = await getApiUser(request);
-        if (!user) {
+        const userId = await getApiUserId(request);
+        if (!userId) {
             return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
         }
 
-        // User is already fetched by getApiUser
-
         const body = await request.json();
-        const { title, content, categoryId, isAnonymous } = body;
+        const { title, content, categoryId, isAnonymous, communityRulesAccepted } = body;
 
         if (!title || !content || !categoryId) {
             return NextResponse.json({ error: 'Datos incompletos' }, { status: 400 });
         }
+        if (communityRulesAccepted !== true) return NextResponse.json({ error: 'Debes aceptar las reglas de comunidad' }, { status: 400 });
 
         // --- LIMITES DE RECURSOS (FREE TIER OPTIMIZATION) ---
         if (title.length > 100) return NextResponse.json({ error: 'Título demasiado largo (máx 100)' }, { status: 400 });
@@ -82,7 +82,7 @@ export async function POST(request: NextRequest) {
 
         const postsToday = await prismaClient.forumPost.count({
             where: {
-                userId: user.id,
+                userId,
                 createdAt: { gte: today }
             }
         });
@@ -97,7 +97,7 @@ export async function POST(request: NextRequest) {
                 title,
                 content,
                 categoryId,
-                userId: user.id,
+                userId,
                 isAnonymous: isAnonymous || false,
             },
             include: {
@@ -111,7 +111,8 @@ export async function POST(request: NextRequest) {
             }
         });
 
-        return NextResponse.json(post, { status: 201 });
+        const { userId: _userId, ...publicPost } = post;
+        return NextResponse.json({ ...publicPost, user: post.isAnonymous ? null : post.user }, { status: 201 });
     } catch (error) {
         console.error('Error creating post:', error);
         return NextResponse.json({ error: 'Error creating post' }, { status: 500 });

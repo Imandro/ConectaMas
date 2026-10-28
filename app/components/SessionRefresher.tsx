@@ -3,32 +3,56 @@
 import { useSession } from "next-auth/react";
 import { useEffect, useRef } from "react";
 
+const SESSION_REFRESH_TTL = 24 * 60 * 60 * 1000;
+
 export default function SessionRefresher() {
     const { data: session, update } = useSession();
     const hasRefreshed = useRef(false);
+    const refreshedUser = useRef<string | null>(null);
 
     useEffect(() => {
-        if (session?.user && !hasRefreshed.current) {
-            // Logic: The new "light" session shouldn't have leaderPhone or extended fields.
-            // But checking for them in 'session' object might fail if Typescript stripped them 
-            // even if they exist in the runtime object.
-            // Safer bet: Just refresh ONCE per load to ensure clean cookie.
-
-            // To avoid infinite loops, we simple trigger update once on mount.
-            // The browser will send the old cookie, server responds with new light set-cookie.
-            // The 494 error happens when SENDING, so if they loaded this, they succcessfully sent the header.
-            // By triggering `update()`, we force a re-write response.
-
-            const doRefresh = async () => {
-                console.log("[SessionRefresher] Triggering session cleanup/update...");
-                await update({});
-                hasRefreshed.current = true;
-            };
-
-            // Using a small timeout to let app hydrate
-            const timer = setTimeout(doRefresh, 2000);
-            return () => clearTimeout(timer);
+        const user = session?.user as { id?: string; email?: string } | undefined;
+        const userKey = user?.id || user?.email || null;
+        if (!userKey) {
+            refreshedUser.current = null;
+            hasRefreshed.current = false;
+            return;
         }
+
+        if (refreshedUser.current !== userKey) {
+            refreshedUser.current = userKey;
+            hasRefreshed.current = false;
+        }
+
+        const storageKey = `conecta:session-refresh:${userKey}`;
+        let refreshedAt = 0;
+        try {
+            refreshedAt = Number(sessionStorage.getItem(storageKey)) || 0;
+        } catch {
+            // Session storage may be unavailable in private browsing.
+        }
+
+        if (Date.now() - refreshedAt < SESSION_REFRESH_TTL || hasRefreshed.current) return;
+
+        // Refresh at most once per user per day to avoid auth traffic on every app reload.
+        const doRefresh = async () => {
+            if (!navigator.onLine) return;
+            try {
+                await update({});
+                try {
+                    sessionStorage.setItem(storageKey, String(Date.now()));
+                } catch {
+                    // Session storage may be unavailable in private browsing.
+                }
+                hasRefreshed.current = true;
+            } catch {
+                // A refresh failure must not affect the active session.
+            }
+        };
+
+        // Use a small timeout to let app hydrate.
+        const timer = setTimeout(doRefresh, 2000);
+        return () => clearTimeout(timer);
     }, [session, update]);
 
     return null;

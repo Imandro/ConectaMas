@@ -1,0 +1,23 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import { CURRENT_LEGAL_VERSIONS, REQUIRED_CONSENT_DOCUMENTS, isCurrentLegalVersion } from '../app/lib/legal/policy';
+
+assert.equal(REQUIRED_CONSENT_DOCUMENTS.length, 5);
+for (const document of REQUIRED_CONSENT_DOCUMENTS) assert.equal(isCurrentLegalVersion(document, CURRENT_LEGAL_VERSIONS[document]), true);
+const apiAuth = fs.readFileSync('app/lib/api-auth.ts', 'utf8');
+assert.match(apiAuth, /hasCurrentLegalConsent/);
+assert.doesNotMatch(apiAuth, /fallback_secret/);
+assert.match(fs.readFileSync('app/lib/jwt-secret.ts', 'utf8'), /AUTH_SECRET/);
+assert.match(fs.readFileSync('app/api/auth/register/route.ts', 'utf8'), /termsAccepted/);
+assert.doesNotMatch(fs.readFileSync('app/api/auth/register/route.ts', 'utf8'), /details:\s*error\.message/);
+assert.match(fs.readFileSync('app/api/auth/mobile/register/route.ts', 'utf8'), /privacyAccepted/);
+assert.doesNotMatch(fs.readFileSync('app/api/auth/mobile/register/route.ts', 'utf8'), /fallback_secret/);
+assert.doesNotMatch(fs.readFileSync('app/api/auth/mobile/register/route.ts', 'utf8'), /details:\s*error\.message/);
+assert.doesNotMatch(fs.readFileSync('app/api/auth/mobile/login/route.ts', 'utf8'), /fallback_secret/);
+assert.match(fs.readFileSync('app/api/forums/posts/route.ts', 'utf8'), /getApiUserId\(request\)/);
+assert.match(fs.readFileSync('app/api/forums/posts/[id]/route.ts', 'utf8'), /if \(!currentUserId\)/);
+assert.match(fs.readFileSync('app/api/forums/posts/[id]/replies/route.ts', 'utf8'), /reply\.isAnonymous \? null/);
+assert.match(fs.readFileSync('app/api/auth/mobile/onboarding/route.ts', 'utf8'), /getApiUser/);
+assert.doesNotMatch(fs.readFileSync('app/api/auth/mobile/onboarding/route.ts', 'utf8'), /bypass deep verification/);
+assert.match(fs.readFileSync('app/components/AnalyticsConsentGate.tsx', 'utf8'), /getAnalyticsConsent/);
+console.log('legal consent tests passed');

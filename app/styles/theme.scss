@@ -1,15 +1,19 @@
-// Apple-like Bootstrap Overrides (Updated with Logo Brand)
+// Bootstrap tokens for Conecta+ surfaces.
+
+$brand-navy: #0B1B32;
+$brand-gold: #E0B24F;
+$surface-shadow: 0 4px 16px rgba(11, 27, 50, 0.06);
 
 // 1. Color System
 // Based on Logo: Dark Navy Blue + Warm Yellow
-$primary: #0B1B32; // Deep Navy Blue (Brand)
-$secondary: #fbbf24; // Warm Yellow gold
+$primary: $brand-navy;
+$secondary: $brand-gold;
 $success: #10b981;
 $info: #3b82f6;
 $warning: $secondary;
 $danger: #ef4444;
-$light: #f3f4f6;
-$dark: #111827;
+$light: #f7f8fa;
+$dark: $brand-navy;
 
 // Override Bootstrap
 $theme-colors: (
@@ -28,37 +32,63 @@ $font-family-base: var(--font-fredoka), 'Inter', sans-serif; // Updated Font
 $headings-font-family: var(--font-fredoka), sans-serif;
 
 // Components
-$border-radius: 16px;
-$border-radius-lg: 24px;
-$border-radius-sm: 12px;
+$border-radius: 14px;
+$border-radius-lg: 20px;
+$border-radius-sm: 10px;
 
 // Cards
-$card-border-width: 0;
-$card-border-radius: 20px;
-$card-box-shadow: 0 8px 24px rgba(11, 27, 50, 0.08); // Shadow using navy tint
+$card-border-width: 1px;
+$card-border-radius: 16px;
+$card-box-shadow: $surface-shadow;
 
 // Buttons
 $btn-border-radius: 50px;
-$btn-padding-y: 0.8rem;
-$btn-padding-x: 2rem;
+$btn-padding-y: 0.7rem;
+$btn-padding-x: 1.25rem;
 $btn-font-weight: 700;
-$btn-focus-width: 0;
+$btn-focus-width: 0.15rem;
 
 // Inputs
 $input-border-radius: 12px;
 $input-focus-border-color: $secondary; // Focus Gold
-$input-focus-box-shadow: 0 0 0 3px rgba($secondary, 0.25);
+$input-focus-box-shadow: 0 0 0 3px rgba($secondary, 0.2);
 
 // Custom Nav Utilities
-.hover-bg-white-10:hover {
-    background-color: rgba(255, 255, 255, 0.1) !important;
-    color: #fff !important;
+@media (hover: hover) {
+    .hover-bg-white-10:hover {
+        background-color: rgba(255, 255, 255, 0.1) !important;
+        color: #fff !important;
+    }
 }
 
-.hover-scale {
-    transition: transform 0.2s;
+@media (prefers-reduced-motion: no-preference) {
+    .hover-scale {
+        transition: transform 150ms ease-out;
 
-    &:hover {
-        transform: scale(1.02);
+        @media (hover: hover) {
+            &:hover {
+                transform: scale(1.02);
+            }
+        }
+
+        &:not(:disabled):active {
+            transform: scale(0.96);
+        }
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .hover-scale {
+        transition: opacity 150ms ease-out;
+    }
+
+    .hover-scale:not(:disabled):active {
+        transform: none;
+    }
+
+    @media (hover: hover) {
+        .hover-scale:hover {
+            transform: none;
+        }
     }
 }

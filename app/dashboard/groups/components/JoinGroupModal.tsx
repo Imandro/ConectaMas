@@ -19,6 +19,10 @@ export default function JoinGroupModal({ isOpen, onClose }: JoinGroupModalProps)
 
     const handleJoin = async () => {
         if (code.length < 6) return;
+        if (!navigator.onLine) {
+            toast.error("Sin conexión. Unirse a un grupo requiere internet.");
+            return;
+        }
         setLoading(true);
         try {
             // Mock API call for now

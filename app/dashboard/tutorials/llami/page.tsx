@@ -11,8 +11,10 @@ import {
 } from 'lucide-react';
 import Link from 'next/link';
 import LlamiMascot from "@/app/components/LlamiMascot";
+import { useLanguage } from '@/app/LanguageContext';
 
 export default function LlamiTutorial() {
+    const { t } = useLanguage();
     return (
         <div className="container-fluid py-4 min-vh-100 bg-conecta-gradient text-white">
             {/* Header */}
@@ -20,7 +22,7 @@ export default function LlamiTutorial() {
                 <Link href="/dashboard/tutorials" className="btn btn-outline-light rounded-circle p-2">
                     <ChevronLeft size={24} />
                 </Link>
-                <h1 className="h4 mb-0 fw-bold">Llami: Guía de Cuidado</h1>
+                <h1 className="h4 mb-0 fw-bold">{t.tutorials.llami_title}</h1>
             </header>
 
             <div className="row justify-content-center">

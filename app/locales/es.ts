@@ -14,6 +14,9 @@ export const es = {
         sos: "SOS",
         and: "y",
         of: "de",
+        version: "Versión",
+        legal_contact: "Contacto legal",
+        close: "Cerrar",
     },
     nav: {
         home: "Inicio",
@@ -27,6 +30,15 @@ export const es = {
         tutorials: "Tutoriales",
         friends: "Amigos",
         games: "Juegos",
+    },
+    landing: {
+        hero_title: "No estás solo.", hero_subtitle: "Dios sigue contigo.", create_account: "Crear cuenta", existing_account: "Ya tengo cuenta",
+        privacy: "Privacidad", terms: "Términos", cookies: "Cookies", digital_refuge: "Tu Refugio Digital",
+        digital_refuge_desc: "Conecta+ es más que una app; es un espacio seguro para encontrar paz en medio del caos digital.",
+        daily_growth: "Crecimiento Diario", daily_growth_desc: "Devocionales personalizados y seguimiento espiritual para acompañarte en cada paso.",
+        real_community: "Comunidad Real", real_community_desc: "Conecta con otros jóvenes, comparte peticiones de oración y apóyense mutuamente en fe.",
+        mission_title: "Nuestra Misión", mission_p1: "Creemos que la tecnología puede ser una herramienta para la redención. Conecta+ proporciona recursos para el estudio bíblico, la oración y el acompañamiento.",
+        mission_p2: "Cada interacción busca fomentar una relación genuina y profunda con Jesucristo, respetando la privacidad y la integridad de tu proceso espiritual.",
     },
     onboarding: {
         welcome: "Bienvenido a Conecta+",
@@ -54,6 +66,7 @@ export const es = {
         support_subtitle: "Conecta+ es un proyecto gratuito hecho con amor. Queremos llegar a más jóvenes publicando la app en Google Play Store.",
         support_goal: "Meta: Licencia Play Store ($25 USD)",
         support_button: "Quiero Apoyar",
+        support_later: "Apoyar después desde checkout seguro",
         community_anonymous_title: "Apoyo Anónimo y Seguro",
         community_anonymous_desc: "Tus amigos podrán enviarte pequeños mensajes de ánimo ('¡Estoy orando por ti!') sin necesidad de ver tus luchas o detalles privados.",
         support_description: "Cada aporte nos acerca a la meta. Si este proyecto bendice tu vida, considera sembrar una semilla hoy.",
@@ -176,6 +189,12 @@ export const es = {
         guest_suggestion_cta: "Crear cuenta gratis",
         guest_suggestion_later: "Ahora no",
         guest_sign_in: "Iniciar sesión",
+        show_password: "Mostrar contraseña",
+        hide_password: "Ocultar contraseña",
+        offline_login: "Sin conexión. Iniciar sesión requiere internet.",
+        offline_register: "Sin conexión. Crear una cuenta requiere internet.",
+        offline_recover: "Sin conexión. Recuperar la cuenta requiere internet.",
+        offline_password: "Sin conexión. Cambiar la contraseña requiere internet.",
     },
     dashboard: {
         greeting: "Hola",
@@ -250,6 +269,8 @@ export const es = {
         view_all: "Ver todos",
         select_day: "Selecciona un día para continuar:",
         close: "Cerrar",
+        application: "Aplicación práctica",
+        prayer_section: "Oración",
     },
     trivia: {
         title: "Trivia Bíblica",
@@ -279,13 +300,14 @@ export const es = {
     },
     premium: {
         title: "Sustenta Conecta+ Premium",
-        subtitle: "Aporta tu granito de arena por solo $1 al mes",
+        subtitle: "Apoya la misión desde $2 USD",
         body: "Tu apoyo me ayuda a mantener los servidores y llevar la palabra de Dios a más jóvenes. Al ser Premium, tendrás una experiencia 100% libre de anuncios y me ayudarás a alcanzar la meta de la Google Play Store.",
         feature_no_ads: "Sin anuncios de Google en toda la app",
-        button: "¡Ser Premium por $1 USD!",
-        footer: "*Al donar, mándame tu email por PayPal para activar tu insignia.",
+        button: "Elegir Premium",
+        footer: "El pago y el acceso se confirman automáticamente.",
         maybe_later: "Quizás más tarde",
     },
+    billing_page: { title: "Conecta+ Premium", body: "Apoya la misión y desbloquea una experiencia sin anuncios y contenido Premium.", active: "Activo", until: "hasta", monthly: "Mensual · $2.99", monthly_description: "Renovación mensual. Cancela cuando quieras.", monthly_button: "Elegir mensual", yearly: "Anual · $24.99", yearly_description: "Un pago anual. Sin renovación mensual.", yearly_button: "Elegir anual", guardian: "Si eres menor de 18 años, pide autorización a tu padre, madre o tutor antes de pagar.", verification: "El acceso se activa solo después de verificación del servidor.", subscriptions: "Suscripciones", manage: "Gestionar en Play", cancel: "Cancelar", history: "Historial", no_payments: "No hay pagos registrados.", load_error: "No se pudo cargar tu estado de pago.", google_play_cancel: "Google Play se cancela desde Play Store.", cancel_confirm: "¿Cancelar tu suscripción Premium?", back_aria: "Volver" },
     checkin_modal: {
         title: "¿Cómo está tu corazón hoy?",
         subtitle: "Comparte cómo te sientes. Dios está contigo en cada momento.",
@@ -306,6 +328,7 @@ export const es = {
         error_save: "Error al guardar país",
         no_results: "No se encontraron países",
         other_country: "Otro país",
+        romania: "Rumania",
     },
     growth_modal: {
         title: "¡Vamos Creciendo!",
@@ -326,10 +349,10 @@ export const es = {
         missions_title: "Misiones en Curso:",
         mission_brasil: "Pro Brasil",
         mission_nicaragua: "Pro Nicaragua",
-        bank_details: "Detalles Bancarios:",
-        bank_name: "Banco Lafise",
-        bank_account: "Cuenta: 132247471",
-        paypal_title: "Donar vía PayPal:",
+        bank_details: "Métodos de pago:",
+        bank_name: "Pagadito o PayPal",
+        bank_account: "Checkout seguro según tu país",
+        paypal_title: "Checkout de pago:",
         collaborators_title: "Colaboradores Destacados:",
         collaborator_marvin: "Marvin Cruz Alvarado (¡Donó!)",
         others_count: "+24 colaboradores más",
@@ -388,7 +411,8 @@ export const es = {
             LATAM: "Latinoamérica",
             ES: "España",
             US: "Estados Unidos (USA)",
-            BR: "Brasil"
+            BR: "Brasil",
+            RO: "Rumania"
         },
         // New Fields
         edit_profile: "Editar Perfil",
@@ -568,6 +592,8 @@ export const es = {
             new_reply: "Alguien respondió en {category}",
             mark_all_read: "Marcar todas como leídas",
         },
+        community_rules: "Reglas de comunidad", report_content: "Reportar contenido", explore_topics: "Explorar temas", participations: "participaciones",
+        community_growth: "Comunidad en crecimiento", no_public_categories: "Aún no hay categorías públicas configuradas. Sé parte de los primeros en conectar.", back_home: "Volver al Inicio",
         categories: {
             conecta: { name: "Conecta+", desc: "¡Danos tu opinión! Valoraciones, preguntas y sugerencias sobre la app." },
             testimonies: { name: "Testimonios", desc: "Comparte lo que Dios ha hecho en tu vida. ¡Tu historia inspira!" },
@@ -603,6 +629,8 @@ export const es = {
         back: "Volver",
         disclaimer: "AVISO: Conecta+ es una herramienta espiritual. En caso de emergencia grave o riesgo para tu vida, llama a las autoridades (911).",
         no_leader: "No has configurado el número de tu líder en tu perfil.",
+        intro_title: "Pausa y Reconecta", intro_body: "La ansiedad y la tentación pueden robarnos la perspectiva. Este espacio te ayuda a recuperar el aliento espiritual. Antes de actuar, recuerda: Dios sigue en el trono y Su gracia es suficiente hoy.",
+        footer_title: "Acompañamiento Integral", footer_body: "Estas herramientas ofrecen primeros auxilios espirituales. Busca acompañamiento pastoral y profesional si el riesgo es inminente.",
     },
     struggles: {
         title: "Mi Seguimiento 🛡️",
@@ -735,11 +763,11 @@ export const es = {
     notifications_prompt: {
         title: "Recordatorios Espirituales",
         welcome: "¡No te pierdas de nada!",
-        heading: "Mantente Conectado",
-        description: "Recibe alientos diarios, oraciones y recordatorios para tu tiempo con Dios directamente en tu teléfono.",
+        heading: "Mantente conectado",
+        description: "Recibe mensajes de ánimo, oraciones y recordatorios espirituales en tu teléfono.",
         button_enable: "Activar Notificaciones",
         button_enabling: "Activando...",
-        button_later: "Quizás más tarde",
+        button_later: "Quizás más tarde", offline: "Sin conexión. Activar notificaciones requiere internet.", not_configured: "Notificaciones no configuradas", subscribe_error: "Error al suscribirse: {error}", permission_denied: "Permiso denegado. Activa las notificaciones en la configuración del navegador.", generic_error: "Error: {error}", aria_label: "Notificaciones",
     },
     pwa_prompt: {
         title: "Instalar Conecta+",
@@ -753,6 +781,11 @@ export const es = {
         android_step2: "2. Instalar aplicación",
         android_step2_desc: 'Selecciona "Instalar aplicación" o "Agregar a pantalla de inicio".',
         button: "Entendido",
+    },
+    offline: {
+        title: "Sin conexión", description: "No se pudo cargar esta página sin internet. Pero estas funciones están disponibles:", bible: "Leer la Biblia", alert: "Sin conexión: lectura disponible; las acciones de escritura están bloqueadas.",
+        quick_quiz: "Pregunta Relámpago", games: "Juegos Bíblicos", sos: "SOS / Emergencia", home: "Ir al Inicio", reconnecting: "Reconectando...",
+        retry: "Reintentar", problem: "¿Sigues con problemas? Limpiar todo", clear_confirm: "Se cerrará tu sesión y se limpiarán datos corruptos. ¿Continuar?", footer: "Conecta+ — No estás solo. Dios sigue contigo.",
     },
     music_player: {
         now_playing: "REPRODUCIENDO AHORA",
@@ -878,7 +911,16 @@ export const es = {
         latin_america: "Latinoamérica",
         spain: "España",
         usa: "Estados Unidos (USA)",
-        brazil: "Brasil"
+        brazil: "Brasil",
+        romania: "Rumania"
+    },
+    legal_accept: {
+        title: "Actualiza tus documentos legales",
+        intro: "Necesitamos confirmar edad, país y aceptación de las versiones vigentes.",
+        terms: "Términos", privacy: "Privacidad", community: "Comunidad", refunds: "Reembolsos",
+        age: "Edad", country: "País", country_placeholder: "Selecciona", language: "Idioma",
+        saving: "Guardando…", submit: "Aceptar y continuar", offline: "Sin conexión. Aceptar documentos requiere internet.",
+        error: "No se pudo guardar el consentimiento.",
     },
 
     leader_survey: {

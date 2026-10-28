@@ -24,6 +24,10 @@ export default function AskQuestionModal({ isOpen, onClose }: AskQuestionModalPr
             toast.error(t.qa.toast_short);
             return;
         }
+        if (!navigator.onLine) {
+            toast.error('Sin conexión. Publicar una pregunta requiere internet.');
+            return;
+        }
 
         setIsSubmitting(true);
         try {

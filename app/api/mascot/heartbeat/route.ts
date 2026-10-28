@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from "@/app/lib/prisma";
-import { getApiUser } from '@/app/lib/api-auth';
+import { getApiUserId } from '@/app/lib/api-auth';
 
 /**
  * Recibe señales de actividad (latidos) para otorgar puntos de llama.
@@ -8,40 +8,25 @@ import { getApiUser } from '@/app/lib/api-auth';
  */
 export async function POST(req: NextRequest) {
     try {
-        const user = await getApiUser(req);
-        if (!user) {
+        const userId = await getApiUserId(req);
+        if (!userId) {
             return NextResponse.json({ error: "No autorizado" }, { status: 401 });
         }
 
-        const userId = user.id;
         const { type } = await req.json(); // type: "BIBLE_READING"
 
         if (type === "BIBLE_READING") {
-            const prismaAny = prisma as any;
-
-            // --- OPTIMIZACIÓN DE RECURSOS (RATE LIMITING) ---
-            // Solo permitir 1 latido por minuto (50s margen)
-            const mascot = await prismaAny.mascot.findUnique({
-                where: { userId },
-                select: { lastActivity: true, updatedAt: true } // Usaremos updatedAt como proxy si no hay lastHeartbeat
-            });
-
-            if (mascot && mascot.updatedAt) {
-                const now = new Date().getTime();
-                const last = new Date(mascot.updatedAt).getTime();
-                if (now - last < 50000) { // 50 segundos
-                    return NextResponse.json({ success: false, error: "Frecuencia demasiado alta" });
-                }
-            }
-            // ------------------------------------------------
-
-            // Otorgar 1 punto de llama por cada latido (minuto de lectura)
-            await prismaAny.mascot.update({
-                where: { userId },
+            const minimumHeartbeatTime = new Date(Date.now() - 50000);
+            const updated = await prisma.mascot.updateMany({
+                where: { userId, updatedAt: { lt: minimumHeartbeatTime } },
                 data: {
                     flamePoints: { increment: 1 }
                 }
             });
+
+            if (updated.count === 0) {
+                return NextResponse.json({ success: false, error: "Frecuencia demasiado alta" });
+            }
 
             // Actualizar el "seguimiento" de lectura bíblica
             const { updateBibleReadingProgress } = await import("@/app/dashboard/bible/actions");

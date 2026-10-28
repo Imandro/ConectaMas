@@ -31,6 +31,10 @@ export default function GroupDashboardView({ group, currentUserId }: GroupDashbo
     };
 
     const handleCompleteTask = async (taskId: string) => {
+        if (!navigator.onLine) {
+            toast.error('Sin conexión. Completar metas requiere internet.');
+            return;
+        }
         const res = await completeTask(taskId);
         if (res.success) {
             toast.success("Tarea completada");
@@ -40,6 +44,10 @@ export default function GroupDashboardView({ group, currentUserId }: GroupDashbo
 
     const handleSubmitNeed = async () => {
         if (!needContent.trim()) return;
+        if (!navigator.onLine) {
+            toast.error('Sin conexión. Enviar una necesidad requiere internet.');
+            return;
+        }
         const res = await submitNeed(group.id, needContent, isAnonymous);
         if (res.success) {
             toast.success("Necesidad enviada");
@@ -50,6 +58,10 @@ export default function GroupDashboardView({ group, currentUserId }: GroupDashbo
 
     const handleCreateTask = async () => {
         if (!taskTitle.trim()) return;
+        if (!navigator.onLine) {
+            toast.error('Sin conexión. Crear una meta requiere internet.');
+            return;
+        }
         const res = await createTask(group.id, taskTitle, taskType);
         if (res.success) {
             toast.success("Meta asignada");
@@ -61,6 +73,10 @@ export default function GroupDashboardView({ group, currentUserId }: GroupDashbo
 
     const handleRemoveMember = async (userId: string) => {
         if (confirm("¿Estás seguro de que quieres remover a este miembro?")) {
+            if (!navigator.onLine) {
+                toast.error('Sin conexión. Remover miembros requiere internet.');
+                return;
+            }
             const res = await removeMember(group.id, userId);
             if (res.success) {
                 toast.success("Miembro removido");

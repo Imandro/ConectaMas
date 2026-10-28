@@ -3,15 +3,38 @@
 import { auth } from "@/app/lib/auth";
 import { prisma } from "@/app/lib/prisma";
 import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
+import { isLanguage, type Language } from "@/app/lib/languages";
+import { deleteUserAccount } from "@/app/lib/account/data-rights";
+import { hasCurrentLegalConsent } from "@/app/lib/legal/consent";
+
+async function requireCurrentLegalUser() {
+    const session = await auth();
+    if (!session?.user?.id) throw new Error("Unauthorized");
+    if (!await hasCurrentLegalConsent(session.user.id)) throw new Error("LEGAL_CONSENT_REQUIRED");
+    return session.user.id;
+}
+
+export async function updatePreferredLanguage(language: Language) {
+    if (!isLanguage(language)) return { success: false, error: "Invalid language" };
+
+    const userId = await requireCurrentLegalUser();
+
+    await prisma.user.update({
+        where: { id: userId },
+        data: { preferredLanguage: language },
+    });
+
+    revalidatePath("/");
+    revalidatePath("/dashboard/profile");
+    return { success: true };
+}
 
 export async function resetAccount() {
-    const session = await auth();
-    if (!session?.user?.email) throw new Error("Unauthorized");
+    const userId = await requireCurrentLegalUser();
 
     // Reset onboarding flag and maybe clear struggles for demo purposes
     await prisma.user.update({
-        where: { email: session.user.email },
+        where: { id: userId },
         data: {
             hasCompletedOnboarding: false,
             spiritualLevel: "EXPLORING"
@@ -25,23 +48,21 @@ export async function deleteAccount() {
     const session = await auth();
     if (!session?.user?.email) throw new Error("Unauthorized");
 
-    await prisma.user.delete({
-        where: { email: session.user.email }
-    });
+    const user = await prisma.user.findUnique({ where: { email: session.user.email }, select: { id: true } });
+    if (!user) throw new Error("User not found");
+    await deleteUserAccount(user.id);
 
     revalidatePath("/");
     revalidatePath("/dashboard");
-    redirect("/auth/login");
 }
 
 
 
 export async function updateLeaderPhone(phone: string) {
-    const session = await auth();
-    if (!session?.user?.email) throw new Error("Unauthorized");
+    const userId = await requireCurrentLegalUser();
 
     await prisma.user.update({
-        where: { email: session.user.email },
+        where: { id: userId },
         data: { leaderPhone: phone }
     });
 
@@ -52,10 +73,10 @@ export async function updateLeaderPhone(phone: string) {
 
 export async function completeTutorialTour() {
     const session = await auth();
-    if (!session?.user?.email) return;
+    if (!session?.user?.id || !await hasCurrentLegalConsent(session.user.id)) return;
 
     await prisma.user.update({
-        where: { email: session.user.email },
+        where: { id: session.user.id },
         data: { hasSeenTutorialTour: true }
     });
 
@@ -63,8 +84,7 @@ export async function completeTutorialTour() {
 }
 
 export async function updateUsername(newUsername: string) {
-    const session = await auth();
-    if (!session?.user?.id) return { success: false, errorKey: "unauthorized" };
+    const userId = await requireCurrentLegalUser();
 
     if (!newUsername || newUsername.trim().length < 3 || newUsername.trim().length > 20) {
         return { success: false, errorKey: "username_length_error" };
@@ -75,7 +95,6 @@ export async function updateUsername(newUsername: string) {
         return { success: false, errorKey: "username_format_error" };
     }
 
-    const userId = session.user.id;
     const user = await prisma.user.findUnique({
         where: { id: userId },
         select: { lastUsernameChange: true }
@@ -114,15 +133,14 @@ export async function updateUsername(newUsername: string) {
 }
 
 export async function updateName(newName: string) {
-    const session = await auth();
-    if (!session?.user?.id) return { success: false, errorKey: "unauthorized" };
+    const userId = await requireCurrentLegalUser();
 
     if (!newName || newName.trim().length < 2 || newName.trim().length > 50) {
         return { success: false, errorKey: "name_length_error" };
     }
 
     await prisma.user.update({
-        where: { id: session.user.id },
+        where: { id: userId },
         data: { name: newName }
     });
 

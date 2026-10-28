@@ -1,64 +1,59 @@
+/* eslint-disable @typescript-eslint/no-require-imports */
+
+const isLocalStaticImage = ({ url, request }) =>
+    request.method === 'GET' &&
+    url.origin === self.location.origin &&
+    !url.search &&
+    /^\/(?:assets|images)\/.+\.(?:png|jpg|jpeg|svg|gif|webp|ico)$/i.test(url.pathname);
+
+const isLocalBibleContent = ({ url, request }) =>
+    request.method === 'GET' &&
+    url.origin === self.location.origin &&
+    !url.search &&
+    url.pathname === '/bible/es_rvr.json';
+
+const isStaticAsset = ({ url, request }) =>
+    request.method === 'GET' &&
+    url.origin === self.location.origin &&
+    !url.search &&
+    url.pathname.startsWith('/_next/static/') &&
+    /\.(?:js|css)$/i.test(url.pathname);
+
 const withPWA = require('next-pwa')({
     dest: 'public',
     disable: process.env.NODE_ENV === 'development',
     register: true,
     skipWaiting: true,
+    dynamicStartUrl: false,
     fallbacks: {
         document: '/offline',
     },
     runtimeCaching: [
         {
-            urlPattern: /^https:\/\/images\.unsplash\.com\/.*/i,
+            urlPattern: isLocalStaticImage,
             handler: 'CacheFirst',
-            options: {
-                cacheName: 'unsplash-images',
-                expiration: { maxEntries: 50, maxAgeSeconds: 30 * 24 * 60 * 60 },
-            },
-        },
-        {
-            urlPattern: /\.(?:png|jpg|jpeg|svg|gif|webp|ico)$/i,
-            handler: 'CacheFirst',
+            method: 'GET',
             options: {
                 cacheName: 'static-images',
                 expiration: { maxEntries: 100, maxAgeSeconds: 7 * 24 * 60 * 60 },
             },
         },
         {
-            urlPattern: /^https:\/\/fonts\.googleapis\.com\/.*/i,
-            handler: 'StaleWhileRevalidate',
-            options: { cacheName: 'google-fonts', expiration: { maxEntries: 10, maxAgeSeconds: 30 * 24 * 60 * 60 } },
-        },
-        {
-            urlPattern: /\/api\/bible/,
+            urlPattern: isLocalBibleContent,
             handler: 'CacheFirst',
+            method: 'GET',
             options: {
-                cacheName: 'bible-api',
-                expiration: { maxEntries: 200, maxAgeSeconds: 365 * 24 * 60 * 60 },
-            },
-        },
-        {
-            urlPattern: /\/bible\/es_rvr\.json$/i,
-            handler: 'CacheFirst',
-            options: {
-                cacheName: 'bible-static-file',
+                cacheName: 'offline-content-v1',
                 expiration: { maxEntries: 5, maxAgeSeconds: 365 * 24 * 60 * 60 },
             },
         },
         {
-            urlPattern: /\.(?:js|css)$/i,
+            urlPattern: isStaticAsset,
             handler: 'StaleWhileRevalidate',
+            method: 'GET',
             options: {
                 cacheName: 'static-assets',
                 expiration: { maxEntries: 200, maxAgeSeconds: 30 * 24 * 60 * 60 },
-            },
-        },
-        {
-            urlPattern: /\/.*/,
-            handler: 'NetworkFirst',
-            options: {
-                cacheName: 'pages',
-                expiration: { maxEntries: 50, maxAgeSeconds: 30 * 24 * 60 * 60 },
-                networkTimeoutSeconds: 10,
             },
         },
     ],
@@ -71,7 +66,7 @@ const nextConfig = {
         includePaths: ['./app'],
     },
     images: {
-        domains: ['images.unsplash.com', 'lh3.googleusercontent.com', 'ui-avatars.com'],
+        domains: ['lh3.googleusercontent.com', 'ui-avatars.com'],
     },
     eslint: {
         ignoreDuringBuilds: true,
@@ -79,12 +74,27 @@ const nextConfig = {
     async headers() {
         return [
             {
+                source: '/bible/:path*',
+                headers: [{ key: 'Cache-Control', value: 'public, max-age=31536000, immutable' }]
+            },
+            {
+                source: '/assets/:path*',
+                headers: [{ key: 'Cache-Control', value: 'public, max-age=31536000, immutable' }]
+            },
+            {
                 source: '/.well-known/:path*',
                 headers: [
                     {
                         key: 'Cache-Control',
                         value: 'no-cache, no-store, must-revalidate'
                     }
+                ]
+            },
+            {
+                source: '/dashboard/:path*',
+                headers: [
+                    { key: 'Cache-Control', value: 'private, no-store, must-revalidate' },
+                    { key: 'X-Conecta-Offline-Snapshot', value: '1' },
                 ]
             },
             {

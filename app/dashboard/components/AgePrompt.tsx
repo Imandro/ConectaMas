@@ -16,6 +16,10 @@ export default function AgePrompt({ missingAge }: { missingAge: boolean }) {
 
     const handleSubmit = async () => {
         if (!age || Number(age) < 10 || Number(age) > 100) return;
+        if (!navigator.onLine) {
+            toast.error('Sin conexión. Guardar la edad requiere internet.');
+            return;
+        }
 
         setIsSubmitting(true);
         try {

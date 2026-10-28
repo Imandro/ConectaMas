@@ -1,54 +1,122 @@
 "use client";
 
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import React, { createContext, useCallback, useContext, useEffect, useState, ReactNode } from 'react';
+import { useSession } from 'next-auth/react';
 import { es } from './locales/es';
 import { en } from './locales/en';
 import { pt } from './locales/pt';
+import { ro } from './locales/ro';
+import { updatePreferredLanguage } from './dashboard/profile/actions';
+import {
+    isLanguage,
+    isRegion,
+    resolveLanguage,
+    resolveRegion,
+    type Language,
+    type Region,
+} from './lib/languages';
 
-type Language = 'es' | 'en' | 'pt';
-type Region = 'LATAM' | 'US' | 'BR' | 'ES';
+export { type Language, type Region } from './lib/languages';
+export const translations = { es, en, pt, ro };
 
-export const translations = { es, en, pt };
+const LANGUAGE_STORAGE_KEY = 'app-language';
+const REGION_STORAGE_KEY = 'app-region';
+const PENDING_LANGUAGE_KEY = 'app-language-pending-sync';
 
 interface LanguageContextType {
     language: Language;
     region: Region;
     setLanguage: (lang: Language) => void;
     setRegion: (reg: Region) => void;
-    t: typeof es; // Type inference helper, assumes all files have same structure
+    t: typeof es;
 }
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
 
-export function LanguageProvider({ children }: { children: ReactNode }) {
-    const [language, setLanguage] = useState<Language>('es'); // Default
-    const [region, setRegion] = useState<Region>('LATAM'); // Default
+export function LanguageProvider({
+    children,
+    initialLanguage,
+    initialRegion,
+}: {
+    children: ReactNode;
+    initialLanguage?: Language;
+    initialRegion?: Region;
+}) {
+    const { status } = useSession();
+    const [language, setLanguage] = useState<Language>(isLanguage(initialLanguage) ? initialLanguage : 'es');
+    const [region, setRegion] = useState<Region>(isRegion(initialRegion) ? initialRegion : 'LATAM');
+
+    const syncLanguage = useCallback(async (nextLanguage: Language) => {
+        if (status !== 'authenticated') return;
+        if (!navigator.onLine) {
+            localStorage.setItem(PENDING_LANGUAGE_KEY, nextLanguage);
+            return;
+        }
+
+        try {
+            const result = await updatePreferredLanguage(nextLanguage);
+            if (result.success) {
+                localStorage.removeItem(PENDING_LANGUAGE_KEY);
+            } else if (result.error !== 'Unauthorized') {
+                localStorage.setItem(PENDING_LANGUAGE_KEY, nextLanguage);
+            }
+        } catch {
+            localStorage.setItem(PENDING_LANGUAGE_KEY, nextLanguage);
+        }
+    }, [status]);
 
     useEffect(() => {
-        // Load from localStorage if available
-        const storedLang = localStorage.getItem('app-language') as Language;
-        const storedRegion = localStorage.getItem('app-region') as Region;
+        const storedLanguage = localStorage.getItem(LANGUAGE_STORAGE_KEY);
+        const storedRegion = localStorage.getItem(REGION_STORAGE_KEY);
+        const nextLanguage = resolveLanguage(initialLanguage, storedLanguage, navigator.language);
+        const nextRegion = resolveRegion(initialRegion, storedRegion, nextLanguage);
 
-        if (storedLang) setLanguage(storedLang);
-        if (storedRegion) setRegion(storedRegion);
-        // If not stored, we could try navigator.language, but requirement is "Force Selection"
-    }, []);
+        setLanguage(nextLanguage);
+        setRegion(nextRegion);
+        localStorage.setItem(LANGUAGE_STORAGE_KEY, nextLanguage);
+        localStorage.setItem(REGION_STORAGE_KEY, nextRegion);
+    }, [initialLanguage, initialRegion]);
 
-    const handleSetLanguage = (lang: Language) => {
-        setLanguage(lang);
-        localStorage.setItem('app-language', lang);
-        // Here we would also sync to DB if user is logged in
+    useEffect(() => {
+        document.documentElement.lang = language;
+        document.cookie = `${LANGUAGE_STORAGE_KEY}=${language}; Path=/; Max-Age=31536000; SameSite=Lax`;
+    }, [language]);
+
+    useEffect(() => {
+        if (status !== 'authenticated') return;
+        const pendingLanguage = localStorage.getItem(PENDING_LANGUAGE_KEY);
+        if (isLanguage(pendingLanguage)) void syncLanguage(pendingLanguage);
+        else if (!initialLanguage) void syncLanguage(language);
+    }, [initialLanguage, language, status, syncLanguage]);
+
+    useEffect(() => {
+        const handleOnline = () => {
+            const pendingLanguage = localStorage.getItem(PENDING_LANGUAGE_KEY);
+            if (isLanguage(pendingLanguage)) void syncLanguage(pendingLanguage);
+        };
+        window.addEventListener('online', handleOnline);
+        return () => window.removeEventListener('online', handleOnline);
+    }, [syncLanguage]);
+
+    const handleSetLanguage = (nextLanguage: Language) => {
+        if (!isLanguage(nextLanguage)) return;
+        setLanguage(nextLanguage);
+        localStorage.setItem(LANGUAGE_STORAGE_KEY, nextLanguage);
+        if (nextLanguage === 'ro') {
+            setRegion('RO');
+            localStorage.setItem(REGION_STORAGE_KEY, 'RO');
+        }
+        void syncLanguage(nextLanguage);
     };
 
-    const handleSetRegion = (reg: Region) => {
-        setRegion(reg);
-        localStorage.setItem('app-region', reg);
+    const handleSetRegion = (nextRegion: Region) => {
+        if (!isRegion(nextRegion)) return;
+        setRegion(nextRegion);
+        localStorage.setItem(REGION_STORAGE_KEY, nextRegion);
     };
-
-    const t = translations[language];
 
     return (
-        <LanguageContext.Provider value={{ language, region, setLanguage: handleSetLanguage, setRegion: handleSetRegion, t }}>
+        <LanguageContext.Provider value={{ language, region, setLanguage: handleSetLanguage, setRegion: handleSetRegion, t: translations[language] as typeof es }}>
             {children}
         </LanguageContext.Provider>
     );

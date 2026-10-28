@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { X, Heart } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useLanguage } from "@/app/LanguageContext";
+import { languageLocale } from "@/app/lib/languages";
 
 interface CheckinModalProps {
     hasCheckedIn: boolean;
@@ -39,8 +40,6 @@ export default function CheckinModal({ hasCheckedIn, onCheckin, isLoading }: Che
 
     if (!isOpen || hasCheckedIn) return null;
 
-    const localeMap: Record<string, string> = { es: 'es-ES', en: 'en-US', pt: 'pt-BR' };
-
     return (
         <AnimatePresence>
             <div className="position-fixed top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center p-4" style={{ zIndex: 10000, background: 'rgba(0,0,0,0.7)', backdropFilter: 'blur(6px)' }}>
@@ -48,11 +47,11 @@ export default function CheckinModal({ hasCheckedIn, onCheckin, isLoading }: Che
                     initial={{ opacity: 0, scale: 0.9, y: 20 }}
                     animate={{ opacity: 1, scale: 1, y: 0 }}
                     exit={{ opacity: 0, scale: 0.9, y: 20 }}
-                    className="bg-white rounded-5 shadow-lg overflow-hidden"
-                    style={{ maxWidth: '420px', width: '100%' }}
+                    className="ui-surface-glass rounded-5 shadow-lg overflow-hidden"
+                    style={{ maxWidth: '420px', width: 'min(100% - 24px, 420px)' }}
                 >
                     {/* Header */}
-                    <div className="position-relative p-4 text-center" style={{ background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' }}>
+                    <div className="position-relative p-4 text-center" style={{ backgroundColor: 'var(--brand-primary, #0B1B32)' }}>
                         <button
                             onClick={() => setIsOpen(false)}
                             className="btn btn-link position-absolute top-0 end-0 m-2 text-white p-1"
@@ -65,7 +64,7 @@ export default function CheckinModal({ hasCheckedIn, onCheckin, isLoading }: Che
                             <Heart size={40} className="text-danger" fill="#dc3545" />
                         </div>
                         <h3 className="fw-bold text-white mb-1">{t.checkin_modal.title}</h3>
-                        <p className="text-white-50 small mb-0">{new Date().toLocaleDateString(localeMap[language] || 'es-ES', { day: 'numeric', month: 'long' })}</p>
+                        <p className="text-white-50 small mb-0">{new Date().toLocaleDateString(languageLocale(language), { day: 'numeric', month: 'long' })}</p>
                     </div>
 
                     {/* Content */}

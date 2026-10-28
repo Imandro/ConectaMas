@@ -1,5 +1,11 @@
 import webpush from 'web-push';
 import { prisma } from './prisma';
+import {
+    DEFAULT_NOTIFICATION_CONCURRENCY,
+    normalizeNotificationBatchLimit,
+    normalizeNotificationConcurrency,
+    takeNotificationBatch,
+} from './notificationBatch';
 
 import { config } from './config';
 // Configuración de web-push
@@ -45,73 +51,172 @@ export const NOTIFICATION_CATEGORIES = {
     ]
 };
 
+export const NOTIFICATION_CATEGORIES_RO = {
+    PRAYER: [
+        { title: 'Timp de rugăciune 🙏', body: 'Ia-ți 5 minute să vorbești astăzi cu Dumnezeu. El te așteaptă.' },
+        { title: 'Un suspin spre cer ✨', body: 'Folosește acest moment pentru a-I mulțumi lui Dumnezeu pentru ceva.' },
+        { title: 'Putere în rugăciune 💪', body: 'Nu lupta singur. Predă-ți poverile Domnului acum.' },
+    ],
+    BIBLE: [
+        { title: 'Cuvântul de astăzi 📖', body: 'Biblia ta are un mesaj pentru tine astăzi. Deschide-o și ascultă vocea Lui.' },
+        { title: 'Lampă pentru pașii mei 🕯️', body: 'Lumineză-ți drumul citind un verset în Conecta+.' },
+        { title: 'Hrană pentru suflet 🍞', body: 'Spiritul tău are nevoie astăzi de pâinea vieții. Hai la Biblie!' },
+    ],
+    DEVOTIONAL: [
+        { title: 'Devoționalul te așteaptă 🕊️', body: 'Nu rata devoționalul zilei. Începe cu un scop!' },
+        { title: 'Creștere în credință 🌱', body: 'Ia-ți un moment să completezi devoționalul de astăzi.' },
+    ],
+    LLAMI: [
+        { title: 'Llami îi este foame! 🦙', body: 'Animalul tău are nevoie de iubire și hrană. Vino să îl vezi!' },
+        { title: 'Llami îți simte lipsa ❤️', body: 'A trecut ceva timp. Vino să ai grijă de animalul tău spiritual.' },
+        { title: 'Evoluție pregătită! ✨', body: 'Llami a progresat datorită consecvenței tale. Privește-i schimbarea!' },
+    ],
+    CHECKIN: [
+        { title: 'Cum îți merge ziua? 😊', body: 'Spune-ne cum te simți astăzi în jurnalul tău spiritual.' },
+        { title: 'Pauză pentru starea ta 🌿', body: 'Fă un check-in rapid și notează-ți starea.' },
+    ],
+    TUTORIAL: [
+        { title: 'Salut! 👋', body: 'Descoperă cum îți poate transforma Conecta+ ziua. Începe tutorialul!' },
+        { title: 'Ghidul tău te așteaptă 🧭', body: 'Învață să folosești toate funcțiile Conecta+ cu tutorialul nostru.' },
+    ],
+};
+
+export function getNotificationCategories(language: string) {
+    return language === 'ro' ? NOTIFICATION_CATEGORIES_RO : NOTIFICATION_CATEGORIES;
+}
+
 /**
  * Envía notificaciones a todos los usuarios suscritos basado en una categoría aleatoria
  */
-export async function sendStoredNotifications() {
+export type SendStoredNotificationsResult =
+    | {
+        success: true;
+        sent: number;
+        failed: number;
+        processed: number;
+        expired: number;
+        hasMore: boolean;
+        nextCursor: string | null;
+    }
+    | { success: false; error: string };
+
+export async function sendStoredNotifications(options: {
+    cursor?: string;
+    limit?: string | number;
+    concurrency?: string | number;
+} = {}): Promise<SendStoredNotificationsResult> {
     try {
+        const limit = normalizeNotificationBatchLimit(options.limit);
+        const concurrency = normalizeNotificationConcurrency(
+            options.concurrency ?? DEFAULT_NOTIFICATION_CONCURRENCY,
+        );
         const subscriptions = await prisma.pushSubscription.findMany({
-            include: { user: true }
+            where: options.cursor ? { id: { gt: options.cursor } } : undefined,
+            orderBy: { id: 'asc' },
+            take: limit + 1,
+            select: {
+                id: true,
+                endpoint: true,
+                p256dh: true,
+                auth: true,
+                user: { select: { updatedAt: true, preferredLanguage: true } },
+            },
         });
 
-        if (subscriptions.length === 0) return { success: true, sent: 0 };
-
-        const categories = Object.keys(NOTIFICATION_CATEGORIES);
-        let sentCount = 0;
-
-        const results = await Promise.allSettled(subscriptions.map(async (sub) => {
-            let categoryKey = categories[Math.floor(Math.random() * categories.length)];
-
-            // Lógica inteligente: Si el usuario no ha entrado hoy, prioritize Llami o Oración
-            const lastUpdate = sub.user.updatedAt;
-            const hoursSinceAction = (Date.now() - new Date(lastUpdate).getTime()) / (1000 * 60 * 60);
-
-            if (hoursSinceAction > 24) {
-                categoryKey = Math.random() > 0.5 ? 'LLAMI' : 'PRAYER';
-            } else if (hoursSinceAction > 6) {
-                categoryKey = 'CHECKIN';
-            }
-
-            // @ts-expect-error - categoryKey is dynamic index
-            const messages = NOTIFICATION_CATEGORIES[categoryKey] || NOTIFICATION_CATEGORIES.PRAYER;
-            const message = messages[Math.floor(Math.random() * messages.length)];
-
-            const payload = JSON.stringify({
-                title: "Conecta+",
-                body: message.body,
-                url: '/dashboard'
-            });
-
-            const pushSubscription = {
-                endpoint: sub.endpoint,
-                keys: {
-                    p256dh: sub.p256dh,
-                    auth: sub.auth
-                }
+        const batch = takeNotificationBatch(subscriptions, limit);
+        if (batch.items.length === 0) {
+            return {
+                success: true,
+                sent: 0,
+                failed: 0,
+                processed: 0,
+                expired: 0,
+                hasMore: false,
+                nextCursor: null,
             };
+        }
 
-            return webpush.sendNotification(pushSubscription, payload);
-        }));
+        const categories = Object.keys(NOTIFICATION_CATEGORIES) as Array<keyof typeof NOTIFICATION_CATEGORIES>;
+        let sentCount = 0;
+        let failedCount = 0;
+        const expiredSubs: string[] = [];
 
-        sentCount = results.filter(r => r.status === 'fulfilled').length;
-        // Success logging removed
+        for (let index = 0; index < batch.items.length; index += concurrency) {
+            const currentBatch = batch.items.slice(index, index + concurrency);
+            const results = await Promise.allSettled(currentBatch.map(async (sub) => {
+                let categoryKey: keyof typeof NOTIFICATION_CATEGORIES = categories[
+                    Math.floor(Math.random() * categories.length)
+                ];
 
-        // Limpiar suscripciones inválidas (410 Gone / 404 Not Found)
-        const expiredSubs = results
-            .map((r, i) => ({ result: r, index: i }))
-            .filter(x => x.result.status === 'rejected' && (x.result.reason.statusCode === 410 || x.result.reason.statusCode === 404))
-            .map(x => subscriptions[x.index].endpoint);
+                // Lógica inteligente: Si el usuario no ha entrado hoy, prioritize Llami o Oración
+                const lastUpdate = sub.user.updatedAt;
+                const hoursSinceAction = (Date.now() - new Date(lastUpdate).getTime()) / (1000 * 60 * 60);
+
+                if (hoursSinceAction > 24) {
+                    categoryKey = Math.random() > 0.5 ? 'LLAMI' : 'PRAYER';
+                } else if (hoursSinceAction > 6) {
+                    categoryKey = 'CHECKIN';
+                }
+
+                const messages = getNotificationCategories(sub.user.preferredLanguage)[categoryKey]
+                    || getNotificationCategories(sub.user.preferredLanguage).PRAYER;
+                const message = messages[Math.floor(Math.random() * messages.length)];
+
+                const payload = JSON.stringify({
+                    title: "Conecta+",
+                    body: message.body,
+                    url: '/dashboard'
+                });
+
+                const pushSubscription = {
+                    endpoint: sub.endpoint,
+                    keys: {
+                        p256dh: sub.p256dh,
+                        auth: sub.auth
+                    }
+                };
+
+                return webpush.sendNotification(pushSubscription, payload);
+            }));
+
+            sentCount += results.filter(result => result.status === 'fulfilled').length;
+            failedCount += results.filter(result => result.status === 'rejected').length;
+
+            // Limpiar suscripciones inválidas (410 Gone / 404 Not Found)
+            results.forEach((result, resultIndex) => {
+                if (result.status !== 'rejected' || !isExpiredPushError(result.reason)) return;
+                expiredSubs.push(currentBatch[resultIndex].endpoint);
+            });
+        }
 
         if (expiredSubs.length > 0) {
             await prisma.pushSubscription.deleteMany({
                 where: { endpoint: { in: expiredSubs } }
             });
-            // Cleanup logging removed
         }
 
-        return { success: true, sent: sentCount };
+        return {
+            success: true,
+            sent: sentCount,
+            failed: failedCount,
+            processed: batch.items.length,
+            expired: expiredSubs.length,
+            hasMore: batch.hasMore,
+            nextCursor: batch.nextCursor,
+        };
     } catch (error) {
         console.error("Error in sendStoredNotifications:", error);
-        return { success: false, error };
+        return {
+            success: false,
+            error: error instanceof Error ? error.message : 'Unknown notification worker error',
+        };
     }
+}
+
+function isExpiredPushError(error: unknown): error is { statusCode: number } {
+    return typeof error === 'object'
+        && error !== null
+        && 'statusCode' in error
+        && ((error as { statusCode?: unknown }).statusCode === 404
+            || (error as { statusCode?: unknown }).statusCode === 410);
 }

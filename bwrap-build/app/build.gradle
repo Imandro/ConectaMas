@@ -57,8 +57,8 @@ android {
         applicationId "com.conecta_plus.app"
         minSdkVersion 23
         targetSdkVersion 35
-versionCode 6
-versionName "1.5"
+        versionCode 11
+        versionName "1.9"
 
         // The name for the application
         resValue "string", "appName", twaManifest.name
@@ -202,5 +202,6 @@ dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     
         implementation 'com.google.androidbrowserhelper:androidbrowserhelper:2.7.1'
+        implementation 'com.google.androidbrowserhelper:billing:1.1.0'
     
 }

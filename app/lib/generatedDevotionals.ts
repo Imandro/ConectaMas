@@ -4,7 +4,7 @@ export const generatedDevotionals = [
         "title": "Ansiedad: Día 1",
         "category": "Ansiedad",
         "time": "3 min",
-        "image": "https://images.unsplash.com/photo-1474418397713-7ede21d49118?auto=format&fit=crop&q=80",
+        "image": "",
         "bibleVerse": "Todo lo puedo en Cristo que me fortalece.",
         "bibleReference": "Filipenses 4:13",
         "content": [
@@ -28,7 +28,7 @@ export const generatedDevotionals = [
         "title": "Fe: Día 1",
         "category": "Fe",
         "time": "4 min",
-        "image": "https://images.unsplash.com/photo-1493612276216-ee3925520721?auto=format&fit=crop&q=80",
+        "image": "",
         "bibleVerse": "Jehová es mi pastor; nada me faltará.",
         "bibleReference": "Salmos 23:1",
         "content": [
@@ -52,7 +52,7 @@ export const generatedDevotionals = [
         "title": "Amor: Día 1",
         "category": "Amor",
         "time": "5 min",
-        "image": "https://images.unsplash.com/photo-1518199266791-5375a83190b7?auto=format&fit=crop&q=80",
+        "image": "",
         "bibleVerse": "Porque de tal manera amó Dios al mundo...",
         "bibleReference": "Juan 3:16",
         "content": [
@@ -76,7 +76,7 @@ export const generatedDevotionals = [
         "title": "Esperanza: Día 1",
         "category": "Esperanza",
         "time": "3 min",
-        "image": "https://images.unsplash.com/photo-1509021436665-8f07dbf5bf1d?auto=format&fit=crop&q=80",
+        "image": "",
         "bibleVerse": "Porque yo sé los pensamientos que tengo acerca de vosotros...",
         "bibleReference": "Jeremías 29:11",
         "content": [
@@ -100,7 +100,7 @@ export const generatedDevotionals = [
         "title": "Propósito: Día 1",
         "category": "Propósito",
         "time": "4 min",
-        "image": "https://images.unsplash.com/photo-1489659639091-8b687bc4386e?auto=format&fit=crop&q=80",
+        "image": "",
         "bibleVerse": "No temas, porque yo estoy contigo...",
         "bibleReference": "Isaías 41:10",
         "content": [
@@ -124,7 +124,7 @@ export const generatedDevotionals = [
         "title": "Perdón: Día 1",
         "category": "Perdón",
         "time": "5 min",
-        "image": "https://images.unsplash.com/photo-1454496522488-7a8e488e8665?auto=format&fit=crop&q=80",
+        "image": "",
         "bibleVerse": "Fíate de Jehová de todo tu corazón...",
         "bibleReference": "Proverbios 3:5",
         "content": [
@@ -148,7 +148,7 @@ export const generatedDevotionals = [
         "title": "Paz: Día 1",
         "category": "Paz",
         "time": "3 min",
-        "image": "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&q=80",
+        "image": "",
         "bibleVerse": "Venid a mí todos los que estáis trabajados y cargados...",
         "bibleReference": "Mateo 11:28",
         "content": [
@@ -172,7 +172,7 @@ export const generatedDevotionals = [
         "title": "Fortaleza: Día 1",
         "category": "Fortaleza",
         "time": "4 min",
-        "image": "https://images.unsplash.com/photo-1517960413843-0aee8e2b3285?auto=format&fit=crop&q=80",
+        "image": "",
         "bibleVerse": "Y sabemos que a los que aman a Dios, todas las cosas les ayudan a bien...",
         "bibleReference": "Romanos 8:28",
         "content": [
@@ -196,7 +196,7 @@ export const generatedDevotionals = [
         "title": "Oración: Día 1",
         "category": "Oración",
         "time": "5 min",
-        "image": "https://images.unsplash.com/photo-1438232992991-995b7058bbb3?auto=format&fit=crop&q=80",
+        "image": "",
         "bibleVerse": "Mira que te mando que te esfuerces y seas valiente...",
         "bibleReference": "Josué 1:9",
         "content": [
@@ -220,7 +220,7 @@ export const generatedDevotionals = [
         "title": "Gratitud: Día 1",
         "category": "Gratitud",
         "time": "3 min",
-        "image": "https://images.unsplash.com/photo-1507643179173-617d6c13613e?auto=format&fit=crop&q=80",
+        "image": "",
         "bibleVerse": "Dios es nuestro amparo y fortaleza...",
         "bibleReference": "Salmos 46:1",
         "content": [
@@ -244,7 +244,7 @@ export const generatedDevotionals = [
         "title": "Ansiedad: Día 2",
         "category": "Ansiedad",
         "time": "4 min",
-        "image": "https://images.unsplash.com/photo-1474418397713-7ede21d49118?auto=format&fit=crop&q=80",
+        "image": "",
         "bibleVerse": "Todo lo puedo en Cristo que me fortalece.",
         "bibleReference": "Filipenses 4:13",
         "content": [
@@ -268,7 +268,7 @@ export const generatedDevotionals = [
         "title": "Fe: Día 2",
         "category": "Fe",
         "time": "5 min",
-        "image": "https://images.unsplash.com/photo-1493612276216-ee3925520721?auto=format&fit=crop&q=80",
+        "image": "",
         "bibleVerse": "Jehová es mi pastor; nada me faltará.",
         "bibleReference": "Salmos 23:1",
         "content": [
@@ -292,7 +292,7 @@ export const generatedDevotionals = [
         "title": "Amor: Día 2",
         "category": "Amor",
         "time": "3 min",
-        "image": "https://images.unsplash.com/photo-1518199266791-5375a83190b7?auto=format&fit=crop&q=80",
+        "image": "",
         "bibleVerse": "Porque de tal manera amó Dios al mundo...",
         "bibleReference": "Juan 3:16",
         "content": [
@@ -316,7 +316,7 @@ export const generatedDevotionals = [
         "title": "Esperanza: Día 2",
         "category": "Esperanza",
         "time": "4 min",
-        "image": "https://images.unsplash.com/photo-1509021436665-8f07dbf5bf1d?auto=format&fit=crop&q=80",
+        "image": "",
         "bibleVerse": "Porque yo sé los pensamientos que tengo acerca de vosotros...",
         "bibleReference": "Jeremías 29:11",
         "content": [
@@ -340,7 +340,7 @@ export const generatedDevotionals = [
         "title": "Propósito: Día 2",
         "category": "Propósito",
         "time": "5 min",
-        "image": "https://images.unsplash.com/photo-1489659639091-8b687bc4386e?auto=format&fit=crop&q=80",
+        "image": "",
         "bibleVerse": "No temas, porque yo estoy contigo...",
         "bibleReference": "Isaías 41:10",
         "content": [
@@ -364,7 +364,7 @@ export const generatedDevotionals = [
         "title": "Perdón: Día 2",
         "category": "Perdón",
         "time": "3 min",
-        "image": "https://images.unsplash.com/photo-1454496522488-7a8e488e8665?auto=format&fit=crop&q=80",
+        "image": "",
         "bibleVerse": "Fíate de Jehová de todo tu corazón...",
         "bibleReference": "Proverbios 3:5",
         "content": [
@@ -388,7 +388,7 @@ export const generatedDevotionals = [
         "title": "Paz: Día 2",
         "category": "Paz",
         "time": "4 min",
-        "image": "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&q=80",
+        "image": "",
         "bibleVerse": "Venid a mí todos los que estáis trabajados y cargados...",
         "bibleReference": "Mateo 11:28",
         "content": [
@@ -412,7 +412,7 @@ export const generatedDevotionals = [
         "title": "Fortaleza: Día 2",
         "category": "Fortaleza",
         "time": "5 min",
-        "image": "https://images.unsplash.com/photo-1517960413843-0aee8e2b3285?auto=format&fit=crop&q=80",
+        "image": "",
         "bibleVerse": "Y sabemos que a los que aman a Dios, todas las cosas les ayudan a bien...",
         "bibleReference": "Romanos 8:28",
         "content": [
@@ -436,7 +436,7 @@ export const generatedDevotionals = [
         "title": "Oración: Día 2",
         "category": "Oración",
         "time": "3 min",
-        "image": "https://images.unsplash.com/photo-1438232992991-995b7058bbb3?auto=format&fit=crop&q=80",
+        "image": "",
         "bibleVerse": "Mira que te mando que te esfuerces y seas valiente...",
         "bibleReference": "Josué 1:9",
         "content": [
@@ -460,7 +460,7 @@ export const generatedDevotionals = [
         "title": "Gratitud: Día 2",
         "category": "Gratitud",
         "time": "4 min",
-        "image": "https://images.unsplash.com/photo-1507643179173-617d6c13613e?auto=format&fit=crop&q=80",
+        "image": "",
         "bibleVerse": "Dios es nuestro amparo y fortaleza...",
         "bibleReference": "Salmos 46:1",
         "content": [
@@ -484,7 +484,7 @@ export const generatedDevotionals = [
         "title": "Ansiedad: Día 3",
         "category": "Ansiedad",
         "time": "5 min",
-        "image": "https://images.unsplash.com/photo-1474418397713-7ede21d49118?auto=format&fit=crop&q=80",
+        "image": "",
         "bibleVerse": "Todo lo puedo en Cristo que me fortalece.",
         "bibleReference": "Filipenses 4:13",
         "content": [
@@ -508,7 +508,7 @@ export const generatedDevotionals = [
         "title": "Fe: Día 3",
         "category": "Fe",
         "time": "3 min",
-        "image": "https://images.unsplash.com/photo-1493612276216-ee3925520721?auto=format&fit=crop&q=80",
+        "image": "",
         "bibleVerse": "Jehová es mi pastor; nada me faltará.",
         "bibleReference": "Salmos 23:1",
         "content": [
@@ -532,7 +532,7 @@ export const generatedDevotionals = [
         "title": "Amor: Día 3",
         "category": "Amor",
         "time": "4 min",
-        "image": "https://images.unsplash.com/photo-1518199266791-5375a83190b7?auto=format&fit=crop&q=80",
+        "image": "",
         "bibleVerse": "Porque de tal manera amó Dios al mundo...",
         "bibleReference": "Juan 3:16",
         "content": [
@@ -556,7 +556,7 @@ export const generatedDevotionals = [
         "title": "Esperanza: Día 3",
         "category": "Esperanza",
         "time": "5 min",
-        "image": "https://images.unsplash.com/photo-1509021436665-8f07dbf5bf1d?auto=format&fit=crop&q=80",
+        "image": "",
         "bibleVerse": "Porque yo sé los pensamientos que tengo acerca de vosotros...",
         "bibleReference": "Jeremías 29:11",
         "content": [
@@ -580,7 +580,7 @@ export const generatedDevotionals = [
         "title": "Propósito: Día 3",
         "category": "Propósito",
         "time": "3 min",
-        "image": "https://images.unsplash.com/photo-1489659639091-8b687bc4386e?auto=format&fit=crop&q=80",
+        "image": "",
         "bibleVerse": "No temas, porque yo estoy contigo...",
         "bibleReference": "Isaías 41:10",
         "content": [
@@ -604,7 +604,7 @@ export const generatedDevotionals = [
         "title": "Perdón: Día 3",
         "category": "Perdón",
         "time": "4 min",
-        "image": "https://images.unsplash.com/photo-1454496522488-7a8e488e8665?auto=format&fit=crop&q=80",
+        "image": "",
         "bibleVerse": "Fíate de Jehová de todo tu corazón...",
         "bibleReference": "Proverbios 3:5",
         "content": [
@@ -628,7 +628,7 @@ export const generatedDevotionals = [
         "title": "Paz: Día 3",
         "category": "Paz",
         "time": "5 min",
-        "image": "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&q=80",
+        "image": "",
         "bibleVerse": "Venid a mí todos los que estáis trabajados y cargados...",
         "bibleReference": "Mateo 11:28",
         "content": [
@@ -652,7 +652,7 @@ export const generatedDevotionals = [
         "title": "Fortaleza: Día 3",
         "category": "Fortaleza",
         "time": "3 min",
-        "image": "https://images.unsplash.com/photo-1517960413843-0aee8e2b3285?auto=format&fit=crop&q=80",
+        "image": "",
         "bibleVerse": "Y sabemos que a los que aman a Dios, todas las cosas les ayudan a bien...",
         "bibleReference": "Romanos 8:28",
         "content": [
@@ -676,7 +676,7 @@ export const generatedDevotionals = [
         "title": "Oración: Día 3",
         "category": "Oración",
         "time": "4 min",
-        "image": "https://images.unsplash.com/photo-1438232992991-995b7058bbb3?auto=format&fit=crop&q=80",
+        "image": "",
         "bibleVerse": "Mira que te mando que te esfuerces y seas valiente...",
         "bibleReference": "Josué 1:9",
         "content": [
@@ -700,7 +700,7 @@ export const generatedDevotionals = [
         "title": "Gratitud: Día 3",
         "category": "Gratitud",
         "time": "5 min",
-        "image": "https://images.unsplash.com/photo-1507643179173-617d6c13613e?auto=format&fit=crop&q=80",
+        "image": "",
         "bibleVerse": "Dios es nuestro amparo y fortaleza...",
         "bibleReference": "Salmos 46:1",
         "content": [
@@ -724,7 +724,7 @@ export const generatedDevotionals = [
         "title": "Ansiedad: Día 4",
         "category": "Ansiedad",
         "time": "3 min",
-        "image": "https://images.unsplash.com/photo-1474418397713-7ede21d49118?auto=format&fit=crop&q=80",
+        "image": "",
         "bibleVerse": "Todo lo puedo en Cristo que me fortalece.",
         "bibleReference": "Filipenses 4:13",
         "content": [
@@ -748,7 +748,7 @@ export const generatedDevotionals = [
         "title": "Fe: Día 4",
         "category": "Fe",
         "time": "4 min",
-        "image": "https://images.unsplash.com/photo-1493612276216-ee3925520721?auto=format&fit=crop&q=80",
+        "image": "",
         "bibleVerse": "Jehová es mi pastor; nada me faltará.",
         "bibleReference": "Salmos 23:1",
         "content": [
@@ -772,7 +772,7 @@ export const generatedDevotionals = [
         "title": "Amor: Día 4",
         "category": "Amor",
         "time": "5 min",
-        "image": "https://images.unsplash.com/photo-1518199266791-5375a83190b7?auto=format&fit=crop&q=80",
+        "image": "",
         "bibleVerse": "Porque de tal manera amó Dios al mundo...",
         "bibleReference": "Juan 3:16",
         "content": [
@@ -796,7 +796,7 @@ export const generatedDevotionals = [
         "title": "Esperanza: Día 4",
         "category": "Esperanza",
         "time": "3 min",
-        "image": "https://images.unsplash.com/photo-1509021436665-8f07dbf5bf1d?auto=format&fit=crop&q=80",
+        "image": "",
         "bibleVerse": "Porque yo sé los pensamientos que tengo acerca de vosotros...",
         "bibleReference": "Jeremías 29:11",
         "content": [
@@ -820,7 +820,7 @@ export const generatedDevotionals = [
         "title": "Propósito: Día 4",
         "category": "Propósito",
         "time": "4 min",
-        "image": "https://images.unsplash.com/photo-1489659639091-8b687bc4386e?auto=format&fit=crop&q=80",
+        "image": "",
         "bibleVerse": "No temas, porque yo estoy contigo...",
         "bibleReference": "Isaías 41:10",
         "content": [
@@ -844,7 +844,7 @@ export const generatedDevotionals = [
         "title": "Perdón: Día 4",
         "category": "Perdón",
         "time": "5 min",
-        "image": "https://images.unsplash.com/photo-1454496522488-7a8e488e8665?auto=format&fit=crop&q=80",
+        "image": "",
         "bibleVerse": "Fíate de Jehová de todo tu corazón...",
         "bibleReference": "Proverbios 3:5",
         "content": [
@@ -868,7 +868,7 @@ export const generatedDevotionals = [
         "title": "Paz: Día 4",
         "category": "Paz",
         "time": "3 min",
-        "image": "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&q=80",
+        "image": "",
         "bibleVerse": "Venid a mí todos los que estáis trabajados y cargados...",
         "bibleReference": "Mateo 11:28",
         "content": [
@@ -892,7 +892,7 @@ export const generatedDevotionals = [
         "title": "Fortaleza: Día 4",
         "category": "Fortaleza",
         "time": "4 min",
-        "image": "https://images.unsplash.com/photo-1517960413843-0aee8e2b3285?auto=format&fit=crop&q=80",
+        "image": "",
         "bibleVerse": "Y sabemos que a los que aman a Dios, todas las cosas les ayudan a bien...",
         "bibleReference": "Romanos 8:28",
         "content": [
@@ -916,7 +916,7 @@ export const generatedDevotionals = [
         "title": "Oración: Día 4",
         "category": "Oración",
         "time": "5 min",
-        "image": "https://images.unsplash.com/photo-1438232992991-995b7058bbb3?auto=format&fit=crop&q=80",
+        "image": "",
         "bibleVerse": "Mira que te mando que te esfuerces y seas valiente...",
         "bibleReference": "Josué 1:9",
         "content": [
@@ -940,7 +940,7 @@ export const generatedDevotionals = [
         "title": "Gratitud: Día 4",
         "category": "Gratitud",
         "time": "3 min",
-        "image": "https://images.unsplash.com/photo-1507643179173-617d6c13613e?auto=format&fit=crop&q=80",
+        "image": "",
         "bibleVerse": "Dios es nuestro amparo y fortaleza...",
         "bibleReference": "Salmos 46:1",
         "content": [
@@ -964,7 +964,7 @@ export const generatedDevotionals = [
         "title": "Ansiedad: Día 5",
         "category": "Ansiedad",
         "time": "4 min",
-        "image": "https://images.unsplash.com/photo-1474418397713-7ede21d49118?auto=format&fit=crop&q=80",
+        "image": "",
         "bibleVerse": "Todo lo puedo en Cristo que me fortalece.",
         "bibleReference": "Filipenses 4:13",
         "content": [
@@ -988,7 +988,7 @@ export const generatedDevotionals = [
         "title": "Fe: Día 5",
         "category": "Fe",
         "time": "5 min",
-        "image": "https://images.unsplash.com/photo-1493612276216-ee3925520721?auto=format&fit=crop&q=80",
+        "image": "",
         "bibleVerse": "Jehová es mi pastor; nada me faltará.",
         "bibleReference": "Salmos 23:1",
         "content": [
@@ -1012,7 +1012,7 @@ export const generatedDevotionals = [
         "title": "Amor: Día 5",
         "category": "Amor",
         "time": "3 min",
-        "image": "https://images.unsplash.com/photo-1518199266791-5375a83190b7?auto=format&fit=crop&q=80",
+        "image": "",
         "bibleVerse": "Porque de tal manera amó Dios al mundo...",
         "bibleReference": "Juan 3:16",
         "content": [
@@ -1036,7 +1036,7 @@ export const generatedDevotionals = [
         "title": "Esperanza: Día 5",
         "category": "Esperanza",
         "time": "4 min",
-        "image": "https://images.unsplash.com/photo-1509021436665-8f07dbf5bf1d?auto=format&fit=crop&q=80",
+        "image": "",
         "bibleVerse": "Porque yo sé los pensamientos que tengo acerca de vosotros...",
         "bibleReference": "Jeremías 29:11",
         "content": [
@@ -1060,7 +1060,7 @@ export const generatedDevotionals = [
         "title": "Propósito: Día 5",
         "category": "Propósito",
         "time": "5 min",
-        "image": "https://images.unsplash.com/photo-1489659639091-8b687bc4386e?auto=format&fit=crop&q=80",
+        "image": "",
         "bibleVerse": "No temas, porque yo estoy contigo...",
         "bibleReference": "Isaías 41:10",
         "content": [
@@ -1084,7 +1084,7 @@ export const generatedDevotionals = [
         "title": "Perdón: Día 5",
         "category": "Perdón",
         "time": "3 min",
-        "image": "https://images.unsplash.com/photo-1454496522488-7a8e488e8665?auto=format&fit=crop&q=80",
+        "image": "",
         "bibleVerse": "Fíate de Jehová de todo tu corazón...",
         "bibleReference": "Proverbios 3:5",
         "content": [
@@ -1108,7 +1108,7 @@ export const generatedDevotionals = [
         "title": "Paz: Día 5",
         "category": "Paz",
         "time": "4 min",
-        "image": "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&q=80",
+        "image": "",
         "bibleVerse": "Venid a mí todos los que estáis trabajados y cargados...",
         "bibleReference": "Mateo 11:28",
         "content": [
@@ -1132,7 +1132,7 @@ export const generatedDevotionals = [
         "title": "Fortaleza: Día 5",
         "category": "Fortaleza",
         "time": "5 min",
-        "image": "https://images.unsplash.com/photo-1517960413843-0aee8e2b3285?auto=format&fit=crop&q=80",
+        "image": "",
         "bibleVerse": "Y sabemos que a los que aman a Dios, todas las cosas les ayudan a bien...",
         "bibleReference": "Romanos 8:28",
         "content": [
@@ -1156,7 +1156,7 @@ export const generatedDevotionals = [
         "title": "Oración: Día 5",
         "category": "Oración",
         "time": "3 min",
-        "image": "https://images.unsplash.com/photo-1438232992991-995b7058bbb3?auto=format&fit=crop&q=80",
+        "image": "",
         "bibleVerse": "Mira que te mando que te esfuerces y seas valiente...",
         "bibleReference": "Josué 1:9",
         "content": [
@@ -1180,7 +1180,7 @@ export const generatedDevotionals = [
         "title": "Gratitud: Día 5",
         "category": "Gratitud",
         "time": "4 min",
-        "image": "https://images.unsplash.com/photo-1507643179173-617d6c13613e?auto=format&fit=crop&q=80",
+        "image": "",
         "bibleVerse": "Dios es nuestro amparo y fortaleza...",
         "bibleReference": "Salmos 46:1",
         "content": [
@@ -1204,7 +1204,7 @@ export const generatedDevotionals = [
         "title": "Ansiedad: Día 6",
         "category": "Ansiedad",
         "time": "5 min",
-        "image": "https://images.unsplash.com/photo-1474418397713-7ede21d49118?auto=format&fit=crop&q=80",
+        "image": "",
         "bibleVerse": "Todo lo puedo en Cristo que me fortalece.",
         "bibleReference": "Filipenses 4:13",
         "content": [
@@ -1228,7 +1228,7 @@ export const generatedDevotionals = [
         "title": "Fe: Día 6",
         "category": "Fe",
         "time": "3 min",
-        "image": "https://images.unsplash.com/photo-1493612276216-ee3925520721?auto=format&fit=crop&q=80",
+        "image": "",
         "bibleVerse": "Jehová es mi pastor; nada me faltará.",
         "bibleReference": "Salmos 23:1",
         "content": [
@@ -1252,7 +1252,7 @@ export const generatedDevotionals = [
         "title": "Amor: Día 6",
         "category": "Amor",
         "time": "4 min",
-        "image": "https://images.unsplash.com/photo-1518199266791-5375a83190b7?auto=format&fit=crop&q=80",
+        "image": "",
         "bibleVerse": "Porque de tal manera amó Dios al mundo...",
         "bibleReference": "Juan 3:16",
         "content": [
@@ -1276,7 +1276,7 @@ export const generatedDevotionals = [
         "title": "Esperanza: Día 6",
         "category": "Esperanza",
         "time": "5 min",
-        "image": "https://images.unsplash.com/photo-1509021436665-8f07dbf5bf1d?auto=format&fit=crop&q=80",
+        "image": "",
         "bibleVerse": "Porque yo sé los pensamientos que tengo acerca de vosotros...",
         "bibleReference": "Jeremías 29:11",
         "content": [
@@ -1300,7 +1300,7 @@ export const generatedDevotionals = [
         "title": "Propósito: Día 6",
         "category": "Propósito",
         "time": "3 min",
-        "image": "https://images.unsplash.com/photo-1489659639091-8b687bc4386e?auto=format&fit=crop&q=80",
+        "image": "",
         "bibleVerse": "No temas, porque yo estoy contigo...",
         "bibleReference": "Isaías 41:10",
         "content": [
@@ -1324,7 +1324,7 @@ export const generatedDevotionals = [
         "title": "Perdón: Día 6",
         "category": "Perdón",
         "time": "4 min",
-        "image": "https://images.unsplash.com/photo-1454496522488-7a8e488e8665?auto=format&fit=crop&q=80",
+        "image": "",
         "bibleVerse": "Fíate de Jehová de todo tu corazón...",
         "bibleReference": "Proverbios 3:5",
         "content": [
@@ -1348,7 +1348,7 @@ export const generatedDevotionals = [
         "title": "Paz: Día 6",
         "category": "Paz",
         "time": "5 min",
-        "image": "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&q=80",
+        "image": "",
         "bibleVerse": "Venid a mí todos los que estáis trabajados y cargados...",
         "bibleReference": "Mateo 11:28",
         "content": [
@@ -1372,7 +1372,7 @@ export const generatedDevotionals = [
         "title": "Fortaleza: Día 6",
         "category": "Fortaleza",
         "time": "3 min",
-        "image": "https://images.unsplash.com/photo-1517960413843-0aee8e2b3285?auto=format&fit=crop&q=80",
+        "image": "",
         "bibleVerse": "Y sabemos que a los que aman a Dios, todas las cosas les ayudan a bien...",
         "bibleReference": "Romanos 8:28",
         "content": [
@@ -1396,7 +1396,7 @@ export const generatedDevotionals = [
         "title": "Oración: Día 6",
         "category": "Oración",
         "time": "4 min",
-        "image": "https://images.unsplash.com/photo-1438232992991-995b7058bbb3?auto=format&fit=crop&q=80",
+        "image": "",
         "bibleVerse": "Mira que te mando que te esfuerces y seas valiente...",
         "bibleReference": "Josué 1:9",
         "content": [
@@ -1420,7 +1420,7 @@ export const generatedDevotionals = [
         "title": "Gratitud: Día 6",
         "category": "Gratitud",
         "time": "5 min",
-        "image": "https://images.unsplash.com/photo-1507643179173-617d6c13613e?auto=format&fit=crop&q=80",
+        "image": "",
         "bibleVerse": "Dios es nuestro amparo y fortaleza...",
         "bibleReference": "Salmos 46:1",
         "content": [
@@ -1444,7 +1444,7 @@ export const generatedDevotionals = [
         "title": "Ansiedad: Día 7",
         "category": "Ansiedad",
         "time": "3 min",
-        "image": "https://images.unsplash.com/photo-1474418397713-7ede21d49118?auto=format&fit=crop&q=80",
+        "image": "",
         "bibleVerse": "Todo lo puedo en Cristo que me fortalece.",
         "bibleReference": "Filipenses 4:13",
         "content": [
@@ -1468,7 +1468,7 @@ export const generatedDevotionals = [
         "title": "Fe: Día 7",
         "category": "Fe",
         "time": "4 min",
-        "image": "https://images.unsplash.com/photo-1493612276216-ee3925520721?auto=format&fit=crop&q=80",
+        "image": "",
         "bibleVerse": "Jehová es mi pastor; nada me faltará.",
         "bibleReference": "Salmos 23:1",
         "content": [
@@ -1492,7 +1492,7 @@ export const generatedDevotionals = [
         "title": "Amor: Día 7",
         "category": "Amor",
         "time": "5 min",
-        "image": "https://images.unsplash.com/photo-1518199266791-5375a83190b7?auto=format&fit=crop&q=80",
+        "image": "",
         "bibleVerse": "Porque de tal manera amó Dios al mundo...",
         "bibleReference": "Juan 3:16",
         "content": [
@@ -1516,7 +1516,7 @@ export const generatedDevotionals = [
         "title": "Esperanza: Día 7",
         "category": "Esperanza",
         "time": "3 min",
-        "image": "https://images.unsplash.com/photo-1509021436665-8f07dbf5bf1d?auto=format&fit=crop&q=80",
+        "image": "",
         "bibleVerse": "Porque yo sé los pensamientos que tengo acerca de vosotros...",
         "bibleReference": "Jeremías 29:11",
         "content": [
@@ -1540,7 +1540,7 @@ export const generatedDevotionals = [
         "title": "Propósito: Día 7",
         "category": "Propósito",
         "time": "4 min",
-        "image": "https://images.unsplash.com/photo-1489659639091-8b687bc4386e?auto=format&fit=crop&q=80",
+        "image": "",
         "bibleVerse": "No temas, porque yo estoy contigo...",
         "bibleReference": "Isaías 41:10",
         "content": [
@@ -1564,7 +1564,7 @@ export const generatedDevotionals = [
         "title": "Perdón: Día 7",
         "category": "Perdón",
         "time": "5 min",
-        "image": "https://images.unsplash.com/photo-1454496522488-7a8e488e8665?auto=format&fit=crop&q=80",
+        "image": "",
         "bibleVerse": "Fíate de Jehová de todo tu corazón...",
         "bibleReference": "Proverbios 3:5",
         "content": [
@@ -1588,7 +1588,7 @@ export const generatedDevotionals = [
         "title": "Paz: Día 7",
         "category": "Paz",
         "time": "3 min",
-        "image": "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&q=80",
+        "image": "",
         "bibleVerse": "Venid a mí todos los que estáis trabajados y cargados...",
         "bibleReference": "Mateo 11:28",
         "content": [
@@ -1612,7 +1612,7 @@ export const generatedDevotionals = [
         "title": "Fortaleza: Día 7",
         "category": "Fortaleza",
         "time": "4 min",
-        "image": "https://images.unsplash.com/photo-1517960413843-0aee8e2b3285?auto=format&fit=crop&q=80",
+        "image": "",
         "bibleVerse": "Y sabemos que a los que aman a Dios, todas las cosas les ayudan a bien...",
         "bibleReference": "Romanos 8:28",
         "content": [
@@ -1636,7 +1636,7 @@ export const generatedDevotionals = [
         "title": "Oración: Día 7",
         "category": "Oración",
         "time": "5 min",
-        "image": "https://images.unsplash.com/photo-1438232992991-995b7058bbb3?auto=format&fit=crop&q=80",
+        "image": "",
         "bibleVerse": "Mira que te mando que te esfuerces y seas valiente...",
         "bibleReference": "Josué 1:9",
         "content": [
@@ -1660,7 +1660,7 @@ export const generatedDevotionals = [
         "title": "Gratitud: Día 7",
         "category": "Gratitud",
         "time": "3 min",
-        "image": "https://images.unsplash.com/photo-1507643179173-617d6c13613e?auto=format&fit=crop&q=80",
+        "image": "",
         "bibleVerse": "Dios es nuestro amparo y fortaleza...",
         "bibleReference": "Salmos 46:1",
         "content": [
@@ -1684,7 +1684,7 @@ export const generatedDevotionals = [
         "title": "Ansiedad: Día 8",
         "category": "Ansiedad",
         "time": "4 min",
-        "image": "https://images.unsplash.com/photo-1474418397713-7ede21d49118?auto=format&fit=crop&q=80",
+        "image": "",
         "bibleVerse": "Todo lo puedo en Cristo que me fortalece.",
         "bibleReference": "Filipenses 4:13",
         "content": [
@@ -1708,7 +1708,7 @@ export const generatedDevotionals = [
         "title": "Fe: Día 8",
         "category": "Fe",
         "time": "5 min",
-        "image": "https://images.unsplash.com/photo-1493612276216-ee3925520721?auto=format&fit=crop&q=80",
+        "image": "",
         "bibleVerse": "Jehová es mi pastor; nada me faltará.",
         "bibleReference": "Salmos 23:1",
         "content": [
@@ -1732,7 +1732,7 @@ export const generatedDevotionals = [
         "title": "Amor: Día 8",
         "category": "Amor",
         "time": "3 min",
-        "image": "https://images.unsplash.com/photo-1518199266791-5375a83190b7?auto=format&fit=crop&q=80",
+        "image": "",
         "bibleVerse": "Porque de tal manera amó Dios al mundo...",
         "bibleReference": "Juan 3:16",
         "content": [
@@ -1756,7 +1756,7 @@ export const generatedDevotionals = [
         "title": "Esperanza: Día 8",
         "category": "Esperanza",
         "time": "4 min",
-        "image": "https://images.unsplash.com/photo-1509021436665-8f07dbf5bf1d?auto=format&fit=crop&q=80",
+        "image": "",
         "bibleVerse": "Porque yo sé los pensamientos que tengo acerca de vosotros...",
         "bibleReference": "Jeremías 29:11",
         "content": [
@@ -1780,7 +1780,7 @@ export const generatedDevotionals = [
         "title": "Propósito: Día 8",
         "category": "Propósito",
         "time": "5 min",
-        "image": "https://images.unsplash.com/photo-1489659639091-8b687bc4386e?auto=format&fit=crop&q=80",
+        "image": "",
         "bibleVerse": "No temas, porque yo estoy contigo...",
         "bibleReference": "Isaías 41:10",
         "content": [
@@ -1804,7 +1804,7 @@ export const generatedDevotionals = [
         "title": "Perdón: Día 8",
         "category": "Perdón",
         "time": "3 min",
-        "image": "https://images.unsplash.com/photo-1454496522488-7a8e488e8665?auto=format&fit=crop&q=80",
+        "image": "",
         "bibleVerse": "Fíate de Jehová de todo tu corazón...",
         "bibleReference": "Proverbios 3:5",
         "content": [
@@ -1828,7 +1828,7 @@ export const generatedDevotionals = [
         "title": "Paz: Día 8",
         "category": "Paz",
         "time": "4 min",
-        "image": "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&q=80",
+        "image": "",
         "bibleVerse": "Venid a mí todos los que estáis trabajados y cargados...",
         "bibleReference": "Mateo 11:28",
         "content": [
@@ -1852,7 +1852,7 @@ export const generatedDevotionals = [
         "title": "Fortaleza: Día 8",
         "category": "Fortaleza",
         "time": "5 min",
-        "image": "https://images.unsplash.com/photo-1517960413843-0aee8e2b3285?auto=format&fit=crop&q=80",
+        "image": "",
         "bibleVerse": "Y sabemos que a los que aman a Dios, todas las cosas les ayudan a bien...",
         "bibleReference": "Romanos 8:28",
         "content": [
@@ -1876,7 +1876,7 @@ export const generatedDevotionals = [
         "title": "Oración: Día 8",
         "category": "Oración",
         "time": "3 min",
-        "image": "https://images.unsplash.com/photo-1438232992991-995b7058bbb3?auto=format&fit=crop&q=80",
+        "image": "",
         "bibleVerse": "Mira que te mando que te esfuerces y seas valiente...",
         "bibleReference": "Josué 1:9",
         "content": [
@@ -1900,7 +1900,7 @@ export const generatedDevotionals = [
         "title": "Gratitud: Día 8",
         "category": "Gratitud",
         "time": "4 min",
-        "image": "https://images.unsplash.com/photo-1507643179173-617d6c13613e?auto=format&fit=crop&q=80",
+        "image": "",
         "bibleVerse": "Dios es nuestro amparo y fortaleza...",
         "bibleReference": "Salmos 46:1",
         "content": [
@@ -1924,7 +1924,7 @@ export const generatedDevotionals = [
         "title": "Ansiedad: Día 9",
         "category": "Ansiedad",
         "time": "5 min",
-        "image": "https://images.unsplash.com/photo-1474418397713-7ede21d49118?auto=format&fit=crop&q=80",
+        "image": "",
         "bibleVerse": "Todo lo puedo en Cristo que me fortalece.",
         "bibleReference": "Filipenses 4:13",
         "content": [
@@ -1948,7 +1948,7 @@ export const generatedDevotionals = [
         "title": "Fe: Día 9",
         "category": "Fe",
         "time": "3 min",
-        "image": "https://images.unsplash.com/photo-1493612276216-ee3925520721?auto=format&fit=crop&q=80",
+        "image": "",
         "bibleVerse": "Jehová es mi pastor; nada me faltará.",
         "bibleReference": "Salmos 23:1",
         "content": [
@@ -1972,7 +1972,7 @@ export const generatedDevotionals = [
         "title": "Amor: Día 9",
         "category": "Amor",
         "time": "4 min",
-        "image": "https://images.unsplash.com/photo-1518199266791-5375a83190b7?auto=format&fit=crop&q=80",
+        "image": "",
         "bibleVerse": "Porque de tal manera amó Dios al mundo...",
         "bibleReference": "Juan 3:16",
         "content": [
@@ -1996,7 +1996,7 @@ export const generatedDevotionals = [
         "title": "Esperanza: Día 9",
         "category": "Esperanza",
         "time": "5 min",
-        "image": "https://images.unsplash.com/photo-1509021436665-8f07dbf5bf1d?auto=format&fit=crop&q=80",
+        "image": "",
         "bibleVerse": "Porque yo sé los pensamientos que tengo acerca de vosotros...",
         "bibleReference": "Jeremías 29:11",
         "content": [
@@ -2020,7 +2020,7 @@ export const generatedDevotionals = [
         "title": "Propósito: Día 9",
         "category": "Propósito",
         "time": "3 min",
-        "image": "https://images.unsplash.com/photo-1489659639091-8b687bc4386e?auto=format&fit=crop&q=80",
+        "image": "",
         "bibleVerse": "No temas, porque yo estoy contigo...",
         "bibleReference": "Isaías 41:10",
         "content": [
@@ -2044,7 +2044,7 @@ export const generatedDevotionals = [
         "title": "Perdón: Día 9",
         "category": "Perdón",
         "time": "4 min",
-        "image": "https://images.unsplash.com/photo-1454496522488-7a8e488e8665?auto=format&fit=crop&q=80",
+        "image": "",
         "bibleVerse": "Fíate de Jehová de todo tu corazón...",
         "bibleReference": "Proverbios 3:5",
         "content": [
@@ -2068,7 +2068,7 @@ export const generatedDevotionals = [
         "title": "Paz: Día 9",
         "category": "Paz",
         "time": "5 min",
-        "image": "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&q=80",
+        "image": "",
         "bibleVerse": "Venid a mí todos los que estáis trabajados y cargados...",
         "bibleReference": "Mateo 11:28",
         "content": [
@@ -2092,7 +2092,7 @@ export const generatedDevotionals = [
         "title": "Fortaleza: Día 9",
         "category": "Fortaleza",
         "time": "3 min",
-        "image": "https://images.unsplash.com/photo-1517960413843-0aee8e2b3285?auto=format&fit=crop&q=80",
+        "image": "",
         "bibleVerse": "Y sabemos que a los que aman a Dios, todas las cosas les ayudan a bien...",
         "bibleReference": "Romanos 8:28",
         "content": [
@@ -2116,7 +2116,7 @@ export const generatedDevotionals = [
         "title": "Oración: Día 9",
         "category": "Oración",
         "time": "4 min",
-        "image": "https://images.unsplash.com/photo-1438232992991-995b7058bbb3?auto=format&fit=crop&q=80",
+        "image": "",
         "bibleVerse": "Mira que te mando que te esfuerces y seas valiente...",
         "bibleReference": "Josué 1:9",
         "content": [
@@ -2140,7 +2140,7 @@ export const generatedDevotionals = [
         "title": "Gratitud: Día 9",
         "category": "Gratitud",
         "time": "5 min",
-        "image": "https://images.unsplash.com/photo-1507643179173-617d6c13613e?auto=format&fit=crop&q=80",
+        "image": "",
         "bibleVerse": "Dios es nuestro amparo y fortaleza...",
         "bibleReference": "Salmos 46:1",
         "content": [
@@ -2164,7 +2164,7 @@ export const generatedDevotionals = [
         "title": "Ansiedad: Día 10",
         "category": "Ansiedad",
         "time": "3 min",
-        "image": "https://images.unsplash.com/photo-1474418397713-7ede21d49118?auto=format&fit=crop&q=80",
+        "image": "",
         "bibleVerse": "Todo lo puedo en Cristo que me fortalece.",
         "bibleReference": "Filipenses 4:13",
         "content": [
@@ -2188,7 +2188,7 @@ export const generatedDevotionals = [
         "title": "Fe: Día 10",
         "category": "Fe",
         "time": "4 min",
-        "image": "https://images.unsplash.com/photo-1493612276216-ee3925520721?auto=format&fit=crop&q=80",
+        "image": "",
         "bibleVerse": "Jehová es mi pastor; nada me faltará.",
         "bibleReference": "Salmos 23:1",
         "content": [
@@ -2212,7 +2212,7 @@ export const generatedDevotionals = [
         "title": "Amor: Día 10",
         "category": "Amor",
         "time": "5 min",
-        "image": "https://images.unsplash.com/photo-1518199266791-5375a83190b7?auto=format&fit=crop&q=80",
+        "image": "",
         "bibleVerse": "Porque de tal manera amó Dios al mundo...",
         "bibleReference": "Juan 3:16",
         "content": [
@@ -2236,7 +2236,7 @@ export const generatedDevotionals = [
         "title": "Esperanza: Día 10",
         "category": "Esperanza",
         "time": "3 min",
-        "image": "https://images.unsplash.com/photo-1509021436665-8f07dbf5bf1d?auto=format&fit=crop&q=80",
+        "image": "",
         "bibleVerse": "Porque yo sé los pensamientos que tengo acerca de vosotros...",
         "bibleReference": "Jeremías 29:11",
         "content": [
@@ -2260,7 +2260,7 @@ export const generatedDevotionals = [
         "title": "Propósito: Día 10",
         "category": "Propósito",
         "time": "4 min",
-        "image": "https://images.unsplash.com/photo-1489659639091-8b687bc4386e?auto=format&fit=crop&q=80",
+        "image": "",
         "bibleVerse": "No temas, porque yo estoy contigo...",
         "bibleReference": "Isaías 41:10",
         "content": [
@@ -2284,7 +2284,7 @@ export const generatedDevotionals = [
         "title": "Perdón: Día 10",
         "category": "Perdón",
         "time": "5 min",
-        "image": "https://images.unsplash.com/photo-1454496522488-7a8e488e8665?auto=format&fit=crop&q=80",
+        "image": "",
         "bibleVerse": "Fíate de Jehová de todo tu corazón...",
         "bibleReference": "Proverbios 3:5",
         "content": [
@@ -2308,7 +2308,7 @@ export const generatedDevotionals = [
         "title": "Paz: Día 10",
         "category": "Paz",
         "time": "3 min",
-        "image": "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&q=80",
+        "image": "",
         "bibleVerse": "Venid a mí todos los que estáis trabajados y cargados...",
         "bibleReference": "Mateo 11:28",
         "content": [
@@ -2332,7 +2332,7 @@ export const generatedDevotionals = [
         "title": "Fortaleza: Día 10",
         "category": "Fortaleza",
         "time": "4 min",
-        "image": "https://images.unsplash.com/photo-1517960413843-0aee8e2b3285?auto=format&fit=crop&q=80",
+        "image": "",
         "bibleVerse": "Y sabemos que a los que aman a Dios, todas las cosas les ayudan a bien...",
         "bibleReference": "Romanos 8:28",
         "content": [
@@ -2356,7 +2356,7 @@ export const generatedDevotionals = [
         "title": "Oración: Día 10",
         "category": "Oración",
         "time": "5 min",
-        "image": "https://images.unsplash.com/photo-1438232992991-995b7058bbb3?auto=format&fit=crop&q=80",
+        "image": "",
         "bibleVerse": "Mira que te mando que te esfuerces y seas valiente...",
         "bibleReference": "Josué 1:9",
         "content": [
@@ -2380,7 +2380,7 @@ export const generatedDevotionals = [
         "title": "Gratitud: Día 10",
         "category": "Gratitud",
         "time": "3 min",
-        "image": "https://images.unsplash.com/photo-1507643179173-617d6c13613e?auto=format&fit=crop&q=80",
+        "image": "",
         "bibleVerse": "Dios es nuestro amparo y fortaleza...",
         "bibleReference": "Salmos 46:1",
         "content": [
@@ -2404,7 +2404,7 @@ export const generatedDevotionals = [
         "title": "Ansiedad: Día 11",
         "category": "Ansiedad",
         "time": "4 min",
-        "image": "https://images.unsplash.com/photo-1474418397713-7ede21d49118?auto=format&fit=crop&q=80",
+        "image": "",
         "bibleVerse": "Todo lo puedo en Cristo que me fortalece.",
         "bibleReference": "Filipenses 4:13",
         "content": [
@@ -2428,7 +2428,7 @@ export const generatedDevotionals = [
         "title": "Fe: Día 11",
         "category": "Fe",
         "time": "5 min",
-        "image": "https://images.unsplash.com/photo-1493612276216-ee3925520721?auto=format&fit=crop&q=80",
+        "image": "",
         "bibleVerse": "Jehová es mi pastor; nada me faltará.",
         "bibleReference": "Salmos 23:1",
         "content": [
@@ -2452,7 +2452,7 @@ export const generatedDevotionals = [
         "title": "Amor: Día 11",
         "category": "Amor",
         "time": "3 min",
-        "image": "https://images.unsplash.com/photo-1518199266791-5375a83190b7?auto=format&fit=crop&q=80",
+        "image": "",
         "bibleVerse": "Porque de tal manera amó Dios al mundo...",
         "bibleReference": "Juan 3:16",
         "content": [
@@ -2476,7 +2476,7 @@ export const generatedDevotionals = [
         "title": "Esperanza: Día 11",
         "category": "Esperanza",
         "time": "4 min",
-        "image": "https://images.unsplash.com/photo-1509021436665-8f07dbf5bf1d?auto=format&fit=crop&q=80",
+        "image": "",
         "bibleVerse": "Porque yo sé los pensamientos que tengo acerca de vosotros...",
         "bibleReference": "Jeremías 29:11",
         "content": [
@@ -2500,7 +2500,7 @@ export const generatedDevotionals = [
         "title": "Propósito: Día 11",
         "category": "Propósito",
         "time": "5 min",
-        "image": "https://images.unsplash.com/photo-1489659639091-8b687bc4386e?auto=format&fit=crop&q=80",
+        "image": "",
         "bibleVerse": "No temas, porque yo estoy contigo...",
         "bibleReference": "Isaías 41:10",
         "content": [
@@ -2524,7 +2524,7 @@ export const generatedDevotionals = [
         "title": "Perdón: Día 11",
         "category": "Perdón",
         "time": "3 min",
-        "image": "https://images.unsplash.com/photo-1454496522488-7a8e488e8665?auto=format&fit=crop&q=80",
+        "image": "",
         "bibleVerse": "Fíate de Jehová de todo tu corazón...",
         "bibleReference": "Proverbios 3:5",
         "content": [
@@ -2548,7 +2548,7 @@ export const generatedDevotionals = [
         "title": "Paz: Día 11",
         "category": "Paz",
         "time": "4 min",
-        "image": "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&q=80",
+        "image": "",
         "bibleVerse": "Venid a mí todos los que estáis trabajados y cargados...",
         "bibleReference": "Mateo 11:28",
         "content": [
@@ -2572,7 +2572,7 @@ export const generatedDevotionals = [
         "title": "Fortaleza: Día 11",
         "category": "Fortaleza",
         "time": "5 min",
-        "image": "https://images.unsplash.com/photo-1517960413843-0aee8e2b3285?auto=format&fit=crop&q=80",
+        "image": "",
         "bibleVerse": "Y sabemos que a los que aman a Dios, todas las cosas les ayudan a bien...",
         "bibleReference": "Romanos 8:28",
         "content": [
@@ -2596,7 +2596,7 @@ export const generatedDevotionals = [
         "title": "Oración: Día 11",
         "category": "Oración",
         "time": "3 min",
-        "image": "https://images.unsplash.com/photo-1438232992991-995b7058bbb3?auto=format&fit=crop&q=80",
+        "image": "",
         "bibleVerse": "Mira que te mando que te esfuerces y seas valiente...",
         "bibleReference": "Josué 1:9",
         "content": [
@@ -2620,7 +2620,7 @@ export const generatedDevotionals = [
         "title": "Gratitud: Día 11",
         "category": "Gratitud",
         "time": "4 min",
-        "image": "https://images.unsplash.com/photo-1507643179173-617d6c13613e?auto=format&fit=crop&q=80",
+        "image": "",
         "bibleVerse": "Dios es nuestro amparo y fortaleza...",
         "bibleReference": "Salmos 46:1",
         "content": [

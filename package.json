@@ -4,14 +4,34 @@
     "private": true,
     "scripts": {
         "dev": "next dev",
-        "build": "prisma generate && prisma db push --accept-data-loss && next build",
+        "build": "prisma generate && next build",
         "start": "next start",
         "lint": "next lint",
         "postinstall": "prisma generate",
-        "db:seed": "ts-node prisma/seed.ts"
+        "db:seed": "ts-node prisma/seed.ts",
+        "db:migrate:deploy": "prisma migrate deploy",
+        "notifications:worker": "ts-node --transpile-only scripts/run-notifications-worker.ts",
+        "test:offline": "node scripts/test-offline-policy.js && node scripts/test-offline-routes.js",
+        "test:sync-queue": "node scripts/test-sync-queue.js",
+        "test:sync-integration": "node scripts/test-sync-integration.js",
+        "test:notification-batch": "node scripts/test-notification-batch.js",
+        "test:idempotency": "node scripts/run-idempotency-test.cjs",
+        "test:scalability": "node scripts/test-scalability-guards.js",
+        "test:billing": "ts-node --project tsconfig.scripts.json --transpile-only scripts/test-billing-domain.ts",
+        "test:billing:schema": "ts-node --project tsconfig.scripts.json --transpile-only scripts/test-billing-schema.ts",
+        "test:billing:providers": "ts-node --project tsconfig.scripts.json --transpile-only scripts/test-billing-providers.ts",
+        "test:billing:webhooks": "ts-node --project tsconfig.scripts.json --transpile-only scripts/test-billing-webhooks.ts",
+        "test:billing:google": "ts-node --project tsconfig.scripts.json --transpile-only scripts/test-billing-google-play.ts",
+        "test:billing:security": "ts-node --project tsconfig.scripts.json --transpile-only scripts/test-billing-security.ts",
+        "test:android-release": "ts-node --project tsconfig.scripts.json --transpile-only scripts/test-android-release-config.ts"
+        ,"test:legal": "ts-node --project tsconfig.scripts.json --transpile-only scripts/test-legal-policy.ts"
+        ,"test:data-rights": "ts-node --project tsconfig.scripts.json --transpile-only scripts/test-data-rights.ts"
+        ,"test:legal:consent": "ts-node --project tsconfig.scripts.json --transpile-only scripts/test-legal-consent.ts"
     },
     "dependencies": {
         "@auth/prisma-adapter": "^2.7.4",
+        "@capacitor/core": "^8.5.3",
+        "@capgo/native-purchases": "^8.9.6",
         "@prisma/client": "^5.22.0",
         "@types/jsonwebtoken": "^9.0.10",
         "@vercel/analytics": "^1.6.1",

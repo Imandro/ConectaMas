@@ -1,16 +1,14 @@
 "use client";
 
 import Link from 'next/link';
-import Image from 'next/image';
 import { useState, useEffect } from 'react';
 import { signIn } from 'next-auth/react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 import { Eye, EyeOff, Loader2 } from 'lucide-react';
 
 import { useLanguage } from "@/app/LanguageContext";
 
 export default function LoginPage() {
-    const router = useRouter();
     const { t } = useLanguage();
     const searchParams = useSearchParams();
 
@@ -46,9 +44,6 @@ export default function LoginPage() {
             }
         }
 
-        if (cleaned) {
-            console.log("Cleaned cookies to prevent 494 error.");
-        }
     }, [searchParams, t]);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -58,6 +53,10 @@ export default function LoginPage() {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        if (!navigator.onLine) {
+            setError(t.auth.offline_login);
+            return;
+        }
         setLoading(true);
         setError('');
 
@@ -96,7 +95,7 @@ export default function LoginPage() {
                 </div>
             )}
 
-            <div className="card shadow-sm border-0 p-4 animate-fade-in-up">
+            <div className="ui-surface p-4 animate-fade-in-up">
                 <div className="text-center mb-4">
                     <Link href="/" className="d-inline-block mb-3">
                         <div className="position-relative" style={{ width: '120px', height: '50px', margin: '0 auto' }}>
@@ -153,6 +152,7 @@ export default function LoginPage() {
                                 type="button"
                                 className="btn btn-link position-absolute top-50 end-0 translate-middle-y text-muted text-decoration-none"
                                 onClick={() => setShowPassword(!showPassword)}
+                                aria-label={showPassword ? t.auth.hide_password : t.auth.show_password}
                                 style={{ zIndex: 10 }}
                             >
                                 {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}

@@ -1,14 +1,14 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/app/lib/prisma';
-import { getApiUser } from '@/app/lib/api-auth';
+import { getApiUserId } from '@/app/lib/api-auth';
 
 export const dynamic = 'force-dynamic';
 
 export async function GET(req: Request) {
     try {
-        const user = await getApiUser(req);
+        const userId = await getApiUserId(req);
 
-        if (!user) {
+        if (!userId) {
             return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
         }
 
@@ -19,7 +19,7 @@ export async function GET(req: Request) {
 
         const checkins = await prisma.dailyCheckin.findMany({
             where: {
-                userId: user.id,
+                userId,
                 createdAt: {
                     gte: startOfMonth,
                     lte: endOfMonth

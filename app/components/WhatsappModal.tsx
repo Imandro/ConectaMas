@@ -1,11 +1,8 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { MessageCircle, X } from "lucide-react";
-import { confirmWhatsappJoin } from "@/app/dashboard/actions/whatsapp";
+import { MessageCircle } from "lucide-react";
 import { useLanguage } from "@/app/LanguageContext";
-
-const SHOW_INTERVAL_DAYS = 2;
 
 interface WhatsappModalProps {
     hasJoined: boolean;
@@ -31,11 +28,6 @@ export default function WhatsappModal({ hasJoined }: WhatsappModalProps) {
         window.open("https://chat.whatsapp.com/BymmU4EoImgFxLVbUfCzBX", "_blank");
     };
 
-    const handleConfirmJoined = async () => {
-        await confirmWhatsappJoin();
-        setIsOpen(false);
-    };
-
     const handleDismissLater = () => {
         sessionStorage.setItem("whatsapp_modal_dismissed", "true");
         setIsOpen(false);
@@ -43,7 +35,7 @@ export default function WhatsappModal({ hasJoined }: WhatsappModalProps) {
 
     return (
         <div className="position-fixed top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center p-4" style={{ zIndex: 9999, background: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(4px)' }}>
-            <div className="bg-white rounded-5 shadow-lg overflow-hidden animate-in fade-in zoom-in duration-300" style={{ maxWidth: '400px', width: '100%' }}>
+            <div className="ui-surface-glass rounded-5 shadow-lg overflow-hidden animate-in fade-in zoom-in duration-300" style={{ maxWidth: '400px', width: 'min(100% - 24px, 400px)' }}>
                 {/* Header Image / Icon */}
                 <div className="bg-success bg-opacity-10 p-4 text-center">
                     <div className="bg-white p-3 rounded-circle d-inline-block shadow-sm mb-2 position-relative">

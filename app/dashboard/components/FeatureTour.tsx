@@ -146,12 +146,20 @@ export default function FeatureTour({ onComplete }: { onComplete: () => void }) 
         if (next < tourSteps.length) {
             setCurrentStep(next);
         } else {
+            if (!navigator.onLine) {
+                alert('Sin conexión. Guardar el recorrido requiere internet.');
+                return;
+            }
             await completeTutorialTour();
             onComplete();
         }
     };
 
     const handleSkip = async () => {
+        if (!navigator.onLine) {
+            alert('Sin conexión. Guardar el recorrido requiere internet.');
+            return;
+        }
         await completeTutorialTour();
         onComplete();
     };
@@ -202,7 +210,7 @@ export default function FeatureTour({ onComplete }: { onComplete: () => void }) 
                 }}
                 className="position-absolute bg-white rounded-5 p-4 shadow-2xl"
                 style={{
-                    width: '320px',
+                    width: 'min(320px, calc(100vw - 24px))',
                     zIndex: 10002,
                     pointerEvents: 'auto'
                 }}

@@ -1,11 +1,11 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/app/lib/prisma';
-import { getApiUser } from '@/app/lib/api-auth';
+import { getApiUserId } from '@/app/lib/api-auth';
 
 export async function POST(req: Request) {
     try {
-        const user = await getApiUser(req);
-        if (!user) return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
+        const userId = await getApiUserId(req);
+        if (!userId) return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
 
         const body = await req.json();
         const { token } = body;
@@ -20,11 +20,16 @@ export async function POST(req: Request) {
         // I will try to update if column exists, otherwise I'll just return success for now
         // to avoid breaking build if schema hasn't been pushed yet.
         try {
-            await (prisma as any).user.update({
-                where: { id: user.id },
+            const prismaWithLegacyPushToken = prisma as unknown as {
+                user: {
+                    update(args: { where: { id: string }; data: { pushToken: string } }): Promise<unknown>;
+                };
+            };
+            await prismaWithLegacyPushToken.user.update({
+                where: { id: userId },
                 data: { pushToken: token }
             });
-        } catch (e) {
+        } catch {
             console.error('Push token column might be missing, skipped saving but returning success');
         }
 

@@ -12,8 +12,10 @@ import {
     ArrowRight
 } from 'lucide-react';
 import Link from 'next/link';
+import { useLanguage } from '@/app/LanguageContext';
 
 export default function InstallTutorial() {
+    const { t } = useLanguage();
     const [platform, setPlatform] = useState<"ios" | "android">("ios");
 
     return (
@@ -23,7 +25,7 @@ export default function InstallTutorial() {
                 <Link href="/dashboard/tutorials" className="btn btn-light rounded-circle p-2 shadow-sm">
                     <ChevronLeft size={24} />
                 </Link>
-                <h1 className="h4 mb-0 fw-bold">Guía de Instalación</h1>
+                <h1 className="h4 mb-0 fw-bold">{t.tutorials.install_guide}</h1>
             </header>
 
             <div className="row justify-content-center px-lg-4">
@@ -33,7 +35,7 @@ export default function InstallTutorial() {
                         <div className="bg-primary text-white p-4 rounded-circle d-inline-block mb-4 shadow-lg">
                             <Download size={48} />
                         </div>
-                        <h1 className="fw-bold text-dark mb-2">Instalar Conecta+</h1>
+                        <h1 className="fw-bold text-dark mb-2">{t.pwa_prompt.title}</h1>
                         <p className="text-muted">Sigue estos pasos para tener Conecta+ siempre a mano como una aplicación nativa.</p>
                     </div>
 

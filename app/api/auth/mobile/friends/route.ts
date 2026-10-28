@@ -1,15 +1,15 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/app/lib/prisma';
-import { getApiUser } from '@/app/lib/api-auth';
+import { getApiUserId } from '@/app/lib/api-auth';
 
 export async function GET(req: Request) {
     try {
-        const user = await getApiUser(req);
-        if (!user) return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
+        const userId = await getApiUserId(req);
+        if (!userId) return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
 
         const [dbUser, messages] = await Promise.all([
             prisma.user.findUnique({
-                where: { id: user.id },
+                where: { id: userId },
                 select: {
                     friends: {
                         select: {
@@ -23,7 +23,7 @@ export async function GET(req: Request) {
                 }
             }),
             prisma.supportMessage.findMany({
-                where: { receiverId: user.id },
+                where: { receiverId: userId },
                 include: {
                     sender: {
                         select: {
@@ -51,8 +51,8 @@ export async function GET(req: Request) {
 
 export async function POST(req: Request) {
     try {
-        const user = await getApiUser(req);
-        if (!user) return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
+        const userId = await getApiUserId(req);
+        if (!userId) return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
 
         const body = await req.json();
         const { action, query, friendId, message, messageId, username } = body;
@@ -64,7 +64,7 @@ export async function POST(req: Request) {
                         { username: { contains: query } },
                         { name: { contains: query } }
                     ],
-                    NOT: { id: user.id }
+                        NOT: { id: userId }
                 },
                 select: {
                     id: true,
@@ -87,16 +87,16 @@ export async function POST(req: Request) {
             }
 
             if (!targetId) return NextResponse.json({ message: 'ID missing' }, { status: 400 });
-            if (targetId === user.id) return NextResponse.json({ message: 'No puedes agregarte a ti mismo' }, { status: 400 });
+            if (targetId === userId) return NextResponse.json({ message: 'No puedes agregarte a ti mismo' }, { status: 400 });
 
             await Promise.all([
                 prisma.user.update({
-                    where: { id: user.id },
+                    where: { id: userId },
                     data: { friends: { connect: { id: targetId } } }
                 }),
                 prisma.user.update({
                     where: { id: targetId },
-                    data: { friends: { connect: { id: user.id } } }
+                    data: { friends: { connect: { id: userId } } }
                 })
             ]);
             return NextResponse.json({ success: true });
@@ -105,12 +105,12 @@ export async function POST(req: Request) {
         if (action === 'REMOVE') {
             await prisma.$transaction([
                 prisma.user.update({
-                    where: { id: user.id },
+                    where: { id: userId },
                     data: { friends: { disconnect: { id: friendId } } }
                 }),
                 prisma.user.update({
                     where: { id: friendId },
-                    data: { friends: { disconnect: { id: user.id } } }
+                    data: { friends: { disconnect: { id: userId } } }
                 })
             ]);
             return NextResponse.json({ success: true });
@@ -120,7 +120,7 @@ export async function POST(req: Request) {
             if (!message || message.length > 100) return NextResponse.json({ message: 'Mensaje inválido' }, { status: 400 });
             await prisma.supportMessage.create({
                 data: {
-                    senderId: user.id,
+                    senderId: userId,
                     receiverId: friendId,
                     message: message
                 }

@@ -6,6 +6,7 @@ import { ArrowLeft, Trophy, RotateCcw, Check, X, Star, BookOpen } from "lucide-r
 import { motion, AnimatePresence } from "framer-motion";
 import { verseOrderData, VerseOrderQuestion } from "@/app/data/games/verseOrderData";
 import { saveGameScore, getBestScores } from "../clientGameScore";
+import SecondaryPageShell from "@/app/components/SecondaryUI";
 
 const ROUNDS = 10;
 
@@ -78,7 +79,6 @@ export default function VerseOrderGame() {
     const [bestScore, setBestScore] = useState(0);
     const [streak, setStreak] = useState(0);
     const [maxStreak, setMaxStreak] = useState(0);
-    const [saving, setSaving] = useState(false);
     const [showConfetti, setShowConfetti] = useState(false);
     const cardRef = useRef<HTMLDivElement>(null);
 
@@ -147,17 +147,16 @@ export default function VerseOrderGame() {
     const finishGame = async (finalScore: number) => {
         setPhase("result");
         if (finalScore === ROUNDS) setShowConfetti(true);
-        setSaving(true);
         await saveGameScore("verse_order", finalScore, ROUNDS, null);
         const r = await getBestScores("verse_order");
         if (r.success) setBestScore(r.bestScore ?? 0);
-        setSaving(false);
     };
 
     const currentQ = questions[round];
 
     return (
-        <div className="min-vh-100 game-gradient">
+        <SecondaryPageShell>
+        <div className="min-vh-100 game-gradient ui-game-shell">
             <div className="container py-4">
                 <div className="mx-auto" style={{ maxWidth: 640 }}>
                     <div className="d-flex align-items-center gap-3 mb-4">
@@ -311,7 +310,7 @@ export default function VerseOrderGame() {
                                             transition={{ delay: i * 0.03, type: "spring", stiffness: 200 }}
                                             onClick={() => handleWordClick(word, i)}
                                             disabled={!!feedback}
-                                            whileTap={{ scale: 0.92 }}
+                                            whileTap={{ scale: 0.96 }}
                                             whileHover={{ scale: 1.04, y: -3 }}
                                             className="word-tile"
                                         >
@@ -394,7 +393,7 @@ export default function VerseOrderGame() {
 
             <style jsx>{`
                 .game-gradient {
-                    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+                    background: #101a2a;
                 }
                 .start-card {
                     background: rgba(255,255,255,0.08);
@@ -457,7 +456,7 @@ export default function VerseOrderGame() {
                 }
 
                 .round-badge {
-                    background: linear-gradient(135deg, #6366f1, #8b5cf6);
+                    background: #244a72;
                     color: #fff;
                     font-weight: 700;
                     font-size: 0.8rem;
@@ -483,7 +482,7 @@ export default function VerseOrderGame() {
                     height: 10px;
                     border-radius: 50%;
                     background: #e9ecef;
-                    transition: all 0.3s ease;
+                    transition: background-color 0.3s ease, box-shadow 0.3s ease;
                 }
                 .step-dot.active {
                     background: #6366f1;
@@ -533,7 +532,7 @@ export default function VerseOrderGame() {
                 }
 
                 .selected-word {
-                    background: linear-gradient(135deg, #6366f1, #8b5cf6);
+                    background: #244a72;
                     color: #fff;
                     font-weight: 600;
                     font-size: 0.95rem;
@@ -620,7 +619,7 @@ export default function VerseOrderGame() {
                     padding: 6px 16px;
                     font-size: 0.8rem;
                     color: #6c757d;
-                    transition: all 0.2s;
+                    transition: background-color 0.2s ease, border-color 0.2s ease;
                 }
                 .undo-btn:hover {
                     background: #f8f9fa;
@@ -694,5 +693,6 @@ export default function VerseOrderGame() {
                 }
             `}</style>
         </div>
+        </SecondaryPageShell>
     );
 }

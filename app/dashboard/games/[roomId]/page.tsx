@@ -2,10 +2,11 @@ import { auth } from "@/app/lib/auth";
 import { getRoomStatus } from "../actions";
 import HotPotatoView from "../components/HotPotatoView";
 import { redirect } from "next/navigation";
+import SecondaryPageShell from "@/app/components/SecondaryUI";
 
 export default async function GameRoomPage({ params }: { params: { roomId: string } }) {
     const session = await auth();
-    if (!session?.user?.id) redirect("/login");
+    if (!session?.user?.id) redirect("/auth/login");
 
     const res = await getRoomStatus(params.roomId);
     if (!res.success || !res.room) {
@@ -13,6 +14,7 @@ export default async function GameRoomPage({ params }: { params: { roomId: strin
     }
 
     return (
+        <SecondaryPageShell>
         <div className="container py-4">
             <HotPotatoView
                 initialRoom={res.room}
@@ -20,5 +22,6 @@ export default async function GameRoomPage({ params }: { params: { roomId: strin
                 roomId={params.roomId}
             />
         </div>
+        </SecondaryPageShell>
     );
 }

@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { useState } from 'react';
-import { ArrowLeft, Loader2, CheckCircle, Shield, Lock, Eye, EyeOff } from 'lucide-react';
+import { ArrowLeft, Loader2, CheckCircle, Shield, Eye, EyeOff } from 'lucide-react';
 import { checkUserStatus, resetPasswordWithSecurityAnswer } from './actions';
 import { useLanguage } from "@/app/LanguageContext";
 
@@ -19,6 +19,10 @@ export default function ForgotPasswordPage() {
 
     const handleEmailSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        if (!navigator.onLine) {
+            setError(t.auth.offline_recover);
+            return;
+        }
         setError('');
         setLoading(true);
         try {
@@ -30,7 +34,7 @@ export default function ForgotPasswordPage() {
             } else {
                 setStep('SECURITY');
             }
-        } catch (err) {
+        } catch {
             setError(t.auth.check_email_error);
         } finally {
             setLoading(false);
@@ -45,20 +49,24 @@ export default function ForgotPasswordPage() {
 
     const handleFinalSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        if (!navigator.onLine) {
+            setError(t.auth.offline_password);
+            return;
+        }
         setError('');
         setLoading(true);
         try {
             await resetPasswordWithSecurityAnswer(email, answer, newPassword);
             setStep('SUCCESS');
-        } catch (err: any) {
-            setError(err.message || t.auth.error_reset);
+        } catch (err: unknown) {
+            setError(err instanceof Error ? err.message : t.auth.error_reset);
         } finally {
             setLoading(false);
         }
     };
 
     return (
-        <div className="card shadow-sm border-0 p-4 animate-fade-in-up">
+        <div className="ui-surface p-4 animate-fade-in-up">
             <div className="text-center mb-4">
                 <Link href="/auth/login" className="d-inline-block small text-muted text-decoration-none mb-3">
                     <ArrowLeft size={16} className="me-1" /> {t.common.back}
@@ -106,7 +114,7 @@ export default function ForgotPasswordPage() {
                         <h5 className="fw-bold">{t.auth.security_question}</h5>
                         <p className="text-muted small">{t.auth.new_password_subtitle}</p>
                         <p className="fw-bold text-primary p-3 bg-light rounded-3 border">
-                            "{t.auth.security_question_text}"
+                            &ldquo;{t.auth.security_question_text}&rdquo;
                         </p>
                     </div>
 
@@ -159,6 +167,7 @@ export default function ForgotPasswordPage() {
                                 type="button"
                                 className="btn btn-link position-absolute top-50 end-0 translate-middle-y text-muted text-decoration-none"
                                 onClick={() => setShowPassword(!showPassword)}
+                                aria-label={showPassword ? t.auth.hide_password : t.auth.show_password}
                             >
                                 {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
                             </button>

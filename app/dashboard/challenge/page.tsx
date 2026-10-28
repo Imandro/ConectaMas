@@ -4,15 +4,13 @@ import { useState, useEffect, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
 import { ChevronLeft, CheckCircle2, XCircle, Trophy, Sparkles } from 'lucide-react';
 import Link from 'next/link';
-import { getChallenges, Challenge } from '@/app/lib/challengeData';
-import LlamiMascot from '@/app/components/LlamiMascot';
+import { getChallenges } from '@/app/lib/challengeData';
 
 import { useLanguage } from "@/app/LanguageContext";
 
 export default function ChallengePage() {
     const router = useRouter();
     const { t, language } = useLanguage();
-    const [stats, setStats] = useState<any>(null);
     const [currentStep, setCurrentStep] = useState(0);
     const [selectedOption, setSelectedOption] = useState<string | null>(null);
     const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
@@ -64,15 +62,34 @@ export default function ChallengePage() {
     };
 
     const handleCompletion = async () => {
+        if (!navigator.onLine) {
+            alert('Sin conexión. El reto no se marcó como completado.');
+            return;
+        }
         try {
-            await fetch('/api/challenge/complete', { method: 'POST' });
+            const res = await fetch('/api/challenge/complete', { method: 'POST' });
+            if (!res.ok) return;
         } catch (e) {
             console.error(e);
+            return;
         }
         setIsCompleted(true);
     };
 
-    if (challenges.length === 0) return null;
+    if (challenges.length === 0) {
+        return (
+            <div className="container py-5">
+                <div className="card border-0 shadow-sm rounded-4 p-4 text-center" role="status">
+                    <Trophy className="text-warning mx-auto mb-3" size={40} />
+                    <h1 className="h4 fw-bold text-primary">{t.dashboard.daily_challenge}</h1>
+                    <p className="text-muted mb-4">No hay retos disponibles en este momento.</p>
+                    <Link href="/dashboard" className="btn btn-primary rounded-pill px-4">
+                        {t.challenge.return_home}
+                    </Link>
+                </div>
+            </div>
+        );
+    }
 
     if (isCompleted) {
         return (
@@ -188,7 +205,7 @@ export default function ChallengePage() {
 
                 {/* Feedback bottom */}
                 {showResult && (
-                    <div className={`fixed-bottom p-4 animate-slide-up ${isCorrect ? 'bg-success' : 'bg-danger'}`} style={{ zIndex: 1000 }}>
+                    <div className={`mobile-fixed-feedback fixed-bottom p-4 animate-slide-up ${isCorrect ? 'bg-success' : 'bg-danger'}`} style={{ zIndex: 1000 }}>
                         <div className="container d-flex align-items-center justify-content-between text-white">
                             <div className="d-flex align-items-center gap-3">
                                 {isCorrect ? <CheckCircle2 size={32} /> : <XCircle size={32} />}
@@ -213,7 +230,7 @@ export default function ChallengePage() {
                 .scale-105 { transform: scale(1.05); }
                 .scale-95 { transform: scale(0.95); }
                 .hover-scale:hover { transform: scale(1.02); }
-                .transition-all { transition: all 0.2s ease; }
+                .transition-all { transition: transform 0.2s ease, background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease; }
                 .fw-black { font-weight: 900; }
             `}</style>
         </div>

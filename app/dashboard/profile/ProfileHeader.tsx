@@ -40,6 +40,10 @@ export default function ProfileHeader({ user }: ProfileHeaderProps) {
 
     const handleUpdateUsername = async () => {
         if (!pendingUsername) return;
+        if (!navigator.onLine) {
+            toast.error('Sin conexión. Actualizar el usuario requiere internet.');
+            return;
+        }
         const result = await updateUsername(pendingUsername);
         if (result.success) {
             setUsername(pendingUsername);

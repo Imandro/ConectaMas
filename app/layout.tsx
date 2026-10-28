@@ -1,11 +1,8 @@
 import type { Metadata, Viewport } from 'next';
+import { cookies } from 'next/headers';
 import { Fredoka } from 'next/font/google';
 import './globals.scss'; // Importamos nuestros estilos globales (Bootstrap modificado)
-import PWAInstallPrompt from './components/PWAInstallPrompt';
-import NotificationPrompt from './components/NotificationPrompt';
-import { Analytics } from '@vercel/analytics/next';
 import { Toaster } from 'react-hot-toast';
-import OfflineAlert from '@/components/OfflineAlert';
 import CacheCleanup from './components/CacheCleanup';
 
 const fredoka = Fredoka({
@@ -14,13 +11,14 @@ const fredoka = Fredoka({
     variable: '--font-fredoka',
 });
 
-export const metadata: Metadata = {
+const baseMetadata: Metadata = {
+    metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || 'https://conectamas.app'),
     title: 'Conecta+ | Acompañamiento Espiritual',
     description: 'No estás solo. Dios sigue contigo. Una app para crecer y sanar.',
     manifest: '/manifest.json', // Para PWA
     appleWebApp: {
         capable: true,
-        statusBarStyle: 'default',
+        statusBarStyle: 'black-translucent',
         title: 'Conecta+',
     },
     formatDetection: {
@@ -52,13 +50,36 @@ export const metadata: Metadata = {
     },
 };
 
+const metadataByLanguage: Record<Language, { title: string; description: string }> = {
+    es: { title: 'Conecta+ | Acompañamiento Espiritual', description: 'No estás solo. Dios sigue contigo. Una app para crecer y sanar.' },
+    en: { title: 'Conecta+ | Spiritual Support', description: 'You are not alone. Find spiritual support, community, and growth.' },
+    pt: { title: 'Conecta+ | Apoio Espiritual', description: 'Você não está sozinho. Encontre apoio espiritual, comunidade e crescimento.' },
+    ro: { title: 'Conecta+ | Sprijin spiritual', description: 'Nu ești singur. Găsește sprijin spiritual, comunitate și creștere.' },
+};
+
+export async function generateMetadata(): Promise<Metadata> {
+    const cookieLanguage = cookies().get('app-language')?.value;
+    const language = isLanguage(cookieLanguage) ? cookieLanguage : 'es';
+    const copy = metadataByLanguage[language];
+    const locale = languageLocale(language).replace('-', '_');
+    return {
+        ...baseMetadata,
+        title: copy.title,
+        description: copy.description,
+        openGraph: {
+            ...baseMetadata.openGraph,
+            title: copy.title,
+            description: copy.description,
+            locale,
+        },
+    };
+}
+
 export const viewport: Viewport = {
     width: 'device-width',
     initialScale: 1,
-    maximumScale: 1,
-    userScalable: false,
     viewportFit: 'cover',
-    themeColor: '#ffffff',
+    themeColor: '#F7F8FA',
     interactiveWidget: 'resizes-content',
 };
 
@@ -66,10 +87,13 @@ import { Providers } from './components/Providers';
 
 
 import { auth } from './lib/auth';
-import { LanguageProvider } from '@/app/LanguageContext';
-import LanguageRegionModal from './components/LanguageRegionModal';
+import { isLanguage, languageLocale, type Language } from './lib/languages';
 
 import GlobalCookieCleanup from '@/app/components/GlobalCookieCleanup';
+import OfflineUserSync from './components/OfflineUserSync';
+import LegalConsentGate from './components/LegalConsentGate';
+import PrivacyConsentBanner from './components/PrivacyConsentBanner';
+import AnalyticsConsentGate from './components/AnalyticsConsentGate';
 
 export default async function RootLayout({
     children,
@@ -78,9 +102,15 @@ export default async function RootLayout({
 }) {
     const session = await auth();
     const serializableSession = session ? JSON.parse(JSON.stringify(session)) : null;
+    const cookieLanguage = cookies().get('app-language')?.value;
+    const activeLanguage = isLanguage(cookieLanguage)
+        ? cookieLanguage
+        : isLanguage(session?.user?.preferredLanguage)
+            ? session.user.preferredLanguage
+            : 'es';
 
     return (
-        <html lang="es">
+        <html lang={activeLanguage} data-glass="balanced">
             <head>
                 <script dangerouslySetInnerHTML={{
                     __html: `
@@ -103,20 +133,16 @@ export default async function RootLayout({
             </head>
             <body className={`${fredoka.variable} font-fredoka`}>
                 <GlobalCookieCleanup />
-                <OfflineAlert />
-                <LanguageProvider>
-                    <Providers session={serializableSession}>
-                        <main className="main-content">
-                            {children}
-                        </main>
-
-                        <PWAInstallPrompt />
-                        <NotificationPrompt />
+                <Providers session={serializableSession}>
+                        <OfflineUserSync />
+                        <LegalConsentGate>
+                            <main className="main-content safe-area-top">{children}</main>
+                        </LegalConsentGate>
                         <CacheCleanup />
-                        <Analytics />
+                        <AnalyticsConsentGate />
+                        <PrivacyConsentBanner />
                         <Toaster position="top-center" />
-                    </Providers>
-                </LanguageProvider>
+                </Providers>
             </body>
         </html>
     );

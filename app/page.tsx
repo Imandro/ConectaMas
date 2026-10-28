@@ -1,7 +1,13 @@
 import Link from 'next/link';
 import Image from 'next/image';
+import { cookies } from 'next/headers';
+import { getTranslations } from './lib/getTranslations';
+import { isLanguage } from './lib/languages';
 
 export default function Home() {
+    const cookieLanguage = cookies().get('app-language')?.value;
+    const t = getTranslations(isLanguage(cookieLanguage) ? cookieLanguage : 'es');
+
     return (
         <div className="min-vh-100 d-flex flex-column justify-content-center align-items-center p-4 position-relative overflow-hidden">
             {/* Background Decor */}
@@ -27,21 +33,21 @@ export default function Home() {
 
                 {/* Hero Text */}
                 <h1 className="display-5 fw-bold mb-2 text-secondary font-fredoka">
-                    No estás solo.
+                    {t.landing.hero_title}
                 </h1>
 
                 <p className="lead text-muted mb-4 fs-5">
-                    Dios sigue contigo.
+                    {t.landing.hero_subtitle}
                 </p>
 
                 {/* Buttons */}
                 <div className="d-grid gap-3 w-100">
                     <Link href="/auth/register" className="btn btn-primary btn-lg text-white shadow-sm hover-scale rounded-pill py-3 fw-bold">
-                        Crear cuenta
+                        {t.landing.create_account}
                     </Link>
 
                     <Link href="/auth/login" className="btn btn-outline-secondary btn-lg border-2 hover-scale rounded-pill py-3 fw-bold">
-                        Ya tengo cuenta
+                        {t.landing.existing_account}
                     </Link>
 
 
@@ -49,52 +55,52 @@ export default function Home() {
 
                 <div className="mt-5 pt-3 border-top border-light">
                     <div className="d-flex justify-content-center gap-3 small text-muted">
-                        <Link href="/legal/privacy" className="text-decoration-none text-muted hover-primary">Privacidad</Link>
+                        <Link href="/legal/privacy" className="text-decoration-none text-muted hover-primary">{t.landing.privacy}</Link>
                         <span className="opacity-25">|</span>
-                        <Link href="/legal/terms" className="text-decoration-none text-muted hover-primary">Términos</Link>
+                        <Link href="/legal/terms" className="text-decoration-none text-muted hover-primary">{t.landing.terms}</Link>
                         <span className="opacity-25">|</span>
-                        <Link href="/legal/cookies" className="text-decoration-none text-muted hover-primary">Cookies</Link>
+                        <Link href="/legal/cookies" className="text-decoration-none text-muted hover-primary">{t.landing.cookies}</Link>
                     </div>
                     <p className="extra-small text-muted mt-2 mb-0">© 2025 Conecta+</p>
                 </div>
             </div>
 
-            {/* Value Add Sections for AdSense Coverage */}
+            {/* Value-add sections */}
             <div className="mt-5 w-100 animate-fade-in-up" style={{ maxWidth: '800px' }}>
                 <div className="row g-4 px-3">
                     <div className="col-12 col-md-4">
                         <div className="p-4 bg-white rounded-5 shadow-sm h-100">
-                            <h3 className="h5 fw-bold text-secondary mb-3">Tu Refugio Digital</h3>
+                            <h3 className="h5 fw-bold text-secondary mb-3">{t.landing.digital_refuge}</h3>
                             <p className="small text-muted mb-0">
-                                Conecta+ es más que una app; es un espacio seguro diseñado para que los jóvenes encuentren paz en medio del caos digital.
+                                {t.landing.digital_refuge_desc}
                             </p>
                         </div>
                     </div>
                     <div className="col-12 col-md-4">
                         <div className="p-4 bg-white rounded-5 shadow-sm h-100">
-                            <h3 className="h5 fw-bold text-secondary mb-3">Crecimiento Diario</h3>
+                            <h3 className="h5 fw-bold text-secondary mb-3">{t.landing.daily_growth}</h3>
                             <p className="small text-muted mb-0">
-                                A través de devocionales personalizados y seguimiento espiritual, te acompañamos en cada paso de tu camino con Dios.
+                                {t.landing.daily_growth_desc}
                             </p>
                         </div>
                     </div>
                     <div className="col-12 col-md-4">
                         <div className="p-4 bg-white rounded-5 shadow-sm h-100">
-                            <h3 className="h5 fw-bold text-secondary mb-3">Comunidad Real</h3>
+                            <h3 className="h5 fw-bold text-secondary mb-3">{t.landing.real_community}</h3>
                             <p className="small text-muted mb-0">
-                                No caminamos solos. Conecta con otros jóvenes, comparte peticiones de oración y apóyense mutuamente en fe.
+                                {t.landing.real_community_desc}
                             </p>
                         </div>
                     </div>
                 </div>
 
                 <div className="mt-5 p-5 bg-white rounded-5 shadow-sm text-start mx-3">
-                    <h2 className="h4 fw-bold text-secondary mb-4">Nuestra Misión</h2>
+                    <h2 className="h4 fw-bold text-secondary mb-4">{t.landing.mission_title}</h2>
                     <p className="text-muted mb-4">
-                        En un mundo lleno de distracciones y ansiedad, creemos que la tecnología puede ser una herramienta para la redención. Conecta+ nace del deseo de reconciliar a la juventud con lo eterno, proporcionando recursos de alta calidad para el estudio bíblico, la oración constante y el acompañamiento fraternal.
+                        {t.landing.mission_p1}
                     </p>
                     <p className="text-muted mb-0">
-                        Cada versículo, cada devocional y cada interacción dentro de la plataforma está fundamentada en principios bíblicos, buscando fomentar una relación genuina y profunda con Jesucristo. Estamos comprometidos con la privacidad y la integridad de tu proceso espiritual.
+                        {t.landing.mission_p2}
                     </p>
                 </div>
             </div>

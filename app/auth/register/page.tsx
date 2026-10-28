@@ -1,29 +1,22 @@
 "use client";
 
 import Link from 'next/link';
-import Image from 'next/image';
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
 import { signIn } from 'next-auth/react';
-import { Eye, EyeOff, Loader2, Cloud } from 'lucide-react';
+import { Eye, EyeOff, Loader2 } from 'lucide-react';
 import { useLanguage } from "@/app/LanguageContext";
-import { getGuestStats, migrateGuestDataToAccount } from '@/app/lib/guest';
+import { getGuestStats } from '@/app/lib/guest';
+import { SUPPORTED_COUNTRY_OPTIONS } from '@/app/lib/legal/policy';
 
 export default function RegisterPage() {
-    const router = useRouter();
-    const { t } = useLanguage();
+    const { t, language } = useLanguage();
     const [loading, setLoading] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
     const [error, setError] = useState('');
-    const [guestFound, setGuestFound] = useState(false);
-    const [guestData, setGuestData] = useState<any>(null);
-    const [migrateData, setMigrateData] = useState(true);
 
     useEffect(() => {
         const gs = getGuestStats();
         if (gs.streak > 0 || gs.mascot.experience > 0 || gs.mascot.level > 1) {
-            setGuestFound(true);
-            setGuestData(gs);
             setFormData(prev => ({ ...prev, name: gs.name !== 'Invitado' ? gs.name : prev.name }));
         }
     }, []);
@@ -33,16 +26,24 @@ export default function RegisterPage() {
         username: '',
         email: '',
         password: '',
-        termsAccepted: false
+        securityAnswer: '',
+        age: '',
+        country: '',
+        termsAccepted: false,
+        privacyAccepted: false,
     });
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const value = e.target.type === 'checkbox' ? e.target.checked : e.target.value;
         setFormData({ ...formData, [e.target.id]: value });
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        if (!navigator.onLine) {
+            setError(t.auth.offline_register);
+            return;
+        }
         setError('');
         setLoading(true);
 
@@ -52,7 +53,7 @@ export default function RegisterPage() {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(formData),
+                body: JSON.stringify({ ...formData, locale: language === 'en' || language === 'pt' ? language : 'es' }),
             });
 
             const data = await res.json();
@@ -76,14 +77,14 @@ export default function RegisterPage() {
                 window.location.href = '/onboarding';
             }
 
-        } catch (err: any) {
-            setError(err.message);
+        } catch (err: unknown) {
+            setError(err instanceof Error ? err.message : 'Error al registrarte');
             setLoading(false);
         }
     };
 
     return (
-        <div className="card shadow-sm border-0 p-4 animate-fade-in-up">
+        <div className="ui-surface p-4 animate-fade-in-up">
             <div className="text-center mb-4">
                 <Link href="/" className="d-inline-block mb-3">
                     <div className="position-relative" style={{ width: '120px', height: '50px', margin: '0 auto' }}>
@@ -161,6 +162,7 @@ export default function RegisterPage() {
                             type="button"
                             className="btn btn-link position-absolute top-50 end-0 translate-middle-y text-muted text-decoration-none"
                             onClick={() => setShowPassword(!showPassword)}
+                            aria-label={showPassword ? t.auth.hide_password : t.auth.show_password}
                             style={{ zIndex: 10 }}
                         >
                             {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
@@ -176,7 +178,7 @@ export default function RegisterPage() {
                         className="form-control form-control-lg bg-light border-0"
                         id="securityAnswer"
                         placeholder={t.auth.security_answer_placeholder}
-                        value={(formData as any).securityAnswer || ''}
+                        value={formData.securityAnswer}
                         onChange={handleChange}
                         required
                     />
@@ -186,17 +188,38 @@ export default function RegisterPage() {
                     </small>
                 </div>
 
+                <div className="row g-3 mb-4">
+                    <div className="col-5">
+                        <label htmlFor="age" className="form-label small fw-bold text-primary ps-2">{t.onboarding.age_title}</label>
+                        <input type="number" min="13" max="120" className="form-control form-control-lg bg-light border-0" id="age" value={formData.age} onChange={handleChange} required />
+                    </div>
+                    <div className="col-7">
+                        <label htmlFor="country" className="form-label small fw-bold text-primary ps-2">{t.profile.country_label}</label>
+                        <select id="country" className="form-select form-select-lg bg-light border-0" value={formData.country} onChange={handleChange} required>
+                            <option value="">{t.language_region_modal.select_prompt}</option>
+                            {SUPPORTED_COUNTRY_OPTIONS.map(([code, label]) => <option key={code} value={code}>{label}</option>)}
+                        </select>
+                    </div>
+                </div>
+
                 <div className="mb-4 form-check">
                     <input
                         type="checkbox"
                         className="form-check-input"
                         id="termsAccepted"
-                        checked={(formData as any).termsAccepted}
+                        checked={formData.termsAccepted}
                         onChange={handleChange}
                         required
                     />
                     <label className="form-check-label small text-muted" htmlFor="termsAccepted">
-                        {t.auth.terms_text} <Link href="/legal/terms" target="_blank" className="text-primary fw-bold text-decoration-none">{t.auth.terms_link}</Link> y la <Link href="/legal/privacy" target="_blank" className="text-primary fw-bold text-decoration-none">{t.auth.privacy_link}</Link>.
+                        {t.auth.terms_text} <Link href="/legal/terms" target="_blank" className="text-primary fw-bold text-decoration-none">{t.auth.terms_link}</Link>.
+                    </label>
+                </div>
+
+                <div className="mb-4 form-check">
+                    <input type="checkbox" className="form-check-input" id="privacyAccepted" checked={formData.privacyAccepted} onChange={handleChange} required />
+                    <label className="form-check-label small text-muted" htmlFor="privacyAccepted">
+                        {t.auth.terms_text} <Link href="/legal/privacy" target="_blank" className="text-primary fw-bold text-decoration-none">{t.auth.privacy_link}</Link> y las reglas de comunidad.
                     </label>
                 </div>
 

@@ -2,6 +2,7 @@
 
 import { Heart, CheckCircle } from "lucide-react";
 import { useLanguage } from "@/app/LanguageContext";
+import { languageLocale } from "@/app/lib/languages";
 import { likeAnswer } from "../actions";
 import { useState } from "react";
 import toast from "react-hot-toast";
@@ -23,12 +24,16 @@ interface AnswerCardProps {
 }
 
 export default function AnswerCard({ answer }: AnswerCardProps) {
-    const { t } = useLanguage();
+    const { t, language } = useLanguage();
     const [likes, setLikes] = useState(answer.likes);
     const [hasLiked, setHasLiked] = useState(false); // Local optimist
 
     const handleLike = async () => {
         if (hasLiked) return;
+        if (!navigator.onLine) {
+            toast.error('Sin conexión. Marcar una respuesta requiere internet.');
+            return;
+        }
         setLikes(p => p + 1);
         setHasLiked(true);
         // @ts-ignore
@@ -49,7 +54,7 @@ export default function AnswerCard({ answer }: AnswerCardProps) {
                                 {answer.user.profileType === 'COOPERATOR' && <span className="ms-1 badge bg-info text-dark" style={{ fontSize: '0.6rem' }}>{t.qa.user_badge_coop}</span>}
                             </span>
                             <span className="text-muted small" style={{ fontSize: '0.7rem' }}>
-                                {new Date(answer.createdAt).toLocaleDateString()}
+                                {new Date(answer.createdAt).toLocaleDateString(languageLocale(language))}
                             </span>
                         </div>
 

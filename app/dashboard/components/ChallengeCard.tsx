@@ -17,32 +17,35 @@ export default function ChallengeCard({ isCompleted = false }: ChallengeCardProp
 
     return (
         <Link href={isCompleted ? "#" : "/dashboard/challenge"} className={`text-decoration-none ${isCompleted ? 'pointer-events-none' : ''}`}>
-            <div className={`card border-0 shadow-sm mb-4 overflow-hidden hover-scale ${isCompleted ? 'bg-success' : ''}`}
+            <div
+                className={`challenge-card ui-surface card border-0 mb-3 overflow-hidden ${isCompleted ? 'bg-success' : 'text-white'}`}
                 style={{
-                    borderRadius: '24px',
-                    background: isCompleted ? 'linear-gradient(135deg, #10B981 0%, #059669 100%)' : 'linear-gradient(135deg, #6366F1 0%, #4F46E5 100%)'
-                }}>
-                <div className="card-body p-4 text-white">
+                    backgroundColor: isCompleted
+                        ? 'color-mix(in srgb, var(--success-color, #10b981) 18%, var(--card-bg, #ffffff))'
+                        : 'var(--hero-from, var(--brand-primary, #0B1B32))',
+                }}
+            >
+                <div className={`card-body p-3 p-sm-4 ${isCompleted ? 'text-dark' : 'text-white'}`}>
                     <div className="d-flex justify-content-between align-items-center mb-3">
                         <div className="d-flex align-items-center gap-2">
-                            <Trophy size={20} className={isCompleted ? "text-white" : "text-warning"} />
+                            <Trophy size={20} className={isCompleted ? "text-success" : "text-warning"} aria-hidden="true" />
                             <span className="fw-bold text-uppercase small tracking-wider">{t.dashboard.daily_challenge}</span>
                         </div>
-                        <span className="badge bg-white bg-opacity-20 rounded-pill px-3">
+                        <span className="badge rounded-pill px-3 py-2" style={{ backgroundColor: 'var(--accent-soft, #fff7d6)', color: 'var(--brand-primary, #0B1B32)' }}>
                             {completed}/{total}
                         </span>
                     </div>
 
-                    <h4 className="fw-black mb-3 text-white">
+                    <h4 className={`fw-bold mb-3 ${isCompleted ? 'text-dark' : 'text-white'}`}>
                         {isCompleted ? t.dashboard.challenge_completed : t.dashboard.feeding_spirit}
                     </h4>
 
                     {!isCompleted && (
-                        <div className="progress bg-white bg-opacity-20 mb-3" style={{ height: '12px', borderRadius: '6px' }}>
+                        <div className="progress mb-3" style={{ height: '6px', backgroundColor: 'rgba(255, 255, 255, 0.16)' }}>
                             <div
-                                className="progress-bar bg-warning"
+                                className="progress-bar"
                                 role="progressbar"
-                                style={{ width: `${progress}%`, borderRadius: '6px' }}
+                                style={{ width: `${progress}%`, backgroundColor: 'var(--brand-accent, #fbbf24)' }}
                                 aria-valuenow={progress}
                                 aria-valuemin={0}
                                 aria-valuemax={100}
@@ -51,10 +54,10 @@ export default function ChallengeCard({ isCompleted = false }: ChallengeCardProp
                     )}
 
                     <div className="d-flex justify-content-between align-items-center">
-                        <p className="m-0 small text-white text-opacity-80">
+                        <p className={`m-0 small ${isCompleted ? 'text-muted' : 'text-white-50'}`}>
                             {isCompleted ? t.dashboard.come_back_tomorrow : t.dashboard.verses_and_truths}
                         </p>
-                        <div className="bg-white text-primary rounded-circle p-1">
+                        <div className="rounded-circle p-2 flex-shrink-0 d-inline-flex align-items-center justify-content-center" style={{ width: '40px', height: '40px', backgroundColor: 'var(--accent-soft, #fff7d6)', color: 'var(--brand-primary, #0B1B32)' }} aria-hidden="true">
                             {isCompleted ? <CheckCircle2 size={18} className="text-success" /> : <ArrowRight size={18} />}
                         </div>
                     </div>

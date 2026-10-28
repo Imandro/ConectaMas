@@ -36,6 +36,10 @@ export default function TriviaGame({ onComplete }: TriviaGameProps) {
     const [gameState, setGameState] = useState<"PLAYING" | "RESULTS">("PLAYING");
 
     useEffect(() => {
+        if (!navigator.onLine) {
+            setIsLoading(false);
+            return;
+        }
         fetch("/api/trivia/daily")
             .then((res) => {
                 if (res.status === 401) {
@@ -59,6 +63,10 @@ export default function TriviaGame({ onComplete }: TriviaGameProps) {
 
     const handleOptionSelect = async (index: number) => {
         if (showFeedback || isSubmitting) return;
+        if (!navigator.onLine) {
+            alert('Sin conexión. Esta trivia requiere internet.');
+            return;
+        }
 
         setSelectedOption(index);
         setIsSubmitting(true);
@@ -177,7 +185,7 @@ export default function TriviaGame({ onComplete }: TriviaGameProps) {
     }
 
     return (
-        <div className="trivia-container">
+        <div className="trivia-container ui-game-shell">
             {/* Progress bar */}
             <div className="mb-4">
                 <div className="d-flex justify-content-between text-muted small mb-2 fw-bold">
@@ -221,7 +229,7 @@ export default function TriviaGame({ onComplete }: TriviaGameProps) {
                                 fontWeight: '500'
                             };
 
-                            let buttonClass = "btn text-start p-3 rounded-4 d-flex justify-content-between align-items-center mb-1";
+                            const buttonClass = "btn text-start p-3 rounded-4 d-flex justify-content-between align-items-center mb-1";
 
                             if (showFeedback) {
                                 if (isCorrectOption) {

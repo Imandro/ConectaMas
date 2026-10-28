@@ -1,11 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Plus, ShieldAlert, Trophy, X, ChevronRight } from "lucide-react";
-import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { createStruggle } from "../actions";
 import { useLanguage } from "@/app/LanguageContext";
+import { useSession } from 'next-auth/react';
+import { getSnapshot, saveSnapshot } from '@/app/lib/offlineStore';
 
 // Define the Struggle interface based on our usage
 interface Struggle {
@@ -25,11 +26,26 @@ export default function StruggleTracker({
     initialStruggles: Struggle[]
 }) {
     const { t } = useLanguage();
+    const { data: session } = useSession();
+    const snapshotUserId = (session?.user as { id?: string; email?: string } | undefined)?.id
+        || session?.user?.email
+        || null;
     const [struggles, setStruggles] = useState<Struggle[]>(initialStruggles);
     const [isAdding, setIsAdding] = useState(false);
     const [newStruggleTitle, setNewStruggleTitle] = useState("");
 
-    const router = useRouter();
+    useEffect(() => {
+        setStruggles(initialStruggles);
+        if (!snapshotUserId) return;
+        if (navigator.onLine) {
+            void saveSnapshot('/dashboard/luchas', snapshotUserId, initialStruggles);
+            return;
+        }
+
+        void getSnapshot<Struggle[]>('/dashboard/luchas', snapshotUserId).then((snapshot) => {
+            if (snapshot?.payload) setStruggles(snapshot.payload);
+        });
+    }, [initialStruggles, snapshotUserId]);
 
     const availableStruggles = struggles.filter(s => s.status === "ACTIVE" && !s.isStarted);
     const activeStruggles = struggles.filter(s => s.status === "ACTIVE" && s.isStarted);
@@ -37,10 +53,16 @@ export default function StruggleTracker({
 
     const handleAddStruggle = async () => {
         if (!newStruggleTitle.trim()) return;
+        if (!navigator.onLine) {
+            alert('Sin conexión. Crear un desafío requiere internet.');
+            return;
+        }
 
         const res = await createStruggle(newStruggleTitle);
         if (res.success && res.struggle) {
-            setStruggles(prev => [res.struggle as Struggle, ...prev]);
+            const nextStruggles = [res.struggle as Struggle, ...struggles];
+            setStruggles(nextStruggles);
+            if (snapshotUserId) void saveSnapshot('/dashboard/luchas', snapshotUserId, nextStruggles);
             setIsAdding(false);
             setNewStruggleTitle("");
         }
@@ -89,7 +111,7 @@ export default function StruggleTracker({
     };
 
     return (
-        <div className="card border-0 shadow-sm p-4 bg-transparent rounded-4 overflow-hidden">
+        <div className="ui-surface p-4 overflow-hidden">
             <div className="d-flex align-items-center justify-content-between mb-4">
                 <h5 className="fw-bold d-flex align-items-center gap-2 m-0 text-secondary">
                     <ShieldAlert className="text-primary" size={24} />

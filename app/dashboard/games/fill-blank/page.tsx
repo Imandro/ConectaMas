@@ -7,6 +7,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { fillBlankData, FillBlankQuestion } from "@/app/data/games/fillBlankData";
 import { saveGameScore, getBestScores } from "../clientGameScore";
 import { Check, X } from "lucide-react";
+import SecondaryPageShell from "@/app/components/SecondaryUI";
 
 const ROUNDS = 10;
 
@@ -101,7 +102,8 @@ export default function FillBlankGame() {
     };
 
     return (
-        <div className="min-vh-100 game-gradient">
+        <SecondaryPageShell>
+        <div className="min-vh-100 game-gradient ui-game-shell">
             <div className="container py-4">
                 <div className="mx-auto" style={{ maxWidth: 640 }}>
                     <div className="d-flex align-items-center gap-3 mb-4">
@@ -316,7 +318,7 @@ export default function FillBlankGame() {
                 .step-dot {
                     width: 10px; height: 10px; border-radius: 50%;
                     background: rgba(0,0,0,0.12);
-                    transition: all 0.3s ease;
+                    transition: background-color 0.3s ease, box-shadow 0.3s ease;
                 }
                 .step-dot.active { background: #06b6d4; box-shadow: 0 0 0 3px rgba(6,182,212,0.3); }
                 .step-dot.completed { background: #10b981; }
@@ -342,7 +344,7 @@ export default function FillBlankGame() {
                     font-size: 0.95rem;
                     color: #1e293b;
                     cursor: pointer;
-                    transition: all 0.2s;
+                    transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
                     text-align: left;
                     box-shadow: 0 2px 8px rgba(0,0,0,0.04);
                 }
@@ -420,5 +422,6 @@ export default function FillBlankGame() {
                 }
             `}</style>
         </div>
+        </SecondaryPageShell>
     );
 }

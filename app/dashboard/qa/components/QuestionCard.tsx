@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { MessageSquare, Heart, Eye } from "lucide-react";
 import { useLanguage } from "@/app/LanguageContext";
+import { languageLocale } from "@/app/lib/languages";
 
 import UserAvatar from "@/app/components/UserAvatar";
 
@@ -26,7 +27,7 @@ interface QuestionCardProps {
 }
 
 export default function QuestionCard({ question }: QuestionCardProps) {
-    const { t } = useLanguage();
+    const { t, language } = useLanguage();
 
     // Parse tags if string
     let tags: string[] = [];
@@ -46,7 +47,7 @@ export default function QuestionCard({ question }: QuestionCardProps) {
                             {question.user.profileType === 'COOPERATOR' && <span className="ms-1 badge bg-info text-dark" style={{ fontSize: '0.6rem' }}>{t.qa.user_badge_coop}</span>}
                         </span>
                         <span className="small text-muted ms-auto">
-                            {new Date(question.createdAt).toLocaleDateString()}
+                            {new Date(question.createdAt).toLocaleDateString(languageLocale(language))}
                         </span>
                     </div>
 

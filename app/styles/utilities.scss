@@ -9,7 +9,7 @@
 }
 
 .transition-all {
-    transition: all 0.2s ease;
+    transition: transform 0.2s ease, opacity 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .bg-primary-subtle {
@@ -21,7 +21,13 @@
 }
 
 .hover-bg-light:hover {
-    background-color: $light;
+    @media (hover: hover) {
+        background-color: $light;
+    }
+}
+
+.extra-small {
+    font-size: 0.75rem;
 }
 
 .line-clamp-2 {
@@ -37,6 +43,104 @@
     padding-bottom: env(safe-area-inset-bottom);
 }
 
+.safe-area-top {
+    padding-top: env(safe-area-inset-top);
+}
+
+.mobile-nav-label {
+    min-width: 0;
+    white-space: nowrap;
+}
+
+.mobile-nav-item {
+    flex: 1 1 0;
+    min-width: 0;
+    padding-inline: 0.125rem !important;
+}
+
+.mobile-nav-active-indicator {
+    top: 2px;
+    width: 24px;
+    height: 3px;
+}
+
+.mobile-nav-label-short {
+    display: none;
+}
+
+.mobile-overlay-pwa {
+    bottom: calc(96px + env(safe-area-inset-bottom) + 116px) !important;
+}
+
+.mobile-overlay-notifications {
+    bottom: calc(96px + env(safe-area-inset-bottom) + 8px) !important;
+}
+
+.mobile-scroll-container {
+    overscroll-behavior: contain;
+}
+
+@media (max-width: 360px) {
+    .mobile-nav-label-full {
+        display: none;
+    }
+
+    .mobile-nav-label-short {
+        display: inline;
+    }
+}
+
+@media (max-width: 575.98px) {
+    .mobile-nav-label-full {
+        display: none;
+    }
+
+    .mobile-nav-label-short {
+        display: inline;
+    }
+
+    .dashboard-header {
+        gap: 0.75rem;
+    }
+
+    .dashboard-greeting-title {
+        font-size: clamp(1.4rem, 6.2vw, 1.65rem) !important;
+        line-height: 1.05;
+        overflow-wrap: anywhere;
+        white-space: normal;
+    }
+
+    .daily-verse-card {
+        min-height: 172px !important;
+    }
+
+    .dashboard-header-actions {
+        flex-shrink: 0;
+    }
+
+    .dashboard-header-actions svg {
+        width: 28px;
+        height: 28px;
+    }
+}
+
+@media (max-width: 375px) {
+    .dashboard-checkin-card .card-body {
+        padding: 0.5rem 0.5rem 0 !important;
+    }
+
+    .dashboard-checkin-mascot {
+        width: 56px !important;
+        height: 56px !important;
+        padding: 0.25rem !important;
+    }
+
+    .dashboard-checkin-mascot .cursor-pointer {
+        width: 56px !important;
+        height: 56px !important;
+    }
+}
+
 // Dashboard Layout Utilities
 @include media-breakpoint-up(lg) {
     .ms-lg-sidebar {
@@ -46,7 +150,7 @@
 
 @include media-breakpoint-down(lg) {
     .pb-mobile-nav {
-        padding-bottom: 100px !important;
+        padding-bottom: calc(108px + env(safe-area-inset-bottom)) !important;
     }
 }
 
@@ -68,4 +172,157 @@
 .backdrop-blur-md {
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
+}
+
+// Navigation and prompt surfaces stay usable above the floating dock.
+.mobile-bottom-dock .mobile-nav-item {
+    min-width: 48px;
+    min-height: 48px;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.mobile-bottom-dock .mobile-nav-item:focus-visible,
+#mobile-more-menu :is(a, button):focus-visible {
+    outline: 3px solid var(--brand-accent, #fbbf24);
+    outline-offset: 2px;
+}
+
+#mobile-more-menu {
+    max-height: calc(100dvh - 112px - env(safe-area-inset-bottom)) !important;
+    overflow-y: auto !important;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+}
+
+#mobile-more-menu .mobile-more-action {
+    min-height: 48px !important;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+}
+
+#mobile-more-menu .mobile-menu-close {
+    width: 48px;
+    height: 48px;
+    flex: 0 0 48px;
+    display: grid;
+    place-items: center;
+    padding: 0 !important;
+}
+
+.mobile-overlay {
+    pointer-events: none;
+}
+
+.mobile-overlay-card {
+    width: min(calc(100vw - 24px), 400px);
+    max-height: min(70dvh, 360px);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+    pointer-events: auto;
+    border: 1px solid var(--glass-border, var(--border-color)) !important;
+    border-radius: 20px !important;
+    background: var(--glass-bg, var(--card-bg)) !important;
+    color: var(--text-color) !important;
+    box-shadow: var(--glass-shadow, 0 14px 34px rgba(11, 27, 50, 0.16)), 0 1px 0 var(--glass-highlight, rgba(255, 255, 255, 0.55)) inset !important;
+    -webkit-backdrop-filter: blur(var(--glass-blur, 18px)) saturate(var(--glass-saturate, 120%));
+    backdrop-filter: blur(var(--glass-blur, 18px)) saturate(var(--glass-saturate, 120%));
+    opacity: 0;
+}
+
+@media (max-width: 575.98px) {
+    .mobile-overlay-card .card-body {
+        padding: 0.75rem !important;
+    }
+
+    .mobile-overlay-card .mobile-overlay-action {
+        padding-inline: 0.75rem !important;
+    }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    .mobile-overlay-card {
+        transform: translateY(12px);
+        transition: opacity 300ms cubic-bezier(0.2, 0, 0, 1), transform 300ms cubic-bezier(0.2, 0, 0, 1);
+    }
+}
+
+.mobile-overlay-card.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.mobile-overlay-card .mobile-overlay-title,
+.mobile-overlay-card .mobile-overlay-copy {
+    color: var(--text-color) !important;
+}
+
+.mobile-overlay-card .mobile-overlay-muted {
+    color: var(--text-muted) !important;
+}
+
+[data-mode='dark'] .mobile-overlay-card .text-primary {
+    color: var(--brand-accent) !important;
+}
+
+.mobile-overlay-card .mobile-overlay-action {
+    min-height: 48px;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.mobile-overlay-card .mobile-overlay-close {
+    width: 48px;
+    height: 48px;
+    flex: 0 0 48px;
+    display: grid;
+    place-items: center;
+    padding: 0 !important;
+}
+
+.mobile-overlay-notifications,
+.mobile-overlay-pwa {
+    bottom: calc(96px + env(safe-area-inset-bottom)) !important;
+    pointer-events: none;
+}
+
+.mobile-overlay-notifications {
+    z-index: 1037 !important;
+}
+
+.mobile-overlay-pwa {
+    z-index: 1038 !important;
+}
+
+@keyframes mobile-overlay-fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@media (min-width: 992px) {
+    .mobile-overlay-notifications,
+    .mobile-overlay-pwa {
+        bottom: 1rem !important;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .mobile-overlay-card {
+        transform: none;
+        transition: opacity 150ms ease-out;
+    }
+
+    .mobile-overlay-card.is-visible {
+        animation: mobile-overlay-fade-in 150ms ease-out;
+    }
+}
+
+@media (forced-colors: active) {
+    .mobile-bottom-dock,
+    #mobile-more-menu,
+    .mobile-overlay-card,
+    .glass-intensity-option {
+        border: 1px solid CanvasText !important;
+    }
 }

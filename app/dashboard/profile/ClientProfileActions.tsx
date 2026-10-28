@@ -8,6 +8,7 @@ import { resetAccount, updateLeaderPhone, updateName, updateUsername } from "./a
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useLanguage } from "@/app/LanguageContext";
+import { clearClientPrivateData } from "@/app/lib/privacy-consent";
 
 export default function ClientProfileActions({
     userRole,
@@ -61,6 +62,10 @@ export default function ClientProfileActions({
 
     const handleReset = async () => {
         if (confirm(t.profile.reset_confirm)) {
+            if (!navigator.onLine) {
+                alert('Sin conexión. Restablecer el perfil requiere internet.');
+                return;
+            }
             setIsResetting(true);
             try {
                 await resetAccount();
@@ -75,6 +80,10 @@ export default function ClientProfileActions({
     };
 
     const handleUpdateProfile = async () => {
+        if (!navigator.onLine) {
+            alert('Sin conexión. Guardar el perfil requiere internet.');
+            return;
+        }
         setIsUpdatingProfile(true);
         try {
             // Update Name
@@ -200,6 +209,7 @@ export default function ClientProfileActions({
                         <option value="CO">Colombia</option>
                         <option value="ES">España</option>
                         <option value="US">Estados Unidos</option>
+                        <option value="RO">{t.country_modal.romania}</option>
                         <option value="CL">Chile</option>
                         <option value="PE">Perú</option>
                         <option value="VE">Venezuela</option>
@@ -253,7 +263,8 @@ export default function ClientProfileActions({
                         >
                             <option value="es">🇪🇸 Español</option>
                             <option value="en">🇺🇸 English</option>
-                            <option value="pt">🇧🇷 Português</option>
+                        <option value="pt">🇧🇷 Português</option>
+                        <option value="ro">🇷🇴 Română</option>
                         </select>
                     </div>
                     <div className="col-12 col-md-6">
@@ -268,6 +279,7 @@ export default function ClientProfileActions({
                             <option value="ES">{t.profile.regions.ES}</option>
                             <option value="US">{t.profile.regions.US}</option>
                             <option value="BR">{t.profile.regions.BR}</option>
+                            <option value="RO">{t.profile.regions.RO}</option>
                         </select>
                     </div>
                 </div>
@@ -296,6 +308,10 @@ export default function ClientProfileActions({
                         className="btn btn-outline-primary fw-bold"
                         type="button"
                         onClick={async () => {
+                            if (!navigator.onLine) {
+                                alert('Sin conexión. Guardar el teléfono requiere internet.');
+                                return;
+                            }
                             setIsUpdatingPhone(true);
                             try {
                                 await updateLeaderPhone(leaderPhone);
@@ -366,12 +382,21 @@ export default function ClientProfileActions({
                 <span>{t.profile.logout}</span>
             </button>
 
+            <a href="/api/account/export" className="btn btn-outline-primary fw-bold d-flex align-items-center justify-content-center gap-2 p-3 rounded-3">
+                Exportar mis datos
+            </a>
+
             <button
                 onClick={async () => {
                     if (confirm(t.profile.delete_confirm)) {
+                        if (!navigator.onLine) {
+                            alert('Sin conexión. Eliminar la cuenta requiere internet.');
+                            return;
+                        }
                         try {
                             const { deleteAccount } = await import("./actions");
                             await deleteAccount();
+                            await clearClientPrivateData();
                             await signOut({ redirect: false });
                             window.location.href = "/";
                         } catch (e) {

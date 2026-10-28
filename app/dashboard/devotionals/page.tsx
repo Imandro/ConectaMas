@@ -4,11 +4,11 @@
 
 import Link from 'next/link';
 import { Clock, BookOpen, Heart, Sparkles, ChevronRight } from 'lucide-react';
-import { devotionalsData } from '@/app/lib/devotionalsData';
+import { getDevotionals, getDevotionalBackground, type Devotional } from '@/app/lib/devotionalsData';
 import { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
-
 import { useLanguage } from '@/app/LanguageContext';
+import SecondaryPageShell from '@/app/components/SecondaryUI';
 
 const categories = ['Para ti', 'Sabiduría', 'Espíritu Santo', 'Ansiedad', 'Identidad', 'Integridad', 'Fe', 'Relaciones', 'Oración', 'Soledad', 'Culpa', 'Ira', 'Envidia', 'Comunidad'];
 
@@ -34,56 +34,72 @@ const getOptimizedImageUrl = (url: string) => {
     return url + '&w=500';
 };
 
+type DevotionalGroup = { type: 'group'; name: string; devotionals: Devotional[] };
+type DisplayItem = Devotional | DevotionalGroup;
+type UserProfilePayload = { sinsToOvercome?: string | null; problemsFaced?: string | null };
+
+const parseProfileList = (value: string | null | undefined) => {
+    if (!value) return [];
+    try {
+        const parsed: unknown = JSON.parse(value);
+        return Array.isArray(parsed) ? parsed.filter((item): item is string => typeof item === 'string') : [];
+    } catch {
+        return [];
+    }
+};
+
 export default function DevotionalsPage() {
-    const { t } = useLanguage();
+    const { t, language } = useLanguage();
+    const devotionalsData = getDevotionals(language);
     const { data: session } = useSession();
     const [selectedCategory, setSelectedCategory] = useState('Para ti');
-    const [recommendedDevotionals, setRecommendedDevotionals] = useState<any[]>([]);
-    const [selectedGroup, setSelectedGroup] = useState<any | null>(null);
+    const [recommendedDevotionals, setRecommendedDevotionals] = useState<Devotional[]>([]);
+    const [selectedGroup, setSelectedGroup] = useState<DevotionalGroup | null>(null);
 
-
-    // Calculate recommended devotionals based on user struggles
     useEffect(() => {
-        if (session?.user) {
-            const userEmail = (session.user as any).email;
-
-            if (!userEmail) return;
-
-            // Fetch user profile to get struggles
-            fetch(`/api/user/profile?email=${userEmail}`)
-                .then(res => res.json())
-                .then(userData => {
-                    const sins = userData.sinsToOvercome ? JSON.parse(userData.sinsToOvercome) : [];
-                    const problems = userData.problemsFaced ? JSON.parse(userData.problemsFaced) : [];
-                    const userStruggles = [...sins, ...problems];
-
-                    // Filter devotionals that match user struggles
-                    const recommended = devotionalsData.filter(dev =>
-                        userStruggles.some((struggle: string) =>
-                            dev.category.toLowerCase().includes(struggle.toLowerCase()) ||
-                            dev.title.toLowerCase().includes(struggle.toLowerCase())
-                        )
-                    );
-
-                    setRecommendedDevotionals(recommended.slice(0, 4)); // Limit to 4
-                })
-                .catch(err => console.error("Error fetching user profile:", err));
+        const userEmail = session?.user?.email;
+        if (!userEmail) {
+            setRecommendedDevotionals([]);
+            return;
         }
-    }, [session]);
 
+        fetch(`/api/user/profile?email=${encodeURIComponent(userEmail)}`)
+            .then(async (res) => {
+                if (!res.ok) throw new Error('Failed to load user profile');
+                return await res.json() as UserProfilePayload;
+            })
+            .then((userData) => {
+                const userStruggles = [
+                    ...parseProfileList(userData.sinsToOvercome),
+                    ...parseProfileList(userData.problemsFaced)
+                ];
+                const recommended = devotionalsData.filter((dev) =>
+                    userStruggles.some((struggle) =>
+                        dev.category.toLowerCase().includes(struggle.toLowerCase()) ||
+                        dev.title.toLowerCase().includes(struggle.toLowerCase())
+                    )
+                );
+                setRecommendedDevotionals(recommended.slice(0, 4));
+            })
+            .catch((error) => console.error('Error fetching user profile:', error));
+    }, [session, language]);
+
+    const selectedCategoryLabel = selectedCategory === 'Para ti'
+        ? t.devotionals.categories.for_you
+        : t.devotionals.categories[categoryKeys[selectedCategory] as keyof typeof t.devotionals.categories] || selectedCategory;
     const filteredDevotionals = selectedCategory === 'Para ti'
         ? devotionalsData
-        : devotionalsData.filter(dev => dev.category === selectedCategory);
+        : devotionalsData.filter(dev => dev.category === selectedCategoryLabel);
 
     const getGroupName = (title: string) => {
         if (title.includes(':')) return title.split(':')[0].trim();
-        const regex = /\s+D[íi]a\s+/i;
+        const regex = /\s+(D[íi]a|Ziua)\s+/i;
         if (regex.test(title)) return title.split(regex)[0].trim();
         return title;
     };
 
-    const groupedDevs: Record<string, any[]> = {};
-    const displayItems: any[] = [];
+    const groupedDevs: Record<string, Devotional[]> = {};
+    const displayItems: DisplayItem[] = [];
 
     filteredDevotionals.forEach(dev => {
         const groupName = getGroupName(dev.title);
@@ -104,12 +120,14 @@ export default function DevotionalsPage() {
     });
 
     return (
+        <SecondaryPageShell>
         <div className="animate-fade-in">
-            <h2 className="fw-bold text-secondary mb-4">{t.devotionals.title}</h2>
+            <header className="ui-page-header mb-4">
+                <h2 className="fw-bold text-secondary mb-0">{t.devotionals.title}</h2>
+            </header>
 
-            {/* Recommended Section */}
             {recommendedDevotionals.length > 0 && (
-                <div className="mb-5">
+                <section className="mb-5">
                     <h5 className="fw-bold text-primary mb-3 d-flex align-items-center gap-2">
                         <Sparkles size={20} />
                         {t.devotionals.recommended_title}
@@ -117,7 +135,7 @@ export default function DevotionalsPage() {
                     <div className="row g-3 mb-4">
                         {recommendedDevotionals.map((dev) => (
                             <div key={dev.id} className="col-12 col-md-6">
-                                <Link href={`/dashboard/devotionals/${dev.id}`} className="card border-primary border-2 shadow-sm text-decoration-none hover-scale h-100">
+                                <Link href={`/dashboard/devotionals/${dev.id}`} className="card ui-surface border-0 shadow-sm text-decoration-none hover-scale h-100">
                                     <div className="d-flex h-100">
                                         <div style={{ width: '100px', minHeight: '140px', backgroundImage: `url(${getOptimizedImageUrl(dev.image)})`, backgroundSize: 'cover', backgroundPosition: 'center' }} className="rounded-start d-flex align-items-center justify-content-center">
                                             <div className="bg-dark bg-opacity-25 w-100 h-100 d-flex align-items-center justify-content-center">
@@ -126,8 +144,8 @@ export default function DevotionalsPage() {
                                         </div>
                                         <div className="card-body py-3">
                                             <div className="d-flex justify-content-between align-items-start mb-1">
-                                                <span className="badge bg-primary text-white rounded-pill fw-normal">{dev.category}</span>
-                                                <Heart size={16} className="text-danger" />
+                                                <span className="badge bg-light text-secondary rounded-pill fw-normal">{dev.category}</span>
+                                                <Heart size={16} className="text-muted" />
                                             </div>
                                             <h6 className="fw-bold text-dark mb-1">{dev.title}</h6>
                                             <div className="d-flex align-items-center text-muted small mt-auto">
@@ -140,7 +158,7 @@ export default function DevotionalsPage() {
                             </div>
                         ))}
                     </div>
-                </div>
+                </section>
             )}
 
             {/* Categories Filter */}
@@ -159,10 +177,10 @@ export default function DevotionalsPage() {
             <div className="row g-3">
                 {displayItems.length > 0 ? (
                     displayItems.map((item, idx) => {
-                        if (item.type === 'group') {
+                        if ('type' in item && item.type === 'group') {
                             return (
                                 <div key={`group-${idx}`} className="col-12 col-md-6">
-                                    <div className="card border-0 shadow-sm hover-scale h-100 cursor-pointer"
+                                    <div className="card ui-surface border-0 shadow-sm hover-scale h-100 cursor-pointer"
                                         onClick={() => setSelectedGroup(item)}>
                                         <div className="d-flex h-100">
                                             <div className="bg-primary-subtle text-primary rounded-start py-5 px-4 d-flex align-items-center justify-content-center" style={{ width: '100px' }}>
@@ -181,12 +199,12 @@ export default function DevotionalsPage() {
                             );
                         }
 
-                        const dev = item;
+                        const dev = item as Devotional;
                         return (
                             <div key={dev.id} className="col-12 col-md-6">
-                                <Link href={`/dashboard/devotionals/${dev.id}`} className="card border-0 shadow-sm text-decoration-none hover-scale h-100">
+                                <Link href={`/dashboard/devotionals/${dev.id}`} className="card ui-surface border-0 shadow-sm text-decoration-none hover-scale h-100">
                                     <div className="d-flex h-100">
-                                        <div style={{ width: '100px', minHeight: '140px', backgroundImage: `url(${getOptimizedImageUrl(dev.image)})`, backgroundSize: 'cover', backgroundPosition: 'center' }} className="rounded-start d-flex align-items-center justify-content-center">
+                                        <div style={{ width: '100px', minHeight: '140px', background: getDevotionalBackground(dev.id) }} className="rounded-start d-flex align-items-center justify-content-center">
                                             <div className="bg-dark bg-opacity-25 w-100 h-100 d-flex align-items-center justify-content-center">
                                                 <BookOpen className="text-white opacity-75" size={32} />
                                             </div>
@@ -220,15 +238,15 @@ export default function DevotionalsPage() {
             {/* Custom React Modal for Groups */}
             {selectedGroup && (
                 <div className="position-fixed top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center p-3 animate-fade-in" style={{ zIndex: 1050, backgroundColor: 'rgba(0,0,0,0.5)', backdropFilter: 'blur(4px)' }}>
-                    <div className="bg-white rounded-5 shadow-lg w-100 overflow-hidden" style={{ maxWidth: '500px' }}>
+                    <div className="ui-surface-glass rounded-5 shadow-lg w-100 overflow-hidden" style={{ maxWidth: '500px' }}>
                         <div className="p-4 border-bottom d-flex justify-content-between align-items-center bg-light">
                             <h5 className="fw-bold m-0 text-primary">{selectedGroup.name}</h5>
                             <button onClick={() => setSelectedGroup(null)} className="btn-close"></button>
                         </div>
-                        <div className="p-4" style={{ maxHeight: '70vh', overflowY: 'auto' }}>
+                        <div className="p-4 mobile-scroll-container" style={{ maxHeight: '70vh', overflowY: 'auto' }}>
                             <p className="text-muted small mb-3">{t.devotionals.select_day}</p>
                             <div className="list-group gap-2">
-                                {selectedGroup.devotionals.map((dev: any, dIdx: number) => (
+                                {selectedGroup.devotionals.map((dev, dIdx) => (
                                     <Link
                                         key={dev.id}
                                         href={`/dashboard/devotionals/${dev.id}`}
@@ -251,5 +269,6 @@ export default function DevotionalsPage() {
                 </div>
             )}
         </div>
+        </SecondaryPageShell>
     );
 }

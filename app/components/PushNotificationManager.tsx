@@ -30,12 +30,16 @@ export default function PushNotificationManager() {
     }
 
     async function subscribe() {
+        if (!navigator.onLine) {
+            alert('Sin conexión. Activar notificaciones requiere internet.');
+            return;
+        }
         setLoading(true);
         try {
             const registration = await navigator.serviceWorker.ready;
 
             // Generate VAPID public key
-            const rawKey = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY || "BGBZ1Q1LwyPolkAPnshPKwQ6NNijzuu8_lqDziuABVb6z60pX1uwKsw1jgO-rCabt5QIf_90OSNqNRgXKti9zyI";
+            const rawKey = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY || '';
             const VAPID_PUBLIC_KEY = rawKey.trim();
 
             if (!VAPID_PUBLIC_KEY || VAPID_PUBLIC_KEY === "undefined") {
@@ -71,6 +75,10 @@ export default function PushNotificationManager() {
     }
 
     async function unsubscribe() {
+        if (!navigator.onLine) {
+            alert('Sin conexión. Desactivar notificaciones requiere internet.');
+            return;
+        }
         setLoading(true);
         try {
             if (subscription) {

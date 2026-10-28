@@ -1,0 +1,4 @@
+storeFile=release-upload-key.jks
+storePassword=CAMBIA_ESTA_CLAVE
+keyAlias=conecta-plus-upload
+keyPassword=CAMBIA_ESTA_CLAVE

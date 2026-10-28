@@ -1,17 +1,20 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { createPrayerRequest, prayForRequest } from "./actions";
-import { Heart, Send, Shield, User, MessageSquare, HeartHandshake } from "lucide-react";
+import { Heart, Send, Shield, MessageSquare, HeartHandshake } from "lucide-react";
 import toast from "react-hot-toast";
 import UserAvatar from "@/app/components/UserAvatar";
+import { getSnapshot, saveSnapshot } from '@/app/lib/offlineStore';
+import { useLanguage } from '@/app/LanguageContext';
+import { languageLocale } from '@/app/lib/languages';
 
 interface Prayer {
     id: string;
     content: string;
     isAnonymous: boolean;
     prayCount: number;
-    createdAt: Date;
+    createdAt: Date | string;
     user: {
         name: string | null;
     };
@@ -21,19 +24,37 @@ interface Prayer {
 }
 
 interface PrayerWallViewProps {
-    initialPrayers: any[];
+    initialPrayers: Prayer[];
     currentUserId: string;
 }
 
 export default function PrayerWallView({ initialPrayers, currentUserId }: PrayerWallViewProps) {
+    const { language } = useLanguage();
     const [prayers, setPrayers] = useState<Prayer[]>(initialPrayers);
     const [content, setContent] = useState("");
     const [isAnonymous, setIsAnonymous] = useState(false);
     const [loading, setLoading] = useState(false);
 
+    useEffect(() => {
+        setPrayers(initialPrayers);
+        if (!currentUserId) return;
+        if (navigator.onLine) {
+            void saveSnapshot('/dashboard/prayer', currentUserId, initialPrayers);
+            return;
+        }
+
+        void getSnapshot<Prayer[]>('/dashboard/prayer', currentUserId).then((snapshot) => {
+            if (snapshot?.payload) setPrayers(snapshot.payload);
+        });
+    }, [currentUserId, initialPrayers]);
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         if (!content.trim()) return;
+        if (!navigator.onLine) {
+            toast.error("Sin conexión. Publicar pedidos requiere internet.");
+            return;
+        }
 
         setLoading(true);
         const res = await createPrayerRequest(content, isAnonymous);
@@ -48,11 +69,17 @@ export default function PrayerWallView({ initialPrayers, currentUserId }: Prayer
     };
 
     const handlePray = async (id: string) => {
+        if (!navigator.onLine) {
+            toast.error("Sin conexión. Esta acción requiere internet.");
+            return;
+        }
         const res = await prayForRequest(id);
         if (res.success) {
             toast.success("¡Amén! Has unido tu oración.");
             // Optimistic update or refresh
-            setPrayers(prayers.map(p => p.id === id ? { ...p, prayCount: p.prayCount + 1 } : p));
+            const nextPrayers = prayers.map(p => p.id === id ? { ...p, prayCount: p.prayCount + 1 } : p);
+            setPrayers(nextPrayers);
+            if (currentUserId) void saveSnapshot('/dashboard/prayer', currentUserId, nextPrayers);
         } else {
             toast.error(res.error || "Ya has orado por este pedido");
         }
@@ -60,15 +87,15 @@ export default function PrayerWallView({ initialPrayers, currentUserId }: Prayer
 
     return (
         <div className="max-w-3xl mx-auto py-4">
-            <div className="text-center mb-5">
+            <header className="ui-page-header flex-column text-center mb-5">
                 <h1 className="fw-bold d-flex align-items-center justify-content-center gap-2">
                     <HeartHandshake className="text-primary" size={32} /> Muro de Oración Global
                 </h1>
                 <p className="text-muted">No camines solo. Comparte tu carga y oremos unos por otros.</p>
-            </div>
+            </header>
 
             {/* Daily Prayer Section (Migrated from Home) */}
-            <div className="card border-0 shadow-sm rounded-4 mb-5 overflow-hidden animate-fade-in">
+            <div className="card ui-surface border-0 shadow-sm rounded-4 mb-5 overflow-hidden animate-fade-in">
                 <div className="card-body p-0">
                     <div className="row g-0">
                         <div className="col-md-4 bg-primary text-white p-4 d-flex flex-column justify-content-center align-items-center text-center">
@@ -81,7 +108,7 @@ export default function PrayerWallView({ initialPrayers, currentUserId }: Prayer
                         <div className="col-md-8 p-4">
                             <h5 className="fw-bold text-primary mb-3">Por la Paz y la Unidad</h5>
                             <p className="text-muted fst-italic mb-4">
-                                "Señor, hoy te pedimos que tu paz, que sobrepasa todo entendimiento, guarde nuestros corazones y pensamientos. Ayúdanos a ser instrumentos de tu amor en medio de la discordia."
+                                &ldquo;Señor, hoy te pedimos que tu paz, que sobrepasa todo entendimiento, guarde nuestros corazones y pensamientos. Ayúdanos a ser instrumentos de tu amor en medio de la discordia.&rdquo;
                             </p>
                             <div className="d-flex align-items-center justify-content-between">
                                 <span className="badge bg-primary-subtle text-primary rounded-pill px-3">Día 28</span>
@@ -95,7 +122,7 @@ export default function PrayerWallView({ initialPrayers, currentUserId }: Prayer
             </div>
 
             {/* Input Card */}
-            <div className="card border-0 shadow-sm rounded-4 mb-5 overflow-hidden">
+            <div className="card ui-surface border-0 shadow-sm rounded-4 mb-5 overflow-hidden">
                 <div className="card-body p-4 bg-primary-subtle bg-opacity-10">
                     <form onSubmit={handleSubmit}>
                         <div className="mb-3">
@@ -135,7 +162,7 @@ export default function PrayerWallView({ initialPrayers, currentUserId }: Prayer
             {/* Prayers List */}
             <div className="d-grid gap-4">
                 {prayers.length > 0 ? (prayers.map((prayer) => (
-                    <div key={prayer.id} className="card border-0 shadow-sm rounded-4 animate-slide-up">
+                    <div key={prayer.id} className="card ui-surface border-0 shadow-sm rounded-4 animate-slide-up">
                         <div className="card-body p-4">
                             <div className="d-flex align-items-center gap-3 mb-3">
                                 {prayer.isAnonymous ? (
@@ -149,12 +176,12 @@ export default function PrayerWallView({ initialPrayers, currentUserId }: Prayer
                                     <h6 className="fw-bold mb-0">
                                         {prayer.isAnonymous ? "Guerrero de Oración" : prayer.user.name}
                                     </h6>
-                                    <small className="text-muted">{new Date(prayer.createdAt).toLocaleDateString()}</small>
+                                    <small className="text-muted">{new Date(prayer.createdAt).toLocaleDateString(languageLocale(language))}</small>
                                 </div>
                             </div>
 
                             <p className="card-text fs-5 mb-4 text-dark-emphasis">
-                                "{prayer.content}"
+                                &ldquo;{prayer.content}&rdquo;
                             </p>
 
                             <div className="d-flex justify-content-between align-items-center border-top pt-3">
@@ -172,7 +199,7 @@ export default function PrayerWallView({ initialPrayers, currentUserId }: Prayer
                         </div>
                     </div>
                 ))) : (
-                    <div className="text-center py-5 text-muted">
+                    <div className="ui-state text-muted">
                         <MessageSquare size={48} className="mb-3 opacity-25" />
                         <p>No hay pedidos de oración recientes. ¡Sé el primero!</p>
                     </div>

@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef, useCallback } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, MotionConfig, useReducedMotion } from "framer-motion";
 import { getLlamiMessage } from "@/app/lib/mascot-messages";
 import { useLanguage } from "@/app/LanguageContext";
 
@@ -32,6 +32,7 @@ export default function LlamiMascot({
     expression: propExpression, isFeeding = false
 }: LlamiMascotProps) {
     const { t } = useLanguage();
+    const reduceMotion = useReducedMotion();
     const containerRef = useRef<HTMLDivElement>(null);
     const [message, setMessage] = useState<string>("");
     const [showMessage, setShowMessage] = useState(false);
@@ -91,10 +92,12 @@ export default function LlamiMascot({
         const timer = setTimeout(() => setShowMessage(true), 800);
         const hideTimer = setTimeout(() => setShowMessage(false), 5000);
         return () => { clearTimeout(timer); clearTimeout(hideTimer); };
-    }, [streak]);
+    }, [streak, t]);
 
     // Idle animation cycle
     useEffect(() => {
+        if (reduceMotion) return;
+
         const cycleIdle = () => {
             const action = IDLE_ACTIONS[Math.floor(Math.random() * IDLE_ACTIONS.length)];
             setIdleAction(action);
@@ -108,7 +111,7 @@ export default function LlamiMascot({
         };
         idleTimerRef.current = setInterval(cycleIdle, 8000 + Math.random() * 6000);
         return () => { if (idleTimerRef.current) clearInterval(idleTimerRef.current); };
-    }, []);
+    }, [reduceMotion]);
 
     // Inactivity → sleepy
     useEffect(() => {
@@ -123,7 +126,7 @@ export default function LlamiMascot({
         };
         resetInactivity();
         return () => { if (inactivityRef.current) clearTimeout(inactivityRef.current); };
-    }, [cursorPos]);
+    }, [cursorPos, streak, t]);
 
     // Cursor tracking
     const handleMouseMove = useCallback((e: React.MouseEvent) => {
@@ -146,7 +149,7 @@ export default function LlamiMascot({
             setMessage(getLlamiMessage(t, streak, false, "inactive"));
             setShowMessage(true);
         }, 15000);
-    }, []);
+    }, [streak, t]);
 
     const handleMouseLeave = useCallback(() => {
         setIsNear(false);
@@ -167,20 +170,22 @@ export default function LlamiMascot({
             setIsLit(false);
         }, 3000);
 
-        const newParticles: Particle[] = [];
-        for (let i = 0; i < 12; i++) {
-            particleIdRef.current++;
-            newParticles.push({
-                id: particleIdRef.current,
-                x: 10 + Math.random() * 80,
-                y: 10 + Math.random() * 80,
-                type: "spark",
-                delay: Math.random() * 0.3,
-                size: 8 + Math.random() * 14,
-            });
+        if (!reduceMotion) {
+            const newParticles: Particle[] = [];
+            for (let i = 0; i < 6; i++) {
+                particleIdRef.current++;
+                newParticles.push({
+                    id: particleIdRef.current,
+                    x: 10 + Math.random() * 80,
+                    y: 10 + Math.random() * 80,
+                    type: "spark",
+                    delay: Math.random() * 0.3,
+                    size: 8 + Math.random() * 14,
+                });
+            }
+            setParticles((prev) => [...prev, ...newParticles]);
+            setTimeout(() => setParticles((prev) => prev.filter(p => !newParticles.find(n => n.id === p.id))), 2000);
         }
-        setParticles((prev) => [...prev, ...newParticles]);
-        setTimeout(() => setParticles((prev) => prev.filter(p => !newParticles.find(n => n.id === p.id))), 2000);
     };
 
     // Feeding reaction animation
@@ -191,18 +196,20 @@ export default function LlamiMascot({
             setMessage(getLlamiMessage(t, streak, false, "feed"));
             setShowMessage(true);
             const newParticles: Particle[] = [];
-            for (let i = 0; i < 12; i++) {
-                particleIdRef.current++;
-                newParticles.push({
-                    id: particleIdRef.current,
-                    x: 20 + Math.random() * 60,
-                    y: 20 + Math.random() * 30,
-                    type: "star",
-                    delay: Math.random() * 0.3,
-                    size: 5 + Math.random() * 6,
-                });
+            if (!reduceMotion) {
+                for (let i = 0; i < 6; i++) {
+                    particleIdRef.current++;
+                    newParticles.push({
+                        id: particleIdRef.current,
+                        x: 20 + Math.random() * 60,
+                        y: 20 + Math.random() * 30,
+                        type: "star",
+                        delay: Math.random() * 0.3,
+                        size: 5 + Math.random() * 6,
+                    });
+                }
+                setParticles((prev) => [...prev, ...newParticles]);
             }
-            setParticles((prev) => [...prev, ...newParticles]);
             setTimeout(() => {
                 setIsBouncing(false);
                 setLocalExpression("happy");
@@ -210,7 +217,7 @@ export default function LlamiMascot({
             }, 1500);
             setTimeout(() => { setShowMessage(false); }, 3000);
         }
-    }, [isFeeding]);
+    }, [isFeeding, reduceMotion, streak, t]);
 
     const renderCosmetic = () => {
         switch (outfit) {
@@ -364,6 +371,7 @@ export default function LlamiMascot({
     };
 
     return (
+        <MotionConfig reducedMotion="user">
         <div
             ref={containerRef}
             className="position-relative d-flex align-items-center justify-content-center text-center"
@@ -378,15 +386,15 @@ export default function LlamiMascot({
                         initial={{ opacity: 0, scale: 0.8, y: 10, x: "-50%" }}
                         animate={{ opacity: 1, scale: 1, y: 0, x: "-50%" }}
                         exit={{ opacity: 0, scale: 0.8, y: 10, x: "-50%" }}
-                        className="position-absolute bottom-100 start-50 mb-2"
-                        style={{ width: "130px", zIndex: 100, pointerEvents: "none" }}
+                        className="llami-speech-bubble position-absolute bottom-100 start-50 mb-2"
+                        style={{ width: "min(220px, calc(100vw - 32px))", zIndex: 100, pointerEvents: "none" }}
                     >
-                        <div className="bg-white rounded-4 shadow-lg p-2 border border-2 border-warning position-relative">
+                        <div className="bg-white rounded-4 shadow-sm p-2 border border-2 border-warning position-relative" style={{ backgroundColor: 'var(--card-bg, #ffffff)' }}>
                             <p className="text-dark mb-0 fw-bold text-center lh-sm" style={{ fontSize: '0.7rem' }}>
                                 {message}
                             </p>
                             <div className="position-absolute top-100 start-50 translate-middle-x"
-                                style={{ width: 0, height: 0, borderLeft: '8px solid transparent', borderRight: '8px solid transparent', borderTop: '8px solid #fff', marginTop: '-2px' }}
+                                style={{ width: 0, height: 0, borderLeft: '8px solid transparent', borderRight: '8px solid transparent', borderTop: '8px solid var(--card-bg, #ffffff)', marginTop: '-2px' }}
                             />
                         </div>
                     </motion.div>
@@ -401,8 +409,8 @@ export default function LlamiMascot({
                         initial={{ opacity: 1, x: p.x - 10, y: p.y, scale: 0 }}
                         animate={{
                             opacity: 0,
-                            x: p.x - 10 + (Math.random() - 0.5) * 40,
-                            y: p.y - 40 - Math.random() * 30,
+                            x: p.x - 10 + ((p.id % 5) - 2) * 8,
+                            y: p.y - 40 - (p.id % 4) * 8,
                             scale: [0, 1.2, 0],
                         }}
                         exit={{ opacity: 0 }}
@@ -419,10 +427,12 @@ export default function LlamiMascot({
                 ))}
             </AnimatePresence>
 
-            <motion.div
+            <motion.button
+                type="button"
                 onClick={handleClick}
-                whileHover={{ scale: 1.08 }}
-                whileTap={{ scale: 0.92 }}
+                whileHover={reduceMotion ? undefined : { scale: 1.04 }}
+                whileTap={{ scale: 0.96 }}
+                aria-label={name ? `Interactuar con ${name}` : "Interactuar con Llami"}
                 animate={{
                     y: isBouncing ? [0, -8, 0, -5, 0] : [0, -3, 0],
                     rotate: idleAction === "wiggle" ? [0, 5, -5, 3, -3, 0] : 0,
@@ -435,15 +445,11 @@ export default function LlamiMascot({
                     scaleX: { duration: 1.2 },
                     scaleY: { duration: 1.2 },
                 }}
-                className="cursor-pointer mx-auto position-relative d-flex align-items-center justify-content-center"
+                className="cursor-pointer mx-auto position-relative d-flex align-items-center justify-content-center border-0 bg-transparent p-0"
                 style={{ width: "85px", height: "85px" }}
             >
                 <svg viewBox="0 0 100 100" className="w-100 h-100 drop-shadow-lg overflow-visible">
                     <defs>
-                        <filter id="soft-glow-llami" x="-30%" y="-30%" width="160%" height="160%">
-                            <feGaussianBlur stdDeviation="2" result="blur" />
-                            <feComposite in="SourceGraphic" in2="blur" operator="over" />
-                        </filter>
                         <radialGradient id={`grad-llami-${stage}`} cx="50%" cy="40%" r="60%">
                             <stop offset="0%" stopColor={c.s} />
                             <stop offset="50%" stopColor={c.p} />
@@ -455,11 +461,13 @@ export default function LlamiMascot({
                     <motion.circle
                         cx="50" cy="50" r="42"
                         fill={`url(#grad-llami-${stage})`}
-                        opacity={isLit ? 0.45 : isNear ? 0.35 : 0.2}
-                        animate={{
-                            scale: isLit ? [1.15, 1.5, 1.15] : [1, 1.12, 1],
-                            opacity: isLit ? [0.45, 0.7, 0.45] : isNear ? [0.35, 0.5, 0.35] : [0.2, 0.3, 0.2],
-                        }}
+                        opacity={isLit ? 0.35 : isNear ? 0.22 : 0.12}
+                        animate={reduceMotion
+                            ? { opacity: isLit ? 0.35 : isNear ? 0.22 : 0.12 }
+                            : {
+                                scale: isLit ? [1.1, 1.3, 1.1] : [1, 1.08, 1],
+                                opacity: isLit ? [0.35, 0.55, 0.35] : isNear ? [0.22, 0.32, 0.22] : [0.12, 0.18, 0.12],
+                            }}
                         transition={isLit ? { duration: 0.6, repeat: Infinity } : { duration: 2, repeat: Infinity }}
                     />
 
@@ -469,15 +477,6 @@ export default function LlamiMascot({
                             initial={{ opacity: 0, scale: 0.8 }}
                             animate={{ opacity: [0.3, 0.6, 0.3], scale: [1, 1.12, 1] }}
                             transition={{ duration: 0.5, repeat: Infinity }}
-                        />
-                    )}
-
-                    {/* Outer flame ring when lit */}
-                    {isLit && (
-                        <motion.circle cx="50" cy="50" r="48" fill="none" stroke={c.p} strokeWidth="2"
-                            initial={{ opacity: 0, scale: 0.8 }}
-                            animate={{ opacity: [0.25, 0.5, 0.25], scale: [1, 1.06, 1] }}
-                            transition={{ duration: 0.7, repeat: Infinity }}
                         />
                     )}
 
@@ -579,7 +578,8 @@ export default function LlamiMascot({
                         </>
                     )}
                 </svg>
-            </motion.div>
+            </motion.button>
         </div>
+        </MotionConfig>
     );
 }

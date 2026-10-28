@@ -1,10 +1,11 @@
 "use client";
 
 import { useEffect, useState } from 'react';
-import { useParams, useRouter } from 'next/navigation';
+import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import { ArrowLeft, MessageCircle, Clock, Shield, User as UserIcon } from 'lucide-react';
 import { useLanguage } from '@/app/LanguageContext';
+import { languageLocale } from '@/app/lib/languages';
 
 interface Post {
     id: string;
@@ -30,7 +31,6 @@ interface Category {
 export default function CategoryPostsPage() {
     const { t, language } = useLanguage();
     const params = useParams();
-    const router = useRouter();
     const categoryId = params.categoryId as string;
 
     const [posts, setPosts] = useState<Post[]>([]);
@@ -38,6 +38,10 @@ export default function CategoryPostsPage() {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
+        if (!navigator.onLine) {
+            setLoading(false);
+            return;
+        }
         // Fetch posts for this category
         fetch(`/api/forums/posts?categoryId=${categoryId}`)
             .then(res => res.json())
@@ -66,12 +70,7 @@ export default function CategoryPostsPage() {
         if (diffHours < 24) return t.forums.time_ago_hours.replace('{num}', diffHours.toString());
         if (diffDays < 7) return t.forums.time_ago_days.replace('{num}', diffDays.toString());
 
-        const localeMap: Record<string, string> = {
-            'es': 'es-ES',
-            'en': 'en-US',
-            'pt': 'pt-BR'
-        };
-        return date.toLocaleDateString(localeMap[language] || 'es-ES');
+        return date.toLocaleDateString(languageLocale(language));
     };
 
     if (loading) {
@@ -107,7 +106,7 @@ export default function CategoryPostsPage() {
                 </div>
             )}
 
-            <div className="d-flex justify-content-between align-items-center mb-4">
+            <div className="ui-page-header mb-4">
                 <h4 className="fw-bold text-secondary mb-0">{t.forums.posts_title}</h4>
                 <Link href={`/dashboard/forums/new?category=${categoryId}`} className="btn btn-primary rounded-pill">
                     {t.forums.new_post}
@@ -119,7 +118,7 @@ export default function CategoryPostsPage() {
                     <Link
                         key={post.id}
                         href={`/dashboard/forums/post/${post.id}`}
-                        className="card border-0 shadow-sm text-decoration-none hover-scale transition-all"
+                        className="card ui-surface border-0 shadow-sm text-decoration-none hover-scale transition-all"
                     >
                         <div className="card-body p-4">
                             <h5 className="fw-bold text-dark mb-2">{post.title}</h5>
@@ -166,7 +165,7 @@ export default function CategoryPostsPage() {
                 ))}
 
                 {posts.length === 0 && (
-                    <div className="text-center py-5">
+                    <div className="ui-state">
                         <MessageCircle size={48} className="text-muted mb-3" />
                         <p className="text-muted mb-3">{t.forums.no_posts}</p>
                         <Link href={`/dashboard/forums/new?category=${categoryId}`} className="btn btn-primary rounded-pill">

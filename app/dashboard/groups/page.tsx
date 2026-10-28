@@ -1,31 +1,32 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Users, Plus, LogIn, ArrowRight } from "lucide-react";
+import { Users, Plus, LogIn } from "lucide-react";
 import Link from "next/link";
-import { useLanguage } from "@/app/LanguageContext";
 import JoinGroupModal from "./components/JoinGroupModal";
 
 import { getMyGroups } from "./actions";
 
+type Group = { id: string; name: string; motto: string | null };
+
 export default function GroupsLandingPage() {
-    const { t } = useLanguage();
     const [showJoinModal, setShowJoinModal] = useState(false);
-    const [myGroups, setMyGroups] = useState<any[]>([]);
+    const [myGroups, setMyGroups] = useState<Group[]>([]);
 
     useEffect(() => {
+        if (!navigator.onLine) return;
         getMyGroups().then(setMyGroups);
     }, []);
 
     return (
         <div className="container-fluid py-4 animate-fade-in">
             {/* Header */}
-            <div className="d-flex justify-content-between align-items-center mb-4">
+            <header className="ui-page-header mb-4">
                 <div>
                     <h1 className="fw-extrabold text-dark m-0" style={{ fontSize: '2rem' }}>Grupos Pequeños</h1>
                     <p className="text-muted m-0">Crece junto a otros en tu caminar espiritual.</p>
                 </div>
-            </div>
+            </header>
 
             {/* Actions */}
             <div className="row g-3 mb-5">
@@ -46,7 +47,7 @@ export default function GroupsLandingPage() {
                 </div>
                 <div className="col-12 col-md-6">
                     <button onClick={() => setShowJoinModal(true)} className="btn p-0 w-100 text-start h-100">
-                        <div className="card border-0 shadow-sm bg-white hover-scale h-100">
+                        <div className="ui-surface hover-scale h-100">
                             <div className="card-body p-4 d-flex align-items-center justify-content-between">
                                 <div>
                                     <h4 className="fw-bold text-dark mb-1">Unirme a un Grupo</h4>
@@ -65,7 +66,7 @@ export default function GroupsLandingPage() {
             <h5 className="fw-bold text-secondary mb-3">Mis Grupos</h5>
 
             {myGroups.length === 0 ? (
-                <div className="text-center py-5 bg-light rounded-4 border-dashed">
+                <div className="ui-state border-dashed">
                     <Users size={48} className="text-muted mb-3 opacity-50" />
                     <h6 className="fw-bold text-muted">Aún no perteneces a ningún grupo</h6>
                     <p className="text-muted small mb-0">¡Únete a uno o crea el tuyo para empezar!</p>
@@ -75,7 +76,7 @@ export default function GroupsLandingPage() {
                     {myGroups.map(group => (
                         <div key={group.id} className="col-12 col-md-4">
                             <Link href={`/dashboard/groups/${group.id}`} className="text-decoration-none text-dark">
-                                <div className="card border-0 shadow-sm hover-scale h-100">
+                                <div className="ui-surface hover-scale h-100">
                                     <div className="card-body p-4">
                                         <div className="d-flex justify-content-between align-items-start mb-3">
                                             <div className="bg-primary bg-opacity-10 text-primary p-2 rounded-3">

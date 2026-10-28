@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Flame, Sparkles, Zap, ChevronLeft, Edit2, Check, X, Trophy, Star, Moon, Sun, Book, MessageCircle, Clock } from "lucide-react";
 import Link from "next/link";
@@ -12,6 +12,9 @@ import { Gamepad2, HelpCircle } from "lucide-react";
 import LlamiTutorial from "@/app/components/LlamiTutorial";
 import { completeLlamiTutorial } from "./actions";
 import { useLanguage } from "@/app/LanguageContext";
+import { useSession } from "next-auth/react";
+import { getSnapshot, saveSnapshot } from "@/app/lib/offlineStore";
+import { languageLocale } from "@/app/lib/languages";
 
 export const dynamic = 'force-dynamic';
 
@@ -22,9 +25,22 @@ const STAR_POSITIONS = [
     { x: "22%", y: "18%" }, { x: "70%", y: "28%" }, { x: "40%", y: "8%" },
 ];
 
+interface LlamiMascotData {
+    id: string;
+    name: string;
+    level: number;
+    experience: number;
+    flamePoints: number;
+    mood?: string | null;
+    lastFed?: string | null;
+    streak?: number;
+    user?: { hasSeenLlamiTutorial?: boolean };
+}
+
 export default function LlamiPage() {
-    const { t } = useLanguage();
-    const [mascot, setMascot] = useState<any>(null);
+    const { t, language } = useLanguage();
+    const { data: session, status: sessionStatus } = useSession();
+    const [mascot, setMascot] = useState<LlamiMascotData | null>(null);
     const [loading, setLoading] = useState(true);
     const [isFeeding, setIsFeeding] = useState(false);
     const [isPlayingTrivia, setIsPlayingTrivia] = useState(false);
@@ -32,25 +48,39 @@ export default function LlamiPage() {
     const [isEditingName, setIsEditingName] = useState(false);
     const [newName, setNewName] = useState("");
     const [isDarkMode, setIsDarkMode] = useState(false);
-    const [prevLevel, setPrevLevel] = useState<number | null>(null);
+    const previousLevel = useRef<number | null>(null);
     const [showLevelUp, setShowLevelUp] = useState(false);
     const [currentTime, setCurrentTime] = useState("");
 
     useEffect(() => {
         const now = new Date();
-        setCurrentTime(now.toLocaleTimeString("es-NI", { hour: "2-digit", minute: "2-digit" }));
-    }, []);
+        setCurrentTime(now.toLocaleTimeString(languageLocale(language), { hour: "2-digit", minute: "2-digit" }));
+    }, [language]);
+
+    const snapshotUserId = session?.user?.id || session?.user?.email || 'guest';
 
     const loadMascot = async () => {
+        if (!navigator.onLine) {
+            const cached = await getSnapshot<LlamiMascotData>('/dashboard/llami', snapshotUserId);
+            if (cached?.payload) {
+                setMascot(cached.payload);
+                previousLevel.current = cached.payload.level;
+                setShowTutorial(!cached.payload.user?.hasSeenLlamiTutorial);
+            }
+            setLoading(false);
+            return;
+        }
+
         try {
             const data = await getOrCreateMascot();
             if (data) {
-                if (prevLevel !== null && data.level > prevLevel) {
+                if (previousLevel.current !== null && data.level > previousLevel.current) {
                     setShowLevelUp(true);
                     setTimeout(() => setShowLevelUp(false), 5000);
                 }
                 setMascot(data);
-                setPrevLevel(data.level);
+                previousLevel.current = data.level;
+                await saveSnapshot('/dashboard/llami', snapshotUserId, data);
                 if (!data.user?.hasSeenLlamiTutorial) {
                     setShowTutorial(true);
                 }
@@ -65,11 +95,18 @@ export default function LlamiPage() {
     };
 
     useEffect(() => {
+        if (sessionStatus === 'loading') return;
         loadMascot();
-    }, []);
+        window.addEventListener('online', loadMascot);
+        return () => window.removeEventListener('online', loadMascot);
+    }, [sessionStatus, snapshotUserId]);
 
     const handleFeed = async () => {
         if (isFeeding) return;
+        if (!navigator.onLine) {
+            toast.error('Sin conexión. Alimentar a Llami requiere internet.');
+            return;
+        }
         setIsFeeding(true);
 
         const result = await feedMascot();
@@ -88,6 +125,10 @@ export default function LlamiPage() {
     };
 
     const handleTutorialComplete = async () => {
+        if (!navigator.onLine) {
+            toast.error('Sin conexión. Guardar el tutorial requiere internet.');
+            return;
+        }
         setShowTutorial(false);
         await completeLlamiTutorial();
         await loadMascot();
@@ -95,6 +136,10 @@ export default function LlamiPage() {
 
     const handleUpdateName = async () => {
         if (!newName.trim()) return;
+        if (!navigator.onLine) {
+            toast.error('Sin conexión. Cambiar el nombre requiere internet.');
+            return;
+        }
         const result = await updateMascotName(newName);
         if (result.success) {
             toast.success(t.llami.toast_rename_success);
@@ -155,7 +200,7 @@ export default function LlamiPage() {
     const nextMilestone = [7, 30, 50, 100, 365].find(m => !achievedMilestones.includes(m)) || 365;
 
     return (
-        <div className="container-fluid py-4 min-vh-100 bg-light text-primary">
+        <div className="container-fluid py-4 min-vh-100 bg-light text-primary ui-game-shell">
             <div className="d-flex align-items-center justify-content-between mb-5">
                 <div className="d-flex align-items-center gap-3">
                     <Link href="/dashboard" className="btn btn-white bg-white text-primary rounded-circle p-2 shadow-sm border-0">
@@ -320,7 +365,7 @@ export default function LlamiPage() {
 
                                     {/* Light Switch */}
                                     <motion.button
-                                        whileTap={{ scale: 0.9 }}
+                                        whileTap={{ scale: 0.96 }}
                                         onClick={() => setIsDarkMode(!isDarkMode)}
                                         className="position-absolute rounded-2 shadow-sm border-0 p-1"
                                         animate={{ background: isDarkMode ? '#fde68a' : '#fff' }}
@@ -478,7 +523,7 @@ export default function LlamiPage() {
                         </div>
 
                         {/* --- MAIN STATS CARD (col-12) --- */}
-                        <div className="card bg-white border-0 shadow-sm rounded-5 p-4 mb-4">
+                        <div className="ui-surface border-0 shadow-sm p-4 mb-4">
                             <div className="row g-3">
                                 <div className="col-4">
                                     <div className="p-3 text-center">
@@ -551,7 +596,7 @@ export default function LlamiPage() {
                                                     {target} {target === 365 ? 'año' : 'días'}
                                                 </div>
                                                 <div className="small text-muted">
-                                                    {unlocked ? '✓ Desbloqueado' : mascot.streak >= target ? '¡Completado!' : `${mascot.streak || 0}/${target}`}
+                                                    {unlocked ? '✓ Desbloqueado' : (mascot.streak || 0) >= target ? '¡Completado!' : `${mascot.streak || 0}/${target}`}
                                                 </div>
                                             </div>
                                         </motion.div>

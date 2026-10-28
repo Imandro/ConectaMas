@@ -1,29 +1,46 @@
-export const dynamic = 'force-dynamic';
+"use client";
 
-import { Metadata } from 'next';
-
-export const metadata: Metadata = {
-    title: 'Auxilio Espiritual (SOS) | Conecta+',
-    description: 'Encuentra paz en momentos de crisis. Acceso inmediato a oraciones, verdades bíblicas y música de adoración para fortalecer tu alma.',
-};
-
-import { auth } from "@/app/lib/auth";
-import { prisma } from "@/app/lib/prisma";
-import { redirect } from "next/navigation";
+import { useEffect, useState } from 'react';
+import { useSession } from 'next-auth/react';
+import { getSnapshot, saveSnapshot } from '@/app/lib/offlineStore';
+import { getLeaderPhone } from './actions';
 import SOSClient from "./SOSClient";
 
-export default async function EmergencyPage() {
-    const session = await auth();
+type SOSSnapshot = {
+    leaderPhone: string | null;
+};
 
-    if (!session?.user?.id) {
-        redirect("/auth/login");
-    }
+export default function SOSPage() {
+    const { data: session } = useSession();
+    const userId = (session?.user as { id?: string; email?: string } | undefined)?.id
+        || session?.user?.email
+        || null;
+    const [leaderPhone, setLeaderPhone] = useState<string | null>(null);
 
-    // Fetch minimal data for functionality (Authorization Layer)
-    const user = await prisma.user.findUnique({
-        where: { id: session.user.id },
-        select: { leaderPhone: true }
-    });
+    useEffect(() => {
+        setLeaderPhone(null);
+        if (!userId) return;
 
-    return <SOSClient leaderPhone={user?.leaderPhone || null} />;
+        let active = true;
+        const loadPhone = async () => {
+            const cached = await getSnapshot<SOSSnapshot>('/dashboard/sos', userId);
+            if (active && cached?.payload) setLeaderPhone(cached.payload.leaderPhone);
+            if (navigator.onLine === false) return;
+
+            const currentPhone = await getLeaderPhone();
+            if (!active) return;
+            setLeaderPhone(currentPhone);
+            void saveSnapshot('/dashboard/sos', userId, { leaderPhone: currentPhone });
+        };
+
+        void loadPhone().catch(() => undefined);
+        const onOnline = () => void loadPhone().catch(() => undefined);
+        window.addEventListener('online', onOnline);
+        return () => {
+            active = false;
+            window.removeEventListener('online', onOnline);
+        };
+    }, [userId]);
+
+    return <SOSClient leaderPhone={leaderPhone} />;
 }

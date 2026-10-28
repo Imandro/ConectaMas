@@ -1,13 +1,23 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import LlamiMascot from "@/app/components/LlamiMascot";
 import { updateMascotOutfit } from "./actions";
 import { Loader2, Lock, CheckCircle, Palette } from "lucide-react";
+import { useSession } from 'next-auth/react';
+import { getSnapshot, saveSnapshot } from '@/app/lib/offlineStore';
 
 interface MascotCustomizerProps {
-    initialMascot: any;
+    initialMascot: MascotSnapshot | null;
     userName: string;
+}
+
+interface MascotSnapshot {
+    outfit?: string | null;
+    lastOutfitChange?: Date | string | null;
+    experience?: number | null;
+    name?: string | null;
+    level?: number | null;
 }
 
 const OUTFITS = [
@@ -20,18 +30,43 @@ const OUTFITS = [
 ];
 
 export default function MascotCustomizer({ initialMascot, userName }: MascotCustomizerProps) {
+    const { data: session } = useSession();
+    const snapshotUserId = (session?.user as { id?: string; email?: string } | undefined)?.id
+        || session?.user?.email
+        || null;
+    const [mascot, setMascot] = useState(initialMascot);
     const [selectedOutfit, setSelectedOutfit] = useState(initialMascot?.outfit || "none");
     const [isSaving, setIsSaving] = useState(false);
 
+    useEffect(() => {
+        setMascot(initialMascot);
+        setSelectedOutfit(initialMascot?.outfit || 'none');
+        if (!snapshotUserId) return;
+        if (navigator.onLine) {
+            void saveSnapshot('/dashboard/mascot', snapshotUserId, initialMascot);
+            return;
+        }
+
+        void getSnapshot<MascotSnapshot>('/dashboard/mascot', snapshotUserId).then((snapshot) => {
+            if (!snapshot?.payload) return;
+            setMascot(snapshot.payload);
+            setSelectedOutfit(snapshot.payload.outfit || 'none');
+        });
+    }, [initialMascot, snapshotUserId]);
+
     // Calculate cooldown status
-    const lastChange = initialMascot?.lastOutfitChange ? new Date(initialMascot.lastOutfitChange) : new Date(0);
+    const lastChange = mascot?.lastOutfitChange ? new Date(mascot.lastOutfitChange) : new Date(0);
     const unlockDate = new Date(lastChange.getTime() + (14 * 24 * 60 * 60 * 1000));
     const now = new Date();
     const isLocked = now < unlockDate;
     const daysLeft = Math.ceil((unlockDate.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
 
     const handleSave = async () => {
-        if (selectedOutfit === initialMascot?.outfit) return;
+        if (selectedOutfit === mascot?.outfit) return;
+        if (!navigator.onLine) {
+            alert('Sin conexión. Guardar el atuendo requiere internet.');
+            return;
+        }
 
         setIsSaving(true);
         try {
@@ -61,14 +96,14 @@ export default function MascotCustomizer({ initialMascot, userName }: MascotCust
                     <h2 className="text-white fw-bold mb-1 d-flex align-items-center justify-content-center gap-2">
                         <Palette className="text-warning" /> Estilo de Llami
                     </h2>
-                    <p className="text-white-50 small mb-4">Personaliza a tu compañera</p>
+                    <p className="text-white-50 small mb-4">Personaliza a tu compañera{userName ? `, ${userName.split(' ')[0]}` : ''}</p>
 
                     <div className="d-flex justify-content-center py-4 scale-up-center">
                         <LlamiMascot
-                            streak={initialMascot?.experience || 10} // Viz purposes
-                            name={initialMascot?.name || "Llami"}
+                            streak={mascot?.experience || 10} // Viz purposes
+                            name={mascot?.name || "Llami"}
                             outfit={selectedOutfit}
-                            level={initialMascot?.level || 1}
+                            level={mascot?.level || 1}
                         />
                     </div>
                 </div>
@@ -117,7 +152,7 @@ export default function MascotCustomizer({ initialMascot, userName }: MascotCust
                         <div className="d-grid">
                             <button
                                 onClick={handleSave}
-                                disabled={isSaving || selectedOutfit === initialMascot?.outfit}
+                                disabled={isSaving || selectedOutfit === mascot?.outfit}
                                 className="btn btn-primary btn-lg rounded-pill fw-bold py-3 shadow-sm hover-brightness"
                             >
                                 {isSaving ? (

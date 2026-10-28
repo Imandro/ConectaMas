@@ -2,7 +2,7 @@ import { auth } from "@/app/lib/auth";
 export const dynamic = "force-dynamic";
 import { prisma } from "@/app/lib/prisma";
 import { redirect } from "next/navigation";
-import ProfileView from "./ProfileView";
+import ProfileView, { type ProfileUser } from "./ProfileView";
 
 export default async function ProfilePage() {
     const session = await auth();
@@ -35,10 +35,10 @@ export default async function ProfilePage() {
                 league: true,
                 weeklyXP: true,
                 totalXP: true,
-            } as any
+            }
         });
-    } catch (e) {
-        user = await prisma.user.findUnique({
+    } catch {
+        const fallbackUser = await prisma.user.findUnique({
             where: { email: session.user.email },
             select: {
                 name: true,
@@ -47,20 +47,19 @@ export default async function ProfilePage() {
             }
         });
 
-        if (user) {
-            const u = user as any;
-            u.gender = null;
-            u.spiritualLevel = "Explorador";
-            u.hasCompletedOnboarding = true;
-            u.username = null;
-            u.lastUsernameChange = null;
-            u.age = null;
-        }
+        user = fallbackUser ? {
+            ...fallbackUser,
+            gender: null,
+            spiritualLevel: "Explorador",
+            username: null,
+            lastUsernameChange: null,
+            age: null,
+        } : null;
     }
 
     if (!user) {
         redirect("/auth/login");
     }
 
-    return <ProfileView user={user} />;
+    return <ProfileView user={user as ProfileUser} />;
 }

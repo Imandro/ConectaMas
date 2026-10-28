@@ -1,38 +1,36 @@
 "use client";
 
 import { useEffect, useState, useRef } from "react";
-import { Quote, ExternalLink, Download } from "lucide-react";
+import { Download } from "lucide-react";
 import Link from 'next/link';
 import { toPng } from 'html-to-image';
 import download from 'downloadjs';
 
 import { verses as VERSES } from "@/app/lib/versesData";
 
-const BACKGROUND_IMAGES = [
-    "https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&q=80&w=1600", // Nature
-    "https://images.unsplash.com/photo-1470252649378-9c29740c9fa8?auto=format&fit=crop&q=80&w=1600", // Sunrise
-    "https://images.unsplash.com/photo-1472214103451-9374bd1c798e?auto=format&fit=crop&q=80&w=1600", // Mountains
-    "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&q=80&w=1600", // Forest
-    "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&q=80&w=1600", // Ocean
-    "https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&q=80&w=1600", // Stars
-];
-
 import { useLanguage } from '@/app/LanguageContext';
+
+const BACKGROUND_GRADIENTS = [
+    'linear-gradient(135deg, #0f2d4a, #1f6f8b)',
+    'linear-gradient(135deg, #3b1f5f, #b56576)',
+    'linear-gradient(135deg, #164a41, #4d9078)',
+    'linear-gradient(135deg, #402218, #b85c38)',
+    'linear-gradient(135deg, #12355b, #420039)',
+    'linear-gradient(135deg, #1b2735, #4b3f72)',
+];
 
 export default function DailyVerse() {
     const { t, language } = useLanguage();
     const [verse, setVerse] = useState(VERSES[0]);
-    const [bgImage, setBgImage] = useState(BACKGROUND_IMAGES[0]);
+    const [background, setBackground] = useState(BACKGROUND_GRADIENTS[0]);
     const cardRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         // Select verse based on day of year to keep it consistent for everyone/user for that day
         const dayOfYear = Math.floor((new Date().getTime() - new Date(new Date().getFullYear(), 0, 0).getTime()) / 1000 / 60 / 60 / 24);
         const verseIndex = dayOfYear % VERSES.length;
-        const bgIndex = dayOfYear % BACKGROUND_IMAGES.length;
-
         setVerse(VERSES[verseIndex]);
-        setBgImage(BACKGROUND_IMAGES[bgIndex]);
+        setBackground(BACKGROUND_GRADIENTS[verseIndex % BACKGROUND_GRADIENTS.length]);
     }, []);
 
     const handleDownload = async (e: React.MouseEvent) => {
@@ -72,9 +70,6 @@ export default function DailyVerse() {
             const parts = verseReference.split(" ");
             let book = parts[0];
             let chapterAndVerse = parts[1];
-            const shareText = `"${verse.text}" (${verse.reference})\n\nLeído en Conecta+ 🙏`;
-            const shareTitle = "Versículo del Día - Conecta+";
-
             // Handle books with numbers like "1 Juan"
             if (!isNaN(parseInt(parts[0])) && parts.length > 2) {
                 book = `${parts[0]} ${parts[1]}`;
@@ -83,42 +78,42 @@ export default function DailyVerse() {
 
             const chapter = chapterAndVerse.split(":")[0];
             return `/dashboard/bible?book=${encodeURIComponent(book)}&chapter=${chapter}`;
-        } catch (e) {
+        } catch {
             return "/dashboard/bible";
         }
     };
 
     return (
-        <Link href={getBibleLink()} className="text-decoration-none">
-            <div
-                ref={cardRef}
-                className="card border-0 shadow-lg text-white rounded-4 p-4 position-relative overflow-hidden mb-4 hover-scale transition-all"
-                style={{
-                    backgroundImage: `linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.7)), url(${bgImage})`,
-                    backgroundSize: 'cover',
-                    backgroundPosition: 'center',
-                    minHeight: '200px'
-                }}
+        <div
+            ref={cardRef}
+            className="daily-verse-card ui-surface card border-0 text-white rounded-4 p-3 p-sm-4 position-relative overflow-hidden mb-3"
+            style={{
+                backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.18), rgba(0, 0, 0, 0.38)), ${background}`,
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+                backgroundColor: 'var(--hero-from, var(--brand-primary, #0B1B32))',
+                minHeight: '184px',
+            }}
+        >
+            <button
+                onClick={handleDownload}
+                aria-label={t.dashboard.download_image}
+                className="no-export position-absolute top-0 end-0 m-3 btn btn-light rounded-circle p-0 d-inline-flex align-items-center justify-content-center z-3"
+                style={{ width: '44px', height: '44px' }}
+                title={t.dashboard.download_image}
             >
-                {/* Download Button */}
-                <button
-                    onClick={handleDownload}
-                    className="no-export position-absolute top-0 end-0 m-3 btn btn-sm btn-light rounded-circle p-2 shadow-sm z-3 opacity-75 hover-opacity-100"
-                    title={t.dashboard.download_image}
-                >
-                    <Download size={16} className="text-dark" />
-                </button>
+                <Download size={16} className="text-dark" />
+            </button>
+
+            <Link href={getBibleLink()} className="text-decoration-none text-white d-block h-100 position-relative z-1">
 
                 {/* Decorative Circles */}
-                <div className="position-absolute top-0 start-0 bg-white opacity-10 rounded-circle"
-                    style={{ width: '100px', height: '100px', transform: 'translate(-30%, -30%)' }}></div>
-
-                <div className="position-relative z-1 text-center py-4 d-flex flex-column justify-content-center h-100">
+                <div className="position-relative text-center px-2 pt-4 pb-2 d-flex flex-column justify-content-center h-100">
                     <h6 className="text-white-50 fw-bold text-uppercase small mb-3 letter-spacing-2">{t.dashboard.daily_verse_title}</h6>
                     <figure className="text-center mb-0">
                         <blockquote className="blockquote mb-3">
-                            <p className="fs-4 fw-bold fst-italic text-white mb-0 lh-base text-shadow">
-                                "{verseText}"
+                            <p className="fw-bold fst-italic text-white mb-0 lh-base text-shadow" style={{ fontSize: 'clamp(1.1rem, 4vw, 1.45rem)' }}>
+                                &ldquo;{verseText}&rdquo;
                             </p>
                         </blockquote>
                         <figcaption className="blockquote-footer text-white fw-medium mt-2 mb-0 fs-6">
@@ -130,7 +125,7 @@ export default function DailyVerse() {
                 <div className="position-absolute bottom-0 end-0 p-3 opacity-50">
                     <span className="small text-white-50">Conecta+</span>
                 </div>
-            </div>
-        </Link>
+            </Link>
+        </div>
     );
 }

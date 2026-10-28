@@ -1,11 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/app/lib/prisma';
-import { auth } from "@/app/lib/auth";
+import { getApiUserId } from "@/app/lib/api-auth";
 
 export async function POST(req: NextRequest) {
     try {
-        const session = await auth();
-        if (!session?.user?.id) {
+        const userId = await getApiUserId(req);
+        if (!userId) {
             return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
         }
 
@@ -25,7 +25,7 @@ export async function POST(req: NextRequest) {
                 auth: subscription.keys.auth,
             },
             create: {
-                userId: (session.user as any).id,
+                userId,
                 endpoint: subscription.endpoint,
                 p256dh: subscription.keys.p256dh,
                 auth: subscription.keys.auth,
@@ -41,8 +41,8 @@ export async function POST(req: NextRequest) {
 
 export async function DELETE(req: NextRequest) {
     try {
-        const session = await auth();
-        if (!session?.user?.id) {
+        const userId = await getApiUserId(req);
+        if (!userId) {
             return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
         }
 
@@ -51,7 +51,7 @@ export async function DELETE(req: NextRequest) {
         await prisma.pushSubscription.deleteMany({
             where: {
                 endpoint: endpoint,
-                userId: (session.user as any).id
+                userId
             }
         });
 

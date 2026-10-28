@@ -6,6 +6,10 @@ import Link from "next/link";
 import StruggleTracker from "../components/StruggleTracker";
 import { getTranslations, Language } from "@/app/lib/getTranslations";
 import { Metadata } from 'next';
+import SecondaryPageShell from '@/app/components/SecondaryUI';
+
+type Struggle = Record<string, unknown> & { title: string };
+type StrugglePlan = { title: string; days: { id: string }[] };
 
 export const metadata: Metadata = {
     title: 'Transformación | Conecta+',
@@ -26,7 +30,10 @@ export default async function LuchasPage() {
     const t = getTranslations((user?.preferredLanguage as Language) || 'es');
     const userId = session.user.id;
 
-    const prismaAny = prisma as any;
+    const prismaAny = prisma as unknown as {
+        userStruggle: { findMany: (args: Record<string, unknown>) => Promise<Struggle[]> };
+        strugglePlan: { findMany: (args: Record<string, unknown>) => Promise<StrugglePlan[]> };
+    };
     const struggles = await prismaAny.userStruggle.findMany({
         where: { userId },
         orderBy: { updatedAt: 'desc' }
@@ -37,8 +44,8 @@ export default async function LuchasPage() {
     });
 
     // Attach totalDays to each struggle based on matching plan title
-    const strugglesWithTotalDays = struggles.map((s: any) => {
-        const plan = plans.find((p: any) => p.title.toLowerCase().includes(s.title.toLowerCase()) || s.title.toLowerCase().includes(p.title.toLowerCase()));
+    const strugglesWithTotalDays = struggles.map((s: Struggle) => {
+        const plan = plans.find((p: StrugglePlan) => p.title.toLowerCase().includes(s.title.toLowerCase()) || s.title.toLowerCase().includes(p.title.toLowerCase()));
         return {
             ...s,
             totalDays: plan?.days?.length || 7
@@ -49,9 +56,10 @@ export default async function LuchasPage() {
     const serializableStruggles = JSON.parse(JSON.stringify(strugglesWithTotalDays));
 
     return (
+        <SecondaryPageShell>
         <div className="container py-4 min-vh-100 animate-fade-in">
             {/* Header */}
-            <header className="d-flex align-items-center gap-3 mb-5">
+            <header className="ui-page-header mb-5">
                 <Link href="/dashboard" className="btn btn-light rounded-circle p-2 shadow-sm hover-scale transition-all">
                     <ArrowLeft size={24} className="text-secondary" />
                 </Link>
@@ -68,5 +76,6 @@ export default async function LuchasPage() {
             </div>
 
         </div>
+        </SecondaryPageShell>
     );
 }

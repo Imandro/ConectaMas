@@ -1,41 +1,31 @@
 import { NextResponse } from 'next/server';
 import { prisma } from "@/app/lib/prisma";
+import { getApiUser } from '@/app/lib/api-auth';
+import { evaluateLegalAccess } from '@/app/lib/legal/policy';
 
 export async function POST(req: Request) {
     try {
-        const authHeader = req.headers.get('Authorization');
-        if (!authHeader || !authHeader.startsWith('Bearer ')) {
-            return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-        }
-
-        const token = authHeader.split(' ')[1];
-        // In a real app we'd verify the JWT. For now let's assume session or simple check.
-        // Given this is a local replica, I'll bypass deep verification if needed or use session.
+        const user = await getApiUser(req, { id: true, age: true, country: true });
+        if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
         const body = await req.json();
-        const { email, spiritualStatus, sinsToOvercome, problemsFaced, connectionMethods, gender, age, mascotName, leaderPhone } = body;
-
-        if (!email) {
-            return NextResponse.json({ error: 'Email is required' }, { status: 400 });
-        }
-
-        const user = await prisma.user.findUnique({
-            where: { email: email.toLowerCase() }
-        });
-
-        if (!user) {
-            return NextResponse.json({ error: 'User not found' }, { status: 404 });
-        }
+        const { spiritualStatus, sinsToOvercome, problemsFaced, connectionMethods, gender, age, mascotName, leaderPhone } = body;
+        const parsedAge = age === undefined || age === null ? user.age ?? 0 : Number(age);
+        const legalAccess = evaluateLegalAccess(user.country || '', parsedAge);
+        if (!legalAccess.allowed) return NextResponse.json({ error: 'Edad o país no permitido' }, { status: 400 });
+        const sins = Array.isArray(sinsToOvercome) ? sinsToOvercome.filter((item): item is string => typeof item === 'string') : [];
+        const problems = Array.isArray(problemsFaced) ? problemsFaced.filter((item): item is string => typeof item === 'string') : [];
+        const methods = Array.isArray(connectionMethods) ? connectionMethods.filter((item): item is string => typeof item === 'string') : [];
 
         await (prisma as any).user.update({
             where: { id: user.id },
             data: {
                 spiritualStatus,
-                sinsToOvercome: JSON.stringify(sinsToOvercome),
-                problemsFaced: JSON.stringify(problemsFaced),
-                connectionMethods: JSON.stringify(connectionMethods),
+                sinsToOvercome: JSON.stringify(sins),
+                problemsFaced: JSON.stringify(problems),
+                connectionMethods: JSON.stringify(methods),
                 gender,
-                age: Number(age),
+                age: parsedAge,
                 leaderPhone,
                 hasCompletedOnboarding: true,
                 mascot: {
@@ -54,9 +44,9 @@ export async function POST(req: Request) {
 
         // Create initial struggles
         const strugglesToCreate = [
-            ...sinsToOvercome.map((s: string) => ({ title: s, type: 'SIN' })),
-            ...problemsFaced.map((p: string) => ({ title: p, type: 'PROBLEM' })),
-            ...(connectionMethods.includes("Leer la Biblia diariamente") || connectionMethods.includes("Estudiar la Palabra más profundo")
+            ...sins.map((s: string) => ({ title: s, type: 'SIN' })),
+            ...problems.map((p: string) => ({ title: p, type: 'PROBLEM' })),
+            ...(methods.includes("Leer la Biblia diariamente") || methods.includes("Estudiar la Palabra más profundo")
                 ? [{ title: "Lectura Bíblica", type: 'CONNECTION' }]
                 : [])
         ];

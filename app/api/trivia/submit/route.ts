@@ -1,20 +1,23 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/app/lib/prisma';
-import { auth } from '@/app/lib/auth';
+import { getApiUserId } from '@/app/lib/api-auth';
 
 export async function POST(req: Request) {
     try {
-        const session = await auth();
-        if (!session?.user?.id) {
+        const userId = await getApiUserId(req);
+        if (!userId) {
             return NextResponse.json({ error: "No autorizado" }, { status: 401 });
         }
 
         const { questionId, selectedIndex } = await req.json();
-        const userId = session.user.id;
-        const prismaAny = prisma as any;
 
-        const question = await prismaAny.triviaQuestion.findUnique({
-            where: { id: questionId }
+        const question = await prisma.triviaQuestion.findUnique({
+            where: { id: questionId },
+            select: {
+                correctIndex: true,
+                explanation: true,
+                reference: true,
+            },
         });
 
         if (!question) {
@@ -25,17 +28,18 @@ export async function POST(req: Request) {
 
         // --- OPTIMIZACIÓN RECURSOS & ANTI-CHEAT ---
         // Verificar si ya respondió bien antes para no dar XP doble
-        const previousAttempt = await prismaAny.userTriviaAttempt.findUnique({
+        const previousAttempt = await prisma.userTriviaAttempt.findUnique({
             where: {
                 userId_questionId: { userId, questionId }
-            }
+            },
+            select: { isCorrect: true },
         });
 
         const alreadyCorrect = previousAttempt?.isCorrect === true;
         // ------------------------------------------
 
         // 1. Record the attempt (Upsert: update if exists, create if not)
-        await prismaAny.userTriviaAttempt.upsert({
+        await prisma.userTriviaAttempt.upsert({
             where: {
                 userId_questionId: {
                     userId,
@@ -55,20 +59,14 @@ export async function POST(req: Request) {
 
         // 2. If correct AND NOT already correctly answered before, reward Llami
         if (isCorrect && !alreadyCorrect) {
-            const mascot = await prismaAny.mascot.findUnique({
-                where: { userId }
+            await prisma.mascot.updateMany({
+                where: { userId },
+                data: {
+                    experience: { increment: 5 },
+                    flamePoints: { increment: 2 },
+                    lastFed: new Date(), // Alimentar a Llami
+                }
             });
-
-            if (mascot) {
-                await prismaAny.mascot.update({
-                    where: { userId },
-                    data: {
-                        experience: { increment: 5 },
-                        flamePoints: { increment: 2 },
-                        lastFed: new Date() // Alimentar a Llami
-                    }
-                });
-            }
 
             // Award XP to user for ranking
             await prisma.user.update({
@@ -86,8 +84,10 @@ export async function POST(req: Request) {
             explanation: question.explanation,
             reference: question.reference
         });
-    } catch (error: any) {
+    } catch (error: unknown) {
         console.error("Error submitting trivia:", error);
-        return NextResponse.json({ error: error.message || "Error interno" }, { status: 500 });
+        return NextResponse.json({
+            error: error instanceof Error ? error.message : "Error interno",
+        }, { status: 500 });
     }
 }

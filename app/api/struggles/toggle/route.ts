@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/app/lib/prisma';
-import { getApiUser } from '@/app/lib/api-auth';
+import { getApiUserId } from '@/app/lib/api-auth';
+import { Prisma } from '@prisma/client';
 export const dynamic = 'force-dynamic';
 
 export async function POST(req: Request) {
@@ -11,22 +12,22 @@ export async function POST(req: Request) {
             return NextResponse.json({ message: 'ID required' }, { status: 400 });
         }
 
-        const user = await getApiUser(req);
+        const userId = await getApiUserId(req);
 
-        if (!user) {
+        if (!userId) {
             return NextResponse.json({ message: 'User not found' }, { status: 404 });
         }
 
         // Verify ownership
         const struggle = await prisma.userStruggle.findFirst({
-            where: { id, userId: user.id }
+            where: { id, userId }
         });
 
         if (!struggle) {
             return NextResponse.json({ message: 'Struggle not found' }, { status: 404 });
         }
 
-        let updateData: any = {};
+        const updateData: Prisma.UserStruggleUpdateInput = {};
 
         if (action === 'start') {
             updateData.isStarted = true;

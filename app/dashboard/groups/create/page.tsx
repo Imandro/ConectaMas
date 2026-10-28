@@ -49,6 +49,10 @@ export default function LeaderSurveyPage() {
         if (step < questions.length) {
             setStep(step + 1);
         } else {
+            if (!navigator.onLine) {
+                toast.error('Sin conexión. Crear un grupo requiere internet.');
+                return;
+            }
             // Finish
             setIsSubmitting(true);
             const res = await submitLeaderApplication(answers);

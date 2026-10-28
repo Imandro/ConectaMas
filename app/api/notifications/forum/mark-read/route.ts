@@ -1,23 +1,22 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/app/lib/prisma';
-import { auth } from '@/app/lib/auth';
+import { getApiUserId } from '@/app/lib/api-auth';
 
 export const dynamic = 'force-dynamic';
 
 export async function POST(request: NextRequest) {
     try {
-        const session = await auth();
-        if (!session?.user?.id) {
+        const userId = await getApiUserId(request);
+        if (!userId) {
             return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
         }
 
-        const userId = (session.user as any).id;
         const body = await request.json();
         const { notificationId } = body;
 
         if (notificationId) {
             // Mark specific notification as read
-            await (prisma as any).forumNotification.update({
+            await prisma.forumNotification.update({
                 where: {
                     id: notificationId,
                     userId: userId // Ensure user owns this notification
@@ -28,7 +27,7 @@ export async function POST(request: NextRequest) {
             });
         } else {
             // Mark all notifications as read
-            await (prisma as any).forumNotification.updateMany({
+            await prisma.forumNotification.updateMany({
                 where: {
                     userId: userId,
                     isRead: false

@@ -5,7 +5,7 @@ import { redirect } from "next/navigation";
 
 export default async function PrayerPage() {
     const session = await auth();
-    if (!session?.user?.id) redirect("/login");
+    if (!session?.user?.id) redirect("/auth/login");
 
     const res = await getGlobalPrayers();
     // TS might infer undefined if not narrowed correctly, so we force a fallback

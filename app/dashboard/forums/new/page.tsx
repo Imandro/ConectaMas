@@ -23,9 +23,11 @@ export default function NewPostPage() {
     const [content, setContent] = useState('');
     const [categoryId, setCategoryId] = useState(preselectedCategory || '');
     const [isAnonymous, setIsAnonymous] = useState(false);
+    const [rulesAccepted, setRulesAccepted] = useState(false);
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
+        if (!navigator.onLine) return;
         fetch('/api/forums/categories')
             .then(res => res.json())
             .then(data => setCategories(data))
@@ -37,6 +39,10 @@ export default function NewPostPage() {
 
         if (!title.trim() || !content.trim() || !categoryId) {
             alert(t.forums.form_validation);
+            return;
+        }
+        if (!navigator.onLine) {
+            alert('Sin conexión. Publicar requiere internet.');
             return;
         }
 
@@ -51,6 +57,7 @@ export default function NewPostPage() {
                     content,
                     categoryId,
                     isAnonymous
+                    ,communityRulesAccepted: rulesAccepted
                 })
             });
 
@@ -80,6 +87,7 @@ export default function NewPostPage() {
                     <h2 className="fw-bold text-secondary mb-4">{t.forums.new_post}</h2>
 
                     <form onSubmit={handleSubmit}>
+                        <div className="alert alert-info small"><strong>Reglas:</strong> respeto, privacidad y seguridad. <Link href="/legal/community" target="_blank">Leer reglas completas</Link>.</div>
                         <div className="mb-3">
                             <label className="form-label fw-bold">{t.forums.form_category}</label>
                             <select
@@ -141,6 +149,11 @@ export default function NewPostPage() {
                             <small className="text-muted">
                                 {t.forums.form_anonymous_helper}
                             </small>
+                        </div>
+
+                        <div className="mb-4 form-check">
+                            <input className="form-check-input" type="checkbox" id="communityRulesAccepted" checked={rulesAccepted} onChange={(e) => setRulesAccepted(e.target.checked)} required />
+                            <label className="form-check-label small" htmlFor="communityRulesAccepted">Acepto las reglas de comunidad.</label>
                         </div>
 
                         <div className="d-flex gap-2">

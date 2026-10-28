@@ -2,10 +2,11 @@
 
 import React, { useState, useCallback } from "react";
 import Link from "next/link";
-import { ArrowLeft, Trophy, Check, X } from "lucide-react";
+import { ArrowLeft, Trophy } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import { bookMatchData, BookMatchQuestion, BookMatchItem } from "@/app/data/games/bookMatchData";
+import { bookMatchData, BookMatchQuestion } from "@/app/data/games/bookMatchData";
 import { saveGameScore, getBestScores } from "@/app/dashboard/games/clientGameScore";
+import SecondaryPageShell from "@/app/components/SecondaryUI";
 
 const ROUNDS = 12;
 
@@ -68,7 +69,8 @@ export default function BookMatchGame() {
     };
 
     return (
-        <div className="container-fluid py-4 min-vh-100" style={{ background: "linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%)" }}>
+        <SecondaryPageShell>
+        <div className="container-fluid py-4 min-vh-100 game-surface-match ui-game-shell">
             <div className="max-w-4xl mx-auto">
                 <div className="d-flex align-items-center gap-3 mb-4">
                     <Link href="/dashboard/games" className="btn btn-white bg-white text-dark rounded-circle p-2 shadow-sm border-0">
@@ -226,5 +228,6 @@ export default function BookMatchGame() {
                 }
             `}</style>
         </div>
+        </SecondaryPageShell>
     );
 }

@@ -1,10 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/app/lib/prisma';
-import { auth } from '@/app/lib/auth';
+import { getApiUser } from '@/app/lib/api-auth';
 
 export const dynamic = 'force-dynamic';
 
-const prismaClient = prisma as any;
+const prismaClient = prisma;
 
 // DELETE /api/forums/replies/[id] - Delete a reply (author or admin only)
 export async function DELETE(
@@ -12,18 +12,9 @@ export async function DELETE(
     { params }: { params: { id: string } }
 ) {
     try {
-        const session = await auth();
-
-        if (!session?.user?.email) {
-            return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-        }
-
-        const user = await prismaClient.user.findUnique({
-            where: { email: session.user.email }
-        });
-
+        const user = await getApiUser(request, { id: true, role: true });
         if (!user) {
-            return NextResponse.json({ error: 'User not found' }, { status: 404 });
+            return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
         }
 
         const reply = await prismaClient.forumReply.findUnique({

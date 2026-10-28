@@ -1,5 +1,6 @@
 package com.conecta_plus.app;
 
+import com.google.androidbrowserhelper.playbilling.digitalgoods.DigitalGoodsRequestHandler;
 
 
 public class DelegationService extends
@@ -8,7 +9,7 @@ public class DelegationService extends
     public void onCreate() {
         super.onCreate();
 
-        
+        registerExtraCommandHandler(new DigitalGoodsRequestHandler(getApplicationContext()));
     }
 }
 

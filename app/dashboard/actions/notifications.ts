@@ -3,9 +3,9 @@
 import { auth } from "@/app/lib/auth";
 import { prisma } from "@/app/lib/prisma";
 
-export async function getUnreadQACount() {
-    const session = await auth();
-    if (!session?.user?.id) return 0;
+export async function getUnreadQACount(userId?: string) {
+    const resolvedUserId = userId || (await auth())?.user?.id;
+    if (!resolvedUserId) return 0;
 
     try {
         // Count questions created in the last 24 hours that the user hasn't viewed
@@ -14,7 +14,7 @@ export async function getUnreadQACount() {
         const newQuestionsCount = await prisma.question.count({
             where: {
                 createdAt: { gte: oneDayAgo },
-                userId: { not: session.user.id } // Don't count user's own questions
+                userId: { not: resolvedUserId } // Don't count user's own questions
             }
         });
 
@@ -23,9 +23,9 @@ export async function getUnreadQACount() {
             where: {
                 createdAt: { gte: oneDayAgo },
                 question: {
-                    userId: session.user.id
+                    userId: resolvedUserId
                 },
-                userId: { not: session.user.id } // Don't count user's own answers
+                userId: { not: resolvedUserId } // Don't count user's own answers
             }
         });
 

@@ -4,6 +4,38 @@ import path from 'path';
 
 // Force dynamic rendering for this route
 export const dynamic = 'force-dynamic';
+const PUBLIC_CACHE_HEADERS = {
+    'Cache-Control': 'public, max-age=0, s-maxage=86400, stale-while-revalidate=604800',
+};
+
+type BibleBook = { chapters: string[][] };
+
+const BIBLE_FILE_PATH = path.join(process.cwd(), 'public', 'bible', 'es_rvr.json');
+let BIBLE_DATA_CACHE: BibleBook[] | null | undefined;
+
+function loadBibleData(): BibleBook[] | null {
+    if (BIBLE_DATA_CACHE !== undefined) return BIBLE_DATA_CACHE;
+    if (!fs.existsSync(BIBLE_FILE_PATH)) {
+        BIBLE_DATA_CACHE = null;
+        return BIBLE_DATA_CACHE;
+    }
+
+    try {
+        let fileContent = fs.readFileSync(BIBLE_FILE_PATH, 'utf8');
+        if (fileContent.charCodeAt(0) === 0xFEFF) {
+            fileContent = fileContent.slice(1);
+        }
+
+        const parsed: unknown = JSON.parse(fileContent);
+        if (!Array.isArray(parsed)) throw new Error('Bible data must be an array');
+
+        BIBLE_DATA_CACHE = parsed as BibleBook[];
+    } catch (error) {
+        console.error('[BIBLE] Invalid local data:', error instanceof Error ? error.message : 'unknown error');
+        BIBLE_DATA_CACHE = null;
+    }
+    return BIBLE_DATA_CACHE;
+}
 
 // Book name mapping from Spanish to indices in es_rvr.json
 const BOOK_MAPPING: { [key: string]: number } = {
@@ -45,9 +77,8 @@ export async function GET(request: NextRequest) {
             }, { status: 200 });
         }
 
-        const filePath = path.join(process.cwd(), 'public', 'bible', 'es_rvr.json');
-
-        if (!fs.existsSync(filePath)) {
+        const bibleData = loadBibleData();
+        if (!bibleData) {
             return NextResponse.json({
                 error: "Database missing",
                 reference: `${book} ${chapter}`,
@@ -56,14 +87,6 @@ export async function GET(request: NextRequest) {
             }, { status: 200 });
         }
 
-        let fileContent = fs.readFileSync(filePath, 'utf8');
-
-        // Strip BOM if present
-        if (fileContent.charCodeAt(0) === 0xFEFF) {
-            fileContent = fileContent.slice(1);
-        }
-
-        const bibleData = JSON.parse(fileContent);
         const bookData = bibleData[bookIndex];
 
         if (!bookData) {
@@ -87,7 +110,7 @@ export async function GET(request: NextRequest) {
             }, { status: 200 });
         }
 
-        const verses = chapterData.map((v: string, index: number) => ({
+        const verses: Array<{ verse: number; text: string }> = chapterData.map((v: string, index: number) => ({
             verse: index + 1,
             text: v
         }));
@@ -95,15 +118,16 @@ export async function GET(request: NextRequest) {
         return NextResponse.json({
             reference: `${book} ${chapter}`,
             verses: verses,
-            text: verses.map((v: any) => `${v.verse} ${v.text}`).join(' ')
-        });
-    } catch (error: any) {
-        console.error("[BIBLE] FATAL ERROR:", error.message);
+            text: verses.map((v) => `${v.verse} ${v.text}`).join(' ')
+        }, { headers: PUBLIC_CACHE_HEADERS });
+    } catch (error: unknown) {
+        const message = error instanceof Error ? error.message : 'Unknown Bible error';
+        console.error("[BIBLE] FATAL ERROR:", message);
         return NextResponse.json({
             error: "Error interno",
             reference: "",
             verses: [],
-            text: `Error al procesar la Biblia: ${error.message}`
+            text: `Error al procesar la Biblia: ${message}`
         }, { status: 200 });
     }
 }

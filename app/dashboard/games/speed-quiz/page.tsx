@@ -7,6 +7,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { speedQuizData, SpeedQuizQuestion } from "@/app/data/games/speedQuizData";
 import { saveGameScore, getBestScores } from "../clientGameScore";
 import { Check, X } from "lucide-react";
+import SecondaryPageShell from "@/app/components/SecondaryUI";
 
 const TOTAL_QUESTIONS = 10;
 const TIME_LIMIT = 60;
@@ -140,12 +141,12 @@ export default function SpeedQuizGame() {
         if (r.success) setBestScore(r.bestScore ?? 0);
     };
 
-    const progress = ((round + (feedback ? 1 : 0)) / TOTAL_QUESTIONS) * 100;
     const timePercent = (timeLeft / TIME_LIMIT) * 100;
     const isLowTime = timeLeft <= 10;
 
     return (
-        <div className="min-vh-100 game-gradient">
+        <SecondaryPageShell>
+        <div className="min-vh-100 game-gradient ui-game-shell">
             <div className="container py-4">
                 <div className="mx-auto" style={{ maxWidth: 640 }}>
                     <div className="d-flex align-items-center gap-3 mb-4">
@@ -324,7 +325,7 @@ export default function SpeedQuizGame() {
 
             <style jsx>{`
                 .game-gradient {
-                    background: linear-gradient(135deg, #2d1b69 0%, #11998e 50%, #38ef7d 100%);
+                    background: #101a2a;
                 }
                 .start-card {
                     background: rgba(255,255,255,0.08);
@@ -366,7 +367,7 @@ export default function SpeedQuizGame() {
                 .game-card.feedback-incorrect { box-shadow: 0 0 30px rgba(231,76,60,0.35), 0 4px 20px rgba(0,0,0,0.08); }
 
                 .round-badge {
-                    background: linear-gradient(135deg, #8b5cf6, #ec4899);
+                    background: #244a72;
                     color: #fff; font-weight: 700; font-size: 0.8rem;
                     padding: 4px 14px; border-radius: 100px;
                 }
@@ -375,7 +376,7 @@ export default function SpeedQuizGame() {
                 .step-dot {
                     width: 10px; height: 10px; border-radius: 50%;
                     background: rgba(0,0,0,0.12);
-                    transition: all 0.3s ease;
+                    transition: background-color 0.3s ease, box-shadow 0.3s ease;
                 }
                 .step-dot.active { background: #8b5cf6; box-shadow: 0 0 0 3px rgba(139,92,246,0.3); }
                 .step-dot.completed { background: #10b981; }
@@ -427,7 +428,7 @@ export default function SpeedQuizGame() {
                     font-size: 0.95rem;
                     color: #1e293b;
                     cursor: pointer;
-                    transition: all 0.2s;
+                    transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
                     text-align: left;
                     box-shadow: 0 2px 8px rgba(0,0,0,0.04);
                 }
@@ -505,5 +506,6 @@ export default function SpeedQuizGame() {
                 }
             `}</style>
         </div>
+        </SecondaryPageShell>
     );
 }

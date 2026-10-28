@@ -35,13 +35,28 @@ export default function LegalFooter() {
                                     Política de Cookies
                                 </Link>
                             </li>
+                            <li className="mb-2">
+                                <Link href="/legal/refunds" className="text-muted small text-decoration-none hover-text-primary">
+                                    Pagos y reembolsos
+                                </Link>
+                            </li>
+                            <li className="mb-2">
+                                <Link href="/legal/community" className="text-muted small text-decoration-none hover-text-primary">
+                                    Reglas de comunidad
+                                </Link>
+                            </li>
+                            <li className="mb-2">
+                                <Link href="/legal/age" className="text-muted small text-decoration-none hover-text-primary">
+                                    Edad y acceso regional
+                                </Link>
+                            </li>
                         </ul>
                     </div>
 
                     <div className="col-12 col-md-3">
                         <h6 className="fw-bold text-dark mb-3">Contacto</h6>
                         <p className="text-muted small mb-1">
-                            <strong>Email:</strong> contacto@conectamas.com
+                            <strong>Email:</strong> marioalejandroruiz28@gmail.com
                         </p>
                         <p className="text-muted small mb-0">
                             <strong>Desarrollador:</strong> Mario Alvarez
@@ -52,7 +67,7 @@ export default function LegalFooter() {
                 <div className="row mt-4 pt-3 border-top">
                     <div className="col-12 text-center">
                         <p className="text-muted small mb-0">
-                            ConectaMas utiliza Google AdMob para mostrar anuncios.
+                            Conecta+ no carga publicidad de terceros.
                             <Link href="/legal/privacy" className="text-primary ms-1">
                                 Más información sobre privacidad
                             </Link>

@@ -1,0 +1,103 @@
+.scope {
+    --secondary-navy: var(--ink-strong, #0b1b32);
+    --secondary-gold: var(--accent-gold, #e0b24f);
+    --secondary-muted: var(--ink-muted, #64748b);
+    --secondary-border: var(--surface-border, rgba(11, 27, 50, 0.08));
+    min-width: 0;
+    color: var(--secondary-navy);
+}
+
+.scope :global(.container),
+.scope :global(.container-fluid),
+.scope :global(.row),
+.scope :global([class*='col-']) {
+    min-width: 0;
+}
+
+.scope :global(.card) {
+    border: 1px solid var(--secondary-border) !important;
+    border-radius: var(--radius-surface, 20px) !important;
+    box-shadow: var(--shadow-surface, 0 6px 18px rgba(11, 27, 50, 0.08)) !important;
+    overflow-wrap: anywhere;
+}
+
+.scope :global(.shadow-lg),
+.scope :global(.card.shadow-lg) {
+    box-shadow: var(--shadow-elevated, 0 10px 24px rgba(11, 27, 50, 0.12)) !important;
+}
+
+.scope :global(.btn) {
+    min-height: 44px;
+    transition: transform 150ms ease-out, background-color 150ms ease-out, border-color 150ms ease-out, color 150ms ease-out;
+}
+
+.scope :global(.transition-all) {
+    transition: transform 150ms ease-out, opacity 150ms ease-out, background-color 150ms ease-out, border-color 150ms ease-out, color 150ms ease-out !important;
+}
+
+.scope :global(.btn:not(:disabled):active) {
+    transform: scale(0.96);
+}
+
+.scope :global(.btn.rounded-circle) {
+    min-width: 44px;
+}
+
+.scope :global(.form-control),
+.scope :global(.form-select),
+.scope :global(textarea) {
+    min-width: 0;
+    max-width: 100%;
+}
+
+.scope :global(.overflow-auto),
+.scope :global(.overflow-x-auto),
+.scope :global(.list-group) {
+    overscroll-behavior: contain;
+}
+
+.scope :global(.text-truncate),
+.scope :global(.line-clamp-2),
+.scope :global(.card-body),
+.scope :global(.alert) {
+    overflow-wrap: anywhere;
+}
+
+.scope :global(.alert) {
+    border-radius: 14px;
+}
+
+.scope :global(.badge) {
+    letter-spacing: 0.01em;
+}
+
+/* Constrain legacy full-screen overlays to the viewport on phones. */
+.scope :global(.position-fixed.top-0.start-0.w-100.h-100) {
+    padding: max(12px, env(safe-area-inset-top)) 12px max(12px, env(safe-area-inset-bottom));
+    overflow-y: auto;
+    overscroll-behavior: contain;
+}
+
+.scope :global(.position-fixed.top-0.start-0.w-100.h-100 > .card),
+.scope :global(.position-fixed.top-0.start-0.w-100.h-100 > .bg-white) {
+    width: min(100%, 520px) !important;
+    max-height: calc(100dvh - 24px);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+}
+
+@media (hover: hover) {
+    .scope :global(.btn:hover) {
+        transform: translateY(-1px);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .scope :global(.btn) {
+        transition: opacity 150ms ease-out, background-color 150ms ease-out, border-color 150ms ease-out, color 150ms ease-out;
+    }
+
+    .scope :global(.btn:not(:disabled):active) {
+        transform: none;
+    }
+}

@@ -2,9 +2,10 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { getRoomStatus, startGame, submitGameAnswer } from "../actions";
-import { Zap, Users, Shield, Clock, Award, Play } from "lucide-react";
+import { Zap, Users, Shield, Award, Play } from "lucide-react";
 import toast from "react-hot-toast";
 import UserAvatar from "@/app/components/UserAvatar";
+import { isPollingAllowed } from "@/app/lib/networkPolicy";
 
 interface Player {
     id: string;
@@ -26,7 +27,7 @@ interface Room {
 }
 
 interface HotPotatoViewProps {
-    initialRoom: any;
+    initialRoom: Room;
     currentUserId: string;
     roomId: string;
 }
@@ -43,6 +44,7 @@ export default function HotPotatoView({ initialRoom, currentUserId, roomId }: Ho
     const isAlive = myPlayer?.status === "ALIVE";
 
     const refreshStatus = useCallback(async () => {
+        if (!isPollingAllowed(navigator.onLine, document.hidden)) return;
         const res = await getRoomStatus(roomId);
         if (res.success && res.room) {
             setRoom(res.room as Room);
@@ -50,9 +52,35 @@ export default function HotPotatoView({ initialRoom, currentUserId, roomId }: Ho
     }, [roomId]);
 
     useEffect(() => {
-        const interval = setInterval(refreshStatus, 3000); // Poll every 3s
-        return () => clearInterval(interval);
-    }, [refreshStatus]);
+        let interval: ReturnType<typeof setInterval> | undefined;
+        const stopPolling = () => {
+            if (interval) {
+                clearInterval(interval);
+                interval = undefined;
+            }
+        };
+        const refreshIfActive = () => {
+            if (!isPollingAllowed(navigator.onLine, document.hidden)) {
+                stopPolling();
+                return;
+            }
+            void refreshStatus();
+            if (!interval) {
+                // Keep lobby updates useful, but reserve the fast cadence for an active game.
+                const delay = room.status === "PLAYING" ? 3000 : 10000;
+                interval = setInterval(refreshIfActive, delay);
+            }
+        };
+
+        refreshIfActive();
+        window.addEventListener('online', refreshIfActive);
+        document.addEventListener('visibilitychange', refreshIfActive);
+        return () => {
+            stopPolling();
+            window.removeEventListener('online', refreshIfActive);
+            document.removeEventListener('visibilitychange', refreshIfActive);
+        };
+    }, [refreshStatus, room.status]);
 
     useEffect(() => {
         if (room.status === "PLAYING" && room.bombExplodesAt) {
@@ -67,6 +95,10 @@ export default function HotPotatoView({ initialRoom, currentUserId, roomId }: Ho
     }, [room.status, room.bombExplodesAt]);
 
     const handleStart = async () => {
+        if (!navigator.onLine) {
+            toast.error("Sin conexión. La partida requiere internet.");
+            return;
+        }
         setLoading(true);
         const res = await startGame(roomId);
         if (!res.success) toast.error(res.error || "Error");
@@ -76,6 +108,10 @@ export default function HotPotatoView({ initialRoom, currentUserId, roomId }: Ho
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         if (!answer || !isMyTurn || !isAlive) return;
+        if (!navigator.onLine) {
+            toast.error("Sin conexión. Tu respuesta no fue enviada.");
+            return;
+        }
 
         setLoading(true);
         const res = await submitGameAnswer(roomId, answer);
@@ -94,7 +130,7 @@ export default function HotPotatoView({ initialRoom, currentUserId, roomId }: Ho
     };
 
     return (
-        <div className="game-container max-w-2xl mx-auto py-4">
+        <div className="game-container ui-game-shell max-w-2xl mx-auto py-4">
             {/* Room Header */}
             <div className="card border-0 shadow-sm rounded-4 mb-4 overflow-hidden">
                 <div className="card-header bg-white border-bottom-0 p-4 d-flex justify-content-between align-items-center">
@@ -122,6 +158,10 @@ export default function HotPotatoView({ initialRoom, currentUserId, roomId }: Ho
                             className="btn btn-sm btn-outline-danger rounded-pill"
                             onClick={async () => {
                                 if (confirm("¿Estás seguro que quieres abandonar la sala?")) {
+                                    if (!navigator.onLine) {
+                                        toast.error("Sin conexión. No puedes abandonar ahora.");
+                                        return;
+                                    }
                                     const { leaveGameRoom } = await import("../actions");
                                     const res = await leaveGameRoom(roomId);
                                     if (res.success) {
@@ -234,7 +274,7 @@ export default function HotPotatoView({ initialRoom, currentUserId, roomId }: Ho
             </div>
 
             {/* Players List */}
-            <div className="card border-0 shadow-sm rounded-4">
+            <div className="ui-surface border-0 shadow-sm rounded-4">
                 <div className="card-header bg-white border-bottom-0 p-4">
                     <h5 className="fw-bold mb-0">Jugadores</h5>
                 </div>
@@ -274,7 +314,7 @@ export default function HotPotatoView({ initialRoom, currentUserId, roomId }: Ho
                     font-size: 8rem;
                     display: inline-block;
                     position: relative;
-                    transition: all 0.3s ease;
+                    transition: transform 0.3s ease, opacity 0.3s ease;
                 }
                 .bomb-timer {
                     position: absolute;

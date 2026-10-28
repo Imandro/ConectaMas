@@ -78,6 +78,26 @@ model User {
   watchedVideos            UserVideo[]
   friends                  User[]                 @relation("UserFriends")
   symmetricFriends         User[]                 @relation("UserFriends")
+  mutationReceipts         MutationReceipt[]
+  billingTransactions      BillingTransaction[]
+  billingSubscriptions     BillingSubscription[]
+  billingPurchaseClaims    BillingPurchaseClaim[]
+  legalConsents            LegalConsent[]
+}
+
+model LegalConsent {
+  id         String   @id @default(cuid())
+  userId     String
+  document   String
+  version    String
+  locale     String
+  country    String
+  source     String
+  acceptedAt DateTime @default(now())
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, document, version])
+  @@index([acceptedAt])
 }
 
 model SupportMessage {
@@ -150,10 +170,12 @@ model DailyCheckin {
   note      String?
   gratitude String?
   prayer    String?
+  dayKey    String?
   createdAt DateTime @default(now())
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId, createdAt])
+  @@index([userId, dayKey])
 }
 
 model JournalEntry {
@@ -619,3 +641,81 @@ model ReadingProgress {
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
+model MutationReceipt {
+  id             String   @id @default(cuid())
+  userId         String
+  idempotencyKey String
+  operation      String
+  status         String   @default("PROCESSING")
+  response       Json?
+  statusCode     Int?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, idempotencyKey])
+}
+
+model BillingTransaction {
+  id                 String   @id @default(cuid())
+  userId             String?
+  provider           String
+  providerResourceId String   @unique
+  kind               String
+  productCode        String?
+  amount             Decimal  @db.Decimal(10, 2)
+  currency           String   @default("USD")
+  status             String
+  paidAt             DateTime?
+  metadata           Json?
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+  user               User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([userId, createdAt])
+  @@index([provider, status])
+}
+
+model BillingSubscription {
+  id                     String   @id @default(cuid())
+  userId                 String
+  provider               String
+  providerSubscriptionId String   @unique
+  productCode            String
+  status                 String
+  currentPeriodStart     DateTime?
+  currentPeriodEnd       DateTime?
+  cancelAtPeriodEnd      Boolean  @default(false)
+  createdAt              DateTime @default(now())
+  updatedAt              DateTime @updatedAt
+  user                   User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, status])
+}
+
+model BillingWebhookEvent {
+  id              String   @id @default(cuid())
+  provider        String
+  providerEventId String
+  eventType       String
+  status          String
+  payload         Json?
+  processedAt     DateTime?
+  createdAt       DateTime @default(now())
+
+  @@unique([provider, providerEventId])
+  @@index([provider, status])
+}
+
+model BillingPurchaseClaim {
+  id          String   @id @default(cuid())
+  userId      String
+  provider    String
+  productCode String
+  expiresAt   DateTime
+  consumedAt  DateTime?
+  createdAt   DateTime @default(now())
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, expiresAt])
+}

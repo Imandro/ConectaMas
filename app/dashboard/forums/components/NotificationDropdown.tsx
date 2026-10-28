@@ -5,6 +5,7 @@ import { Bell, MessageCircle, X } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useLanguage } from "@/app/LanguageContext";
+import { languageLocale } from '@/app/lib/languages';
 
 interface Notification {
     id: string;
@@ -35,6 +36,7 @@ export default function NotificationDropdown() {
     }, [isOpen]);
 
     const fetchNotifications = async () => {
+        if (!navigator.onLine) return;
         setLoading(true);
         try {
             const res = await fetch('/api/notifications/forum');
@@ -50,6 +52,10 @@ export default function NotificationDropdown() {
     };
 
     const handleNotificationClick = async (notification: Notification) => {
+        if (!navigator.onLine) {
+            alert('Sin conexión. Marcar notificaciones como leídas requiere internet.');
+            return;
+        }
         // Mark as read
         try {
             await fetch('/api/notifications/forum/mark-read', {
@@ -67,6 +73,10 @@ export default function NotificationDropdown() {
     };
 
     const markAllAsRead = async () => {
+        if (!navigator.onLine) {
+            alert('Sin conexión. Marcar notificaciones como leídas requiere internet.');
+            return;
+        }
         try {
             await fetch('/api/notifications/forum/mark-read', {
                 method: 'POST',
@@ -86,6 +96,8 @@ export default function NotificationDropdown() {
             <button
                 onClick={() => setIsOpen(!isOpen)}
                 className="btn btn-light rounded-circle p-2 position-relative shadow-sm"
+                aria-label="Abrir notificaciones"
+                aria-expanded={isOpen}
             >
                 <Bell size={20} />
                 {unreadCount > 0 && (
@@ -111,16 +123,16 @@ export default function NotificationDropdown() {
                             animate={{ opacity: 1, y: 0 }}
                             exit={{ opacity: 0, y: -10 }}
                             className="position-absolute top-100 end-0 mt-2 bg-white rounded-4 shadow-lg border"
-                            style={{ width: '320px', maxHeight: '400px', zIndex: 1050 }}
+                            style={{ width: 'min(320px, calc(100vw - 24px))', maxHeight: '400px', zIndex: 1050 }}
                         >
                             <div className="d-flex justify-content-between align-items-center p-3 border-bottom">
                                 <h6 className="fw-bold m-0">{t.forums.notifications.title}</h6>
-                                <button onClick={() => setIsOpen(false)} className="btn btn-sm btn-light rounded-circle p-1">
+                                <button onClick={() => setIsOpen(false)} aria-label="Cerrar notificaciones" className="btn btn-sm btn-light rounded-circle p-1">
                                     <X size={16} />
                                 </button>
                             </div>
 
-                            <div className="overflow-auto" style={{ maxHeight: '300px' }}>
+                            <div className="overflow-auto mobile-scroll-container" style={{ maxHeight: '300px' }}>
                                 {loading ? (
                                     <div className="text-center py-4">
                                         <div className="spinner-border spinner-border-sm text-primary" role="status">
@@ -150,7 +162,7 @@ export default function NotificationDropdown() {
                                                         {notif.post.title}
                                                     </p>
                                                     <small className="extra-small text-muted">
-                                                        {new Date(notif.createdAt).toLocaleDateString(language === 'es' ? 'es-ES' : language === 'pt' ? 'pt-BR' : 'en-US', {
+                                                        {new Date(notif.createdAt).toLocaleDateString(languageLocale(language), {
                                                             month: 'short',
                                                             day: 'numeric',
                                                             hour: '2-digit',

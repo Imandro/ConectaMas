@@ -38,7 +38,7 @@
 |------------|--------|
 | 🌐 **Web App** (PWA) | [conectamas.vercel.app](https://conectamas.vercel.app) |
 | 📦 **Android APK** | [Descargar APK (2.1 MB)](https://github.com/Imandro/ConectaMas/releases/latest/download/Conecta%2B.apk) |
-| 🏪 **Google Play** | [Próximamente](https://play.google.com/store/apps/details?id=com.conectaplus.app) |
+| 🏪 **Google Play** | [Próximamente](https://play.google.com/store/apps/details?id=com.conecta_plus.app) |
 
 > **💡 Tip:** Instala la app desde el navegador (Chrome → Agregar a pantalla de inicio) o descarga el APK directamente.
 
@@ -153,6 +153,14 @@ npm run dev
 - PostgreSQL (o Neon serverless)
 - Una cuenta en Vercel (para deploy)
 
+### Monetización
+
+La PWA usa PayPal Checkout y Pagadito con confirmación server-side. Premium dentro de Android publicado en Google Play usa Google Play Billing, tanto en TWA como en Capacitor; PayPal/Pagadito no aparecen como alternativa de Premium dentro de Play.
+
+El proyecto Capacitor Android para el AAB está en [`conecta-plus-native/`](conecta-plus-native/); usa `com.conecta_plus.app`, `versionCode 11` y `versionName 1.9`. Su guía está en [`conecta-plus-native/README.md`](conecta-plus-native/README.md).
+
+Mantén `BILLING_WEB_ENABLED` y `BILLING_PLAY_ENABLED` en `false` hasta verificar cuentas comerciales, webhooks y retiro hacia Nicaragua. El procedimiento está en [`docs/billing-runbook.md`](docs/billing-runbook.md).
+
 ---
 
 ## 📦 Releases
@@ -188,6 +196,6 @@ Este proyecto está bajo la licencia MIT.
   <p>
     <a href="https://conectamas.vercel.app">🌐 Web App</a> •
     <a href="https://github.com/Imandro/ConectaMas">📦 Repositorio</a> •
-    <a href="https://play.google.com/store/apps/details?id=com.conectaplus.app">🏪 Play Store</a>
+    <a href="https://play.google.com/store/apps/details?id=com.conecta_plus.app">🏪 Play Store</a>
   </p>
 </div>

@@ -1,15 +1,59 @@
 "use client";
 
-import { Gift, Heart, Crown, ShieldCheck } from "lucide-react";
+import { Heart, Crown, ShieldCheck } from "lucide-react";
 import Image from "next/image";
-import { useSession } from "next-auth/react";
+import { useEffect, useState } from "react";
 import { useLanguage } from "@/app/LanguageContext";
+import { useSession } from "next-auth/react";
+import BillingCheckoutButton from "./BillingCheckoutButton";
+
+const BILLING_ME_TTL = 5 * 60 * 1000;
 
 export default function SupportFundingAd() {
     const { t } = useLanguage();
-    const sessionContext = useSession();
-    const session = sessionContext?.data;
-    const isPremium = (session?.user as any)?.isPremium;
+    const { data: session, status: sessionStatus } = useSession();
+    const [isPremium, setIsPremium] = useState(false);
+    const sessionUser = session?.user as { id?: string; email?: string } | undefined;
+    const billingUserKey = sessionUser?.id || sessionUser?.email || '';
+
+    useEffect(() => {
+        if (sessionStatus === 'loading') return;
+        if (!billingUserKey) {
+            setIsPremium(false);
+            return;
+        }
+
+        const storageKey = `conecta:billing-me:${billingUserKey}`;
+        let cancelled = false;
+        try {
+            const cached = sessionStorage.getItem(storageKey);
+            if (cached) {
+                const snapshot = JSON.parse(cached) as { updatedAt?: number; data?: { entitlement?: { active?: boolean } } };
+                if (snapshot.updatedAt && Date.now() - snapshot.updatedAt < BILLING_ME_TTL) {
+                    if (!cancelled) setIsPremium(Boolean(snapshot.data?.entitlement?.active));
+                    return;
+                }
+            }
+        } catch {
+            // Session storage may be unavailable in private browsing.
+        }
+
+        fetch("/api/billing/me", { cache: 'no-store' })
+            .then((response) => response.ok ? response.json() : null)
+            .then((data) => {
+                if (!data || cancelled) return;
+                setIsPremium(Boolean(data.entitlement?.active));
+                try {
+                    sessionStorage.setItem(storageKey, JSON.stringify({ updatedAt: Date.now(), data }));
+                } catch {
+                    // Session storage may be unavailable in private browsing.
+                }
+            })
+            .catch(() => undefined);
+        return () => {
+            cancelled = true;
+        };
+    }, [billingUserKey, sessionStatus]);
 
     if (isPremium) return null;
 
@@ -57,16 +101,11 @@ export default function SupportFundingAd() {
                     </div>
                 </div>
 
-                <a
-                    href="https://www.paypal.me/Imandrox/1"
-                    target="_blank"
-                    rel="noopener noreferrer"
+                <BillingCheckoutButton
+                    productCode="PREMIUM_YEARLY"
+                    label={t.premium.button}
                     className="btn btn-warning w-100 fw-bold rounded-pill text-dark shadow-sm py-3 hover-scale d-flex align-items-center justify-content-center gap-2"
-                    style={{ backgroundColor: '#f3b33e', border: 'none' }}
-                >
-                    <Crown size={20} />
-                    {t.premium.button}
-                </a>
+                />
                 <p className="text-center extra-small text-white-50 mt-3 mb-0">
                     {t.premium.footer}
                 </p>

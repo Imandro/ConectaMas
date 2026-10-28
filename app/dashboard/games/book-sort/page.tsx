@@ -6,6 +6,7 @@ import { ArrowLeft, Trophy, Book } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { bookSortData, BookSortQuestion } from "@/app/data/games/bookSortData";
 import { saveGameScore, getBestScores } from "@/app/dashboard/games/clientGameScore";
+import SecondaryPageShell from "@/app/components/SecondaryUI";
 
 const ROUNDS = 15;
 
@@ -67,7 +68,8 @@ export default function BookSortGame() {
     };
 
     return (
-        <div className="container-fluid py-4 min-vh-100" style={{ background: "linear-gradient(135deg, #fa709a 0%, #fee140 100%)" }}>
+        <SecondaryPageShell>
+        <div className="container-fluid py-4 min-vh-100 game-surface-sort ui-game-shell">
             <div className="max-w-4xl mx-auto">
                 <div className="d-flex align-items-center gap-3 mb-4">
                     <Link href="/dashboard/games" className="btn btn-white bg-white text-dark rounded-circle p-2 shadow-sm border-0">
@@ -201,5 +203,6 @@ export default function BookSortGame() {
                 }
             `}</style>
         </div>
+        </SecondaryPageShell>
     );
 }

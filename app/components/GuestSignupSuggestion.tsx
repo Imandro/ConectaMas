@@ -19,12 +19,12 @@ export default function GuestSignupSuggestion() {
   if (!visible || dismissed) return null;
 
   return (
-    <div className="position-fixed bottom-0 start-0 w-100 p-3" style={{ zIndex: 9999, pointerEvents: 'none' }}>
+    <div className="guest-signup-suggestion position-fixed bottom-0 start-0 w-100 p-3" style={{ zIndex: 9999, pointerEvents: 'none' }}>
       <div
         className="card border-0 shadow-lg mx-auto animate-slide-in-up"
         style={{
           maxWidth: '400px', borderRadius: '20px', pointerEvents: 'auto',
-          background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+          backgroundColor: 'var(--brand-primary, #0B1B32)',
         }}
       >
         <div className="card-body p-3 text-white">

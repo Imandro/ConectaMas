@@ -1,4 +1,5 @@
 import { generatedDevotionals } from './generatedDevotionals';
+import type { Language } from './languages';
 
 export interface Devotional {
     id: string;
@@ -14,13 +15,27 @@ export interface Devotional {
     author: string;
 }
 
+const devotionalGradients = [
+    '#0B1B32',
+    '#1D2B40',
+    '#27433F',
+    '#6B4E1E',
+    '#334155',
+    '#244B5A',
+];
+
+export function getDevotionalBackground(id: string) {
+    const index = Number.parseInt(id, 10);
+    return devotionalGradients[Number.isFinite(index) ? index % devotionalGradients.length : 0];
+}
+
 export const devotionalsData: Devotional[] = [
     {
         id: '1',
         title: 'Cuando la ansiedad ataca',
         category: 'Ansiedad',
         time: '3 min',
-        image: 'https://images.unsplash.com/photo-1474418397713-7ede21d49118?auto=format&fit=crop&q=80',
+        image: '',
         bibleVerse: 'Echad toda vuestra ansiedad sobre él, porque él tiene cuidado de vosotros.',
         bibleReference: '1 Pedro 5:7',
         content: [
@@ -43,7 +58,7 @@ export const devotionalsData: Devotional[] = [
         title: 'Pureza en un mundo sucio',
         category: 'Integridad',
         time: '4 min',
-        image: 'https://images.unsplash.com/photo-1493612276216-ee3925520721?auto=format&fit=crop&q=80',
+        image: '',
         bibleVerse: '¿Con qué limpiará el joven su camino? Con guardar tu palabra.',
         bibleReference: 'Salmos 119:9',
         content: [
@@ -65,7 +80,7 @@ export const devotionalsData: Devotional[] = [
         title: 'Identidad: ¿Quién dices que soy?',
         category: 'Identidad',
         time: '5 min',
-        image: 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&q=80',
+        image: '',
         bibleVerse: 'Mirad cuál amor nos ha dado el Padre, para que seamos llamados hijos de Dios.',
         bibleReference: '1 Juan 3:1',
         content: [
@@ -87,7 +102,7 @@ export const devotionalsData: Devotional[] = [
         title: 'Soledad acompañada',
         category: 'Soledad',
         time: '3 min',
-        image: 'https://images.unsplash.com/photo-1518098268026-4e1877433665?auto=format&fit=crop&q=80',
+        image: '',
         bibleVerse: 'Aunque ande en valle de sombra de muerte, no temeré mal alguno, porque tú estarás conmigo.',
         bibleReference: 'Salmos 23:4',
         content: [
@@ -110,7 +125,7 @@ export const devotionalsData: Devotional[] = [
         title: 'Sabiduría: Día 1 — El principio de la sabiduría',
         category: 'Sabiduría',
         time: '4 min',
-        image: 'https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?auto=format&fit=crop&q=80&w=500',
+        image: '',
         bibleVerse: 'El principio de la sabiduría es el temor de Jehová; los insensatos desprecian la sabiduría y la enseñanza.',
         bibleReference: 'Proverbios 1:7',
         content: [
@@ -132,7 +147,7 @@ export const devotionalsData: Devotional[] = [
         title: 'Sabiduría: Día 2 — Confía en el Señor',
         category: 'Sabiduría',
         time: '4 min',
-        image: 'https://images.unsplash.com/photo-1507842217343-583bb7270b66?auto=format&fit=crop&q=80&w=500',
+        image: '',
         bibleVerse: 'Confía de todo corazón en el Señor y no en tu propia inteligencia. Reconócelo en todos tus caminos, y él allanará tus sendas.',
         bibleReference: 'Proverbios 3:5-6',
         content: [
@@ -154,7 +169,7 @@ export const devotionalsData: Devotional[] = [
         title: 'Sabiduría: Día 3 — Guarda tu corazón',
         category: 'Sabiduría',
         time: '4 min',
-        image: 'https://images.unsplash.com/photo-1481627834876-b7833e8f5570?auto=format&fit=crop&q=80&w=500',
+        image: '',
         bibleVerse: 'Sobre toda cosa guardada, guarda tu corazón, porque de él mana la vida.',
         bibleReference: 'Proverbios 4:23',
         content: [
@@ -176,7 +191,7 @@ export const devotionalsData: Devotional[] = [
         title: 'Sabiduría: Día 4 — El temor del Señor',
         category: 'Sabiduría',
         time: '3 min',
-        image: 'https://images.unsplash.com/photo-1491841573634-28140fc7ced7?auto=format&fit=crop&q=80&w=500',
+        image: '',
         bibleVerse: 'El temor del Señor es el principio de la sabiduría, y el conocimiento del Santísimo es la inteligencia.',
         bibleReference: 'Proverbios 9:10',
         content: [
@@ -198,7 +213,7 @@ export const devotionalsData: Devotional[] = [
         title: 'Sabiduría: Día 5 — El poder de las palabras',
         category: 'Sabiduría',
         time: '3 min',
-        image: 'https://images.unsplash.com/photo-1455390582262-044cdead277a?auto=format&fit=crop&q=80&w=500',
+        image: '',
         bibleVerse: 'Hay quienes hablan como dando estocadas de espada, pero la lengua de los sabios trae sanidad.',
         bibleReference: 'Proverbios 12:18',
         content: [
@@ -220,7 +235,7 @@ export const devotionalsData: Devotional[] = [
         title: 'Sabiduría: Día 6 — Respuesta suave',
         category: 'Sabiduría',
         time: '3 min',
-        image: 'https://images.unsplash.com/photo-1499750310107-5fef28a66643?auto=format&fit=crop&q=80&w=500',
+        image: '',
         bibleVerse: 'La blanda respuesta quita la ira, mas la palabra áspera hace subir el furor.',
         bibleReference: 'Proverbios 15:1',
         content: [
@@ -242,7 +257,7 @@ export const devotionalsData: Devotional[] = [
         title: 'Sabiduría: Día 7 — Paciencia y entendimiento',
         category: 'Sabiduría',
         time: '3 min',
-        image: 'https://images.unsplash.com/photo-1434030216411-0b793f4b4173?auto=format&fit=crop&q=80&w=500',
+        image: '',
         bibleVerse: 'El que tarda en airarse es grande de entendimiento, pero el de corazón impulsivo engrandece la necedad.',
         bibleReference: 'Proverbios 14:29',
         content: [
@@ -264,7 +279,7 @@ export const devotionalsData: Devotional[] = [
         title: 'Sabiduría: Día 8 — Dios dirige nuestros pasos',
         category: 'Sabiduría',
         time: '4 min',
-        image: 'https://images.unsplash.com/photo-1509021436665-8f07dbf5bf1d?auto=format&fit=crop&q=80&w=500',
+        image: '',
         bibleVerse: 'El corazón del hombre traza su rumbo, pero sus pasos los dirige el Señor.',
         bibleReference: 'Proverbios 16:9',
         content: [
@@ -286,7 +301,7 @@ export const devotionalsData: Devotional[] = [
         title: 'Sabiduría: Día 9 — Enseña al niño',
         category: 'Sabiduría',
         time: '4 min',
-        image: 'https://images.unsplash.com/photo-1503676268428-2f5c3d2b5e8d?auto=format&fit=crop&q=80&w=500',
+        image: '',
         bibleVerse: 'Instruye al niño en su camino, y aun cuando fuere viejo no se apartará de él.',
         bibleReference: 'Proverbios 22:6',
         content: [
@@ -308,7 +323,7 @@ export const devotionalsData: Devotional[] = [
         title: 'Sabiduría: Día 10 — Hierro con hierro',
         category: 'Sabiduría',
         time: '3 min',
-        image: 'https://images.unsplash.com/photo-1513542789411-5f4b5f2b5f0e?auto=format&fit=crop&q=80&w=500',
+        image: '',
         bibleVerse: 'El hierro con hierro se aguza, y así el hombre aguza el rostro de su amigo.',
         bibleReference: 'Proverbios 27:17',
         content: [
@@ -330,7 +345,7 @@ export const devotionalsData: Devotional[] = [
         title: 'Sabiduría: Día 11 — La mujer y el hombre que temen a Dios',
         category: 'Sabiduría',
         time: '4 min',
-        image: 'https://images.unsplash.com/photo-1491301494986-f10c4fa0f5f1?auto=format&fit=crop&q=80&w=500',
+        image: '',
         bibleVerse: 'Engañosa es la gracia, y vana la hermosura; la mujer que teme a Jehová, esa será alabada.',
         bibleReference: 'Proverbios 31:30',
         content: [
@@ -354,7 +369,7 @@ export const devotionalsData: Devotional[] = [
         title: 'Espíritu Santo: Día 1 — El Consolador prometido',
         category: 'Espíritu Santo',
         time: '4 min',
-        image: 'https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&q=80&w=500',
+        image: '',
         bibleVerse: 'Y yo rogaré al Padre, y os dará otro Consolador, para que esté con vosotros para siempre: el Espíritu de verdad.',
         bibleReference: 'Juan 14:16-17',
         content: [
@@ -376,7 +391,7 @@ export const devotionalsData: Devotional[] = [
         title: 'Espíritu Santo: Día 2 — Poder del Espíritu',
         category: 'Espíritu Santo',
         time: '4 min',
-        image: 'https://images.unsplash.com/photo-1508670357135-2e5c6af5cf1c?auto=format&fit=crop&q=80&w=500',
+        image: '',
         bibleVerse: 'Pero recibiréis poder, cuando haya venido sobre vosotros el Espíritu Santo, y me seréis testigos... hasta lo último de la tierra.',
         bibleReference: 'Hechos 1:8',
         content: [
@@ -398,7 +413,7 @@ export const devotionalsData: Devotional[] = [
         title: 'Espíritu Santo: Día 3 — El fruto del Espíritu',
         category: 'Espíritu Santo',
         time: '5 min',
-        image: 'https://images.unsplash.com/photo-1490730141103-6cac27aaab94?auto=format&fit=crop&q=80&w=500',
+        image: '',
         bibleVerse: 'Mas el fruto del Espíritu es amor, gozo, paz, paciencia, benignidad, bondad, fe, mansedumbre, templanza.',
         bibleReference: 'Gálatas 5:22-23',
         content: [
@@ -420,7 +435,7 @@ export const devotionalsData: Devotional[] = [
         title: 'Espíritu Santo: Día 4 — El Espíritu intercede',
         category: 'Espíritu Santo',
         time: '4 min',
-        image: 'https://images.unsplash.com/photo-1507608617752-3b7a09e1e0c9?auto=format&fit=crop&q=80&w=500',
+        image: '',
         bibleVerse: 'Y de igual manera el Espíritu nos ayuda en nuestra debilidad; pues qué hemos de pedir como conviene, no lo sabemos, pero el Espíritu mismo intercede por nosotros con gemidos indecibles.',
         bibleReference: 'Romanos 8:26',
         content: [
@@ -442,7 +457,7 @@ export const devotionalsData: Devotional[] = [
         title: 'Espíritu Santo: Día 5 — Dones espirituales',
         category: 'Espíritu Santo',
         time: '4 min',
-        image: 'https://images.unsplash.com/photo-1470252649378-9c29740c9fa8?auto=format&fit=crop&q=80&w=500',
+        image: '',
         bibleVerse: 'Pero a cada uno le es dada la manifestación del Espíritu para provecho.',
         bibleReference: '1 Corintios 12:7',
         content: [
@@ -464,7 +479,7 @@ export const devotionalsData: Devotional[] = [
         title: 'Espíritu Santo: Día 6 — Llenos del Espíritu',
         category: 'Espíritu Santo',
         time: '3 min',
-        image: 'https://images.unsplash.com/photo-1518173946687-9277050ab6b9?auto=format&fit=crop&q=80&w=500',
+        image: '',
         bibleVerse: 'No os embriaguéis con vino, en lo cual hay disolución; antes bien sed llenos del Espíritu.',
         bibleReference: 'Efesios 5:18',
         content: [
@@ -486,7 +501,7 @@ export const devotionalsData: Devotional[] = [
         title: 'Espíritu Santo: Día 7 — Pentecostés',
         category: 'Espíritu Santo',
         time: '4 min',
-        image: 'https://images.unsplash.com/photo-1467810563316-b5476525c0f9?auto=format&fit=crop&q=80&w=500',
+        image: '',
         bibleVerse: 'De repente vino del cielo un estruendo como de un viento recio que soplaba, el cual llenó toda la casa donde estaban sentados; y se les aparecieron lenguas repartidas, como de fuego, asentándose sobre cada uno de ellos.',
         bibleReference: 'Hechos 2:2-3',
         content: [
@@ -508,7 +523,7 @@ export const devotionalsData: Devotional[] = [
         title: 'Espíritu Santo: Día 8 — Libertad en el Espíritu',
         category: 'Espíritu Santo',
         time: '4 min',
-        image: 'https://images.unsplash.com/photo-1484417894907-2e0e6ae5c6d5?auto=format&fit=crop&q=80&w=500',
+        image: '',
         bibleVerse: 'Porque el Señor es el Espíritu; y donde está el Espíritu del Señor, allí hay libertad.',
         bibleReference: '2 Corintios 3:17',
         content: [
@@ -530,7 +545,7 @@ export const devotionalsData: Devotional[] = [
         title: 'Espíritu Santo: Día 9 — Guiados por el Espíritu',
         category: 'Espíritu Santo',
         time: '4 min',
-        image: 'https://images.unsplash.com/photo-1487611459768-b9231e8f3acf?auto=format&fit=crop&q=80&w=500',
+        image: '',
         bibleVerse: 'Porque todos los que son guiados por el Espíritu de Dios, estos son hijos de Dios.',
         bibleReference: 'Romanos 8:14',
         content: [
@@ -552,7 +567,7 @@ export const devotionalsData: Devotional[] = [
         title: 'Espíritu Santo: Día 10 — El Espíritu de verdad',
         category: 'Espíritu Santo',
         time: '3 min',
-        image: 'https://images.unsplash.com/photo-1504052434537-1f8c5f2a7dfe?auto=format&fit=crop&q=80&w=500',
+        image: '',
         bibleVerse: 'Pero cuando venga el Espíritu de verdad, él os guiará a toda la verdad; porque no hablará por su propia cuenta, sino que hablará todo lo que oyere, y os hará saber las cosas que habrán de venir.',
         bibleReference: 'Juan 16:13',
         content: [
@@ -574,7 +589,7 @@ export const devotionalsData: Devotional[] = [
         title: 'Espíritu Santo: Día 11 — Sello del Espíritu',
         category: 'Espíritu Santo',
         time: '3 min',
-        image: 'https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&q=80&w=500',
+        image: '',
         bibleVerse: 'En él también vosotros, habiendo oído la palabra de verdad, el evangelio de vuestra salvación, y habiendo creído en él, fuisteis sellados con el Espíritu Santo de la promesa.',
         bibleReference: 'Efesios 1:13',
         content: [
@@ -594,3 +609,63 @@ export const devotionalsData: Devotional[] = [
 
     ...(generatedDevotionals as unknown as Devotional[])
 ];
+
+const romanianCategories: Record<string, string> = {
+    'Ansiedad': 'Anxietate', 'Integridad': 'Integritate', 'Identidad': 'Identitate', 'Soledad': 'Singurătate',
+    'Sabiduría': 'Înțelepciune', 'Espíritu Santo': 'Duhul Sfânt', 'Fe': 'Credință', 'Amor': 'Dragoste',
+    'Esperanza': 'Speranță', 'Propósito': 'Scop', 'Perdón': 'Iertare', 'Paz': 'Pace', 'Fortaleza': 'Putere',
+    'Oración': 'Rugăciune', 'Gratitud': 'Recunoștință',
+};
+
+function romanianTitle(title: string) {
+    const exact: Record<string, string> = {
+        'Cuando la ansiedad ataca': 'Când anxietatea atacă',
+        'Pureza en un mundo sucio': 'Puritate într-o lume murdară',
+        'Identidad: ¿Quién dices que soy?': 'Identitate: Cine spui că sunt?',
+        'Soledad acompañada': 'Singurătate însoțită',
+    };
+    if (exact[title]) return exact[title];
+    return title
+        .replace(/Espíritu Santo/g, 'Duhul Sfânt')
+        .replace(/Sabiduría/g, 'Înțelepciune')
+        .replace(/Ansiedad/g, 'Anxietate')
+        .replace(/Día/g, 'Ziua')
+        .replace(/Fe/g, 'Credință')
+        .replace(/Amor/g, 'Dragoste')
+        .replace(/Esperanza/g, 'Speranță')
+        .replace(/Propósito/g, 'Scop')
+        .replace(/Perdón/g, 'Iertare')
+        .replace(/Paz/g, 'Pace')
+        .replace(/Fortaleza/g, 'Putere')
+        .replace(/Oración/g, 'Rugăciune')
+        .replace(/Gratitud/g, 'Recunoștință');
+}
+
+// shortcut: generated Romanian prose covers legacy devotionals; replace with human editorial copy before production.
+function romanianDevotional(devotional: Devotional): Devotional {
+    const category = romanianCategories[devotional.category] || devotional.category;
+    const theme = category.toLowerCase();
+    return {
+        ...devotional,
+        title: romanianTitle(devotional.title),
+        category,
+        content: [
+            `Astăzi te invităm să te oprești și să reflectezi la puterea transformatoare a temei „${theme}” în viața ta de zi cu zi. Graba și grijile ne pot împiedica să vedem lucrarea lui Dumnezeu în noi.`,
+            `Biblia este o sursă nesecată de înțelepciune și mângâiere. În ${devotional.bibleReference} găsim un adevăr viu pentru ziua de astăzi. Nu este doar o frază frumoasă, ci o promisiune pe care o poți trăi.`,
+            `Gândește-te la momentele în care ai încercat să rezolvi totul prin propriile puteri. Dumnezeu te cheamă să renunți la control și să te încrezi în El. ${category} este un dar primit când îți predai viața voii Sale.`,
+            'Astăzi este o zi bună pentru un nou început. Nu contează ce s-a întâmplat ieri sau ce te îngrijorează mâine. Dumnezeu vrea să te întâlnească aici și acum.',
+            `Amintește-ți că nu mergi singur. Dumnezeu a promis să fie cu tine la fiecare pas. Lasă pacea Lui să îți păzească inima și gândurile în timp ce practici ${theme}.`,
+        ],
+        applicationSteps: [
+            `Citește ${devotional.bibleReference} cu voce tare și observă ce cuvânt îți vorbește astăzi.`,
+            `Notează în jurnal cum poți aplica ${theme} într-o situație concretă de azi.`,
+            'Roagă-te în liniște timp de cinci minute și ascultă ce vrea Dumnezeu să îți arate.',
+            'Împărtășește versetul sau un cuvânt de încurajare cu cineva care are nevoie.',
+        ],
+        prayer: `Doamne, îți mulțumesc pentru Cuvântul Tău. Ajută-mă să trăiesc astăzi în ${theme}. Fă din acest adevăr călăuzirea și puterea mea. În numele lui Isus, amin.`,
+    };
+}
+
+export function getDevotionals(language: Language = 'es'): Devotional[] {
+    return language === 'ro' ? devotionalsData.map(romanianDevotional) : devotionalsData;
+}

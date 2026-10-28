@@ -10,8 +10,10 @@ import {
     Shield
 } from 'lucide-react';
 import Link from 'next/link';
+import { useLanguage } from '@/app/LanguageContext';
 
 export default function SOSTutorial() {
+    const { t } = useLanguage();
     return (
         <div className="container-fluid py-4 min-vh-100 bg-white">
             {/* Header */}
@@ -19,7 +21,7 @@ export default function SOSTutorial() {
                 <Link href="/dashboard/tutorials" className="btn btn-light rounded-circle p-2 shadow-sm">
                     <ChevronLeft size={24} />
                 </Link>
-                <h1 className="h4 mb-0 fw-bold">Manual de Auxilio (SOS)</h1>
+                <h1 className="h4 mb-0 fw-bold">{t.tutorials.sos_title}</h1>
             </header>
 
             <div className="row justify-content-center px-lg-4">
@@ -29,7 +31,7 @@ export default function SOSTutorial() {
                         <div className="bg-danger text-white p-4 rounded-circle d-inline-block mb-4 shadow-lg animate-pulse">
                             <AlertTriangle size={48} />
                         </div>
-                        <h2 className="fw-bold">No estás solo en la crisis</h2>
+                        <h2 className="fw-bold">{t.sos.title} {t.tutorials.sos_title}</h2>
                         <p className="text-muted lead px-md-5">
                             La sección SOS está diseñada para ser tu refugio inmediato cuando te sientes abrumado, tentado o triste.
                         </p>

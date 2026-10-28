@@ -1,11 +1,30 @@
 import { saveGameScore as serverSaveGameScore, getBestScores as serverGetBestScores } from "@/app/actions/gameScore";
 
+function saveLocalScore(gameType: string, score: number) {
+    const localKey = `best_score_${gameType}`;
+    const currentBest = parseInt(localStorage.getItem(localKey) || "0");
+    const isNewRecord = score > currentBest;
+    if (isNewRecord) localStorage.setItem(localKey, score.toString());
+    return { success: true, xpGained: 0, isNewRecord, gameScore: { id: "local_" + Date.now(), score } };
+}
+
+function getLocalScore(gameType: string) {
+    return {
+        success: true,
+        bestScore: parseInt(localStorage.getItem(`best_score_${gameType}`) || "0"),
+        totalGames: 0,
+        recentScores: []
+    };
+}
+
 export async function saveGameScore(
     gameType: string,
     score: number,
     maxScore: number | null,
     timeSpent: number | null
 ) {
+    if (typeof window !== "undefined" && !navigator.onLine) return saveLocalScore(gameType, score);
+
     try {
         const res = await serverSaveGameScore(gameType, score, maxScore, timeSpent);
         if (res && res.success) {
@@ -22,21 +41,7 @@ export async function saveGameScore(
     }
 
     // Local fallback
-    if (typeof window !== "undefined") {
-        const localKey = `best_score_${gameType}`;
-        const currentBest = parseInt(localStorage.getItem(localKey) || "0");
-        const isNewRecord = score > currentBest;
-        if (isNewRecord) {
-            localStorage.setItem(localKey, score.toString());
-        }
-
-        return {
-            success: true,
-            xpGained: 0,
-            isNewRecord,
-            gameScore: { id: "local_" + Date.now(), score }
-        };
-    }
+    if (typeof window !== "undefined") return saveLocalScore(gameType, score);
 
     return {
         success: false,
@@ -45,6 +50,8 @@ export async function saveGameScore(
 }
 
 export async function getBestScores(gameType: string) {
+    if (typeof window !== "undefined" && !navigator.onLine) return getLocalScore(gameType);
+
     try {
         const res = await serverGetBestScores(gameType);
         if (res && res.success) {
@@ -59,16 +66,7 @@ export async function getBestScores(gameType: string) {
     }
 
     // Local fallback
-    if (typeof window !== "undefined") {
-        const localKey = `best_score_${gameType}`;
-        const bestScore = parseInt(localStorage.getItem(localKey) || "0");
-        return {
-            success: true,
-            bestScore,
-            totalGames: 0,
-            recentScores: []
-        };
-    }
+    if (typeof window !== "undefined") return getLocalScore(gameType);
 
     return {
         success: true,

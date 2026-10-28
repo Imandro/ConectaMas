@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
-import { Instagram, X } from "lucide-react";
-import { confirmInstagramFollow } from "@/app/dashboard/actions/instagram";
+import { Instagram } from "lucide-react";
 import { useLanguage } from "@/app/LanguageContext";
 
 const SHOW_INTERVAL_DAYS = 2; // Show every 2 days
@@ -46,11 +45,6 @@ export default function InstagramModal({ hasFollowed }: InstagramModalProps) {
         window.open("https://www.instagram.com/_conectamass?igsh=MTBrMnJtYjI1Z3FlOA==", "_blank");
     };
 
-    const handleConfirmFollowed = async () => {
-        await confirmInstagramFollow();
-        setIsOpen(false);
-    };
-
     const handleDismissLater = () => {
         sessionStorage.setItem("instagram_modal_dismissed", "true");
         setIsOpen(false);
@@ -58,7 +52,7 @@ export default function InstagramModal({ hasFollowed }: InstagramModalProps) {
 
     return (
         <div className="position-fixed top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center p-4" style={{ zIndex: 9998, background: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(4px)' }}>
-            <div className="bg-white rounded-5 shadow-lg overflow-hidden animate-in fade-in zoom-in duration-300" style={{ maxWidth: '400px', width: '100%' }}>
+            <div className="ui-surface-glass rounded-5 shadow-lg overflow-hidden animate-in fade-in zoom-in duration-300" style={{ maxWidth: '400px', width: 'min(100% - 24px, 400px)' }}>
                 {/* Header */}
                 <div className="position-relative overflow-hidden p-4 text-center" style={{ background: 'linear-gradient(45deg, #f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%)' }}>
                     <div className="bg-white p-3 rounded-circle d-inline-block shadow-sm mb-2 position-relative">

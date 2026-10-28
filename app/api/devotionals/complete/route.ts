@@ -1,13 +1,13 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/app/lib/prisma';
-import { getApiUser } from '@/app/lib/api-auth';
+import { getApiUserId } from '@/app/lib/api-auth';
 export const dynamic = 'force-dynamic';
 
 export async function POST(req: Request) {
     try {
-        const user = await getApiUser(req);
+        const userId = await getApiUserId(req);
 
-        if (!user) {
+        if (!userId) {
             return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
         }
 
@@ -17,18 +17,11 @@ export async function POST(req: Request) {
             return NextResponse.json({ message: 'Devotional ID is required' }, { status: 400 });
         }
 
-        // Safety check for stale Prisma Client
-        const delegate = (prisma as any).userDevotional;
-        if (!delegate) {
-            console.error("Prisma Client out of date: userDevotional missing");
-            return NextResponse.json({ message: 'System update pending. Restart server.' }, { status: 503 });
-        }
-
         // Check if already completed to avoid double XP
-        const existingCompletion = await delegate.findUnique({
+        const existingCompletion = await prisma.userDevotional.findUnique({
             where: {
                 userId_devotionalId: {
-                    userId: user.id,
+                    userId,
                     devotionalId: devotionalId
                 }
             }
@@ -36,39 +29,35 @@ export async function POST(req: Request) {
 
         if (!existingCompletion) {
             // Mark as completed
-            await delegate.create({
+            await prisma.userDevotional.create({
                 data: {
-                    userId: user.id,
+                    userId,
                     devotionalId: devotionalId
                 }
             });
 
             // Grant Mascot XP
-            const mascotDelegate = (prisma as any).mascot;
-            if (mascotDelegate) {
-                const mascot = await mascotDelegate.findUnique({ where: { userId: user.id } });
-                if (mascot) {
-                    let newExp = (mascot.experience || 0) + 25;
-                    let newLevel = mascot.level || 1;
-                    if (newExp >= 100) {
-                        newLevel += 1;
-                        newExp -= 100;
-                    }
-                    await mascotDelegate.update({
-                        where: { userId: user.id },
-                        data: { experience: newExp, level: newLevel }
-                    });
-                } else {
-                    // Create mascot if not exists
-                    await mascotDelegate.create({
-                        data: {
-                            userId: user.id,
-                            experience: 25,
-                            level: 1,
-                            flamePoints: 10
-                        }
-                    });
+            const mascot = await prisma.mascot.findUnique({ where: { userId } });
+            if (mascot) {
+                let newExp = mascot.experience + 25;
+                let newLevel = mascot.level;
+                if (newExp >= 100) {
+                    newLevel += 1;
+                    newExp -= 100;
                 }
+                await prisma.mascot.update({
+                    where: { userId },
+                    data: { experience: newExp, level: newLevel }
+                });
+            } else {
+                // Create mascot if not exists
+                await prisma.mascot.create({
+                    data: {
+                        userId,
+                        experience: 25,
+                        flamePoints: 10
+                    }
+                });
             }
         }
 

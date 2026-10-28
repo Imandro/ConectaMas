@@ -1,20 +1,20 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/app/lib/prisma';
-import { getApiUser } from '@/app/lib/api-auth';
+import { getApiUserId } from '@/app/lib/api-auth';
 
 export const dynamic = 'force-dynamic';
 
 export async function GET(req: Request, { params }: { params: { id: string } }) {
     try {
-        const user = await getApiUser(req);
-        if (!user) {
+        const userId = await getApiUserId(req);
+        if (!userId) {
             return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
         }
 
         const { id } = params;
 
         const userStruggle = await prisma.userStruggle.findFirst({
-            where: { id, userId: user.id }
+            where: { id, userId }
         });
 
         if (!userStruggle) {

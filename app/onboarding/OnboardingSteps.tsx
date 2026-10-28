@@ -8,7 +8,9 @@ import LlamiMascot from "@/app/components/LlamiMascot";
 
 import { useLanguage } from '@/app/LanguageContext';
 
-const getSpiritualStatusOptions = (t: Record<string, any>) => [
+type OnboardingCopy = { onboarding: Record<string, string> };
+
+const getSpiritualStatusOptions = (t: OnboardingCopy) => [
     {
         id: "ACCEPT",
         title: t.onboarding.status_accept,
@@ -39,7 +41,7 @@ const getSpiritualStatusOptions = (t: Record<string, any>) => [
     }
 ];
 
-const getSinOptions = (t: Record<string, any>) => [
+const getSinOptions = (t: OnboardingCopy) => [
     t.onboarding.sin_pride,
     t.onboarding.sin_anger,
     t.onboarding.sin_porn,
@@ -52,7 +54,7 @@ const getSinOptions = (t: Record<string, any>) => [
     t.onboarding.sin_other
 ];
 
-const getProblemOptions = (t: Record<string, any>) => [
+const getProblemOptions = (t: OnboardingCopy) => [
     t.onboarding.prob_anxiety,
     t.onboarding.prob_depression,
     t.onboarding.prob_loneliness,
@@ -65,7 +67,7 @@ const getProblemOptions = (t: Record<string, any>) => [
     t.onboarding.prob_other
 ];
 
-const getConnectionOptions = (t: Record<string, any>) => [
+const getConnectionOptions = (t: OnboardingCopy) => [
     t.onboarding.conn_pray,
     t.onboarding.conn_bible,
     t.onboarding.conn_fast,
@@ -95,7 +97,7 @@ export default function OnboardingSteps() {
     const PROBLEM_OPTIONS = getProblemOptions(t);
     const CONNECTION_OPTIONS = getConnectionOptions(t);
 
-    const totalSteps = 10;
+    const totalSteps = 11;
 
     const handleToggle = (item: string, list: string[], setter: (val: string[]) => void) => {
         if (list.includes(item)) {
@@ -106,6 +108,10 @@ export default function OnboardingSteps() {
     };
 
     const handleSubmit = async () => {
+        if (!navigator.onLine) {
+            alert('Sin conexión. Guardar la configuración requiere internet.');
+            return;
+        }
         setIsSubmitting(true);
         try {
             await submitOnboarding({
@@ -138,10 +144,13 @@ export default function OnboardingSteps() {
                         className="progress-bar bg-warning transition-all duration-500 rounded-pill"
                         role="progressbar"
                         style={{ width: `${(step / totalSteps) * 100}%`, height: '8px', backgroundColor: '#f3b33e' }}
+                        aria-valuenow={step}
+                        aria-valuemin={1}
+                        aria-valuemax={totalSteps}
                     />
                 </div>
 
-                <div className="card bg-primary border-0 shadow-none text-white rounded-4">
+                <div className="card ui-surface-glass onboarding-panel border-0 shadow-none text-white rounded-4">
                     <div className="card-body p-4 p-md-5">
 
                         {/* STEP 1: Spiritual Status */}
@@ -214,7 +223,7 @@ export default function OnboardingSteps() {
                                     {t.onboarding.sins_subtitle}
                                 </p>
 
-                                <div className="d-flex flex-column gap-2 mb-4" style={{ maxHeight: '450px', overflowY: 'auto', paddingRight: '5px' }}>
+                                <div className="d-flex flex-column gap-2 mb-4 mobile-scroll-container" style={{ maxHeight: '450px', overflowY: 'auto', paddingRight: '5px' }}>
                                     {SIN_OPTIONS.map((sin) => (
                                         <button
                                             key={sin}
@@ -265,7 +274,7 @@ export default function OnboardingSteps() {
                                     {t.onboarding.problems_subtitle}
                                 </p>
 
-                                <div className="d-flex flex-column gap-2 mb-4" style={{ maxHeight: '450px', overflowY: 'auto', paddingRight: '5px' }}>
+                                <div className="d-flex flex-column gap-2 mb-4 mobile-scroll-container" style={{ maxHeight: '450px', overflowY: 'auto', paddingRight: '5px' }}>
                                     {PROBLEM_OPTIONS.map((problem) => (
                                         <button
                                             key={problem}
@@ -316,7 +325,7 @@ export default function OnboardingSteps() {
                                     {t.onboarding.connection_subtitle}
                                 </p>
 
-                                <div className="d-flex flex-column gap-2 mb-4" style={{ maxHeight: '450px', overflowY: 'auto', paddingRight: '5px' }}>
+                                <div className="d-flex flex-column gap-2 mb-4 mobile-scroll-container" style={{ maxHeight: '450px', overflowY: 'auto', paddingRight: '5px' }}>
                                     {CONNECTION_OPTIONS.map((method) => (
                                         <button
                                             key={method}
@@ -631,15 +640,14 @@ export default function OnboardingSteps() {
                                     </p>
                                 </div>
 
-                                <a
-                                    href="https://www.paypal.me/Imandrox"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
+                                <button
+                                    type="button"
+                                    onClick={() => setStep(11)}
                                     className="btn btn-warning w-100 fw-bold py-3 rounded-pill d-flex align-items-center justify-content-center gap-2 text-primary shadow-lg mb-3"
                                     style={{ backgroundColor: '#f3b33e', border: 'none' }}
                                 >
-                                    <Heart size={20} fill="currentColor" /> {t.onboarding.support_button}
-                                </a>
+                                    <Heart size={20} fill="currentColor" /> {t.onboarding.support_later}
+                                </button>
 
                                 <button
                                     onClick={() => setStep(11)}

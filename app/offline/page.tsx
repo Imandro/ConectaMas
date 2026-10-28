@@ -1,10 +1,14 @@
 "use client";
 
+"use client";
+
 import { WifiOff, BookOpen, Gamepad2, Heart, Home, RefreshCw, AlertTriangle } from 'lucide-react';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
+import { useLanguage } from '@/app/LanguageContext';
 
 export default function OfflinePage() {
+    const { t } = useLanguage();
     const [reloading, setReloading] = useState(false);
     const [stars, setStars] = useState<{ x: number; y: number; d: number; s: number }[]>([]);
 
@@ -21,7 +25,8 @@ export default function OfflinePage() {
 
     return (
         <div className="position-relative min-vh-100 d-flex align-items-center justify-content-center p-4" style={{
-            background: 'linear-gradient(135deg, #1a0533 0%, #2d1b69 50%, #1a0533 100%)',
+            background: 'var(--bg-color, #F7F8FA)',
+            color: 'var(--text-color, #0B1B32)',
             overflow: 'hidden',
         }}>
             {stars.map((star, i) => (
@@ -30,7 +35,8 @@ export default function OfflinePage() {
                     top: `${star.y}%`,
                     width: star.s,
                     height: star.s,
-                    background: '#fff',
+                    background: 'var(--brand-accent, #fbbf24)',
+                    opacity: 0.45,
                     borderRadius: '50%',
                     animation: `pulse ${star.d}s ease-in-out infinite`,
                     pointerEvents: 'none',
@@ -43,18 +49,18 @@ export default function OfflinePage() {
                 @keyframes pulse { 0%, 100% { opacity: 0.4; } 50% { opacity: 1; } }
                 @keyframes spin { to { transform: rotate(360deg); } }
                 .llami-head {
-                    width: 80px; height: 80px; background: linear-gradient(135deg, #e8d5b7, #d4b896);
+                    width: 80px; height: 80px; background: var(--accent-soft, #fff7d6);
                     border-radius: 50%; margin: 0 auto; position: relative;
-                    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+                    box-shadow: var(--shadow-md, 0 4px 16px rgba(11, 27, 50, 0.08));
                 }
                 .llami-ear {
-                    width: 18px; height: 28px; background: linear-gradient(135deg, #d4b896, #c4a07a);
+                    width: 18px; height: 28px; background: var(--brand-accent, #fbbf24);
                     border-radius: 50% 50% 30% 30%; position: absolute; top: -10px;
                 }
                 .llami-ear.left { left: 12px; transform: rotate(-15deg); }
                 .llami-ear.right { right: 12px; transform: rotate(15deg); }
                 .llami-eye {
-                    width: 14px; height: 16px; background: #2d1b69;
+                    width: 14px; height: 16px; background: var(--brand-primary, #0B1B32);
                     border-radius: 50%; position: absolute; top: 32px;
                 }
                 .llami-eye.left { left: 18px; }
@@ -64,33 +70,32 @@ export default function OfflinePage() {
                     border-radius: 50%; position: absolute; top: 3px; left: 3px;
                 }
                 .llami-nose {
-                    width: 10px; height: 8px; background: #c4a07a;
+                    width: 10px; height: 8px; background: var(--brand-accent-strong, #8a5a00);
                     border-radius: 50%; position: absolute; top: 44px; left: 50%; margin-left: -5px;
                 }
                 .llami-mouth {
-                    width: 20px; height: 10px; border-bottom: 3px solid #8b6f4e;
+                    width: 20px; height: 10px; border-bottom: 3px solid var(--brand-primary, #0B1B32);
                     border-radius: 0 0 20px 20px; position: absolute; top: 52px; left: 50%; margin-left: -10px;
                 }
                 .llami-scarf {
                     width: 60px; height: 12px;
-                    background: linear-gradient(90deg, #8b5cf6, #6d28d9, #8b5cf6);
+                    background: var(--brand-accent, #fbbf24);
                     border-radius: 4px; margin: -6px auto 0; position: relative; z-index: 2;
                 }
                 .glass-card {
-                    background: rgba(255,255,255,0.06);
-                    backdrop-filter: blur(20px);
-                    -webkit-backdrop-filter: blur(20px);
-                    border: 1px solid rgba(255,255,255,0.1);
+                    background: var(--card-bg, #ffffff);
+                    border: 1px solid var(--border-color, #e1e8f0);
+                    box-shadow: var(--card-shadow, 0 4px 16px rgba(11, 27, 50, 0.06));
                 }
                 .offline-link {
-                    transition: all 0.2s;
+                    transition: transform 0.2s ease, opacity 0.2s ease;
                 }
                 .offline-link:hover {
                     transform: translateX(4px);
                 }
             `}</style>
 
-            <div className="glass-card rounded-4 p-4 p-sm-5 text-center animate-fade-in" style={{
+            <div className="ui-surface glass-card rounded-4 p-4 p-sm-5 text-center animate-fade-in" style={{
                 maxWidth: 440, width: '100%', animation: 'fadeIn 0.6s ease-out',
                 position: 'relative', zIndex: 1,
             }}>
@@ -110,7 +115,8 @@ export default function OfflinePage() {
                     {[1, 2, 3, 4, 5].map((i) => (
                         <div key={i} style={{
                             width: 6, height: [16, 24, 32, 40, 48][i - 1],
-                            background: 'linear-gradient(to top, rgba(255,255,255,0.2), rgba(255,255,255,0.6))',
+                            background: 'var(--brand-accent, #fbbf24)',
+                            opacity: 0.65,
                             borderRadius: 3,
                             animation: `pulse 1.5s ease-in-out ${(i - 1) * 0.2}s infinite`,
                         }} />
@@ -119,42 +125,40 @@ export default function OfflinePage() {
 
                 <h1 className="fw-bold mb-2" style={{
                     fontSize: '1.5rem',
-                    background: 'linear-gradient(135deg, #a78bfa, #60a5fa)',
-                    WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent',
-                    backgroundClip: 'text',
+                    color: 'var(--text-color, #0B1B32)',
                 }}>
-                    <WifiOff size={24} className="me-2" style={{ WebkitTextFillColor: 'initial', color: 'rgba(255,255,255,0.6)' }} />
-                    Sin conexión
+                    <WifiOff size={24} className="me-2" style={{ color: 'var(--brand-primary, #0B1B32)' }} />
+                    {t.offline.title}
                 </h1>
-                <p className="mb-4" style={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.95rem', lineHeight: 1.7 }}>
-                    No se pudo cargar esta página sin internet. Pero estas funciones están disponibles:
+                <p className="mb-4" style={{ color: 'var(--text-muted, #5f6f82)', fontSize: '0.95rem', lineHeight: 1.7 }}>
+                    {t.offline.description}
                 </p>
 
                 <div className="d-flex flex-column gap-2 mb-4">
                     <Link href="/dashboard/bible"
                         className="offline-link btn d-flex align-items-center gap-2 rounded-pill py-2"
-                        style={{ background: 'rgba(13,202,240,0.15)', color: '#6edff6', border: '1px solid rgba(13,202,240,0.3)' }}>
-                        <BookOpen size={18} /> Leer la Biblia
+                        style={{ background: 'var(--surface-soft, #F3F6FA)', color: 'var(--text-color, #0B1B32)', border: '1px solid var(--border-color, #e1e8f0)' }}>
+                        <BookOpen size={18} /> {t.offline.bible}
                     </Link>
                     <Link href="/dashboard/games/speed-quiz"
                         className="offline-link btn d-flex align-items-center gap-2 rounded-pill py-2"
-                        style={{ background: 'rgba(25,135,84,0.15)', color: '#75b798', border: '1px solid rgba(25,135,84,0.3)' }}>
-                        <Gamepad2 size={18} /> Pregunta Relámpago
+                        style={{ background: 'var(--surface-soft, #F3F6FA)', color: 'var(--text-color, #0B1B32)', border: '1px solid var(--border-color, #e1e8f0)' }}>
+                        <Gamepad2 size={18} /> {t.offline.quick_quiz}
                     </Link>
                     <Link href="/dashboard/games"
                         className="offline-link btn d-flex align-items-center gap-2 rounded-pill py-2"
-                        style={{ background: 'rgba(25,135,84,0.15)', color: '#75b798', border: '1px solid rgba(25,135,84,0.3)' }}>
-                        <Gamepad2 size={18} /> Juegos Bíblicos
+                        style={{ background: 'var(--surface-soft, #F3F6FA)', color: 'var(--text-color, #0B1B32)', border: '1px solid var(--border-color, #e1e8f0)' }}>
+                        <Gamepad2 size={18} /> {t.offline.games}
                     </Link>
                     <Link href="/dashboard/sos"
                         className="offline-link btn d-flex align-items-center gap-2 rounded-pill py-2"
-                        style={{ background: 'rgba(255,193,7,0.15)', color: '#ffda6a', border: '1px solid rgba(255,193,7,0.3)' }}>
-                        <Heart size={18} /> SOS / Emergencia
+                        style={{ background: 'var(--accent-soft, #fff7d6)', color: 'var(--brand-primary, #0B1B32)', border: '1px solid var(--brand-accent, #fbbf24)' }}>
+                        <Heart size={18} /> {t.offline.sos}
                     </Link>
                     <Link href="/dashboard"
                         className="offline-link btn d-flex align-items-center gap-2 rounded-pill py-2"
-                        style={{ background: 'rgba(139,92,246,0.2)', color: '#a78bfa', border: '1px solid rgba(139,92,246,0.3)' }}>
-                        <Home size={18} /> Ir al Inicio
+                        style={{ background: 'var(--surface-soft, #F3F6FA)', color: 'var(--text-color, #0B1B32)', border: '1px solid var(--border-color, #e1e8f0)' }}>
+                        <Home size={18} /> {t.offline.home}
                     </Link>
                 </div>
 
@@ -163,9 +167,9 @@ export default function OfflinePage() {
                     disabled={reloading}
                     className="btn rounded-pill py-2 px-4 fw-bold w-100"
                     style={{
-                        background: 'linear-gradient(135deg, #8b5cf6, #6d28d9)',
+                        background: 'var(--brand-primary, #0B1B32)',
                         color: '#fff', border: 'none',
-                        boxShadow: '0 4px 20px rgba(109,40,217,0.4)',
+                        boxShadow: 'var(--shadow-md, 0 6px 18px rgba(11, 27, 50, 0.08))',
                         transition: 'transform 0.2s',
                     }}
                     onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.02)'}
@@ -174,16 +178,16 @@ export default function OfflinePage() {
                     {reloading ? (
                         <span className="d-inline-flex align-items-center gap-2">
                             <span style={{ animation: 'spin 0.6s linear infinite', display: 'inline-block', width: 16, height: 16, border: '2px solid rgba(255,255,255,0.3)', borderTopColor: '#fff', borderRadius: '50%' }}></span>
-                            Reconectando...
+                            {t.offline.reconnecting}
                         </span>
                     ) : (
-                        <span className="d-inline-flex align-items-center gap-2"><RefreshCw size={18} /> Reintentar</span>
+                        <span className="d-inline-flex align-items-center gap-2"><RefreshCw size={18} /> {t.offline.retry}</span>
                     )}
                 </button>
 
                 <button
                     onClick={() => {
-                        if (confirm("Se cerrará tu sesión y se limpiarán datos corruptos. ¿Continuar?")) {
+                        if (confirm(t.offline.clear_confirm)) {
                             localStorage.clear();
                             sessionStorage.clear();
                             document.cookie.split(";").forEach((c) => {
@@ -193,13 +197,13 @@ export default function OfflinePage() {
                         }
                     }}
                     className="btn btn-link mt-3 p-0"
-                    style={{ color: 'rgba(255,255,255,0.4)', fontSize: '0.8rem', textDecoration: 'none' }}
+                    style={{ color: 'var(--text-muted, #5f6f82)', fontSize: '0.8rem', textDecoration: 'none' }}
                 >
-                    <AlertTriangle size={12} className="me-1" /> ¿Sigues con problemas? Limpiar todo
+                    <AlertTriangle size={12} className="me-1" /> {t.offline.problem}
                 </button>
 
-                <div className="mt-4" style={{ color: 'rgba(255,255,255,0.3)', fontSize: '0.75rem' }}>
-                    Conecta+ — No estás solo. Dios sigue contigo.
+                <div className="mt-4" style={{ color: 'var(--text-muted, #5f6f82)', fontSize: '0.75rem' }}>
+                    {t.offline.footer}
                 </div>
             </div>
         </div>

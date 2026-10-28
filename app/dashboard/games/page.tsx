@@ -5,13 +5,15 @@ import { getGameRooms, createGameRoom, joinGameRoom } from "./actions";
 import { Loader2, Plus, Users, Lock, Globe, Zap, PlayCircle, RefreshCw, BookOpen, Timer, Book, Puzzle, ListOrdered } from "lucide-react";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
+import { isPollingAllowed } from '@/app/lib/networkPolicy';
+import SecondaryPageShell from '@/app/components/SecondaryUI';
 
 const soloGames = [
     {
         name: "Ordena el Versículo",
         desc: "Toca las palabras en el orden correcto",
         href: "/dashboard/games/verse-order",
-        gradient: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+        surface: "#16304f",
         emoji: "📖",
         icon: ListOrdered,
     },
@@ -19,7 +21,7 @@ const soloGames = [
         name: "Pregunta Relámpago",
         desc: "Responde rápido antes del tiempo",
         href: "/dashboard/games/speed-quiz",
-        gradient: "linear-gradient(135deg, #f093fb 0%, #f5576c 100%)",
+        surface: "#1d3b5f",
         emoji: "⚡",
         icon: Timer,
     },
@@ -27,7 +29,7 @@ const soloGames = [
         name: "Empareja Libros",
         desc: "Clasifica libros por categoría",
         href: "/dashboard/games/book-match",
-        gradient: "linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%)",
+        surface: "#29476b",
         emoji: "📚",
         icon: Book,
     },
@@ -35,7 +37,7 @@ const soloGames = [
         name: "Completa el Verso",
         desc: "Elige la palabra que falta",
         href: "/dashboard/games/fill-blank",
-        gradient: "linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)",
+        surface: "#205675",
         emoji: "✏️",
         icon: Puzzle,
     },
@@ -43,14 +45,22 @@ const soloGames = [
         name: "Clasifica el Libro",
         desc: "AT o NT? Elige rápido",
         href: "/dashboard/games/book-sort",
-        gradient: "linear-gradient(135deg, #fa709a 0%, #fee140 100%)",
+        surface: "#6b551c",
         emoji: "📜",
         icon: BookOpen,
     },
 ];
 
+type GameRoom = {
+    id: string;
+    name: string | null;
+    status: string;
+    isPrivate: boolean;
+    _count: { players: number };
+};
+
 export default function GamesDashboard() {
-    const [rooms, setRooms] = useState<any[]>([]);
+    const [rooms, setRooms] = useState<GameRoom[]>([]);
     const [loading, setLoading] = useState(true);
     const [creating, setCreating] = useState(false);
     const [refreshing, setRefreshing] = useState(false);
@@ -62,7 +72,11 @@ export default function GamesDashboard() {
 
     const router = useRouter();
 
-    const fetchRooms = async () => {
+    const fetchRooms = async (force = false) => {
+        if (!navigator.onLine || (!force && !isPollingAllowed(navigator.onLine, document.hidden))) {
+            setLoading(false);
+            return;
+        }
         setRefreshing(true);
         const res = await getGameRooms();
         if (res.success) {
@@ -74,12 +88,23 @@ export default function GamesDashboard() {
 
     useEffect(() => {
         fetchRooms();
-        const interval = setInterval(fetchRooms, 10000); // Poll every 10s
-        return () => clearInterval(interval);
+        const refreshWhenVisible = () => {
+            if (isPollingAllowed(navigator.onLine, document.hidden)) fetchRooms();
+        };
+        window.addEventListener('online', refreshWhenVisible);
+        document.addEventListener('visibilitychange', refreshWhenVisible);
+        return () => {
+            window.removeEventListener('online', refreshWhenVisible);
+            document.removeEventListener('visibilitychange', refreshWhenVisible);
+        };
     }, []);
 
     const handleCreateRoom = async (e: React.FormEvent) => {
         e.preventDefault();
+        if (!navigator.onLine) {
+            toast.error("Sin conexión. Crear salas requiere internet.");
+            return;
+        }
         setCreating(true);
 
         const res = await createGameRoom(newRoomName, isPrivate);
@@ -94,6 +119,10 @@ export default function GamesDashboard() {
     };
 
     const handleJoinRoom = async (roomId: string) => {
+        if (!navigator.onLine) {
+            toast.error("Sin conexión. Entrar a salas requiere internet.");
+            return;
+        }
         const res = await joinGameRoom(roomId);
         if (res.success) {
             router.push(`/dashboard/games/${roomId}`);
@@ -103,9 +132,10 @@ export default function GamesDashboard() {
     };
 
     return (
-        <div className="container py-4 animate-fade-in">
+        <SecondaryPageShell>
+        <div className="container py-4 animate-fade-in ui-game-shell">
             {/* Header */}
-            <header className="mb-4 d-flex justify-content-between align-items-center">
+            <header className="ui-page-header mb-4">
                 <div>
                     <h2 className="fw-black text-dark mb-1 d-flex align-items-center gap-2">
                         <span className="bg-primary text-white p-2 rounded-3 d-flex"><PlayCircle size={28} /></span>
@@ -113,7 +143,7 @@ export default function GamesDashboard() {
                     </h2>
                     <p className="text-secondary small m-0 fw-bold">Diviértete y aprende con la comunidad</p>
                 </div>
-                <button onClick={fetchRooms} disabled={refreshing} className="btn btn-light rounded-circle shadow-sm p-2">
+                <button onClick={() => fetchRooms(true)} disabled={refreshing} className="btn btn-light rounded-circle shadow-sm p-2">
                     <RefreshCw size={20} className={refreshing ? "animate-spin" : ""} />
                 </button>
             </header>
@@ -125,7 +155,7 @@ export default function GamesDashboard() {
             <div className="row g-3 mb-5">
                 {soloGames.map((game) => (
                     <div key={game.href} className="col-12 col-sm-6 col-lg-4 col-xl-3">
-                        <div className="card border-0 shadow-sm overflow-hidden hover-scale h-100" onClick={() => router.push(game.href)} style={{ cursor: 'pointer', borderRadius: '24px', background: game.gradient }}>
+                        <div className="card border-0 shadow-sm overflow-hidden hover-scale h-100" onClick={() => router.push(game.href)} style={{ cursor: 'pointer', borderRadius: '24px', background: game.surface }}>
                             <div className="card-body p-4 position-relative">
                                 <div className="position-absolute top-0 end-0 p-2 opacity-15" style={{ fontSize: '3.5rem' }}>
                                     {game.emoji}
@@ -306,5 +336,6 @@ export default function GamesDashboard() {
                 }
             `}</style>
         </div>
+        </SecondaryPageShell>
     );
 }

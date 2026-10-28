@@ -1,13 +1,13 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/app/lib/prisma';
-import { getApiUser } from '@/app/lib/api-auth';
+import { getApiUserId } from '@/app/lib/api-auth';
 
 export const dynamic = 'force-dynamic';
 
 export async function POST(req: Request) {
     try {
-        const userFromAuth = await getApiUser(req);
-        if (!userFromAuth) {
+        const userId = await getApiUserId(req);
+        if (!userId) {
             return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
         }
 
@@ -28,11 +28,9 @@ export async function POST(req: Request) {
             return NextResponse.json({ message: 'Spiritual status, gender and age are required' }, { status: 400 });
         }
 
-        const prismaAny = prisma as any;
-
         // Update User
-        await prismaAny.user.update({
-            where: { id: userFromAuth.id },
+        await prisma.user.update({
+            where: { id: userId },
             data: {
                 spiritualStatus,
                 sinsToOvercome: JSON.stringify(sinsToOvercome || []),
@@ -67,13 +65,13 @@ export async function POST(req: Request) {
 
         for (const item of strugglesToCreate) {
             const exists = await prisma.userStruggle.findFirst({
-                where: { userId: userFromAuth.id, title: item.title }
+                where: { userId, title: item.title }
             });
 
             if (!exists) {
-                await prismaAny.userStruggle.create({
+                await prisma.userStruggle.create({
                     data: {
-                        userId: userFromAuth.id,
+                        userId,
                         title: item.title,
                         status: 'ACTIVE',
                         isStarted: false
@@ -84,8 +82,11 @@ export async function POST(req: Request) {
 
         return NextResponse.json({ success: true });
 
-    } catch (error: any) {
+    } catch (error: unknown) {
         console.error('Onboarding API Error:', error);
-        return NextResponse.json({ message: 'Server Error', details: error.message }, { status: 500 });
+        return NextResponse.json({
+            message: 'Server Error',
+            details: error instanceof Error ? error.message : 'Unknown error',
+        }, { status: 500 });
     }
 }

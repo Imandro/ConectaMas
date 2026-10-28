@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { BookHeart } from 'lucide-react';
 
 import { useLanguage } from '@/app/LanguageContext';
+import { getDailyPrayerForDate } from '@/app/lib/dailyPrayerData';
 
 interface DailyPrayer {
     id: string;
@@ -14,34 +15,16 @@ interface DailyPrayer {
 }
 
 export default function DailyPrayerCard() {
-    const { t } = useLanguage();
+    const { t, language } = useLanguage();
     const [prayer, setPrayer] = useState<DailyPrayer | null>(null);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        // Cargar desde caché primero
-        const cached = localStorage.getItem('daily_prayer');
-        if (cached) {
-            try {
-                setPrayer(JSON.parse(cached));
-                setLoading(false);
-            } catch (e) {
-                console.error("Error parsing cached prayer", e);
-            }
-        }
-
-        fetch('/api/daily-prayer')
-            .then(res => res.json())
-            .then(data => {
-                setPrayer(data);
-                localStorage.setItem('daily_prayer', JSON.stringify(data));
-                setLoading(false);
-            })
-            .catch(err => {
-                console.error("Error fetching daily prayer:", err);
-                setLoading(false);
-            });
-    }, []);
+        const data = getDailyPrayerForDate(new Date(), language);
+        setPrayer(data);
+        localStorage.setItem(`daily_prayer:${language}`, JSON.stringify(data));
+        setLoading(false);
+    }, [language]);
 
     if (loading) {
         return (

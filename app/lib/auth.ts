@@ -6,8 +6,6 @@ import { User, Session } from "next-auth";
 import { JWT } from "next-auth/jwt";
 import bcrypt from "bcryptjs";
 
-console.log("NextAuth initialized with AUTH_SECRET status:", !!(process.env.AUTH_SECRET || process.env.NEXTAUTH_SECRET));
-
 export const { handlers, auth, signIn, signOut } = NextAuth({
     ...authConfig,
     providers: [
@@ -24,8 +22,6 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
                 if (!identifier || !password) return null;
 
                 const normalizedIdentifier = identifier.trim().toLowerCase();
-                console.log("[Auth] Attempting authorize for:", normalizedIdentifier);
-
                 // Find user by email OR username (both lowercase)
                 const user = await prisma.user.findFirst({
                     where: {
@@ -36,26 +32,32 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
                             { username: { equals: normalizedIdentifier.replace('@', ''), mode: 'insensitive' } }
                         ]
                     },
+                    select: {
+                        id: true,
+                        name: true,
+                        email: true,
+                        preferredLanguage: true,
+                        region: true,
+                        passwordHash: true,
+                    },
                 });
 
                 if (!user || !user.passwordHash) {
-                    console.log("[Auth] User not found or no password hash for:", normalizedIdentifier);
                     return null;
                 }
 
                 const isValid = await bcrypt.compare(password, user.passwordHash);
 
                 if (!isValid) {
-                    console.log("[Auth] Invalid password for:", identifier);
                     return null;
                 }
-
-                console.log("[Auth] Successful authorize for:", identifier);
 
                 return {
                     id: user.id,
                     name: user.name,
                     email: user.email,
+                    preferredLanguage: user.preferredLanguage,
+                    region: user.region,
                     // IMAGE REMOVED TO PREVENT 494 ERRORS
                 };
             }
@@ -72,11 +74,12 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
             // NO IMAGES allowed in the JWT.
 
             if (user) {
-                console.log("[Auth] JWT Callback: Initializing token for user:", user.email);
                 return {
                     id: user.id || '',
                     name: user.name ? user.name.split(' ')[0] : 'Usuario',
                     email: user.email || '',
+                    preferredLanguage: user.preferredLanguage,
+                    region: user.region,
                 };
             }
 
@@ -85,6 +88,8 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
                 return {
                     ...token,
                     name: session.user.name ? session.user.name.split(' ')[0] : token.name,
+                    preferredLanguage: session.user.preferredLanguage || token.preferredLanguage,
+                    region: session.user.region || token.region,
                     // picture blocked here too
                 };
             }
@@ -94,6 +99,8 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
                 id: token.id,
                 name: token.name,
                 email: token.email,
+                preferredLanguage: token.preferredLanguage,
+                region: token.region,
                 sub: token.sub,
                 iat: token.iat,
                 exp: token.exp,
@@ -105,6 +112,8 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
                 session.user.id = token.sub || token.id;
                 session.user.name = token.name;
                 session.user.email = token.email;
+                session.user.preferredLanguage = token.preferredLanguage;
+                session.user.region = token.region;
             }
             return session;
         },

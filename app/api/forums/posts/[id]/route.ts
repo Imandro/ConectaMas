@@ -1,10 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/app/lib/prisma';
-import { getApiUser } from '@/app/lib/api-auth';
+import { getApiUser, getApiUserId } from '@/app/lib/api-auth';
 
 export const dynamic = 'force-dynamic';
 
-const prismaClient = prisma as any;
+const prismaClient = prisma;
 
 // GET /api/forums/posts/[id] - Get single post with replies
 export async function GET(
@@ -12,8 +12,8 @@ export async function GET(
     { params }: { params: { id: string } }
 ) {
     try {
-        const currentUser = await getApiUser(request);
-        const currentUserId = currentUser?.id;
+        const currentUserId = await getApiUserId(request);
+        if (!currentUserId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
         const post = await prismaClient.forumPost.findUnique({
             where: { id: params.id },
@@ -62,14 +62,18 @@ export async function GET(
         }
 
         // Sanitize anonymous data & Add Ownership
+        const { userId: postOwnerId, ...publicPost } = post;
         const sanitizedPost = {
-            ...post,
+            ...publicPost,
             user: post.isAnonymous ? null : post.user,
-            isOwner: currentUserId && post.userId === currentUserId,
-            replies: post.replies.map((reply: any) => ({
-                ...reply,
+            isOwner: postOwnerId === currentUserId,
+            replies: post.replies.map((reply) => ({
+                id: reply.id,
+                content: reply.content,
+                createdAt: reply.createdAt,
+                isAnonymous: reply.isAnonymous,
                 user: reply.isAnonymous ? null : reply.user,
-                isOwner: currentUserId && reply.userId === currentUserId
+                isOwner: reply.userId === currentUserId
             }))
         };
 
@@ -86,7 +90,7 @@ export async function DELETE(
     { params }: { params: { id: string } }
 ) {
     try {
-        const user = await getApiUser(request);
+        const user = await getApiUser(request, { id: true, role: true });
 
         if (!user) {
             return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });

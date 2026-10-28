@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Globe, X } from "lucide-react";
+import { Globe } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { updateUserCountry } from "@/app/dashboard/actions/country";
 import { toast } from "react-hot-toast";
@@ -33,11 +33,11 @@ const LATIN_AMERICAN_COUNTRIES = [
     { code: "PR", name: "Puerto Rico", flag: "🇵🇷" },
     { code: "US", name: "Estados Unidos", flag: "🇺🇸" },
     { code: "ES", name: "España", flag: "🇪🇸" },
-    { code: "OTHER", name: "Other", flag: "🌎" }
+    { code: "RO", name: "Rumania", flag: "🇷🇴" }
 ];
 
 export default function CountryModal({ hasSelectedCountry }: CountryModalProps) {
-    const { t } = useLanguage();
+    const { t, language } = useLanguage();
     const [isOpen, setIsOpen] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [searchTerm, setSearchTerm] = useState("");
@@ -51,6 +51,10 @@ export default function CountryModal({ hasSelectedCountry }: CountryModalProps) 
     }, [hasSelectedCountry]);
 
     const handleSelectCountry = async (countryCode: string, countryName: string) => {
+        if (!navigator.onLine) {
+            toast.error('Sin conexión. Guardar el país requiere internet.');
+            return;
+        }
         setIsLoading(true);
         const result = await updateUserCountry(countryCode);
 
@@ -67,7 +71,7 @@ export default function CountryModal({ hasSelectedCountry }: CountryModalProps) 
     };
 
     const filteredCountries = LATIN_AMERICAN_COUNTRIES.filter(country => {
-        const localizedName = country.code === "OTHER" ? t.country_modal.other_country : country.name;
+        const localizedName = country.code === "OTHER" ? t.country_modal.other_country : country.code === "RO" && language === 'ro' ? t.country_modal.romania : country.name;
         return localizedName.toLowerCase().includes(searchTerm.toLowerCase());
     });
 
@@ -80,11 +84,11 @@ export default function CountryModal({ hasSelectedCountry }: CountryModalProps) 
                     initial={{ opacity: 0, scale: 0.9, y: 20 }}
                     animate={{ opacity: 1, scale: 1, y: 0 }}
                     exit={{ opacity: 0, scale: 0.9, y: 20 }}
-                    className="bg-white rounded-5 shadow-lg overflow-hidden"
-                    style={{ maxWidth: '500px', width: '100%', maxHeight: '80vh' }}
+                    className="ui-surface-glass rounded-5 shadow-lg overflow-hidden"
+                    style={{ maxWidth: '500px', width: 'min(100% - 24px, 500px)', maxHeight: '80vh' }}
                 >
                     {/* Header */}
-                    <div className="position-relative p-4 text-center" style={{ background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' }}>
+                    <div className="position-relative p-4 text-center" style={{ backgroundColor: 'var(--brand-primary, #0B1B32)' }}>
                         <div className="bg-white p-3 rounded-circle d-inline-block shadow-sm mb-2">
                             <Globe size={40} className="text-primary" />
                         </div>
@@ -116,7 +120,7 @@ export default function CountryModal({ hasSelectedCountry }: CountryModalProps) 
                                     style={{ transition: 'all 0.2s' }}
                                 >
                                     <span style={{ fontSize: '1.5rem' }}>{country.flag}</span>
-                                    <span className="fw-medium">{country.code === "OTHER" ? t.country_modal.other_country : country.name}</span>
+                                    <span className="fw-medium">{country.code === "OTHER" ? t.country_modal.other_country : country.code === "RO" && language === 'ro' ? t.country_modal.romania : country.name}</span>
                                 </button>
                             ))}
                         </div>

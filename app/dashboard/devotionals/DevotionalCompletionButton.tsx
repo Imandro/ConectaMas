@@ -1,16 +1,26 @@
 "use client";
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { CheckCircle2, Loader2 } from 'lucide-react';
-import { useRouter } from 'next/navigation';
+import { useSession } from 'next-auth/react';
 
 export default function DevotionalCompletionButton({ devotionalId, initialCompleted }: { devotionalId: string, initialCompleted: boolean }) {
     const [loading, setLoading] = useState(false);
     const [completed, setCompleted] = useState(initialCompleted);
-    const router = useRouter();
+    const { data: session } = useSession();
+    const userKey = session?.user?.id || session?.user?.email || 'guest';
+    const completionKey = `devotional-completed:${userKey}:${devotionalId}`;
+
+    useEffect(() => {
+        if (localStorage.getItem(completionKey) === 'true') setCompleted(true);
+    }, [completionKey]);
 
     const handleComplete = async () => {
         if (completed || loading) return;
+        if (!navigator.onLine) {
+            alert('Sin conexión. Completar devocional requiere internet.');
+            return;
+        }
         setLoading(true);
 
         try {
@@ -22,7 +32,7 @@ export default function DevotionalCompletionButton({ devotionalId, initialComple
 
             if (res.ok) {
                 setCompleted(true);
-                router.refresh(); // Refresh server components to update UI/DB state everywhere
+                localStorage.setItem(completionKey, 'true');
             }
         } catch (error) {
             console.error('Error completing devotional:', error);

@@ -5,6 +5,7 @@ import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import { ArrowLeft, Clock, Shield, User as UserIcon, Send, Trash2 } from 'lucide-react';
 import { useLanguage } from '@/app/LanguageContext';
+import { languageLocale } from '@/app/lib/languages';
 
 interface Reply {
     id: string;
@@ -43,6 +44,7 @@ export default function PostPage() {
     const [loading, setLoading] = useState(true);
     const [replyContent, setReplyContent] = useState('');
     const [isAnonymousReply, setIsAnonymousReply] = useState(false);
+    const [rulesAccepted, setRulesAccepted] = useState(false);
     const [submitting, setSubmitting] = useState(false);
 
     const fetchPost = () => {
@@ -69,6 +71,10 @@ export default function PostPage() {
             alert(t.forums.form_reply_validation);
             return;
         }
+        if (!navigator.onLine) {
+            alert('Sin conexión. Publicar una respuesta requiere internet.');
+            return;
+        }
 
         setSubmitting(true);
 
@@ -78,7 +84,8 @@ export default function PostPage() {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     content: replyContent,
-                    isAnonymous: isAnonymousReply
+                    isAnonymous: isAnonymousReply,
+                    communityRulesAccepted: rulesAccepted
                 })
             });
 
@@ -99,12 +106,7 @@ export default function PostPage() {
 
     const formatDate = (dateString: string) => {
         const date = new Date(dateString);
-        const localeMap: Record<string, string> = {
-            'es': 'es-ES',
-            'en': 'en-US',
-            'pt': 'pt-BR'
-        };
-        return date.toLocaleString(localeMap[language] || 'es-ES', {
+        return date.toLocaleString(languageLocale(language), {
             day: 'numeric',
             month: 'long',
             year: 'numeric',
@@ -142,6 +144,7 @@ export default function PostPage() {
                 <ArrowLeft size={20} className="me-2" />
                 {t.forums.back_to_community} | {post.category.icon} {post.category.name}
             </Link>
+            <p className="small mb-3"><Link href="/legal/community">Reglas de comunidad</Link> · <a href="mailto:marioalejandroruiz28@gmail.com">Reportar contenido</a></p>
 
             {/* Original Post */}
             <div className="card border-0 shadow-sm mb-4">
@@ -152,6 +155,10 @@ export default function PostPage() {
                             <button
                                 onClick={async () => {
                                     if (!confirm(t.forums.delete_post_confirm)) return;
+                                    if (!navigator.onLine) {
+                                        alert('Sin conexión. Eliminar publicaciones requiere internet.');
+                                        return;
+                                    }
                                     try {
                                         const res = await fetch(`/api/forums/posts/${post.id}`, { method: 'DELETE' });
                                         if (res.ok) {
@@ -243,6 +250,10 @@ export default function PostPage() {
                                     <button
                                         onClick={async () => {
                                             if (!confirm(t.forums.delete_reply_confirm)) return;
+                                            if (!navigator.onLine) {
+                                                alert('Sin conexión. Eliminar respuestas requiere internet.');
+                                                return;
+                                            }
                                             try {
                                                 const res = await fetch(`/api/forums/replies/${reply.id}`, { method: 'DELETE' });
                                                 if (res.ok) {
@@ -280,6 +291,7 @@ export default function PostPage() {
                 <div className="card-body p-4">
                     <h5 className="fw-bold mb-3">{t.forums.your_reply}</h5>
                     <form onSubmit={handleReplySubmit}>
+                        <div className="alert alert-info small">Lee las <Link href="/legal/community" target="_blank">reglas de comunidad</Link> antes de responder.</div>
                         <div className="mb-3">
                             <textarea
                                 className="form-control"
@@ -289,6 +301,11 @@ export default function PostPage() {
                                 placeholder={t.forums.reply_placeholder}
                                 required
                             />
+                        </div>
+
+                        <div className="mb-3 form-check">
+                            <input className="form-check-input" type="checkbox" id="replyCommunityRulesAccepted" checked={rulesAccepted} onChange={(e) => setRulesAccepted(e.target.checked)} required />
+                            <label className="form-check-label small" htmlFor="replyCommunityRulesAccepted">Acepto las reglas de comunidad.</label>
                         </div>
 
                         <div className="mb-3">

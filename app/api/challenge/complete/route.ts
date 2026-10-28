@@ -1,20 +1,12 @@
-import { auth } from "@/app/lib/auth";
 import { prisma } from "@/app/lib/prisma";
+import { getApiUserId } from "@/app/lib/api-auth";
 import { NextResponse } from "next/server";
 
 export async function POST() {
     try {
-        const session = await auth();
-        if (!session?.user?.email) {
+        const userId = await getApiUserId();
+        if (!userId) {
             return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
-        }
-
-        const user = await prisma.user.findUnique({
-            where: { email: session.user.email },
-        });
-
-        if (!user) {
-            return NextResponse.json({ message: "User not found" }, { status: 404 });
         }
 
         // Update lastChallengeCompleted
@@ -23,7 +15,7 @@ export async function POST() {
         // We can hook into existing Streak logic if it exists, or just update the field.
 
         await prisma.user.update({
-            where: { id: user.id },
+            where: { id: userId },
             data: {
                 lastChallengeCompleted: new Date(),
                 weeklyXP: { increment: 10 },

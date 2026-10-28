@@ -22,6 +22,14 @@ export const EMERGENCY_PRAYERS_PT = [
     "Pai Eterno, reconheço humildemente que sem Ti não posso fazer absolutamente nada. Esta batalha é grande demais para mim, mas não para Ti. Ajuda-me a resistir a esta tentação que me cerca, a superar este momento de fraqueza. Enche este vazio que sinto com Teu amor infinito e incondicional. Lembra-me quem sou em Ti: amado, perdoado, livre. Dá-me forças para dizer não ao que me destrói e sim ao que me edifica. Confio no Teu poder transformador. Amém."
 ];
 
+export const EMERGENCY_PRAYERS_RO = [
+    'Tată ceresc, în acest moment de neliniște am nevoie de Tine mai mult ca oricând. Simt că îmi pierd puterea, dar știu că Tu nu mă părăsești niciodată. Umple-mi inima cu pacea Ta. Amin.',
+    'Doamne Isuse, simt că nu mai pot duce această povară. Mintea mea este agitată și am nevoie de intervenția Ta acum. Dă-mi liniștea pe care numai Tu o poți oferi și ajută-mă să îți încredințez fiecare teamă. Amin.',
+    'Dumnezeule al iubirii, în acest moment greu strig către Tine din toată inima. Liniștește furtuna din mintea mea și întărește-mi spiritul. Amintește-mi că mă auzi, mă vezi și îți pasă de mine. Amin.',
+    'Duhule Sfânt, vino ca mângâietor în inima mea frântă. Am nevoie de călăuzirea Ta. Dă-mi înțelepciune, discernământ și curaj să trec prin acest moment fără să fug. Amin.',
+    'Tată veșnic, recunosc că fără Tine nu pot face nimic. Ajută-mă să rezist ispitei și să trec peste slăbiciunea aceasta. Amintește-mi cine sunt în Tine: iubit, iertat și liber. Amin.',
+];
+
 export const TRUTHS_ES = [
     "Dios no está enojado contigo, Él está peleando por ti.",
     "Tu identidad no está en tus errores, sino en Cristo.",
@@ -61,12 +69,27 @@ export const TRUTHS_PT = [
     "Levanta-te, resplandece, porque já vem a tua luz.",
 ];
 
+export const TRUTHS_RO = [
+    'Dumnezeu nu este supărat pe tine; El luptă pentru tine.',
+    'Identitatea ta nu este în greșelile tale, ci în Hristos.',
+    'Nu există condamnare pentru cei care sunt în Hristos Isus.',
+    'Dragostea lui Dumnezeu este mai mare decât orice păcat.',
+    'Sentimentele tale sunt reale, dar nu sunt întotdeauna adevărul.',
+    'Ești ales, iertat și iubit pentru totdeauna.',
+    'Încercarea aceasta este temporară, dar harul Lui este veșnic.',
+    'Dumnezeu își desăvârșește puterea în slăbiciunea ta.',
+    'Nu ești singur; Duhul Sfânt te mângâie chiar acum.',
+    'Ridică-te și strălucește, pentru că lumina ta a venit.',
+];
+
 export const getSOSContent = (language: string) => {
     switch (language) {
         case 'en':
             return { prayers: EMERGENCY_PRAYERS_EN, truths: TRUTHS_EN };
         case 'pt':
             return { prayers: EMERGENCY_PRAYERS_PT, truths: TRUTHS_PT };
+        case 'ro':
+            return { prayers: EMERGENCY_PRAYERS_RO, truths: TRUTHS_RO };
         default:
             return { prayers: EMERGENCY_PRAYERS_ES, truths: TRUTHS_ES };
     }

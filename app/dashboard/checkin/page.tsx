@@ -1,13 +1,18 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useCallback, useState, useEffect } from 'react';
 import { Calendar as CalendarIcon, Smile, Frown, Meh, Save, X } from 'lucide-react';
 import { useLanguage } from "@/app/LanguageContext";
+import { useSession } from 'next-auth/react';
+import { createIdempotencyKey, enqueueOfflineMutation } from '@/app/lib/syncQueueProcessor';
+import { getSnapshot, saveSnapshot } from '@/app/lib/offlineStore';
+import { languageLocale } from '@/app/lib/languages';
 
 interface Checkin {
     id: string;
     mood: string;
     note?: string;
+    dayKey?: string | null;
     createdAt: string;
 }
 
@@ -15,6 +20,8 @@ interface Checkin {
 
 export default function CheckinPage() {
     const { t, language } = useLanguage();
+    const { data: session } = useSession();
+    const userId = (session?.user as { id?: string; email?: string } | undefined)?.id || session?.user?.email || null;
     const [mood, setMood] = useState<string | null>(null);
     const [note, setNote] = useState('');
     const [isSaving, setIsSaving] = useState(false);
@@ -22,32 +29,70 @@ export default function CheckinPage() {
     const [selectedCheckin, setSelectedCheckin] = useState<Checkin | null>(null);
     const [mounted, setMounted] = useState(false);
 
-    useEffect(() => {
-        setMounted(true);
-        fetchHistory();
-    }, []);
-
-    const fetchHistory = async () => {
+    const fetchHistory = useCallback(async () => {
+        if (!userId) return;
+        if (!navigator.onLine) {
+            const snapshot = await getSnapshot<Checkin[]>('/dashboard/checkin', userId);
+            if (snapshot?.payload) setCheckins(snapshot.payload);
+            return;
+        }
         try {
             const res = await fetch('/api/checkin/history');
             if (res.ok) {
                 const data = await res.json();
-                setCheckins(data.checkins || []);
+                const nextCheckins = data.checkins || [];
+                setCheckins(nextCheckins);
+                void saveSnapshot('/dashboard/checkin', userId, nextCheckins);
             }
         } catch (e) {
             console.error(e);
         }
-    };
+    }, [userId]);
+
+    useEffect(() => {
+        setMounted(true);
+        setCheckins([]);
+        void fetchHistory();
+    }, [fetchHistory]);
 
     const handleSave = async () => {
         if (!mood) return;
         setIsSaving(true);
+        const idempotencyKey = createIdempotencyKey();
+        const dayKey = [new Date().getFullYear(), String(new Date().getMonth() + 1).padStart(2, '0'), String(new Date().getDate()).padStart(2, '0')].join('-');
+        const payload = { mood, note: note.trim() || undefined, dayKey };
 
         try {
+            if (navigator.onLine === false) {
+                if (!userId) throw new Error('No hay una sesión para guardar el check-in');
+                await enqueueOfflineMutation({
+                    userId,
+                    operation: 'CHECK_IN',
+                    route: '/api/checkin',
+                    payload,
+                    idempotencyKey,
+                });
+                const nextCheckins = [
+                    {
+                        id: idempotencyKey,
+                        mood,
+                        note: payload.note,
+                        dayKey,
+                        createdAt: new Date().toISOString(),
+                    },
+                    ...checkins,
+                ];
+                setCheckins(nextCheckins);
+                void saveSnapshot('/dashboard/checkin', userId, nextCheckins);
+                setMood(null);
+                setNote('');
+                return;
+            }
+
             const res = await fetch('/api/checkin', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ mood, note: note.trim() || undefined })
+                headers: { 'Content-Type': 'application/json', 'Idempotency-Key': idempotencyKey },
+                body: JSON.stringify({ ...payload, idempotencyKey })
             });
 
             if (res.ok) {
@@ -75,7 +120,7 @@ export default function CheckinPage() {
 
     const getCheckinForDay = (day: number) => {
         return checkins.find(c => {
-            const checkinDate = new Date(c.createdAt);
+            const checkinDate = c.dayKey ? new Date(`${c.dayKey}T00:00:00`) : new Date(c.createdAt);
             return checkinDate.getDate() === day &&
                 checkinDate.getMonth() === month &&
                 checkinDate.getFullYear() === year;
@@ -183,7 +228,7 @@ export default function CheckinPage() {
                     <div className="card border-0 shadow-lg p-4 bg-white rounded-4" style={{ maxWidth: '400px', width: '90%' }} onClick={(e) => e.stopPropagation()}>
                         <div className="d-flex justify-content-between align-items-center mb-3">
                             <h5 className="fw-bold m-0">
-                                {new Date(selectedCheckin.createdAt).toLocaleDateString(language === 'es' ? 'es-ES' : language === 'en' ? 'en-US' : 'pt-BR', { day: 'numeric', month: 'long' })}
+                                {(selectedCheckin.dayKey ? new Date(`${selectedCheckin.dayKey}T00:00:00`) : new Date(selectedCheckin.createdAt)).toLocaleDateString(languageLocale(language), { day: 'numeric', month: 'long' })}
                             </h5>
                             <button onClick={() => setSelectedCheckin(null)} className="btn btn-sm btn-light rounded-circle p-2">
                                 <X size={16} />

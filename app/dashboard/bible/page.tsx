@@ -6,10 +6,14 @@ import { useState, useEffect, useRef } from 'react';
 import { Book, ChevronLeft, ChevronRight, Heart, BookOpen } from 'lucide-react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
+import { useSession } from 'next-auth/react';
 import { useLanguage } from "@/app/LanguageContext";
 import { BIBLE_BOOKS, getBibleBookName } from '@/app/lib/bibleData';
 import { saveLastReadingServer, getLastReadingServer } from './actions';
 import { getLastReadingLocal, saveLastReadingLocal } from '@/app/lib/bibleReading';
+import { verses as localVerses } from '@/app/lib/versesData';
+import { isPollingAllowed } from '@/app/lib/networkPolicy';
+import SecondaryPageShell from '@/app/components/SecondaryUI';
 
 const BOOK_MAPPING: { [key: string]: number } = {
     "Génesis": 0, "Éxodo": 1, "Levítico": 2, "Números": 3, "Deuteronomio": 4,
@@ -29,7 +33,20 @@ const BOOK_MAPPING: { [key: string]: number } = {
     "Judas": 64, "Apocalipsis": 65
 };
 
-let cachedBibleData: any = null;
+const HEARTBEAT_TTL = 60 * 1000;
+
+interface BibleBookData {
+    chapters: string[][];
+}
+
+interface BibleChapterText {
+    reference: string;
+    verses: Array<{ verse: number; text: string }>;
+    text: string;
+    error?: string;
+}
+
+let cachedBibleData: BibleBookData[] | null = null;
 
 interface BibleVerse {
     id: string;
@@ -62,6 +79,7 @@ const FALLBACK_VERSES: BibleVerse[] = [
 
 export default function BiblePage() {
     const { t, language } = useLanguage();
+    const { data: session, status: sessionStatus } = useSession();
     const searchParams = useSearchParams();
     const initialBookName = searchParams.get('book');
     const initialChapter = searchParams.get('chapter');
@@ -75,7 +93,7 @@ export default function BiblePage() {
 
     const [selectedBook, setSelectedBook] = useState(initialBook);
     const [selectedChapter, setSelectedChapter] = useState(initialChapterNum);
-    const [chapterText, setChapterText] = useState<any>(null);
+    const [chapterText, setChapterText] = useState<BibleChapterText | null>(null);
     const [loading, setLoading] = useState(false);
     const [helpfulVerses, setHelpfulVerses] = useState<BibleVerse[]>([]);
     const [restoredLabel, setRestoredLabel] = useState<string | null>(null);
@@ -83,9 +101,31 @@ export default function BiblePage() {
 
     // Mascot Heartbeat (Bible Reading)
     useEffect(() => {
-        let timer: NodeJS.Timeout;
+        if (sessionStatus !== 'authenticated') return;
+
+        const sessionUser = session?.user as { id?: string; email?: string } | undefined;
+        const userKey = sessionUser?.id || sessionUser?.email;
+        if (!userKey) return;
+
+        const storageKey = `conecta:bible-heartbeat:${userKey}`;
+        let lastSentAt = 0;
+        try {
+            lastSentAt = Number(sessionStorage.getItem(storageKey)) || 0;
+        } catch {
+            // Session storage may be unavailable in private browsing.
+        }
 
         const sendHeartbeat = async () => {
+            if (!isPollingAllowed(navigator.onLine, document.hidden)) return;
+            if (Date.now() - lastSentAt < HEARTBEAT_TTL) return;
+
+            lastSentAt = Date.now();
+            try {
+                sessionStorage.setItem(storageKey, String(lastSentAt));
+            } catch {
+                // Session storage may be unavailable in private browsing.
+            }
+
             try {
                 await fetch('/api/mascot/heartbeat', {
                     method: 'POST',
@@ -97,11 +137,17 @@ export default function BiblePage() {
             }
         };
 
-        // Enviar un latido cada minuto de lectura
-        timer = setInterval(sendHeartbeat, 60000);
+        sendHeartbeat();
+        const interval = window.setInterval(sendHeartbeat, HEARTBEAT_TTL);
+        window.addEventListener('online', sendHeartbeat);
+        document.addEventListener('visibilitychange', sendHeartbeat);
 
-        return () => clearInterval(timer);
-    }, []);
+        return () => {
+            window.clearInterval(interval);
+            window.removeEventListener('online', sendHeartbeat);
+            document.removeEventListener('visibilitychange', sendHeartbeat);
+        };
+    }, [session, sessionStatus]);
 
     // Fetch chapter text
     useEffect(() => {
@@ -111,46 +157,31 @@ export default function BiblePage() {
         
         const loadBibleChapter = async () => {
             try {
-                const res = await fetch(`/api/bible?book=${encodeURIComponent(selectedBook.name)}&chapter=${selectedChapter}`);
-                if (!res.ok) throw new Error("API failed");
-                const data = await res.json();
-                if (data.error) throw new Error(data.error);
-                setChapterText(data);
-            } catch (err) {
-                console.warn("API failed, trying local static bible file:", err);
-                try {
-                    if (!cachedBibleData) {
-                        const staticRes = await fetch('/bible/es_rvr.json');
-                        if (!staticRes.ok) throw new Error("Static bible not available");
-                        cachedBibleData = await staticRes.json();
-                    }
-                    const bookIdx = BOOK_MAPPING[selectedBook.name];
-                    if (bookIdx === undefined) throw new Error("Book index not found");
-                    const bookData = cachedBibleData[bookIdx];
-                    if (!bookData) throw new Error("Book data not found");
-                    const chapterIdx = selectedChapter - 1;
-                    const chapterData = bookData.chapters[chapterIdx];
-                    if (!chapterData) throw new Error("Chapter data not found");
-                    
-                    const verses = chapterData.map((v: string, index: number) => ({
-                        verse: index + 1,
-                        text: v
-                    }));
-                    
-                    setChapterText({
-                        reference: `${selectedBook.name} ${selectedChapter}`,
-                        verses: verses,
-                        text: verses.map((v: any) => `${v.verse} ${v.text}`).join(' ')
-                    });
-                } catch (staticErr: any) {
-                    console.error("Local Bible parsing failed:", staticErr);
-                    setChapterText({
-                        error: "Offline",
-                        reference: `${selectedBook.name} ${selectedChapter}`,
-                        verses: [],
-                        text: "No se pudo cargar la Biblia en modo offline. Asegúrate de haberla abierto al menos una vez online."
-                    });
+                if (!cachedBibleData) {
+                    const staticRes = await fetch('/bible/es_rvr.json', { cache: 'force-cache' });
+                    if (!staticRes.ok) throw new Error("Static bible not available");
+                    cachedBibleData = await staticRes.json() as BibleBookData[];
                 }
+                const bookIdx = BOOK_MAPPING[selectedBook.name];
+                if (bookIdx === undefined) throw new Error("Book index not found");
+                const bookData = cachedBibleData[bookIdx];
+                if (!bookData) throw new Error("Book data not found");
+                const chapterData = bookData.chapters[selectedChapter - 1];
+                if (!chapterData) throw new Error("Chapter data not found");
+                const verses = chapterData.map((v: string, index: number) => ({ verse: index + 1, text: v }));
+                setChapterText({
+                    reference: `${selectedBook.name} ${selectedChapter}`,
+                    verses,
+                    text: verses.map((v) => `${v.verse} ${v.text}`).join(' ')
+                });
+            } catch (error) {
+                console.error("Local Bible parsing failed:", error);
+                setChapterText({
+                    error: "Offline",
+                    reference: `${selectedBook.name} ${selectedChapter}`,
+                    verses: [],
+                    text: "No se pudo cargar la Biblia. Abre la app online para descargar el contenido local."
+                });
             } finally {
                 setLoading(false);
             }
@@ -165,12 +196,14 @@ export default function BiblePage() {
 
         const restore = async () => {
             let last: { bookIndex: number; chapter: number; bookName: string } | null = null;
-            try {
-                const server = await getLastReadingServer();
-                if (server) {
-                    last = { bookIndex: server.bookIndex, chapter: server.chapter, bookName: BIBLE_BOOKS[server.bookIndex]?.name || "" };
-                }
-            } catch { }
+            if (navigator.onLine) {
+                try {
+                    const server = await getLastReadingServer();
+                    if (server) {
+                        last = { bookIndex: server.bookIndex, chapter: server.chapter, bookName: BIBLE_BOOKS[server.bookIndex]?.name || "" };
+                    }
+                } catch { }
+            }
             if (!last) last = getLastReadingLocal();
             if (!last) return;
 
@@ -197,20 +230,30 @@ export default function BiblePage() {
         savedRef.current = key;
 
         saveLastReadingLocal(bookIdx, selectedChapter, selectedBook.name);
-        saveLastReadingServer(bookIdx, selectedChapter).catch(() => { });
+        if (navigator.onLine) saveLastReadingServer(bookIdx, selectedChapter).catch(() => { });
     }, [selectedBook, selectedChapter]);
 
     // Fetch helpful verses (could be personalized based on user struggles)
     useEffect(() => {
+        const localFallback = localVerses.slice(0, 20).map((verse, index) => ({
+            id: `local-${index}`,
+            reference: verse.reference,
+            text: verse.text,
+            tags: ''
+        }));
+
         fetch('/api/verses')
-            .then(res => {
-                if (!res.ok) throw new Error("Failed to fetch verses");
-                return res.json();
+            .then(async (res) => {
+                if (!res.ok) throw new Error('Failed to fetch verses');
+                return await res.json() as BibleVerse[];
             })
-            .then(data => setHelpfulVerses(data))
-            .catch(err => {
-                console.warn("Error fetching verses, using local fallback:", err);
-                setHelpfulVerses(FALLBACK_VERSES);
+            .then((data) => {
+                if (!Array.isArray(data) || data.length === 0) throw new Error('Empty verses response');
+                setHelpfulVerses(data);
+            })
+            .catch((error) => {
+                console.warn('Error fetching verses, using local fallback:', error);
+                setHelpfulVerses(localFallback.length ? localFallback : FALLBACK_VERSES);
             });
     }, []);
 
@@ -227,13 +270,14 @@ export default function BiblePage() {
     };
 
     return (
+        <SecondaryPageShell>
         <div className="container-fluid py-4">
             <div className="row">
                 {/* Main Bible Reader */}
                 <div className="col-lg-8">
-                    <div className="card shadow-sm border-0 mb-4">
+                    <div className="card ui-surface shadow-sm border-0 mb-4">
                         <div className="card-body p-4">
-                            <div className="d-flex justify-content-between align-items-center mb-4">
+                            <div className="ui-page-header mb-4">
                                 <h1 className="h3 mb-0 fw-bold d-flex align-items-center gap-2">
                                     <Book className="text-primary" size={28} />
                                     {t.bible.title}
@@ -314,7 +358,7 @@ export default function BiblePage() {
                                     </div>
                                 ) : chapterText ? (
                                     <div className="lh-lg">
-                                        {chapterText.verses?.map((verse: any, idx: number) => (
+                                        {chapterText.verses?.map((verse, idx) => (
                                             <p key={idx} className="mb-2">
                                                 <sup className="text-primary fw-bold me-1">{verse.verse}</sup>
                                                 {verse.text}
@@ -335,7 +379,7 @@ export default function BiblePage() {
 
                 {/* Sidebar: Helpful Verses */}
                 <div className="col-lg-4">
-                    <div className="card shadow-sm border-0 sticky-top" style={{ top: '20px' }}>
+                    <div className="card ui-surface shadow-sm border-0 sticky-top" style={{ top: '20px' }}>
                         <div className="card-body p-4">
                             <h5 className="fw-bold mb-3 d-flex align-items-center gap-2">
                                 <Heart className="text-danger" size={20} />
@@ -368,5 +412,6 @@ export default function BiblePage() {
                 </div>
             </div>
         </div>
+        </SecondaryPageShell>
     );
 }

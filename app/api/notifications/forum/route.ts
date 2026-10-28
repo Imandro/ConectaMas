@@ -1,20 +1,18 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/app/lib/prisma';
-import { auth } from '@/app/lib/auth';
+import { getApiUserId } from '@/app/lib/api-auth';
 
 export const dynamic = 'force-dynamic';
 
 export async function GET() {
     try {
-        const session = await auth();
-        if (!session?.user?.id) {
+        const userId = await getApiUserId();
+        if (!userId) {
             return NextResponse.json({ notifications: [] });
         }
 
-        const userId = (session.user as any).id;
-
         // Fetch notifications with post and category details
-        const notifications = await (prisma as any).forumNotification.findMany({
+        const notifications = await prisma.forumNotification.findMany({
             where: {
                 userId: userId
             },
@@ -26,6 +24,7 @@ export async function GET() {
                 postId: true,
                 post: {
                     select: {
+                        id: true,
                         title: true,
                         categoryId: true,
                         category: {

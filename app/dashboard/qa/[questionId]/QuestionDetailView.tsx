@@ -5,6 +5,7 @@ import { ArrowLeft, Send, MessageSquare, Heart, CheckCircle, Share2, Eye } from 
 import AnswerCard from "../components/AnswerCard";
 import Link from "next/link";
 import { useLanguage } from "@/app/LanguageContext";
+import { languageLocale } from "@/app/lib/languages";
 import { submitAnswer, likeQuestion, incrementQuestionViews } from "../actions";
 import { toast } from "react-hot-toast";
 import UserAvatar from "@/app/components/UserAvatar";
@@ -14,18 +15,23 @@ interface QuestionDetailViewProps {
 }
 
 export default function QuestionDetailView({ question }: QuestionDetailViewProps) {
-    const { t } = useLanguage();
+    const { t, language } = useLanguage();
     const [answerContent, setAnswerContent] = useState("");
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [likes, setLikes] = useState(question.likes);
     const [hasLiked, setHasLiked] = useState(false);
 
     useEffect(() => {
+        if (!navigator.onLine) return;
         incrementQuestionViews(question.id);
     }, [question.id]);
 
     const handleLikeQuestion = async () => {
         if (hasLiked) return;
+        if (!navigator.onLine) {
+            toast.error('Sin conexión. Marcar una pregunta requiere internet.');
+            return;
+        }
         setLikes(likes + 1);
         setHasLiked(true);
         await likeQuestion(question.id);
@@ -33,6 +39,10 @@ export default function QuestionDetailView({ question }: QuestionDetailViewProps
 
     const handleSubmitAnswer = async () => {
         if (answerContent.length < 5) return;
+        if (!navigator.onLine) {
+            toast.error('Sin conexión. Enviar una respuesta requiere internet.');
+            return;
+        }
         setIsSubmitting(true);
         try {
             const res = await submitAnswer(question.id, answerContent);
@@ -73,7 +83,7 @@ export default function QuestionDetailView({ question }: QuestionDetailViewProps
                                         {question.user.profileType === 'COOPERATOR' && <span className="ms-2 badge bg-warning text-dark small">{t.qa.user_badge_coop}</span>}
                                     </h6>
                                     <small className="text-muted d-flex align-items-center gap-1">
-                                        {new Date(question.createdAt).toLocaleDateString()} ·
+                                        {new Date(question.createdAt).toLocaleDateString(languageLocale(language))} ·
                                         <Eye size={12} className="ms-1" /> {question.views} {t.qa.views}
                                     </small>
                                 </div>

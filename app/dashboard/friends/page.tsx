@@ -1,24 +1,32 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Search, UserPlus, MessageCircle, Heart, UserMinus, ArrowLeft, Loader2, Send, Check, Users, X } from "lucide-react";
+import { Search, MessageCircle, Heart, UserMinus, ArrowLeft, Loader2, Send, Check, Users, X } from "lucide-react";
 import Link from "next/link";
 import { searchUsers, addFriend, getFriends, removeFriend, sendSupportMessage, getSupportMessages, markSupportMessageRead } from "./actions";
 import { toast } from "react-hot-toast";
 import { useLanguage } from "@/app/LanguageContext";
 import UserAvatar from "@/app/components/UserAvatar";
+import SecondaryPageShell from "@/app/components/SecondaryUI";
+
+type Friend = { id: string; name: string; username: string; spiritualLevel: string | null };
+type SupportMessage = { id: string; read: boolean; message: string; sender: { username: string } };
 
 export default function FriendsPage() {
     const { t } = useLanguage();
     const [searchTerm, setSearchTerm] = useState("");
-    const [searchResults, setSearchResults] = useState<any[]>([]);
-    const [friends, setFriends] = useState<any[]>([]);
+    const [searchResults, setSearchResults] = useState<Friend[]>([]);
+    const [friends, setFriends] = useState<Friend[]>([]);
     const [isSearching, setIsSearching] = useState(false);
     const [isLoadingFriends, setIsLoadingFriends] = useState(true);
     const [supportStatus, setSupportStatus] = useState<{ userId: string | null; message: string }>({ userId: null, message: "" });
-    const [recentMessages, setRecentMessages] = useState<any[]>([]);
+    const [recentMessages, setRecentMessages] = useState<SupportMessage[]>([]);
 
     useEffect(() => {
+        if (!navigator.onLine) {
+            setIsLoadingFriends(false);
+            return;
+        }
         loadFriends();
         loadMessages();
     }, []);
@@ -41,6 +49,10 @@ export default function FriendsPage() {
     const handleSearch = async (e?: React.FormEvent) => {
         e?.preventDefault();
         if (!searchTerm.trim()) return;
+        if (!navigator.onLine) {
+            toast.error("Sin conexión. Buscar amigos requiere internet.");
+            return;
+        }
         setIsSearching(true);
         try {
             const results = await searchUsers(searchTerm);
@@ -51,22 +63,30 @@ export default function FriendsPage() {
     };
 
     const handleAddFriend = async (friendId: string) => {
+        if (!navigator.onLine) {
+            toast.error("Sin conexión. Esta acción requiere internet.");
+            return;
+        }
         try {
             await addFriend(friendId);
             toast.success(t.friends.add_success);
             loadFriends();
             setSearchResults(prev => prev.filter(u => u.id !== friendId));
-        } catch (error) {
+        } catch {
             toast.error("Error");
         }
     };
 
     const handleRemoveFriend = async (friendId: string) => {
+        if (!navigator.onLine) {
+            toast.error("Sin conexión. Esta acción requiere internet.");
+            return;
+        }
         if (confirm(t.friends.remove_confirm)) {
             try {
                 await removeFriend(friendId);
                 loadFriends();
-            } catch (error) {
+            } catch {
                 toast.error("Error");
             }
         }
@@ -74,21 +94,29 @@ export default function FriendsPage() {
 
     const handleSendSupport = async () => {
         if (!supportStatus.userId || !supportStatus.message) return;
+        if (!navigator.onLine) {
+            toast.error("Sin conexión. Enviar apoyo requiere internet.");
+            return;
+        }
         try {
             await sendSupportMessage(supportStatus.userId, supportStatus.message);
             toast.success(t.friends.support_success);
             setSupportStatus({ userId: null, message: "" });
-        } catch (error) {
+        } catch {
             toast.error("Error");
         }
     };
 
     const handleMarkAsRead = async (messageId: string) => {
+        if (!navigator.onLine) {
+            toast.error("Sin conexión. Marcar mensajes como leídos requiere internet.");
+            return;
+        }
         await markSupportMessageRead(messageId);
         loadMessages();
     };
 
-    const getSpiritualLevel = (level: string) => {
+    const getSpiritualLevel = (level: string | null) => {
         if (!level) return t.spiritual_levels.exploring;
         const l = level.toLowerCase();
         if (l === 'explorador' || l === 'exploring') return t.spiritual_levels.exploring;
@@ -100,9 +128,10 @@ export default function FriendsPage() {
     };
 
     return (
+        <SecondaryPageShell>
         <div className="container-fluid py-4 min-vh-100 bg-light">
             {/* Header */}
-            <div className="d-flex align-items-center gap-3 mb-4">
+            <div className="ui-page-header mb-4">
                 <Link href="/dashboard/profile" className="btn btn-white border shadow-sm rounded-circle p-2">
                     <ArrowLeft size={20} />
                 </Link>
@@ -129,7 +158,7 @@ export default function FriendsPage() {
             <div className="row g-4">
                 {/* Search and Discovery */}
                 <div className="col-12 col-md-5">
-                    <div className="card border-0 shadow-sm rounded-4 p-4 mb-4">
+                    <div className="ui-surface p-4 mb-4">
                         <h5 className="fw-bold mb-3 d-flex align-items-center gap-2">
                             <Search size={20} className="text-primary" />
                             {t.friends.search_title}
@@ -189,7 +218,7 @@ export default function FriendsPage() {
 
                     {/* Messages Received */}
                     {recentMessages.length > 0 && (
-                        <div className="card border-0 shadow-sm rounded-4 p-4">
+                        <div className="ui-surface p-4">
                             <h5 className="fw-bold mb-3 d-flex align-items-center gap-2">
                                 <MessageCircle size={20} className="text-success" />
                                 {t.friends.recent_messages}
@@ -209,7 +238,7 @@ export default function FriendsPage() {
                                                 </button>
                                             )}
                                         </div>
-                                        <p className="small mb-0 fst-italic">"{msg.message}"</p>
+                                        <p className="small mb-0 fst-italic">&quot;{msg.message}&quot;</p>
                                     </div>
                                 ))}
                             </div>
@@ -219,7 +248,7 @@ export default function FriendsPage() {
 
                 {/* Friends List */}
                 <div className="col-12 col-md-7">
-                    <div className="card border-0 shadow-sm rounded-4 p-4 min-vh-50">
+                    <div className="ui-surface p-4 min-vh-50">
                         <div className="d-flex justify-content-between align-items-center mb-4">
                             <h5 className="fw-bold mb-0 d-flex align-items-center gap-2">
                                 <Users size={20} className="text-primary" />
@@ -285,7 +314,7 @@ export default function FriendsPage() {
             {/* Support Message Modal */}
             {supportStatus.userId && (
                 <div className="position-fixed top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center bg-dark bg-opacity-75" style={{ zIndex: 1050 }}>
-                    <div className="card border-0 shadow-lg rounded-4 p-4" style={{ maxWidth: '400px', width: '90%' }}>
+                    <div className="ui-surface-glass shadow-lg p-4" style={{ maxWidth: '400px', width: 'min(100% - 24px, 400px)' }}>
                         <h5 className="fw-bold mb-2">{t.friends.support_modal_title}</h5>
                         <p className="text-muted small mb-3">{t.friends.support_modal_p}</p>
 
@@ -321,5 +350,6 @@ export default function FriendsPage() {
                 </div>
             )}
         </div>
+        </SecondaryPageShell>
     );
 }

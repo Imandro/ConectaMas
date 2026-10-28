@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { devotionalsData } from '@/app/lib/devotionalsData';
+import { getDevotionals } from '@/app/lib/devotionalsData';
 import { getApiUser } from '@/app/lib/api-auth';
 import { prisma } from '@/app/lib/prisma';
+import { isLanguage } from '@/app/lib/languages';
 
 export const dynamic = 'force-dynamic';
 
@@ -15,17 +16,24 @@ export async function GET(request: NextRequest) {
         const { searchParams } = new URL(request.url);
         const categoryId = searchParams.get('categoryId');
         const recommended = searchParams.get('recommended') === 'true';
+        const languageParam = searchParams.get('language');
+        const language = isLanguage(languageParam) ? languageParam : 'es';
 
-        let results = devotionalsData;
+        let results = getDevotionals(language);
 
         // Apply category filter
         if (categoryId && categoryId !== 'Todos' && categoryId !== 'Para ti') {
             results = results.filter(d => d.category === categoryId);
         }
 
+        const user = await getApiUser(request, {
+            id: true,
+            sinsToOvercome: true,
+            problemsFaced: true,
+        });
+
         // Apply recommendation logic if requested
         if (recommended) {
-            const user = await getApiUser(request);
             if (user) {
                 const sins = user.sinsToOvercome ? JSON.parse(user.sinsToOvercome) : [];
                 const problems = user.problemsFaced ? JSON.parse(user.problemsFaced) : [];
@@ -43,7 +51,6 @@ export async function GET(request: NextRequest) {
         }
 
         // Get completed devotionals for the user to mark them in the UI
-        const user = await getApiUser(request);
         let completedIds: string[] = [];
         if (user) {
             const completed = await prisma.userDevotional.findMany({
@@ -58,7 +65,7 @@ export async function GET(request: NextRequest) {
             completed: completedIds.includes(d.id)
         }));
 
-        return NextResponse.json(data);
+        return NextResponse.json(data, { headers: { 'Cache-Control': 'private, no-store', 'Content-Language': language } });
     } catch (error) {
         console.error('Error fetching devotionals:', error);
         return NextResponse.json({ error: 'Error fetching devotionals' }, { status: 500 });

@@ -43,11 +43,11 @@ export default function SOSClient({ leaderPhone }: SOSClientProps) {
 
                 <h1 className="display-4 fw-bold mb-4 text-white">{t.sos.title}</h1>
 
-                {/* Spiritual Context Section for AdSense/Value */}
+                {/* Spiritual context section */}
                 <div className="bg-white bg-opacity-10 backdrop-blur-md rounded-5 p-4 mb-4 border border-white-10 animate-fade-in-up">
-                    <h2 className="h5 fw-bold text-warning mb-2">Pausa y Reconecta</h2>
+                    <h2 className="h5 fw-bold text-warning mb-2">{t.sos.intro_title}</h2>
                     <p className="small lh-base text-white opacity-90 mb-0">
-                        La ansiedad y la tentación a menudo nos roban la perspectiva. Este espacio ha sido diseñado específicamente para ayudarte a recuperar el aliento espiritual. Antes de actuar, recuerda: Dios sigue en el trono y Su gracia es suficiente para ti hoy. Usa estas herramientas para silenciar el ruido y escuchar Su voz.
+                        {t.sos.intro_body}
                     </p>
                 </div>
 
@@ -141,9 +141,9 @@ export default function SOSClient({ leaderPhone }: SOSClientProps) {
 
             <div className="mt-4 text-center pb-4 opacity-50 hover-opacity-100 transition-all">
                 <div className="bg-white bg-opacity-10 p-3 rounded-4 mb-3 mx-auto" style={{ maxWidth: '600px' }}>
-                    <h4 className="small fw-bold text-warning text-uppercase mb-2">Acompañamiento Integral</h4>
+                    <h4 className="small fw-bold text-warning text-uppercase mb-2">{t.sos.footer_title}</h4>
                     <p className="extra-small text-white opacity-75 m-0 lh-base">
-                        Entendemos que hay momentos donde el peso parece insoportable. Conecta+ provee estas herramientas como un primer auxilio espiritual, pero te animamos a buscar acompañamiento pastoral y profesional si el riesgo es inminente. La comunidad de fe está para llevar las cargas los unos de los otros.
+                        {t.sos.footer_body}
                     </p>
                 </div>
                 <div className="bg-white bg-opacity-10 p-2 rounded-3 d-inline-block">

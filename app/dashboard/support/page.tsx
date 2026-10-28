@@ -1,9 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowLeft, Heart, Crown, Gift, ShieldCheck, Coffee, DollarSign, Zap, Users, Globe, ChevronRight } from "lucide-react";
+import { ArrowLeft, Heart, Crown, Gift, ShieldCheck, Coffee, DollarSign, Users, Globe } from "lucide-react";
 import { motion } from "framer-motion";
-import { useLanguage } from "@/app/LanguageContext";
+import SecondaryPageShell from "@/app/components/SecondaryUI";
+import BillingCheckoutButton from "@/app/dashboard/components/BillingCheckoutButton";
+import PaypalReturnHandler from "@/app/dashboard/components/PaypalReturnHandler";
 
 const supporters = [
     { name: "Marvin Cruz Alvarado", amount: "Donó", flag: "🇳🇮" },
@@ -11,21 +13,21 @@ const supporters = [
 ];
 
 export default function SupportPage() {
-    const { t } = useLanguage();
-
     return (
-        <div className="min-vh-100" style={{ background: "linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%)" }}>
+        <SecondaryPageShell>
+        <PaypalReturnHandler />
+        <div className="min-vh-100" style={{ backgroundColor: 'var(--bg-color)', color: 'var(--text-color)' }}>
             <div className="container py-4">
                 <div className="mx-auto" style={{ maxWidth: 680 }}>
-                    <div className="d-flex align-items-center gap-3 mb-4">
+                    <div className="ui-page-header mb-4">
                         <Link href="/dashboard" className="btn btn-white bg-white text-dark rounded-circle p-2 shadow-sm border-0">
                             <ArrowLeft size={22} />
                         </Link>
-                        <h1 className="h4 mb-0 fw-bold text-white">Apoyar el Proyecto</h1>
+                        <h1 className="h4 mb-0 fw-bold text-primary">Apoyar el Proyecto</h1>
                     </div>
 
                     <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }}>
-                        <div className="card border-0 shadow-lg overflow-hidden mb-4" style={{ borderRadius: 24, background: "linear-gradient(135deg, #1a1a3e, #2d1b69)" }}>
+                        <div className="card border-0 shadow-lg overflow-hidden mb-4" style={{ backgroundColor: 'var(--challenge-bg, var(--brand-primary))' }}>
                             <div className="position-relative p-4 text-center text-white">
                                 <div className="position-absolute top-0 end-0 p-3 opacity-10">
                                     <Crown size= {160} />
@@ -62,48 +64,15 @@ export default function SupportPage() {
                                                 <small className="text-muted">Transferencia rápida</small>
                                             </div>
                                         </div>
-                                        <p className="small text-muted mb-3">
-                                            Donación única desde $1 USD. No necesitas cuenta de PayPal
-                                            para pagar con tarjeta de crédito/débito.
-                                        </p>
-                                        <a
-                                            href="https://www.paypal.me/Imandrox"
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            className="btn btn-warning w-100 rounded-pill fw-bold py-2 d-flex align-items-center justify-content-center gap-2 shadow-sm"
-                                        >
-                                            <Zap size={18} />
-                                            Donar vía PayPal
-                                        </a>
+                                        <p className="small text-muted mb-3">Apoyo único de $2 USD. El checkout confirma el pago automáticamente.</p>
+                                        <BillingCheckoutButton productCode="SUPPORT_ONE_TIME" label="Apoyo único" className="btn btn-warning w-100 rounded-pill fw-bold py-2 d-flex align-items-center justify-content-center gap-2 shadow-sm" />
+                                        <div className="mt-2"><BillingCheckoutButton productCode="SUPPORT_MONTHLY" label="Apoyo mensual" className="btn btn-outline-primary w-100 rounded-pill fw-bold py-2 d-flex align-items-center justify-content-center gap-2 shadow-sm" /></div>
                                     </div>
                                 </div>
                             </motion.div>
                         </div>
 
-                        <div className="col-md-6">
-                            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}>
-                                <div className="card border-0 shadow-sm h-100" style={{ borderRadius: 20 }}>
-                                    <div className="card-body p-4">
-                                        <div className="d-flex align-items-center gap-3 mb-3">
-                                            <div className="bg-primary bg-opacity-10 p-3 rounded-3">
-                                                <Building size={28} className="text-primary" />
-                                            </div>
-                                            <div>
-                                                <h5 className="fw-bold mb-0">Transferencia</h5>
-                                                <small className="text-muted">Bancos Nicaragua</small>
-                                            </div>
-                                        </div>
-                                        <div className="bg-light rounded-3 p-3 mb-3">
-                                            <small className="text-muted d-block">Banco Lafise</small>
-                                            <strong className="d-block">Cuenta: 132247471</strong>
-                                        </div>
-                                        <p className="small text-muted mb-0">
-                                            A nombre de Mario Alvarez. Cualquier monto ayuda 🙏
-                                        </p>
-                                    </div>
-                                </div>
-                            </motion.div>
-                        </div>
+                        <div className="col-md-6"><div className="card border-0 shadow-sm h-100" style={{ borderRadius: 20 }}><div className="card-body p-4"><div className="d-flex align-items-center gap-3 mb-3"><div className="bg-primary bg-opacity-10 p-3 rounded-3"><Globe size={28} className="text-primary" /></div><div><h5 className="fw-bold mb-0">Pagadito</h5><small className="text-muted">Disponible según país</small></div></div><p className="small text-muted mb-0">El método disponible aparece dentro del checkout. No compartimos datos bancarios en la app.</p></div></div></div>
                     </div>
 
                     <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}>
@@ -188,23 +157,6 @@ export default function SupportPage() {
                 </div>
             </div>
         </div>
-    );
-}
-
-function Building(props: any) {
-    return (
-        <svg {...props} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <rect x="4" y="2" width="16" height="20" rx="2" ry="2" />
-            <path d="M9 22v-4h6v4" />
-            <path d="M8 6h.01" />
-            <path d="M16 6h.01" />
-            <path d="M12 6h.01" />
-            <path d="M12 10h.01" />
-            <path d="M12 14h.01" />
-            <path d="M16 10h.01" />
-            <path d="M16 14h.01" />
-            <path d="M8 10h.01" />
-            <path d="M8 14h.01" />
-        </svg>
+        </SecondaryPageShell>
     );
 }

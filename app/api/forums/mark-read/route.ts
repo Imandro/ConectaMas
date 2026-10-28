@@ -1,17 +1,15 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/app/lib/prisma';
-import { auth } from '@/app/lib/auth';
+import { getApiUserId } from '@/app/lib/api-auth';
 
 export async function POST() {
     try {
-        const session = await auth();
-        if (!session?.user?.id) {
+        const userId = await getApiUserId();
+        if (!userId) {
             return NextResponse.json({ success: false }, { status: 401 });
         }
 
-        const userId = (session.user as any).id;
-
-        await (prisma as any).user.update({
+        await prisma.user.update({
             where: { id: userId },
             data: {
                 lastForumCheck: new Date()

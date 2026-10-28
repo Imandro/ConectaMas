@@ -20,19 +20,14 @@
 @import "../node_modules/bootstrap/scss/root";
 
 :root {
-    --bg-color: #f8fafc;
+    --bg-color: #F7F8FA;
     --card-bg: #ffffff;
-    --light-bg: #f1f5f9;
+    --light-bg: #F3F6FA;
     --text-color: #0B1B32;
-    --text-muted: #64748b;
-    --border-color: #e2e8f0;
-    --nav-bg: #0B1B32;
-    --accent-color: #fbbf24;
+    --text-muted: #5F6F82;
+    --border-color: #DCE4EE;
+    --nav-bg: #ffffff;
 }
-
-// Dark mode removed as per user request
-
-
 // Custom Utilities (depend on mixins)
 @import "./styles/utilities";
 
@@ -80,7 +75,6 @@ body {
     font-family: var(--font-fredoka), 'Inter', sans-serif !important;
     background-color: var(--bg-color);
     color: var(--text-color);
-    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 // Force font on all elements to be sure
@@ -165,7 +159,7 @@ header h2 {
 // Specific check to keep brand gold
 .text-warning,
 .text-secondary {
-    color: #fbbf24 !important;
+    color: var(--text-accent) !important;
 }
 
 .text-primary {
@@ -174,12 +168,34 @@ header h2 {
 
 // Special class for highlights
 .text-highlight {
-    color: #fbbf24 !important;
+    color: var(--text-accent) !important;
 }
 
-.card.bg-primary .text-secondary,
-.card.bg-primary .text-warning {
-    color: #fbbf24 !important;
+h1.text-warning,
+h2.text-warning,
+h3.text-warning,
+h4.text-warning,
+h5.text-warning,
+h6.text-warning,
+h1.text-secondary,
+h2.text-secondary,
+h3.text-secondary,
+h4.text-secondary,
+h5.text-secondary,
+h6.text-secondary,
+h1.text-highlight,
+h2.text-highlight,
+h3.text-highlight,
+h4.text-highlight,
+h5.text-highlight,
+h6.text-highlight {
+    color: var(--text-color) !important;
+}
+
+@import "./styles/redesign";
+
+.bg-primary :is(h1, h2, h3, h4, h5, h6).text-primary {
+    color: #ffffff !important;
 }
 
 @media print {

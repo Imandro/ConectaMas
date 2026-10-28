@@ -14,6 +14,9 @@ export const en = {
         sos: "SOS",
         and: "and",
         of: "of",
+        version: "Version",
+        legal_contact: "Legal contact",
+        close: "Close",
     },
     nav: {
         home: "Home",
@@ -27,6 +30,15 @@ export const en = {
         tutorials: "Tutorials",
         friends: "Friends",
         games: "Games",
+    },
+    landing: {
+        hero_title: "You are not alone.", hero_subtitle: "God is still with you.", create_account: "Create account", existing_account: "I already have an account",
+        privacy: "Privacy", terms: "Terms", cookies: "Cookies", digital_refuge: "Your Digital Refuge",
+        digital_refuge_desc: "Conecta+ is more than an app; it is a safe space to find peace amid digital chaos.", daily_growth: "Daily Growth",
+        daily_growth_desc: "Personalized devotionals and spiritual tracking to walk with you every step of the way.", real_community: "Real Community",
+        real_community_desc: "Connect with other young people, share prayer requests, and support each other in faith.", mission_title: "Our Mission",
+        mission_p1: "We believe technology can be a tool for redemption. Conecta+ provides resources for Bible study, consistent prayer, and spiritual support.",
+        mission_p2: "Every interaction seeks to foster a genuine, deep relationship with Jesus Christ while respecting your privacy and spiritual process.",
     },
     onboarding: {
         welcome: "Welcome to Conecta+",
@@ -54,6 +66,7 @@ export const en = {
         support_subtitle: "Conecta+ is a free project made with love. We want to reach more young people by publishing the app on the Google Play Store.",
         support_goal: "Goal: Play Store License ($25 USD)",
         support_button: "I Want to Support",
+        support_later: "Support later through secure checkout",
         community_anonymous_title: "Anonymous and Safe Support",
         community_anonymous_desc: "Your friends can send short encouragement messages without seeing your private details.",
         support_description: "Every contribution brings us closer to the goal. If this project blesses you, consider planting a seed today.",
@@ -176,6 +189,12 @@ export const en = {
         guest_suggestion_cta: "Create free account",
         guest_suggestion_later: "Not now",
         guest_sign_in: "Sign in",
+        show_password: "Show password",
+        hide_password: "Hide password",
+        offline_login: "Offline. Sign-in requires internet.",
+        offline_register: "Offline. Account creation requires internet.",
+        offline_recover: "Offline. Account recovery requires internet.",
+        offline_password: "Offline. Changing the password requires internet.",
     },
     dashboard: {
         greeting: "Hello",
@@ -250,6 +269,8 @@ export const en = {
         view_all: "View all",
         select_day: "Select a day to continue:",
         close: "Close",
+        application: "Practical application",
+        prayer_section: "Prayer",
     },
     trivia: {
         title: "Bible Trivia",
@@ -279,13 +300,14 @@ export const en = {
     },
     premium: {
         title: "Support Conecta+ Premium",
-        subtitle: "Contribute your grain of sand for only $1 per month",
+        subtitle: "Support the mission from $2 USD",
         body: "Your support helps me maintain the servers and bring God's word to more young people. By being Premium, you will have a 100% ad-free experience and help me reach the Google Play Store goal.",
         feature_no_ads: "No Google ads across the app",
-        button: "Be Premium for $1 USD!",
-        footer: "*When donating, send me your email via PayPal to activate your badge.",
+        button: "Choose Premium",
+        footer: "Payment and access are confirmed automatically.",
         maybe_later: "Maybe later",
     },
+    billing_page: { title: "Conecta+ Premium", body: "Support the mission and unlock an ad-free experience with Premium content.", active: "Active", until: "until", monthly: "Monthly · $2.99", monthly_description: "Monthly renewal. Cancel anytime.", monthly_button: "Choose monthly", yearly: "Yearly · $24.99", yearly_description: "One annual payment. No monthly renewal.", yearly_button: "Choose yearly", guardian: "If you are under 18, ask a parent or guardian for permission before paying.", verification: "Access activates after server-side verification.", subscriptions: "Subscriptions", manage: "Manage in Play", cancel: "Cancel", history: "History", no_payments: "No payments recorded.", load_error: "Could not load your payment status.", google_play_cancel: "Google Play subscriptions are canceled in Play Store.", cancel_confirm: "Cancel your Premium subscription?", back_aria: "Back" },
     checkin_modal: {
         title: "How is your heart today?",
         subtitle: "Share how you feel. God is with you at every moment.",
@@ -306,6 +328,7 @@ export const en = {
         error_save: "Error saving country",
         no_results: "No country found",
         other_country: "Other country",
+        romania: "Romania",
     },
     growth_modal: {
         title: "We're Growing!",
@@ -326,10 +349,10 @@ export const en = {
         missions_title: "Missions in Progress:",
         mission_brasil: "🇧🇷 Pro-Brazil",
         mission_nicaragua: "🇳🇮 Pro-Nicaragua",
-        bank_details: "Bank Deposit (Nicaragua):",
-        bank_name: "Banco Lafise",
-        bank_account: "Account: 132247471",
-        paypal_title: "Donate via PayPal:",
+        bank_details: "Payment methods:",
+        bank_name: "Pagadito or PayPal",
+        bank_account: "Secure checkout based on your country",
+        paypal_title: "Payment checkout:",
         collaborators_title: "Featured Collaborators:",
         collaborator_marvin: "Marvin Cruz Alvarado (Donated!)",
         others_count: "+24 other collaborators",
@@ -388,7 +411,8 @@ export const en = {
             LATAM: "Latin America",
             ES: "Spain",
             US: "United States (USA)",
-            BR: "Brazil"
+            BR: "Brazil",
+            RO: "Romania"
         },
         // New Fields
         edit_profile: "Edit Profile",
@@ -568,6 +592,8 @@ export const en = {
             new_reply: "Someone replied in {category}",
             mark_all_read: "Mark all as read",
         },
+        community_rules: "Community rules", report_content: "Report content", explore_topics: "Explore topics", participations: "participations",
+        community_growth: "Growing community", no_public_categories: "No public categories are configured yet. Be among the first to connect.", back_home: "Back Home",
         categories: {
             conecta: { name: "Conecta+", desc: "Give us your feedback! Reviews, questions, and suggestions about the app." },
             testimonies: { name: "Testimonies", desc: "Share what God has done in your life. Your story inspires!" },
@@ -603,6 +629,8 @@ export const en = {
         back: "Back",
         disclaimer: "WARNING: Conecta+ is a spiritual tool. In case of serious emergency or life risk, call the authorities (911).",
         no_leader: "You haven't configured your leader's number in your profile.",
+        intro_title: "Pause and Reconnect", intro_body: "Anxiety and temptation can steal perspective. This space helps you recover your spiritual breath. Before acting, remember: God is still on the throne and His grace is enough today.",
+        footer_title: "Whole-Person Support", footer_body: "These tools provide spiritual first aid. Seek pastoral and professional support if the risk is imminent.",
     },
     struggles: {
         title: "My Tracking 🛡️",
@@ -736,10 +764,16 @@ export const en = {
         title: "Spiritual Reminders",
         welcome: "Don't miss a thing!",
         heading: "Stay Connected",
-        description: "Receive daily encouragement, prayers, and reminders for your time with God directly on your phone.",
+        description: "Get encouragement, prayer, and spiritual reminders directly on your phone.",
         button_enable: "Enable Notifications",
         button_enabling: "Enabling...",
         button_later: "Maybe later",
+        offline: "Offline. Enabling notifications requires internet.",
+        not_configured: "Notifications are not configured",
+        subscribe_error: "Subscription error: {error}",
+        permission_denied: "Permission denied. Enable notifications in your browser settings.",
+        generic_error: "Error: {error}",
+        aria_label: "Notifications",
     },
     pwa_prompt: {
         title: "Install Conecta+",
@@ -753,6 +787,11 @@ export const en = {
         android_step2: "2. Install application",
         android_step2_desc: 'Select "Install app" or "Add to home screen".',
         button: "Understood",
+    },
+    offline: {
+        title: "Offline", description: "This page could not load without internet. These features are still available:", bible: "Read the Bible", alert: "Offline: reading is available; write actions are blocked.",
+        quick_quiz: "Quick Quiz", games: "Bible Games", sos: "SOS / Emergency", home: "Go Home", reconnecting: "Reconnecting...",
+        retry: "Retry", problem: "Still having trouble? Clear everything", clear_confirm: "Your session and corrupted data will be cleared. Continue?", footer: "Conecta+ — You are not alone. God is still with you.",
     },
     music_player: {
         now_playing: "NOW PLAYING",
@@ -878,7 +917,16 @@ export const en = {
         latin_america: "Latin America",
         spain: "Spain",
         usa: "United States (USA)",
-        brazil: "Brazil"
+        brazil: "Brazil",
+        romania: "Romania"
+    },
+    legal_accept: {
+        title: "Update your legal documents",
+        intro: "We need to confirm your age, country, and acceptance of the current versions.",
+        terms: "Terms", privacy: "Privacy", community: "Community", refunds: "Refunds",
+        age: "Age", country: "Country", country_placeholder: "Select", language: "Language",
+        saving: "Saving…", submit: "Accept and continue", offline: "Offline. Accepting documents requires internet.",
+        error: "Could not save consent.",
     },
 
     leader_survey: {
