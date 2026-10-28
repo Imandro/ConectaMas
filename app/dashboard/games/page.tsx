@@ -10,6 +10,7 @@ import { isPollingAllowed } from '@/app/lib/networkPolicy';
 import SecondaryPageShell from '@/app/components/SecondaryUI';
 import { useLanguage } from '@/app/LanguageContext';
 import type { GameRoomType } from '@/app/lib/games/gameTypes';
+import AdBanner from '@/app/components/AdBanner';
 
 const soloGames = [
     {
@@ -188,6 +189,8 @@ export default function GamesDashboard() {
                     <RefreshCw size={20} className={refreshing ? "animate-spin" : ""} />
                 </button>
             </header>
+
+            <AdBanner placement="games" />
 
             {/* Solo Games */}
             <div className="section-header">

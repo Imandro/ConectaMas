@@ -8,7 +8,7 @@ Configuración de Play:
 - `versionName`: `1.9`
 - `targetSdk`: `36`
 
-El proyecto carga `https://conectaplus.app` porque la aplicación Next.js usa SSR y APIs server-side. `CAPACITOR_SERVER_URL` permite usar otra URL HTTPS en pruebas. El marcador `conecta_native=capacitor` permite ocultar pagos web dentro del contenedor Android.
+El proyecto carga `https://conectamas.live` porque la aplicación Next.js usa SSR y APIs server-side. `CAPACITOR_SERVER_URL` permite usar otra URL HTTPS en pruebas. El marcador `conecta_native=capacitor` permite ocultar pagos web dentro del contenedor Android.
 
 ## Abrir y compilar
 

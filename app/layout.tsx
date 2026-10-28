@@ -12,7 +12,7 @@ const fredoka = Fredoka({
 });
 
 const baseMetadata: Metadata = {
-    metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || 'https://conectamas.app'),
+    metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || 'https://conectamas.live'),
     title: 'Conecta+ | Acompañamiento Espiritual',
     description: 'No estás solo. Dios sigue contigo. Una app para crecer y sanar.',
     manifest: '/manifest.json', // Para PWA
@@ -29,7 +29,7 @@ const baseMetadata: Metadata = {
     openGraph: {
         title: 'Conecta+ | Tu Espacio de Crecimiento Espiritual',
         description: 'Encuentra paz, comunidad y herramientas para fortalecer tu fe diaria. No estás solo.',
-        url: 'https://conectamas.app',
+        url: 'https://conectamas.live',
         siteName: 'Conecta+',
         images: [
             {

@@ -1,10 +1,14 @@
 ﻿import Link from 'next/link';
 import Image from 'next/image';
 import { Heart, Shield, Zap, Users, BookOpen, Star } from 'lucide-react';
+import PublicSiteNav from '@/app/components/PublicSiteNav';
+import LegalFooter from '@/app/components/LegalFooter';
 
 export default function AboutPage() {
     return (
-        <div className="min-vh-100 bg-light p-4 p-md-5">
+        <div className="min-vh-100 bg-light">
+            <PublicSiteNav />
+            <div className="p-4 p-md-5">
             <div className="container max-width-1000 mx-auto">
                 <div className="text-center mb-5 animate-fade-in">
                     <h1 className="display-4 fw-bold text-secondary font-fredoka">¿Qué es Conecta+?</h1>
@@ -62,6 +66,8 @@ export default function AboutPage() {
                         Volver al inicio
                     </Link>
                 </div>
+            </div>
+            <LegalFooter />
             </div>
         </div>
     );

@@ -12,7 +12,7 @@
     <a href="https://conectamas.vercel.app">
       <img src="https://img.shields.io/badge/Web_App-0d6efd?style=for-the-badge&logo=vercel&logoColor=white" alt="Web App">
     </a>
-    <a href="https://play.google.com/store/apps/details?id=com.conectaplus.app">
+    <a href="https://play.google.com/store/apps/details?id=com.conecta_plus.app">
       <img src="https://img.shields.io/badge/Google_Play-414141?style=for-the-badge&logo=google-play&logoColor=white" alt="Google Play">
     </a>
     <a href="https://github.com/Imandro/ConectaMas/releases/latest/download/Conecta%2B.apk">

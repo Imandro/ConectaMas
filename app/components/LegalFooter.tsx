@@ -21,6 +21,11 @@ export default function LegalFooter() {
                         <h6 className="fw-bold text-dark mb-3">Legal</h6>
                         <ul className="list-unstyled">
                             <li className="mb-2">
+                                <Link href="/recursos" className="text-muted small text-decoration-none hover-text-primary">
+                                    Recursos cristianos
+                                </Link>
+                            </li>
+                            <li className="mb-2">
                                 <Link href="/legal/privacy" className="text-muted small text-decoration-none hover-text-primary">
                                     Política de Privacidad
                                 </Link>
@@ -67,7 +72,7 @@ export default function LegalFooter() {
                 <div className="row mt-4 pt-3 border-top">
                     <div className="col-12 text-center">
                         <p className="text-muted small mb-0">
-                            Conecta+ no carga publicidad de terceros.
+                            Los anuncios patrocinados, cuando están habilitados, aparecen solo en Dashboard y Juegos y llevan la etiqueta «Patrocinado».
                             <Link href="/legal/privacy" className="text-primary ms-1">
                                 Más información sobre privacidad
                             </Link>

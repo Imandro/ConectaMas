@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { CreditCard, Loader2, Smartphone } from "lucide-react";
 import type { ProductCode, PaymentProvider } from "@/app/lib/billing/types";
+import { isCapacitorRuntime } from "@/app/lib/runtime";
 
 declare global {
     interface Window {
@@ -20,17 +21,6 @@ const PLAY_IDS: Partial<Record<ProductCode, string>> = {
     PREMIUM_MONTHLY: "conecta_premium_monthly",
     PREMIUM_YEARLY: "conecta_premium_yearly",
 };
-
-function isCapacitorRuntime() {
-    if (typeof window === "undefined") return false;
-    const markedByUrl = new URLSearchParams(window.location.search).get("conecta_native") === "capacitor";
-    let markedByStorage = false;
-    try {
-        if (markedByUrl) localStorage.setItem("conecta_native", "capacitor");
-        markedByStorage = localStorage.getItem("conecta_native") === "capacitor";
-    } catch { /* ignore unavailable storage */ }
-    return markedByUrl || markedByStorage || Boolean((window as Window & { Capacitor?: unknown }).Capacitor) || navigator.userAgent.includes("Capacitor");
-}
 
 async function verifyNativePurchase(productId: string, purchaseToken: string, claimId?: string) {
     return fetch("/api/billing/google-play/verify", {

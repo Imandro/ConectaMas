@@ -206,8 +206,10 @@
 
 // Navigation and prompt surfaces stay usable above the floating dock.
 .mobile-bottom-dock .mobile-nav-item {
+    flex: 1 1 0;
     min-width: 48px;
     min-height: 48px;
+    padding-inline: 0 !important;
     touch-action: manipulation;
     -webkit-tap-highlight-color: transparent;
 }

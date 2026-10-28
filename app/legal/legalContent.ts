@@ -26,7 +26,7 @@ const docs = (language: RenderLocale): Record<LegalDocument, LegalDocumentConten
     COOKIES: { title: 'Cookies and storage policy', intro: 'We use necessary technologies and choices selected by the user.', sections: [
       { title: 'Necessary', body: 'Session and security cookies enable authentication. Language and consent preferences are stored to honor your choices.' },
       { title: 'Analytics', body: 'Vercel Analytics loads only after analytics consent. The app works if you decline.' },
-      { title: 'No third-party ads', body: 'We do not claim or load AdMob or AdSense. Any future change requires an updated policy and required consent.' },
+      { title: 'Advertising', body: 'Conecta+ may show clearly labeled direct sponsor campaigns or non-personalized Monetag units only when enabled. We do not share email, user ID, precise country or spiritual data with advertisers. Premium removes ads. Monetag remains off until approval.' },
       { title: 'Offline data', body: 'localStorage, IndexedDB and a service worker may keep preferences and offline content.' },
     ] },
     REFUNDS: { title: 'Payments and refunds', intro: 'Premium and voluntary support are separate flows.', sections: [
@@ -64,7 +64,7 @@ const docs = (language: RenderLocale): Record<LegalDocument, LegalDocumentConten
     COOKIES: { title: 'Politica privind cookie-urile și stocarea', intro: 'Folosim tehnologii necesare și opțiunile alese de utilizator.', sections: [
       { title: 'Necesare', body: 'Cookie-urile de sesiune și securitate permit autentificarea. Preferințele de limbă și consimțământ sunt stocate pentru a respecta alegerile tale.' },
       { title: 'Analiză', body: 'Vercel Analytics se încarcă doar după consimțământul pentru analiză. Aplicația funcționează și dacă refuzi.' },
-      { title: 'Fără reclame terțe', body: 'Nu declarăm și nu încărcăm AdMob sau AdSense. Orice schimbare necesită o politică actualizată și consimțământul cerut.' },
+      { title: 'Publicitate', body: 'Conecta+ poate afișa campanii de sponsori direcți marcate clar sau unități Monetag fără personalizare, doar când sunt activate. Nu partajăm emailul, ID-ul, țara exactă sau date spirituale cu agenții de publicitate. Premium elimină reclamele. Monetag rămâne dezactivat până la aprobare.' },
       { title: 'Date offline', body: 'localStorage, IndexedDB și un service worker pot păstra preferințe și conținut offline.' },
     ] },
     REFUNDS: { title: 'Plăți și rambursări', intro: 'Premium și sprijinul voluntar sunt fluxuri separate.', sections: [
@@ -102,7 +102,7 @@ const docs = (language: RenderLocale): Record<LegalDocument, LegalDocumentConten
     COOKIES: { title: 'Política de cookies e armazenamento', intro: 'Usamos tecnologias necessárias e preferências escolhidas pela pessoa usuária.', sections: [
       { title: 'Necessários', body: 'Cookies de sessão e segurança permitem autenticação. Preferências de idioma e consentimento são armazenadas para respeitar suas escolhas.' },
       { title: 'Análise', body: 'Vercel Analytics carrega somente após consentimento de análise. O app funciona se você recusar.' },
-      { title: 'Sem anúncios de terceiros', body: 'Não declaramos nem carregamos AdMob ou AdSense. Qualquer mudança exigirá política atualizada e consentimento.' },
+      { title: 'Publicidade', body: 'Conecta+ pode exibir campanhas de patrocinadores diretos claramente identificadas ou unidades Monetag não personalizadas somente quando ativadas. Não compartilhamos email, ID, país preciso ou dados espirituais com anunciantes. Premium remove os anúncios. Monetag permanece desativado até aprovação.' },
       { title: 'Dados offline', body: 'localStorage, IndexedDB e service worker podem manter preferências e conteúdo offline.' },
     ] },
     REFUNDS: { title: 'Pagamentos e reembolsos', intro: 'Premium e apoios voluntários são fluxos separados.', sections: [
@@ -140,7 +140,7 @@ const docs = (language: RenderLocale): Record<LegalDocument, LegalDocumentConten
     COOKIES: { title: 'Política de cookies y almacenamiento', intro: 'Usamos solo tecnologías necesarias y preferencias elegidas.', sections: [
       { title: 'Necesarias', body: 'Cookies de sesión y seguridad permiten autenticación. Las preferencias de idioma y consentimiento respetan tus elecciones.' },
       { title: 'Analítica', body: 'Vercel Analytics se carga solo después de aceptar analítica. La app funciona si rechazas.' },
-      { title: 'Sin publicidad de terceros', body: 'No declaramos ni cargamos AdMob o AdSense. Cualquier cambio requiere política actualizada y consentimiento.' },
+      { title: 'Publicidad', body: 'Conecta+ puede mostrar campañas de patrocinadores directos claramente identificadas o unidades Monetag no personalizadas solo cuando se habiliten. No compartimos email, ID de usuario, país preciso ni datos espirituales con anunciantes. Premium elimina los anuncios. Monetag permanece apagado hasta aprobación.' },
       { title: 'Datos offline', body: 'localStorage, IndexedDB y service worker pueden conservar preferencias y contenido offline.' },
     ] },
     REFUNDS: { title: 'Política de pagos y reembolsos', intro: 'Premium y apoyos voluntarios son flujos separados.', sections: [

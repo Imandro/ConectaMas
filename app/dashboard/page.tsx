@@ -54,6 +54,7 @@ import { getGuestStats, updateGuestStreak } from '@/app/lib/guest';
 import { useSession } from 'next-auth/react';
 import { getSnapshot, saveSnapshot } from '@/app/lib/offlineStore';
 import { createIdempotencyKey, enqueueOfflineMutation } from '@/app/lib/syncQueueProcessor';
+import AdBanner from '@/app/components/AdBanner';
 
 const MODAL_QUEUE = ['checkin', 'age', 'country', 'whatsapp', 'instagram', 'support', 'dailyQuestions'] as const;
 type ModalId = typeof MODAL_QUEUE[number];
@@ -352,6 +353,8 @@ export default function DashboardHome() {
                     </Link>
                 </div>
             </header>
+
+            <AdBanner placement="dashboard" />
 
 
 

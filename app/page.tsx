@@ -3,13 +3,17 @@ import Image from 'next/image';
 import { cookies } from 'next/headers';
 import { getTranslations } from './lib/getTranslations';
 import { isLanguage } from './lib/languages';
+import PublicSiteNav from './components/PublicSiteNav';
+import LegalFooter from './components/LegalFooter';
 
 export default function Home() {
     const cookieLanguage = cookies().get('app-language')?.value;
     const t = getTranslations(isLanguage(cookieLanguage) ? cookieLanguage : 'es');
 
     return (
-        <div className="min-vh-100 d-flex flex-column justify-content-center align-items-center p-4 position-relative overflow-hidden">
+        <div className="min-vh-100 d-flex flex-column justify-content-center align-items-center position-relative overflow-hidden">
+            <div className="w-100 position-relative" style={{ zIndex: 2 }}><PublicSiteNav /></div>
+            <div className="w-100 d-flex flex-column align-items-center p-4">
             {/* Background Decor */}
             <div className="position-absolute top-0 start-0 w-100 h-100 bg-light" style={{ zIndex: -1 }}>
                 <div className="position-absolute top-0 start-50 translate-middle rounded-circle bg-warning opacity-10 blur-3xl" style={{ width: '600px', height: '600px', filter: 'blur(100px)' }}></div>
@@ -103,6 +107,8 @@ export default function Home() {
                         {t.landing.mission_p2}
                     </p>
                 </div>
+            </div>
+            <div className="w-100"><LegalFooter /></div>
             </div>
         </div>
     );

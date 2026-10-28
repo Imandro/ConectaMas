@@ -4,6 +4,7 @@ export const MOBILE_NAV_HREFS = [
     '/dashboard/bible',
     '/dashboard/prayer',
     '/dashboard/games',
+    '/dashboard/chat',
 ] as const;
 
 export function isMobilePrimaryNav(pathname: string) {

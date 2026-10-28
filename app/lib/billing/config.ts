@@ -46,7 +46,7 @@ export function getGooglePlayConfig() {
 
 export function billingUrl(path: string) {
     if (!path.startsWith('/') || path.startsWith('//')) throw new Error('invalid billing return path');
-    const base = new URL(process.env.NEXT_PUBLIC_APP_URL || 'https://conectaplus.app');
+    const base = new URL(process.env.NEXT_PUBLIC_APP_URL || 'https://conectamas.live');
     if (base.protocol !== 'https:' && process.env.NODE_ENV === 'production') throw new Error('billing app URL must use HTTPS');
     const target = new URL(path, base);
     if (target.origin !== base.origin) throw new Error('billing return URL origin not allowed');

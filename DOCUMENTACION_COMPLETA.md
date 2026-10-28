@@ -196,7 +196,7 @@
   - Meta: Licencia Google Play ($25 USD)
   - Mensaje personal del desarrollador
   - Cuadro con meta y descripción
-- Link directo a PayPal (paypal.me/Imandrox)
+- Checkout de apoyo mediante PayPal Business o Pagadito; no se muestran enlaces manuales.
 - Diseño premium con fondo oscuro
 
 ### 15. POPUP DE CRECIMIENTO

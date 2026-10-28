@@ -70,4 +70,15 @@ Canal operativo legal: `marioalejandroruiz28@gmail.com`. Un abogado o contador e
 
 La implementación no sustituye esa revisión. Mantén `BILLING_WEB_ENABLED=false` y `BILLING_PLAY_ENABLED=false` hasta confirmar cuentas comerciales, webhooks, reembolsos, borrado externo y retiro hacia Nicaragua.
 
-La política legal vigente está en `/legal/terms`, `/legal/privacy`, `/legal/cookies`, `/legal/refunds` y `/legal/community`. No describir AdMob, AdSense ni publicidad de terceros mientras no exista integración aprobada y consentida.
+La política legal vigente está en `/legal/terms`, `/legal/privacy`, `/legal/cookies`, `/legal/refunds` y `/legal/community`. No activar Monetag ni publicar campañas mientras no exista integración aprobada, CMP configurado y consentimiento aplicable.
+
+## Monetag
+
+1. Registrar y verificar `conectamas.live` en Monetag.
+2. Crear zona `In-Page Push (Banner)`; no usar MultiTag, Popunder, Vignette, Push ni SmartLink.
+3. Bloquear apuestas, casino, alcohol, sexo, drogas, política, astrología, dinero fácil y sensacionalismo.
+4. Excluir Biblia, oración, SOS, diario, comunidad, pagos, legal y `conecta_native=capacitor`.
+5. Verificar retiro PayPal o Payoneer para Nicaragua.
+6. Configurar `MONETAG_TAG_SRC`, `MONETAG_ZONE_ID` y luego `ADS_PROVIDER=monetag`.
+
+El valor seguro sigue siendo `ADS_PROVIDER=off`. Monetag solo aparece en Dashboard y Juegos, con máximo un banner por pantalla.
