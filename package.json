@@ -27,7 +27,6 @@
         ,"test:legal": "ts-node --project tsconfig.scripts.json --transpile-only scripts/test-legal-policy.ts"
         ,"test:data-rights": "ts-node --project tsconfig.scripts.json --transpile-only scripts/test-data-rights.ts"
         ,"test:legal:consent": "ts-node --project tsconfig.scripts.json --transpile-only scripts/test-legal-consent.ts"
-        ,"test:email-validation": "ts-node --project tsconfig.scripts.json --transpile-only scripts/test-email-validation.ts"
     },
     "dependencies": {
         "@auth/prisma-adapter": "^2.7.4",
