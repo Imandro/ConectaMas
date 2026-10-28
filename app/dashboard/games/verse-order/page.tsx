@@ -7,6 +7,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { verseOrderData, VerseOrderQuestion } from "@/app/data/games/verseOrderData";
 import { saveGameScore, getBestScores } from "../clientGameScore";
 import SecondaryPageShell from "@/app/components/SecondaryUI";
+import { useLanguage } from "@/app/LanguageContext";
 
 const ROUNDS = 10;
 
@@ -69,6 +70,7 @@ function Confetti() {
 }
 
 export default function VerseOrderGame() {
+    const { t } = useLanguage();
     const [phase, setPhase] = useState<"start" | "playing" | "result">("start");
     const [round, setRound] = useState(0);
     const [questions, setQuestions] = useState<VerseOrderQuestion[]>([]);
@@ -163,7 +165,7 @@ export default function VerseOrderGame() {
                         <Link href="/dashboard/games" className="btn btn-white bg-white text-dark rounded-circle p-2 shadow-sm border-0">
                             <ArrowLeft size={22} />
                         </Link>
-                        <h1 className="h4 mb-0 fw-bold text-white">Ordena el Versículo</h1>
+                        <h1 className="h4 mb-0 fw-bold text-white">{t.game_ui.verse_order_title}</h1>
                     </div>
 
                     {phase === "start" && (
@@ -172,8 +174,8 @@ export default function VerseOrderGame() {
                                 <div className="start-icon-wrap mx-auto mb-3">
                                     <BookOpen size={40} className="text-warning" />
                                 </div>
-                                <h2 className="fw-bold mb-2">¡Ordena el Versículo!</h2>
-                                <p className="text-muted mb-3">Arma el versículo tocando las palabras en el orden correcto.</p>
+                                <h2 className="fw-bold mb-2">{t.game_ui.verse_order_title}</h2>
+                                <p className="text-muted mb-3">{t.game_ui.verse_order_desc}</p>
                                 <div className="d-flex justify-content-center gap-3 mb-3">
                                     <div className="instruction-chip">
                                         <span className="instruction-icon">👆</span>
@@ -194,7 +196,7 @@ export default function VerseOrderGame() {
                                     <p className="text-warning small mb-3 fw-bold">🏆 Mejor puntaje: {bestScore}/{ROUNDS}</p>
                                 )}
                                 <button onClick={startGame} className="btn btn-warning rounded-pill px-5 py-2 fw-bold shadow-lg start-btn">
-                                    ¡Comenzar!
+                                    {t.game_ui.start}
                                 </button>
                             </div>
                         </motion.div>
@@ -276,9 +278,9 @@ export default function VerseOrderGame() {
                                             className={`feedback-banner ${feedback === "correct" ? "bg-success" : "bg-danger"} text-white text-center py-2 px-3 rounded-pill mb-3 d-inline-block mx-auto`}
                                         >
                                             {feedback === "correct" ? (
-                                                <><Check size={18} className="me-1" /> ¡Correcto!</>
+                                                <><Check size={18} className="me-1" /> {t.game_ui.correct}</>
                                             ) : (
-                                                <><X size={18} className="me-1" /> Incorrecto</>
+                                                <><X size={18} className="me-1" /> {t.game_ui.incorrect}</>
                                             )}
                                         </motion.div>
                                     )}
@@ -379,10 +381,10 @@ export default function VerseOrderGame() {
                                 </div>
                                 <div className="d-flex justify-content-center gap-2 flex-column flex-sm-row">
                                     <button onClick={startGame} className="btn btn-warning rounded-pill px-4 py-2 fw-bold shadow-sm">
-                                        Jugar de nuevo
+                                        {t.game_ui.restart}
                                     </button>
                                     <Link href="/dashboard/games" className="btn btn-outline-secondary rounded-pill px-4 py-2 fw-bold">
-                                        Volver a juegos
+                                        {t.game_ui.back}
                                     </Link>
                                 </div>
                             </div>

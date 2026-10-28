@@ -8,6 +8,7 @@ import { speedQuizData, SpeedQuizQuestion } from "@/app/data/games/speedQuizData
 import { saveGameScore, getBestScores } from "../clientGameScore";
 import { Check, X } from "lucide-react";
 import SecondaryPageShell from "@/app/components/SecondaryUI";
+import { useLanguage } from "@/app/LanguageContext";
 
 const TOTAL_QUESTIONS = 10;
 const TIME_LIMIT = 60;
@@ -59,6 +60,7 @@ function Confetti() {
 }
 
 export default function SpeedQuizGame() {
+    const { t } = useLanguage();
     const [phase, setPhase] = useState<"start" | "playing" | "result">("start");
     const [questions, setQuestions] = useState<SpeedQuizQuestion[]>([]);
     const [round, setRound] = useState(0);
@@ -101,11 +103,20 @@ export default function SpeedQuizGame() {
         }, 1000);
     }, []);
 
+    const finishGame = useCallback(async (finalScore: number) => {
+        setPhase("result");
+        if (finalScore === TOTAL_QUESTIONS) setShowConfetti(true);
+        const timeSpent = TIME_LIMIT - timeLeft;
+        await saveGameScore("speed_quiz", finalScore, TOTAL_QUESTIONS, timeSpent);
+        const r = await getBestScores("speed_quiz");
+        if (r.success) setBestScore(r.bestScore ?? 0);
+    }, [timeLeft]);
+
     useEffect(() => {
         if (phase === "playing" && timeLeft === 0) {
             finishGame(score);
         }
-    }, [timeLeft, phase, score]);
+    }, [timeLeft, phase, score, finishGame]);
 
     const handleAnswer = (index: number) => {
         if (feedback) return;
@@ -132,15 +143,6 @@ export default function SpeedQuizGame() {
         }, correct ? 1000 : 1600);
     };
 
-    const finishGame = async (finalScore: number) => {
-        setPhase("result");
-        if (finalScore === TOTAL_QUESTIONS) setShowConfetti(true);
-        const timeSpent = TIME_LIMIT - timeLeft;
-        await saveGameScore("speed_quiz", finalScore, TOTAL_QUESTIONS, timeSpent);
-        const r = await getBestScores("speed_quiz");
-        if (r.success) setBestScore(r.bestScore ?? 0);
-    };
-
     const timePercent = (timeLeft / TIME_LIMIT) * 100;
     const isLowTime = timeLeft <= 10;
 
@@ -153,7 +155,7 @@ export default function SpeedQuizGame() {
                         <Link href="/dashboard/games" className="btn btn-white bg-white text-dark rounded-circle p-2 shadow-sm border-0">
                             <ArrowLeft size={22} />
                         </Link>
-                        <h1 className="h4 mb-0 fw-bold text-white">Pregunta Relámpago</h1>
+                        <h1 className="h4 mb-0 fw-bold text-white">{t.game_ui.speed_quiz_title}</h1>
                     </div>
 
                     {phase === "start" && (
@@ -162,14 +164,14 @@ export default function SpeedQuizGame() {
                                 <div className="start-icon-wrap mx-auto mb-3">
                                     <Zap size={40} className="text-warning" />
                                 </div>
-                                <h2 className="fw-bold mb-2">¡Pregunta Relámpago!</h2>
+                                <h2 className="fw-bold mb-2">{t.game_ui.speed_quiz_title}</h2>
                                 <p className="text-muted mb-3">Responde {TOTAL_QUESTIONS} preguntas bíblicas lo más rápido posible.</p>
                                 <p className="tip-text mb-3">⏱️ Tiempo límite: {TIME_LIMIT} segundos</p>
                                 {bestScore > 0 && (
                                     <p className="text-warning small mb-3 fw-bold">🏆 Mejor puntaje: {bestScore}/{TOTAL_QUESTIONS}</p>
                                 )}
                                 <button onClick={startGame} className="btn btn-warning rounded-pill px-5 py-2 fw-bold shadow-lg start-btn">
-                                    ¡Comenzar!
+                                    {t.game_ui.start}
                                 </button>
                             </div>
                         </motion.div>
@@ -240,7 +242,7 @@ export default function SpeedQuizGame() {
                                                 onClick={() => handleAnswer(i)}
                                                 disabled={feedback !== null}
                                                 className={btnClass}
-                                                whileTap={{ scale: 0.97 }}
+                                                whileTap={{ scale: 0.96 }}
                                             >
                                                 <span className="option-letter">{String.fromCharCode(65 + i)}</span>
                                                 <span className="option-text">{opt}</span>
@@ -262,7 +264,7 @@ export default function SpeedQuizGame() {
                                             animate={{ opacity: 1, y: 0 }}
                                             className={`feedback-banner mt-3 ${feedback === "correct" ? "bg-success" : "bg-danger"} text-white`}
                                         >
-                                            {feedback === "correct" ? "✅ ¡Correcto!" : `❌ Incorrecto`}
+                                            {feedback === "correct" ? `✅ ${t.game_ui.correct}` : `❌ ${t.game_ui.incorrect}`}
                                         </motion.div>
                                     )}
                                 </AnimatePresence>
@@ -311,10 +313,10 @@ export default function SpeedQuizGame() {
                                 )}
                                 <div className="d-flex justify-content-center gap-2 flex-column flex-sm-row mt-3">
                                     <button onClick={startGame} className="btn btn-warning rounded-pill px-4 py-2 fw-bold shadow-sm">
-                                        Jugar de nuevo
+                                    {t.game_ui.restart}
                                     </button>
                                     <Link href="/dashboard/games" className="btn btn-outline-light rounded-pill px-4 py-2 fw-bold">
-                                        Volver a juegos
+                                    {t.game_ui.back}
                                     </Link>
                                 </div>
                             </div>

@@ -389,8 +389,8 @@ export default function LlamiMascot({
                         className="llami-speech-bubble position-absolute bottom-100 start-50 mb-2"
                         style={{ width: "min(220px, calc(100vw - 32px))", zIndex: 100, pointerEvents: "none" }}
                     >
-                        <div className="bg-white rounded-4 shadow-sm p-2 border border-2 border-warning position-relative" style={{ backgroundColor: 'var(--card-bg, #ffffff)' }}>
-                            <p className="text-dark mb-0 fw-bold text-center lh-sm" style={{ fontSize: '0.7rem' }}>
+                        <div className="rounded-4 shadow-sm p-2 border border-2 border-warning position-relative" style={{ backgroundColor: 'var(--card-bg, #ffffff)' }}>
+                            <p className="mb-0 fw-bold text-center lh-sm" style={{ color: 'var(--text-color)', fontSize: '0.7rem' }}>
                                 {message}
                             </p>
                             <div className="position-absolute top-100 start-50 translate-middle-x"

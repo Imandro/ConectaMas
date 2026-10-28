@@ -179,7 +179,7 @@ export default function StrugglePlanContent({
                 </div>
             </nav>
 
-            <div className="bg-white shadow-xl overflow-hidden border-0" style={{ borderRadius: '32px' }}>
+            <div className="ui-surface shadow-xl overflow-hidden border-0" style={{ borderRadius: '32px' }}>
                 {/* Header Premium */}
                 <div className="p-4 p-md-5 text-white" style={{ background: 'linear-gradient(135deg, #1e293b 0%, #0f172a 100%)', borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
                     <div className="d-flex align-items-center gap-4 mb-4">
@@ -228,7 +228,7 @@ export default function StrugglePlanContent({
                 </div>
 
                 {/* Contenido Dinámico */}
-                <div className="p-4 p-md-5" style={{ background: '#f8fafc', minHeight: '400px' }}>
+                <div className="p-4 p-md-5" style={{ background: 'var(--surface-card)', minHeight: '400px' }}>
                     <AnimatePresence mode="wait">
                         {showVictory ? (
                             <motion.div

@@ -12,6 +12,36 @@
     transition: transform 0.2s ease, opacity 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
 }
 
+.animate-spin {
+    animation: utility-spin 1s linear infinite;
+}
+
+@keyframes utility-spin {
+    to { transform: rotate(360deg); }
+}
+
+.border-dashed {
+    border-style: dashed !important;
+}
+
+.opacity-15 {
+    opacity: 0.15 !important;
+}
+
+.fw-black {
+    font-weight: 900 !important;
+}
+
+.z-10 {
+    z-index: 10 !important;
+}
+
+@include media-breakpoint-up(sm) {
+    .w-sm-auto {
+        width: auto !important;
+    }
+}
+
 .bg-primary-subtle {
     background-color: rgba($primary, 0.1) !important;
 }

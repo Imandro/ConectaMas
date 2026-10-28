@@ -78,7 +78,7 @@ export default function LegalFooter() {
 
             <style jsx>{`
         .hover-text-primary:hover {
-          color: var(--bs-primary) !important;
+          color: var(--brand-accent-strong) !important;
         }
       `}</style>
         </footer>

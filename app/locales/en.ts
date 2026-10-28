@@ -819,6 +819,13 @@ export const en = {
         exp: "XP",
         llamas: "LLAMAS",
     },
+    game_ui: {
+        verse_order_title: "Verse order", verse_order_desc: "Tap words in the correct order", speed_quiz_title: "Quick quiz", speed_quiz_desc: "Answer before time runs out", book_match_title: "Match books", book_match_desc: "Classify Bible books", fill_blank_title: "Complete the verse", fill_blank_desc: "Choose the missing word", book_sort_title: "Sort the book", book_sort_desc: "OT or NT? Choose quickly", trivia_title: "Bible trivia", trivia_desc: "Test your daily knowledge", hot_potato_title: "Hot potato", hot_potato_desc: "Do not let it explode on your turn",
+        hub_title: "Games", hub_subtitle: "Learn, play and grow with the community", solo_title: "Solo games", live_title: "Live games",
+        memory_title: "Verse memory", memory_desc: "Find each pair and remember the promise.", character_title: "Characters and events", character_desc: "Match each character with their story.", order_title: "Bible order", order_desc: "Place the books in the correct order.",
+        start: "Start", restart: "Play again", back: "Back to games", score: "Score", time: "Time", round: "Round {current} of {total}", choose: "Choose the correct answer", order_instruction: "Tap items in the correct order", memory_instruction: "Find the pairs", memory_found: "Pairs found: {current} of {total}", correct: "Correct!", incorrect: "Keep trying", result_title: "Game over!", result_message: "Your final score",
+        room_game: "Room game", create_room: "Create room", select_game: "Select a game", room_name: "Room name", private_room: "Private room", create_enter: "Create and join", cancel: "Cancel", close: "Close", waiting: "Waiting for players", min_players: "At least 2 players are required.", players: "players", your_turn: "Your turn", turn_of: "{name}'s turn", game_finished: "Game finished", share: "Share", leave: "Leave", room_full: "The room is full", offline_blocked: "This game needs a connection for room play.",
+    },
     feature_tour: {
         install_title: "Install Conecta+",
         install_desc: "Use Conecta+ as a real App on your phone. You will have faster access and a better experience.",

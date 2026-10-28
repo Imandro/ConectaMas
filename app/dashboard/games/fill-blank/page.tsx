@@ -8,6 +8,7 @@ import { fillBlankData, FillBlankQuestion } from "@/app/data/games/fillBlankData
 import { saveGameScore, getBestScores } from "../clientGameScore";
 import { Check, X } from "lucide-react";
 import SecondaryPageShell from "@/app/components/SecondaryUI";
+import { useLanguage } from "@/app/LanguageContext";
 
 const ROUNDS = 10;
 
@@ -58,6 +59,7 @@ function Confetti() {
 }
 
 export default function FillBlankGame() {
+    const { t } = useLanguage();
     const [phase, setPhase] = useState<"start" | "playing" | "result">("start");
     const [questions, setQuestions] = useState<FillBlankQuestion[]>([]);
     const [round, setRound] = useState(0);
@@ -110,7 +112,7 @@ export default function FillBlankGame() {
                         <Link href="/dashboard/games" className="btn btn-white bg-white text-dark rounded-circle p-2 shadow-sm border-0">
                             <ArrowLeft size={22} />
                         </Link>
-                        <h1 className="h4 mb-0 fw-bold text-white">Completa el Verso</h1>
+                        <h1 className="h4 mb-0 fw-bold text-white">{t.game_ui.fill_blank_title}</h1>
                     </div>
 
                     {phase === "start" && (
@@ -119,14 +121,14 @@ export default function FillBlankGame() {
                                 <div className="start-icon-wrap mx-auto mb-3">
                                     <Trophy size={40} className="text-warning" />
                                 </div>
-                                <h2 className="fw-bold mb-2">¡Completa el Verso!</h2>
-                                <p className="text-muted mb-3">Elige la palabra correcta para completar el versículo.</p>
+                                <h2 className="fw-bold mb-2">{t.game_ui.fill_blank_title}</h2>
+                                <p className="text-muted mb-3">{t.game_ui.fill_blank_desc}</p>
                                 <p className="tip-text mb-3">📖 Ten tu Biblia a mano para memorizar mejor cada versículo.</p>
                                 {bestScore > 0 && (
                                     <p className="text-warning small mb-3 fw-bold">🏆 Mejor puntaje: {bestScore}/{ROUNDS}</p>
                                 )}
                                 <button onClick={startGame} className="btn btn-warning rounded-pill px-5 py-2 fw-bold shadow-lg start-btn">
-                                    ¡Comenzar!
+                                    {t.game_ui.start}
                                 </button>
                             </div>
                         </motion.div>
@@ -183,7 +185,7 @@ export default function FillBlankGame() {
                                                 onClick={() => handleAnswer(i)}
                                                 disabled={feedback !== null}
                                                 className={btnClass}
-                                                whileTap={{ scale: 0.97 }}
+                                                whileTap={{ scale: 0.96 }}
                                             >
                                                 <span className="option-letter">{String.fromCharCode(65 + i)}</span>
                                                 <span className="option-text">{opt}</span>
@@ -205,7 +207,7 @@ export default function FillBlankGame() {
                                             animate={{ opacity: 1, y: 0 }}
                                             className={`feedback-banner mt-3 ${feedback === "correct" ? "bg-success" : "bg-danger"} text-white`}
                                         >
-                                            {feedback === "correct" ? "✅ ¡Correcto!" : `❌ Incorrecto — Era: ${questions[round].options[questions[round].correctIndex]}`}
+                                            {feedback === "correct" ? `✅ ${t.game_ui.correct}` : `❌ ${t.game_ui.incorrect} — ${questions[round].options[questions[round].correctIndex]}`}
                                         </motion.div>
                                     )}
                                 </AnimatePresence>
@@ -253,10 +255,10 @@ export default function FillBlankGame() {
                                 )}
                                 <div className="d-flex justify-content-center gap-2 flex-column flex-sm-row mt-3">
                                     <button onClick={startGame} className="btn btn-warning rounded-pill px-4 py-2 fw-bold shadow-sm">
-                                        Jugar de nuevo
+                                        {t.game_ui.restart}
                                     </button>
                                     <Link href="/dashboard/games" className="btn btn-outline-light rounded-pill px-4 py-2 fw-bold">
-                                        Volver a juegos
+                                        {t.game_ui.back}
                                     </Link>
                                 </div>
                             </div>

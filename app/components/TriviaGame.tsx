@@ -192,12 +192,12 @@ export default function TriviaGame({ onComplete }: TriviaGameProps) {
                     <span>{t.trivia_game.question_count.replace('{current}', (currentIndex + 1).toString()).replace('{total}', questions.length.toString())}</span>
                     <span>{questions.length > 0 ? Math.round(((currentIndex) / questions.length) * 100) : 0}%</span>
                 </div>
-                <div className="progress rounded-pill shadow-sm" style={{ height: '8px', backgroundColor: 'rgba(11, 27, 50, 0.1)' }}>
+                <div className="progress rounded-pill shadow-sm" style={{ height: '8px', backgroundColor: 'var(--surface-soft)' }}>
                     <motion.div
                         className="progress-bar bg-warning rounded-pill"
                         initial={{ width: 0 }}
                         animate={{ width: `${questions.length > 0 ? ((currentIndex + 1) / questions.length) * 100 : 0}%` }}
-                        style={{ backgroundColor: '#f3b33e' }}
+                        style={{ backgroundColor: 'var(--brand-accent)' }}
                     />
                 </div>
             </div>
@@ -209,7 +209,7 @@ export default function TriviaGame({ onComplete }: TriviaGameProps) {
                     animate={{ opacity: 1, x: 0 }}
                     exit={{ opacity: 0, x: -20 }}
                     className="rounded-4 p-4 shadow-sm"
-                    style={{ backgroundColor: '#fff', border: '1px solid #e2e8f0' }}
+                    style={{ backgroundColor: 'var(--surface-card)', border: '1px solid var(--surface-border)' }}
                 >
                     <h3 className="fw-bold text-dark mb-4 lh-base" style={{ fontSize: '1.4rem' }}>
                         {currentQ.question || t.trivia_game.question_unavailable}
@@ -222,9 +222,9 @@ export default function TriviaGame({ onComplete }: TriviaGameProps) {
 
                             let buttonStyle: React.CSSProperties = {
                                 border: '2px solid',
-                                borderColor: '#e2e8f0',
-                                backgroundColor: '#f8fafc',
-                                color: '#1e293b',
+                                borderColor: 'var(--surface-border)',
+                                backgroundColor: 'var(--surface-soft)',
+                                color: 'var(--text-color)',
                                 transition: 'all 0.2s ease',
                                 fontWeight: '500'
                             };
@@ -242,9 +242,9 @@ export default function TriviaGame({ onComplete }: TriviaGameProps) {
                             } else if (isSelected) {
                                 buttonStyle = {
                                     ...buttonStyle,
-                                    backgroundColor: 'rgba(243, 179, 62, 0.1)',
-                                    borderColor: '#f3b33e',
-                                    color: '#b45309',
+                                    backgroundColor: 'var(--accent-soft)',
+                                    borderColor: 'var(--brand-accent)',
+                                    color: 'var(--brand-ink)',
                                     fontWeight: 'bold'
                                 };
                             }
@@ -290,7 +290,7 @@ export default function TriviaGame({ onComplete }: TriviaGameProps) {
                         <button
                             onClick={nextQuestion}
                             className="btn btn-warning w-100 py-3 rounded-pill fw-bold fs-5 d-flex align-items-center justify-content-center gap-2 shadow-lg"
-                            style={{ backgroundColor: '#f3b33e', border: 'none', color: '#0B1B32' }}
+                            style={{ backgroundColor: 'var(--brand-accent)', border: 'none', color: 'var(--brand-primary)' }}
                         >
                             {currentIndex === questions.length - 1 ? t.trivia_game.button_results : t.trivia_game.button_next} <ArrowRight size={20} />
                         </button>

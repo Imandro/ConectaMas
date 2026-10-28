@@ -84,8 +84,8 @@ export default function CountryModal({ hasSelectedCountry }: CountryModalProps) 
                     initial={{ opacity: 0, scale: 0.9, y: 20 }}
                     animate={{ opacity: 1, scale: 1, y: 0 }}
                     exit={{ opacity: 0, scale: 0.9, y: 20 }}
-                    className="ui-surface-glass rounded-5 shadow-lg overflow-hidden"
-                    style={{ maxWidth: '500px', width: 'min(100% - 24px, 500px)', maxHeight: '80vh' }}
+                    className="ui-surface-glass rounded-5 shadow-lg"
+                    style={{ maxWidth: '500px', width: 'min(100% - 24px, 500px)', maxHeight: 'min(80dvh, 640px)', overflowY: 'auto' }}
                 >
                     {/* Header */}
                     <div className="position-relative p-4 text-center" style={{ backgroundColor: 'var(--brand-primary, #0B1B32)' }}>
