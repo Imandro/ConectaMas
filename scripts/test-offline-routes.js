@@ -28,6 +28,9 @@ const matrix = [
       '/dashboard/games/fill-blank',
       '/dashboard/games/book-sort',
       '/dashboard/games/book-match',
+      '/dashboard/games/memory',
+      '/dashboard/games/character-event',
+      '/dashboard/games/bible-order',
     ],
   },
   {
@@ -80,6 +83,9 @@ const expectedLocalSources = [
   ['app/dashboard/games/fill-blank/page.tsx', /data\/games\/fillBlankData/, 'fill-blank questions'],
   ['app/dashboard/games/book-sort/page.tsx', /data\/games\/bookSortData/, 'book-sort questions'],
   ['app/dashboard/games/book-match/page.tsx', /data\/games\/bookMatchData/, 'book-match questions'],
+  ['app/dashboard/games/memory/page.tsx', /NewGameViews/, 'memory game view'],
+  ['app/dashboard/games/character-event/page.tsx', /NewGameViews/, 'character-event game view'],
+  ['app/dashboard/games/bible-order/page.tsx', /NewGameViews/, 'bible-order game view'],
 ];
 
 for (const [relativeFile, pattern, label] of expectedLocalSources) {
@@ -154,6 +160,9 @@ assert.deepEqual(parseRouteList(worker, 'STATIC_ROUTES'), [
   '/dashboard/games/fill-blank',
   '/dashboard/games/book-sort',
   '/dashboard/games/book-match',
+  '/dashboard/games/memory',
+  '/dashboard/games/character-event',
+  '/dashboard/games/bible-order',
 ]);
 assert.deepEqual(parseRouteList(worker, 'SNAPSHOT_ROUTES'), [
   '/dashboard',

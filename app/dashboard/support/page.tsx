@@ -150,7 +150,7 @@ export default function SupportPage() {
                     </motion.div>
 
                     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }} className="text-center pb-4">
-                        <Link href="/dashboard" className="btn btn-outline-light rounded-pill px-4 py-2">
+                        <Link href="/dashboard" className="btn btn-outline-primary rounded-pill px-4 py-2">
                             Volver al inicio
                         </Link>
                     </motion.div>

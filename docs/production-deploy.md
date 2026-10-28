@@ -33,13 +33,23 @@ npm run build
 
 No uses `prisma db push` en producción.
 
+Antes de publicar, ejecuta el gate de dependencias y corrige o acepta con revisión cada vulnerabilidad alta/crítica:
+
+```powershell
+npm audit --omit=dev --audit-level=high
+```
+
+No uses `npm audit fix --force` sin revisar cambios de versión mayor. La rama actual mantiene dependencias legacy que requieren actualización planificada.
+
 ## 3. Arranca
 
 ```powershell
 npm run start
 ```
 
-Verifica `/`, `/offline`, `/auth/login`, `/auth/register` y un flujo autenticado. Comprueba también registro, login móvil, consentimiento legal, exportación y borrado de cuenta.
+Verifica primero `GET /api/health` y espera `{ "status": "ok" }`. Después verifica `/`, `/offline`, `/auth/login`, `/auth/register` y un flujo autenticado. Comprueba también registro, login móvil, consentimiento legal, exportación y borrado de cuenta.
+
+Confirma en el proveedor que `AUTH_SECRET` o `NEXTAUTH_SECRET`, `DATABASE_URL`, `NEXTAUTH_URL`, `NEXT_PUBLIC_APP_URL`, `NOTIFICATIONS_ENGINE_SECRET` y VAPID estén configurados. Nunca uses los valores de `.env.example`.
 
 ## 4. Reversión
 

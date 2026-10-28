@@ -87,12 +87,16 @@ export default function ChatView({ firstName: rawFirstName, mascotName, mascotLe
     const [loading, setLoading] = useState(true);
     const [sending, setSending] = useState(false);
     const [error, setError] = useState('');
+    const [successNotice, setSuccessNotice] = useState('');
     const [sosNotice, setSosNotice] = useState(false);
     const [voiceListening, setVoiceListening] = useState(false);
     const [voiceStatus, setVoiceStatus] = useState('');
+    const [clearHistoryOpen, setClearHistoryOpen] = useState(false);
+    const [clearHistoryBusy, setClearHistoryBusy] = useState(false);
     const textareaRef = useRef<HTMLTextAreaElement>(null);
     const recognitionRef = useRef<SpeechRecognitionInstance | null>(null);
     const messagesEndRef = useRef<HTMLDivElement>(null);
+    const clearDialogCloseRef = useRef<HTMLButtonElement>(null);
 
     useEffect(() => {
         let cancelled = false;
@@ -125,6 +129,19 @@ export default function ChatView({ firstName: rawFirstName, mascotName, mascotLe
         recognitionRef.current?.stop();
     }, []);
 
+    useEffect(() => {
+        if (!clearHistoryOpen) return;
+        const frame = window.requestAnimationFrame(() => clearDialogCloseRef.current?.focus());
+        const handleKeyDown = (event: KeyboardEvent) => {
+            if (event.key === 'Escape' && !clearHistoryBusy) setClearHistoryOpen(false);
+        };
+        document.addEventListener('keydown', handleKeyDown);
+        return () => {
+            window.cancelAnimationFrame(frame);
+            document.removeEventListener('keydown', handleKeyDown);
+        };
+    }, [clearHistoryOpen, clearHistoryBusy]);
+
     const resizeTextarea = () => {
         const element = textareaRef.current;
         if (!element) return;
@@ -133,6 +150,7 @@ export default function ChatView({ firstName: rawFirstName, mascotName, mascotLe
     };
 
     const updateContext = async (enabled: boolean) => {
+        setSuccessNotice('');
         try {
             const response = await fetch('/api/ai/preferences', {
                 method: 'PATCH',
@@ -154,6 +172,7 @@ export default function ChatView({ firstName: rawFirstName, mascotName, mascotLe
         const content = (preset ?? input).trim();
         if (!content || sending || remaining <= 0) return;
         setError('');
+        setSuccessNotice('');
         setSosNotice(false);
         setSending(true);
         setInput('');
@@ -236,31 +255,38 @@ export default function ChatView({ firstName: rawFirstName, mascotName, mascotLe
         recognition.start();
     };
 
-    const clearHistory = async () => {
-        if (!window.confirm('¿Borrar todo tu historial privado con Llami?')) return;
-        const response = await fetch('/api/ai/chat', { method: 'DELETE' });
-        if (response.ok) {
+    const clearHistory = () => setClearHistoryOpen(true);
+
+    const confirmClearHistory = async () => {
+        if (clearHistoryBusy) return;
+        setClearHistoryBusy(true);
+        try {
+            const response = await fetch('/api/ai/chat', { method: 'DELETE' });
+            if (!response.ok) throw new Error('clear-history');
             setMessages([]);
-            setError('Historial borrado.');
-        } else {
+            setClearHistoryOpen(false);
+            setSuccessNotice('Historial borrado.');
+        } catch {
             setError('No pudimos borrar el historial.');
+        } finally {
+            setClearHistoryBusy(false);
         }
     };
 
     return (
         <main className={styles.page}>
             <header className={`${styles.header} ui-surface-glass`}>
-                <Link href="/dashboard" className={`${styles.headerButton} rounded-circle d-flex align-items-center justify-content-center p-0`} style={{ width: 48, height: 48 }} aria-label="Volver al inicio">
+                <Link href="/dashboard" className={`${styles.headerButton} rounded-circle d-flex align-items-center justify-content-center p-0`} aria-label="Volver al inicio">
                     <ArrowLeft size={20} aria-hidden="true" />
                 </Link>
                 <div className={styles.headerIdentity}>
                     <div className={styles.miniFlame} aria-hidden="true"><Flame size={18} /></div>
                     <div>
-                        <span className="d-block small text-muted">Tu espacio con Llami</span>
+                        <span className="d-block small text-muted">Privado y seguro</span>
                         <h1 className="h4 mb-0 fw-bold">Habla con Llami</h1>
                     </div>
                 </div>
-                <button type="button" className={`${styles.headerButton} rounded-circle d-flex align-items-center justify-content-center p-0`} style={{ width: 48, height: 48 }} onClick={clearHistory} aria-label="Borrar historial privado">
+                <button type="button" className={`${styles.headerButton} rounded-circle d-flex align-items-center justify-content-center p-0`} onClick={clearHistory} aria-label="Borrar historial privado">
                     <Trash2 size={18} aria-hidden="true" />
                 </button>
             </header>
@@ -290,26 +316,26 @@ export default function ChatView({ firstName: rawFirstName, mascotName, mascotLe
                             <h2 id="context-title" className="h6 fw-bold mb-1">Respuestas más personales</h2>
                             <p className="small text-muted mb-3">Si aceptas, Llami podrá usar tu primer nombre y tus luchas activas. El chat se procesa en NVIDIA y permanece privado en Conecta+.</p>
                             <div className="d-flex flex-wrap gap-2">
-                                <button type="button" className="btn btn-primary rounded-pill px-3" onClick={() => updateContext(true)}><Check size={16} className="me-1" />Activar contexto</button>
-                                <button type="button" className="btn btn-light rounded-pill px-3" onClick={() => setShowContextPrompt(false)}>Ahora no</button>
+                                <button type="button" className={`${styles.contextAction} btn btn-primary rounded-pill px-3`} onClick={() => updateContext(true)}><Check size={16} className="me-1" />Activar contexto</button>
+                                <button type="button" className={`${styles.contextAction} btn btn-light rounded-pill px-3`} onClick={() => setShowContextPrompt(false)}>Ahora no</button>
                             </div>
                         </div>
-                        <button type="button" className="btn btn-sm btn-light rounded-circle p-2" onClick={() => setShowContextPrompt(false)} aria-label="Cerrar aviso de contexto"><X size={16} /></button>
+                        <button type="button" className={styles.contextClose} onClick={() => setShowContextPrompt(false)} aria-label="Cerrar aviso de contexto"><X size={17} aria-hidden="true" /></button>
                     </motion.section>
                 )}
             </AnimatePresence>
 
             <section className={styles.conversation} aria-live="polite" aria-busy={sending}>
                 {loading ? (
-                    <div className={`${styles.emptyState} ui-surface`}><div className={styles.loadingDot} />Cargando tu espacio seguro…</div>
+                    <div className={`${styles.emptyState} ui-surface-elevated`}><div className={styles.loadingDot} />Cargando tu espacio seguro…</div>
                 ) : messages.length === 0 ? (
-                    <div className={`${styles.emptyState} ui-surface`}>
+                    <div className={`${styles.emptyState} ui-surface-elevated`}>
                         <div className={styles.llamiFrame}><LlamiMascot streak={streak} level={mascotLevel} name={mascotName} expression="happy" /></div>
                         <p className="small text-muted mb-1">Hola, {userFirstName}</p>
                         <h2 className="h3 fw-bold mb-2">¿Qué traes hoy en el corazón?</h2>
                         <p className="text-muted mb-4">Puedes hablar con Llami de tu fe, tus preguntas o una lucha. Aquí puedes empezar sin filtros.</p>
                         <div className={styles.starterList}>
-                            {STARTERS.map((starter) => <button key={starter} type="button" className="btn btn-light rounded-pill" onClick={() => sendMessage(undefined, starter)}>{starter}</button>)}
+                            {STARTERS.map((starter) => <button key={starter} type="button" className={styles.starterButton} onClick={() => sendMessage(undefined, starter)}>{starter}</button>)}
                         </div>
                     </div>
                 ) : (
@@ -323,14 +349,52 @@ export default function ChatView({ firstName: rawFirstName, mascotName, mascotLe
                                 </div>
                             </motion.article>
                         ))}
-                        {sending && <div className={styles.typing} aria-label="Llami está pensando"><span /><span /><span /> Llami está pensando…</div>}
+                        {sending && <div className={styles.typing} role="status" aria-live="polite"><span /><span /><span /> Llami está pensando…</div>}
                         <div ref={messagesEndRef} />
                     </div>
                 )}
             </section>
 
             {sosNotice && <div className={`${styles.sosNotice} ui-surface`}><ShieldCheck size={18} aria-hidden="true" /><span>Tu seguridad importa. <Link href="/dashboard/sos">Abrir ayuda SOS</Link> o contacta a alguien de confianza ahora.</span></div>}
+            {successNotice && <div className={`${styles.successNotice} ui-surface`} role="status">{successNotice}</div>}
             {error && <div className={`${styles.errorNotice} ui-surface`} role="status">{error}</div>}
+
+            <AnimatePresence initial={false}>
+                {clearHistoryOpen && (
+                    <motion.div
+                        className={styles.clearDialogBackdrop}
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0, transition: { duration: 0.15, ease: 'easeOut' } }}
+                        onMouseDown={(event) => {
+                            if (event.target === event.currentTarget && !clearHistoryBusy) setClearHistoryOpen(false);
+                        }}
+                    >
+                        <motion.section
+                            className={`${styles.clearDialog} ui-surface-glass`}
+                            role="alertdialog"
+                            aria-modal="true"
+                            aria-labelledby="clear-history-title"
+                            aria-describedby="clear-history-description"
+                            initial={{ opacity: 0, y: reduceMotion ? 0 : 12, filter: reduceMotion ? 'none' : 'blur(4px)' }}
+                            animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+                            exit={{ opacity: 0, y: reduceMotion ? 0 : 12, filter: reduceMotion ? 'none' : 'blur(4px)', transition: { duration: 0.15, ease: 'easeOut' } }}
+                            transition={{ duration: 0.3, ease: [0.2, 0, 0, 1] }}
+                        >
+                            <div className={styles.dialogHeader}>
+                                <div className={styles.dialogIcon}><Trash2 size={19} aria-hidden="true" /></div>
+                                <button ref={clearDialogCloseRef} type="button" className={styles.dialogClose} onClick={() => setClearHistoryOpen(false)} disabled={clearHistoryBusy} aria-label="Cerrar confirmación"><X size={18} aria-hidden="true" /></button>
+                            </div>
+                            <h2 id="clear-history-title" className="h5 fw-bold mb-2">¿Borrar tu historial?</h2>
+                            <p id="clear-history-description" className="text-muted mb-4">Se eliminará tu conversación privada con Llami. Esta acción no se puede deshacer.</p>
+                            <div className={styles.dialogActions}>
+                                <button type="button" className={styles.dialogSecondary} onClick={() => setClearHistoryOpen(false)} disabled={clearHistoryBusy}>Conservar historial</button>
+                                <button type="button" className={styles.dialogDanger} onClick={() => void confirmClearHistory()} disabled={clearHistoryBusy}>{clearHistoryBusy ? 'Borrando…' : 'Borrar historial'}</button>
+                            </div>
+                        </motion.section>
+                    </motion.div>
+                )}
+            </AnimatePresence>
 
             <form className={`${styles.composer} ui-surface-glass`} onSubmit={sendMessage}>
                 <label className="visually-hidden" htmlFor="llami-message">Escribe tu mensaje</label>
@@ -343,7 +407,7 @@ export default function ChatView({ firstName: rawFirstName, mascotName, mascotLe
             <div className={styles.footerMeta}>
                 <span>{contextEnabled ? 'Contexto personal activado' : 'Contexto personal desactivado'}</span>
                 {contextEnabled ? <button type="button" onClick={() => updateContext(false)}>Desactivar</button> : <button type="button" onClick={() => setShowContextPrompt(true)}>Configurar contexto</button>}
-                <span className="visually-hidden" aria-live="polite">{voiceStatus}</span>
+                {voiceStatus && <span className={styles.voiceStatus} role="status" aria-live="polite">{voiceStatus}</span>}
             </div>
         </main>
     );

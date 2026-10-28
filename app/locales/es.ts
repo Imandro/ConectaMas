@@ -813,6 +813,13 @@ export const es = {
         exp: "EXP",
         llamas: "LLAMAS",
     },
+    game_ui: {
+        verse_order_title: "Ordena el versículo", verse_order_desc: "Toca las palabras en el orden correcto", speed_quiz_title: "Pregunta relámpago", speed_quiz_desc: "Responde rápido antes del tiempo", book_match_title: "Empareja libros", book_match_desc: "Clasifica libros por categoría", fill_blank_title: "Completa el verso", fill_blank_desc: "Elige la palabra que falta", book_sort_title: "Clasifica el libro", book_sort_desc: "AT o NT? Elige rápido", trivia_title: "Trivia bíblica", trivia_desc: "Pon a prueba tu conocimiento diario", hot_potato_title: "Papa caliente", hot_potato_desc: "No dejes que explote en tu turno",
+        hub_title: "Juegos", hub_subtitle: "Aprende, juega y crece con la comunidad", solo_title: "Juegos individuales", live_title: "Juegos en vivo",
+        memory_title: "Memoria de versículos", memory_desc: "Encuentra cada pareja y recuerda la promesa.", character_title: "Personajes y eventos", character_desc: "Relaciona cada personaje con su historia.", order_title: "Orden bíblico", order_desc: "Coloca los libros en el orden correcto.",
+        start: "Comenzar", restart: "Jugar de nuevo", back: "Volver a juegos", score: "Puntos", time: "Tiempo", round: "Ronda {current} de {total}", choose: "Elige la respuesta correcta", order_instruction: "Toca los elementos en el orden correcto", memory_instruction: "Encuentra las parejas", memory_found: "Parejas encontradas: {current} de {total}", correct: "¡Correcto!", incorrect: "Sigue intentando", result_title: "¡Juego terminado!", result_message: "Tu puntuación final",
+        room_game: "Juego de sala", create_room: "Crear sala", select_game: "Selecciona un juego", room_name: "Nombre de la sala", private_room: "Sala privada", create_enter: "Crear y entrar", cancel: "Cancelar", close: "Cerrar", waiting: "Esperando jugadores", min_players: "Se necesitan al menos 2 jugadores.", players: "jugadores", your_turn: "Es tu turno", turn_of: "Turno de {name}", game_finished: "Partida terminada", share: "Compartir", leave: "Abandonar", room_full: "La sala está llena", offline_blocked: "Este juego requiere conexión para jugar en sala.",
+    },
     feature_tour: {
         install_title: "Instala Conecta+",
         install_desc: "Usa Conecta+ como una App real en tu teléfono. Tendrás acceso más rápido y una mejor experiencia.",

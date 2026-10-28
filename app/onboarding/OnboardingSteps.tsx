@@ -451,8 +451,6 @@ export default function OnboardingSteps() {
                                         style={{
                                             fontSize: '1.5rem',
                                             width: '120px',
-                                            outline: 'none',
-                                            boxShadow: 'none',
                                             backgroundColor: 'rgba(255, 255, 255, 0.05)',
                                             border: '1px solid rgba(255, 255, 255, 0.1)'
                                         }}
@@ -498,8 +496,6 @@ export default function OnboardingSteps() {
                                         onChange={(e) => setMascotName(e.target.value)}
                                         style={{
                                             fontSize: '1.2rem',
-                                            outline: 'none',
-                                            boxShadow: 'none',
                                             backgroundColor: 'rgba(255, 255, 255, 0.05)',
                                             border: '1px solid rgba(255, 255, 255, 0.1)'
                                         }}
@@ -541,8 +537,6 @@ export default function OnboardingSteps() {
                                         onChange={(e) => setLeaderPhone(e.target.value)}
                                         style={{
                                             fontSize: '1.2rem',
-                                            outline: 'none',
-                                            boxShadow: 'none',
                                             backgroundColor: 'rgba(255, 255, 255, 0.05)',
                                             border: '1px solid rgba(255, 255, 255, 0.1)'
                                         }}

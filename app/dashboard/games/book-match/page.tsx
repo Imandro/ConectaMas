@@ -7,6 +7,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { bookMatchData, BookMatchQuestion } from "@/app/data/games/bookMatchData";
 import { saveGameScore, getBestScores } from "@/app/dashboard/games/clientGameScore";
 import SecondaryPageShell from "@/app/components/SecondaryUI";
+import { useLanguage } from "@/app/LanguageContext";
 
 const ROUNDS = 12;
 
@@ -20,6 +21,7 @@ function shuffleArray<T>(arr: T[]): T[] {
 }
 
 export default function BookMatchGame() {
+    const { t } = useLanguage();
     const [phase, setPhase] = useState<"start" | "playing" | "result">("start");
     const [questions, setQuestions] = useState<BookMatchQuestion[]>([]);
     const [round, setRound] = useState(0);
@@ -76,7 +78,7 @@ export default function BookMatchGame() {
                     <Link href="/dashboard/games" className="btn btn-white bg-white text-dark rounded-circle p-2 shadow-sm border-0">
                         <ArrowLeft size={22} />
                     </Link>
-                    <h1 className="h3 mb-0 fw-bold text-white">Empareja Libros</h1>
+                    <h1 className="h3 mb-0 fw-bold text-white">{t.game_ui.book_match_title}</h1>
                 </div>
 
                 {phase === "start" && (
@@ -85,14 +87,14 @@ export default function BookMatchGame() {
                             <div className="bg-white-20 d-inline-flex p-4 rounded-circle mb-3">
                                 <Trophy size={48} className="text-warning" />
                             </div>
-                            <h2 className="fw-bold text-white mb-2">¡Empareja Libros!</h2>
-                            <p className="text-white-80 mb-1">Clasifica cada libro bíblico en su categoría correcta.</p>
+                            <h2 className="fw-bold text-white mb-2">{t.game_ui.book_match_title}</h2>
+                            <p className="text-white-80 mb-1">{t.game_ui.book_match_desc}</p>
                             <p className="text-white-60 small mb-4">{ROUNDS} rondas para completar</p>
                             {bestScore > 0 && (
                                 <p className="text-warning small mb-3">🏆 Mejor puntaje: {bestScore}/{ROUNDS}</p>
                             )}
                             <button onClick={startGame} className="btn btn-warning rounded-pill px-5 py-2 fw-bold shadow-lg">
-                                ¡Comenzar!
+                                {t.game_ui.start}
                             </button>
                         </div>
                     </motion.div>
@@ -152,7 +154,7 @@ export default function BookMatchGame() {
 
                             {feedback && (
                                 <div className={`text-center fw-bold ${feedback === "correct" ? "text-success" : "text-danger"}`}>
-                                    {feedback === "correct" ? "✅ ¡Correcto!" : "❌ Incorrecto"}
+                                    {feedback === "correct" ? `✅ ${t.game_ui.correct}` : `❌ ${t.game_ui.incorrect}`}
                                 </div>
                             )}
                         </motion.div>
@@ -166,7 +168,7 @@ export default function BookMatchGame() {
                                 <div className="bg-warning-30 d-inline-flex p-4 rounded-circle mb-3">
                                     <Trophy size={64} className="text-warning" />
                                 </div>
-                                <h2 className="fw-bold text-white mb-2">¡Juego Terminado!</h2>
+                                <h2 className="fw-bold text-white mb-2">{t.game_ui.result_title}</h2>
                                 <div className="display-3 fw-bold text-warning mb-2">{score}/{ROUNDS}</div>
                                 {score === ROUNDS && <p className="text-white fw-bold">¡Perfecto! 🎉</p>}
                                 {score >= 8 && score < ROUNDS && <p className="text-white fw-bold">¡Muy bien! 🙌</p>}
@@ -177,10 +179,10 @@ export default function BookMatchGame() {
                             </div>
                             <div className="d-flex justify-content-center gap-3 flex-column flex-sm-row">
                                 <button onClick={startGame} className="btn btn-warning rounded-pill px-4 py-2 fw-bold shadow-sm">
-                                    Jugar de nuevo
+                                    {t.game_ui.restart}
                                 </button>
                                 <Link href="/dashboard/games" className="btn btn-outline-light rounded-pill px-4 py-2 fw-bold">
-                                    Volver a juegos
+                                    {t.game_ui.back}
                                 </Link>
                             </div>
                         </div>

@@ -31,7 +31,7 @@ export default function ChallengeCard({ isCompleted = false }: ChallengeCardProp
                             <Trophy size={20} className={isCompleted ? "text-success" : "text-warning"} aria-hidden="true" />
                             <span className="fw-bold text-uppercase small tracking-wider">{t.dashboard.daily_challenge}</span>
                         </div>
-                        <span className="badge rounded-pill px-3 py-2" style={{ backgroundColor: 'var(--accent-soft, #fff7d6)', color: 'var(--brand-primary, #0B1B32)' }}>
+                        <span className="badge rounded-pill px-3 py-2" style={{ backgroundColor: 'var(--accent-soft, #fff7d6)', color: 'var(--brand-ink, var(--brand-primary, #0B1B32))' }}>
                             {completed}/{total}
                         </span>
                     </div>
@@ -57,7 +57,7 @@ export default function ChallengeCard({ isCompleted = false }: ChallengeCardProp
                         <p className={`m-0 small ${isCompleted ? 'text-muted' : 'text-white-50'}`}>
                             {isCompleted ? t.dashboard.come_back_tomorrow : t.dashboard.verses_and_truths}
                         </p>
-                        <div className="rounded-circle p-2 flex-shrink-0 d-inline-flex align-items-center justify-content-center" style={{ width: '40px', height: '40px', backgroundColor: 'var(--accent-soft, #fff7d6)', color: 'var(--brand-primary, #0B1B32)' }} aria-hidden="true">
+                        <div className="rounded-circle p-2 flex-shrink-0 d-inline-flex align-items-center justify-content-center" style={{ width: '40px', height: '40px', backgroundColor: 'var(--accent-soft, #fff7d6)', color: 'var(--brand-ink, var(--brand-primary, #0B1B32))' }} aria-hidden="true">
                             {isCompleted ? <CheckCircle2 size={18} className="text-success" /> : <ArrowRight size={18} />}
                         </div>
                     </div>

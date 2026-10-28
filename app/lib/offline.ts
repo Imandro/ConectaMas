@@ -26,6 +26,9 @@ const staticRoutes = [
   '/dashboard/games/fill-blank',
   '/dashboard/games/book-sort',
   '/dashboard/games/book-match',
+  '/dashboard/games/memory',
+  '/dashboard/games/character-event',
+  '/dashboard/games/bible-order',
 ];
 
 const snapshotRoutes = [
